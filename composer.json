@@ -1,0 +1,9 @@
+{
+  "name": "yourproject/ecommerce",
+  "require": {
+      "php": "^7.4 || ^8.0",
+      "ext-mysqli": "*",
+      "ext-pdo": "*",
+      "phpmailer/phpmailer": "^6.0"
+  }
+}

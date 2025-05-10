@@ -1,0 +1,807 @@
+<?php include 'includes/session.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bailord</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Bailord eCommerce Template">
+    <meta name="author" content="Your Name">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.webmanifest">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Bailord">
+    <meta name="application-name" content="Bailord">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
+    <link rel="stylesheet" href="assets/css/demos/demo-4.css">
+    <style>
+        .categories-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .category-item {
+            width: 150px; /* Adjust as needed */
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="stye.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-intro-clearance header-4">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                    <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">USD</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">Eur</a></li>
+                                                    <li><a href="#">Usd</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="header-dropdown">
+                                            <a href="#">English</a>
+                                            <div class="header-menu">
+                                                <ul>
+                                                    <li><a href="#">English</a></li>
+                                                    <li><a href="#">French</a></li>
+                                                    <li><a href="#">Spanish</a></li>
+                                                </ul>
+                                            </div><!-- End .header-menu -->
+                                        </div>
+                                    </li>
+                                    <a href="login.html">Sign in / Sign up</a>
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+                        
+                        <a href="index-4.html" class="logo">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                        </div><!-- End .header-search -->
+                    </div>
+
+                    <div class="header-right">
+                        <div class="dropdown cart-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count">0</span>
+                                </div>
+                                <p>Cart</p>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-cart-products">
+                                    <!-- Cart items will be dynamically loaded here -->
+                                </div><!-- End .cart-product -->
+
+                                <div class="dropdown-cart-total">
+                                    <span>Total</span>
+                                    <span class="cart-total-price">$0.00</span>
+                                </div><!-- End .dropdown-cart-total -->
+
+                                <div class="dropdown-cart-action">
+                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .dropdown-cart-total -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+                                Browse Categories <i class="icon-angle-down"></i>
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <nav class="side-nav">
+                                    <ul class="menu-vertical sf-arrows">
+                                        <?php
+                                        $pdo = new Database();
+                                        $conn = $pdo->open();
+                                        try {
+                                            $stmt = $conn->prepare("SELECT * FROM category");
+                                            $stmt->execute();
+                                            $categories = $stmt->fetchAll();
+                                            
+                                            foreach ($categories as $category) {
+                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                                echo '<li>
+                                                        <a href="category.php?category='.$slug.'">'.$category['name'].'</a>
+                                                    </li>';
+                                            }
+                                        } catch(PDOException $e) {
+                                            echo "<li><a href='#'>Error loading categories</a></li>";
+                                        }
+                                        ?>
+                                    </ul><!-- menu-vertical -->
+                                </nav><!-- End .side-nav -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .category-dropdown -->
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li class="megamenu-container active">
+                                    <a href="index.php" class="sf-with-ul">Home</a>
+                                </li>
+                                <li>
+                                    <a href="category.php?category=all" class="sf-with-ul">Shop</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="sf-with-ul">Pages</a>
+                                    <ul>
+                                        <li>
+                                            <a href="about.html" class="sf-with-ul">About</a>
+                                        </li>
+                                        <li>
+                                            <a href="contact.html" class="sf-with-ul">Contact</a>
+                                        </li>
+                                        <li><a href="login.html">Login</a></li>
+                                        <li><a href="faq.html">FAQs</a></li>
+                                        <li><a href="404.html">Error 404</a></li>
+                                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="blog.html" class="sf-with-ul">Blog</a>
+                                </li>
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-center -->
+
+                    <div class="header-right">
+                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                    </div>
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+        </header><!-- End .header -->
+
+        <main class="main">
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false, 
+                        "responsive": {
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
+                        }
+                    }'>
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/bailord.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                                    <h1 class="intro-title">VIVO</h1>
+                                    <h1 class="intro-title">YO 3t</h1><!-- End .intro-title -->
+
+                                    <div class="intro-price">
+                                        <sup class="intro-old-price">$349,95</sup>
+                                        <span class="text-third">
+                                            $279<sup>.99</sup>
+                                        </span>
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="category.html" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-lg-11 offset-lg-1 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slide-2.png);">
+                        <div class="container intro-content">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                    <h1 class="intro-title">VIVO V19 </h1><!-- End .intro-title -->
+
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            $999<sup>.99</sup>
+                                        </span>
+                                    </div><!-- End .intro-price -->
+
+                                    <a href="category.html" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div><!-- End .col-md-6 offset-md-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+                </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+                <span class="slider-loader"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+            <div class="container">
+                    <h2 class="title text-center mb-4">Explore Popular Categories</h2><!-- End .title text-center -->
+                    
+                    <div class="cat-blocks-container">
+                        <div class="row">
+                            <?php
+                            
+                            // Define a default image in case category image doesn't exist
+                            $default_image = 'category-default.jpg';
+                            
+                            try {
+                                $stmt = $conn->prepare("SELECT * FROM category");
+                                $stmt->execute();
+                                $categories = $stmt->fetchAll();
+                                
+                                foreach ($categories as $category) {
+                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                    
+                                    // Create image path - check if you want to use ID, slug, or name
+                                    //$image_name = 'category-' . $category['id'] . '.jpg'; // Using ID
+                                    $image_name = $slug . '.jpg'; // Using slug
+                                    
+                                    // Check if image exists, otherwise use default
+                                    $image_path = file_exists('images/' . $image_name) 
+                                            ? 'images/' . $image_name 
+                                            : 'images/' . $default_image;
+                                    
+                                    echo '
+                                    <div class="col-6 col-sm-4 col-lg-2">
+                                        <a href="category.php?slug='.$slug.'" class="cat-block">
+                                            <figure>
+                                                <span>
+                                                    <img src="'.$image_path.'" alt="'.$category['name'].'">
+                                                </span>
+                                            </figure>
+                                            <h3 class="cat-block-title">'.$category['name'].'</h3>
+                                        </a>
+                                    </div>';
+                                }
+                                
+                                $pdo->close();
+                            }
+                            catch(PDOException $e) {
+                                echo "There is some problem in connection: " . $e->getMessage();
+                            }
+                            ?>
+                        </div><!-- End .row -->
+                    </div><!-- End .cat-blocks-container -->
+                </div><!-- End .container -->
+
+            <div class="mb-4"></div><!-- End .mb-4 -->
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Promo banners will be dynamically loaded here -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+
+            <div class="mb-3"></div><!-- End .mb-5 -->
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                            </a>
+
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4><!-- End .banner-subtitle -->
+                                <h3 class="banner-title"><a href="#">Save $150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3><!-- End .banner-title -->
+                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .banner-content -->
+                        </div><!-- End .banner -->
+                    </div><!-- End .col-md-4 -->
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                            </a>
+
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4><!-- End .banner-subtitle -->
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3><!-- End .banner-title -->
+                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .banner-content -->
+                        </div><!-- End .banner -->
+                    </div><!-- End .col-md-4 -->
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
+                            </a>
+
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4><!-- End .banner-subtitle -->
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save $70</a></h3><!-- End .banner-title -->
+                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .banner-content -->
+                        </div><!-- End .banner -->
+                    </div><!-- End .col-lg-4 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+
+            <div class="container new-arrivals">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">New Arrivals</h2>
+                    </div>
+                    <div class="heading-right">
+                        <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content tab-content-carousel just-action-icons-sm">
+                    <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
+                        <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                            data-owl-options='{
+                                "nav": true, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {"items":1},
+                                    "480": {"items":2},
+                                    "768": {"items":3},
+                                    "992": {"items":5},  <!-- Changed from 4 to 5 -->
+                                    "1200": {"items":5}  <!-- Ensures 5 items on larger screens -->
+                                }
+                            }'>
+                            <?php
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15"); // 15 products for 3 slides of 5
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                            
+                            // Group products into sets of 5
+                            $productGroups = array_chunk($products, 5);
+                            
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';  
+                                foreach ($group as $product) {
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">  <!-- Force 5 items per row -->
+                                        <figure class="product-media">
+                                            <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
+                                                <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                            </div>
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                }
+                                echo '</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6"></div>
+            <div class="container">
+                <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                    <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="cta-content">
+                                <div class="cta-text text-right text-white">
+                                    <p>Shop Today’s Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
+                                </div><!-- End .cta-text -->
+                                <a href="#" class="btn btn-primary btn-round"><span>Shop Now - $429.99</span><i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .cta-content -->
+                        </div><!-- End .col-md-12 -->
+                    </div><!-- End .row -->
+                </div><!-- End .cta -->
+            </div><!-- End .container -->
+            <div class="container">
+                <div class="heading text-center mb-3">
+                    <h2 class="title">Deals & Outlet</h2><!-- End .title -->
+                    <p class="title-desc">Today's deal and more</p><!-- End .title-desc -->
+                </div><!-- End .heading -->
+
+                <div class="row">
+                    <?php
+                    // Get two most recent products
+                    $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
+                    $stmt->execute();
+                    $deals = $stmt->fetchAll();
+                    
+                    // First deal (Deal of the Day)
+                    if (isset($deals[0])) {
+                        $product1 = $deals[0];
+                        echo '<div class="col-lg-6 deal-col">
+                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product1['photo']).'\');">
+                                <div class="deal-top">
+                                    <h2>Deal of the Day.</h2>
+                                    <h4>Limited quantities. </h4>
+                                </div><!-- End .deal-top -->
+
+                                <div class="deal-content">
+                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product1['slug']).'">'.htmlspecialchars($product1['name']).'</a></h3><!-- End .product-title -->
+
+                                    <div class="product-price">
+                                        <span class="new-price">$'.number_format($product1['price'] * 0.9, 2).'</span>
+                                        <span class="old-price">Was $'.number_format($product1['price'], 2).'</span>
+                                    </div><!-- End .product-price -->
+
+                                    <a href="product.php?slug='.htmlspecialchars($product1['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .deal-content -->
+
+                                <div class="deal-bottom">
+                                    <div class="deal-countdown daily-deal-countdown" data-until="+10h"></div><!-- End .deal-countdown -->
+                                </div><!-- End .deal-bottom -->
+                            </div><!-- End .deal -->
+                        </div><!-- End .col-lg-6 -->';
+                    }
+                    
+                    // Second deal (Exclusive Offer)
+                    if (isset($deals[1])) {
+                        $product2 = $deals[1];
+                        echo '<div class="col-lg-6 deal-col">
+                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product2['photo']).'\');">
+                                <div class="deal-top">
+                                    <h2>Your Exclusive Offers.</h2>
+                                    <h4>Sign in to see amazing deals.</h4>
+                                </div><!-- End .deal-top -->
+
+                                <div class="deal-content">
+                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product2['slug']).'">'.htmlspecialchars($product2['name']).'</a></h3><!-- End .product-title -->
+
+                                    <div class="product-price">
+                                        <span class="new-price">$'.number_format($product2['price'] * 0.85, 2).'</span>
+                                    </div><!-- End .product-price -->
+
+                                    <a href="login.html" class="btn btn-link"><span>Sign In and Save money</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .deal-content -->
+
+                                <div class="deal-bottom">
+                                    <div class="deal-countdown offer-countdown" data-until="+11d"></div><!-- End .deal-countdown -->
+                                </div><!-- End .deal-bottom -->
+                            </div><!-- End .deal -->
+                        </div><!-- End .col-lg-6 -->';
+                    }
+                    ?>
+                </div><!-- End .row -->
+
+                <div class="more-container text-center mt-1 mb-5">
+                    <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
+                </div><!-- End .more-container -->
+            </div><!-- End .container -->
+
+            <div class="container">
+                <hr class="mb-0">
+                <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl" 
+                    data-owl-options='{
+                        "nav": false, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {"items":2},
+                            "420": {"items":3},
+                            "600": {"items":4},
+                            "900": {"items":5},
+                            "1024": {"items":6}
+                        }
+                    }'>
+                    <img src="assets/images/brands/brand1.png" alt="Brand">
+                    <img src="assets/images/brands/brand2.png" alt="Brand">
+                    <img src="assets/images/brands/brand3.png" alt="Brand">
+                    <img src="assets/images/brands/brand4.png" alt="Brand">
+                    <img src="assets/images/brands/brand5.png" alt="Brand">
+                    <img src="assets/images/brands/brand6.png" alt="Brand">
+                </div>
+            </div>
+
+            <div class="bg-light pt-5 pb-6">
+                <div class="container trending-products">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Trending Products</h2>
+                        </div>
+                        <div class="heading-right">
+                            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-5col d-none d-xl-block">
+                            <div class="banner banner-overlay banner-overlay-light">
+                                <a href="category.php">
+                                    <img src="images/Banner.jpg" alt="Banner">
+                                </a>
+                                <div class="banner-content">
+                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
+                                    <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
+                                    <a href="category.php" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4-5col">
+                            <div class="tab-content tab-content-carousel just-action-icons-sm">
+                                <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": false,
+                                            "margin": 20,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":2},
+                                                "480": {"items":2},
+                                                "768": {"items":3},
+                                                "992": {"items":4}
+                                            }
+                                        }'>
+                                        <?php
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        
+                                        foreach ($trending as $product) {
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
+                                                        <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": false,
+                                            "margin": 20,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":2},
+                                                "480": {"items":2},
+                                                "768": {"items":3},
+                                                "992": {"items":4}
+                                            }
+                                        }'>
+                                        <?php
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        
+                                        foreach ($bestSelling as $product) {
+                                            echo '<div class="product">
+                                                <!-- Same product structure as above -->
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": false,
+                                            "margin": 20,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":2},
+                                                "480": {"items":2},
+                                                "768": {"items":3},
+                                                "992": {"items":4}
+                                            }
+                                        }'>
+                                        <?php
+                                        $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
+                                        $stmt->execute();
+                                        $onSale = $stmt->fetchAll();
+                                        
+                                        foreach ($onSale as $product) {
+                                            echo '<div class="product">
+                                                <!-- Same product structure as above -->
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5"></div>
+
+            <div class="container for-you">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">Recommendation For You</h2>
+                    </div>
+                    <div class="heading-right">
+                        <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="products">
+                    <div class="row justify-content-center">
+                        <?php
+                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                        $stmt->execute();
+                        $recommended = $stmt->fetchAll();
+                        
+                        foreach ($recommended as $product) {
+                            echo '<div class="col-6 col-md-4 col-lg-2">
+                                <div class="product">
+                                    <figure class="product-media">
+                                        <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
+                                            <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                        </a>
+                                    </figure>
+                                    <div class="product-body">
+                                        <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                    </div>
+                                </div>
+                            </div>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div class="row no-gutters bg-white newsletter-popup-content">
+                            <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                                <div class="banner-content text-center">
+                                    <img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
+                                    <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                                    <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
+                                    <form action="#">
+                                        <div class="input-group input-group-round">
+                                            <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
+                                            <div class="input-group-append">
+                                                <button class="btn" type="submit"><span>go</span></button>
+                                            </div><!-- .End .input-group-append -->
+                                        </div><!-- .End .input-group -->
+                                    </form>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                        <label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
+                                    </div><!-- End .custom-checkbox -->
+                                </div>
+                            </div>
+                            <div class="col-xl-2-5col col-lg-5 ">
+                                <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/bootstrap-input-spinner.js"></script>
+    <script src="assets/js/jquery.plugin.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.countdown.min.js"></script>
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/demos/demo-4.js"></script>
+</body>
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-4.html-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 May 2025 19:33:04 GMT -->
+</html>"

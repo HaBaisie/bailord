@@ -1,0 +1,187 @@
+/* Override CSS for Bailord - Color Scheme Optimization */
+:root {
+    /* Primary Colors */
+    --primary-blue: #1a73e8;  /* Dominant 60% */
+    --secondary-green: #34a853;  /* Secondary 30% */
+    --accent-orange: #ff6d00;  /* Accent 10% */
+    
+    /* Neutrals */
+    --light-bg: #f8f9fa;
+    --medium-gray: #e0e0e0;
+    --dark-text: #202124;
+    
+    /* Complementary Colors */
+    --blue-light: #e8f0fe;
+    --green-light: #e6f4ea;
+    --orange-light: #fff3e0;
+}
+
+/* ========== GLOBAL OVERRIDES ========== */
+body {
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+/* ========== HEADER OVERRIDES ========== */
+.header {
+    background-color: white;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.header-middle {
+    background-color: white;
+}
+
+.header-bottom {
+    background-color: var(--primary-blue);
+}
+
+/* Main navigation */
+.main-nav .menu > li > a {
+    color: var(--dark-text);
+}
+.main-nav .menu > li > a:hover,
+.main-nav .menu > li.active > a {
+    color: var(--primary-blue);
+}
+
+/* Category dropdown */
+.category-dropdown .dropdown-toggle {
+    background-color: var(--primary-blue);
+    color: white;
+}
+.category-dropdown .dropdown-menu {
+    border-top: 2px solid var(--primary-blue);
+}
+
+/* ========== HERO SLIDER ========== */
+.intro-slide {
+    background-color: var(--blue-light); /* Soft blue background */
+}
+.intro-subtitle.text-third {
+    color: var(--accent-orange) !important;
+}
+.intro-title {
+    color: var(--primary-blue);
+}
+.btn-primary {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+.btn-primary:hover {
+    background-color: #0d5bbc;
+    border-color: #0d5bbc;
+}
+
+/* ========== PRODUCT CARDS ========== */
+.product {
+    background-color: white;
+    border: 1px solid var(--medium-gray);
+}
+.product-body {
+    background-color: white;
+}
+.product-price {
+    color: var(--primary-blue);
+}
+.ratings-val {
+    background-color: var(--accent-orange); /* Orange stars */
+}
+
+/* ========== DEALS & PROMOS ========== */
+.deal {
+    background-color: var(--blue-light);
+    border: 1px solid var(--medium-gray);
+}
+.deal-countdown {
+    background-color: var(--primary-blue);
+    color: white;
+}
+.highlight {
+    color: var(--accent-orange);
+}
+
+/* ========== BUTTONS ========== */
+.btn-outline-dark-2 {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+.btn-outline-dark-2:hover {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+/* ========== FOOTER ========== */
+.footer-middle {
+    background-color: var(--dark-text);
+    color: white;
+}
+.footer-bottom {
+    background-color: #1a1a1a;
+}
+.widget-title {
+    color: white;
+}
+
+/* ========== ACCESSIBILITY IMPROVEMENTS ========== */
+a {
+    color: var(--primary-blue);
+}
+a:hover {
+    color: #0d5bbc;
+}
+
+/* Ensure contrast for readability */
+.product-title a,
+h1, h2, h3, h4 {
+    color: var(--dark-text);
+}
+
+/* ========== RESPONSIVE ADJUSTMENTS ========== */
+@media (max-width: 991px) {
+    .header-bottom {
+        background-color: white;
+    }
+    .mobile-menu-container {
+        background-color: white;
+    }
+}
+
+/* ========== SPECIAL OFFERS ========== */
+.banner-overlay-light .banner-content {
+    background-color: rgba(255,255,255,0.9);
+}
+.banner-subtitle {
+    color: var(--secondary-green);
+}
+.banner-title {
+    color: var(--primary-blue);
+}
+.banner-link {
+    color: var(--accent-orange);
+}
+
+/* ========== COLOR DISTRIBUTION ========== */
+/* 60% Blue elements */
+.header-bottom,
+.category-dropdown .dropdown-toggle,
+.deal-countdown,
+.btn-primary,
+.footer-middle {
+    background-color: var(--primary-blue);
+}
+
+/* 30% Green elements */
+.highlight,
+.banner-subtitle,
+.special-offer-badge {
+    color: var(--secondary-green);
+}
+
+/* 10% Orange accents */
+.ratings-val,
+.intro-subtitle.text-third,
+.banner-link,
+.sale-badge {
+    color: var(--accent-orange);
+}
