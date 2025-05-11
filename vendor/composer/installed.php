@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'yourproject/ecommerce',
+        'name' => 'yourproject/molla',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
         'reference' => 'a6aca8c63efb0f3b61b67343269d94b8f45e777d',
@@ -19,7 +19,7 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'yourproject/ecommerce' => array(
+        'yourproject/molla' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
             'reference' => 'a6aca8c63efb0f3b61b67343269d94b8f45e777d',
