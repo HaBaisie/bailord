@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bailord</title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Bailord eCommerce Template">
@@ -37,15 +37,27 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 10px; /* Smaller gap on mobile */
         }
 
         .category-item {
-            width: 150px; /* Adjust as needed */
+            width: calc(50% - 10px); /* 2 items per row on mobile */
+            max-width: 150px; /* Maximum size */
             text-align: center;
         }
+
+        @media (min-width: 768px) {
+            .category-item {
+                width: calc(33.333% - 20px); /* 3 items per row on tablet */
+            }
+        }
+
+        @media (min-width: 992px) {
+            .category-item {
+                width: 150px; /* Fixed width on desktop */
+            }
+        }
     </style>
-    <link rel="stylesheet" href="stye.css">
 </head>
 
 <body>
