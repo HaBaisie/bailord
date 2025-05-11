@@ -57,54 +57,250 @@
                 width: 150px; /* Fixed width on desktop */
             }
         }
+        <style>
+            /* Mobile Menu Styles */
+            .mobile-menu-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s;
+            }
+
+            .mobile-menu-container.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-menu-wrapper {
+                position: relative;
+                width: 100%;
+                max-width: 320px;
+                height: 100%;
+                background: #fff;
+                padding: 4rem 2rem;
+                overflow-y: auto;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .mobile-menu-container.visible .mobile-menu-wrapper {
+                transform: translateX(0);
+            }
+
+            .mobile-menu-close {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 2rem;
+                cursor: pointer;
+                color: #333;
+            }
+
+            .mobile-nav .mobile-menu > li {
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 1rem;
+            }
+
+            .mobile-nav .mobile-menu > li > a {
+                font-weight: 600;
+                font-size: 1.4rem;
+                color: #333;
+            }
+
+            .mobile-nav .mobile-menu ul {
+                padding-left: 1.5rem;
+                margin-top: 0.5rem;
+                display: none;
+            }
+
+            .mobile-nav .mobile-menu li.active > ul {
+                display: block;
+            }
+
+            .mobile-search {
+                margin-bottom: 2rem;
+                position: relative;
+            }
+
+            .mobile-search input {
+                width: 100%;
+                padding: 1rem 4rem 1rem 1rem;
+                border: 1px solid #ddd;
+            }
+
+            .mobile-search button {
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                background: transparent;
+                border: none;
+                color: #333;
+            }
+
+            .mobile-cats-title {
+                font-size: 1.6rem;
+                margin: 2rem 0 1rem;
+                color: #333;
+            }
+
+            .mobile-cats-nav li {
+                margin-bottom: 0.5rem;
+            }
+
+            /* Responsive Header */
+            @media (max-width: 991px) {
+                .header-search-extended {
+                    display: none;
+                }
+                
+                .header-bottom .header-center,
+                .header-bottom .header-right {
+                    display: none;
+                }
+                
+                .category-dropdown .dropdown-menu {
+                    position: static;
+                    width: 100%;
+                    transform: none !important;
+                }
+                
+                .mobile-search-form {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: #fff;
+                    padding: 1rem;
+                    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                    z-index: 999;
+                }
+                
+                .mobile-search-form.visible {
+                    display: block;
+                }
+            }
+
+            @media (min-width: 992px) {
+                .mobile-menu-container,
+                .mobile-search-toggle,
+                .mobile-search-form {
+                    display: none;
+                }
+            }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
+            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.add('visible');
+                });
+            }
+            
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.remove('visible');
+                });
+            }
+            
+            // Mobile search toggle
+            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+            const mobileSearchForm = document.querySelector('.mobile-search-form');
+            
+            if (mobileSearchToggle && mobileSearchForm) {
+                mobileSearchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileSearchForm.classList.toggle('visible');
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            mobileMenuContainer.addEventListener('click', function(e) {
+                if (e.target === mobileMenuContainer) {
+                    mobileMenuContainer.classList.remove('visible');
+                }
+            });
+            
+            // Make mobile submenus work
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
+            mobileMenuItems.forEach(item => {
+                if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        this.parentElement.classList.toggle('active');
+                    });
+                }
+            });
+            
+            // Make category dropdown work on mobile
+            const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
+            if (categoryToggle) {
+                categoryToggle.addEventListener('click', function(e) {
+                    if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            }
+        });
+        </script>
 </head>
 
 <body>
-    <div class="page-wrapper">
+    <div class="page-wrapper">      
         <header class="header header-intro-clearance header-4">
+            <!-- Header Top (Contact, Currency, Language) -->
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a>
-                    </div><!-- End .header-left -->
+                        <a href="tel:#" class="header-contact"><i class="icon-phone"></i>Call: +0123 456 789</a>
+                    </div>
 
                     <div class="header-right">
                         <ul class="top-menu">
-                            <li>
-                                <a href="#">Links</a>
-                                <ul>
-                                    <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">USD</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">Eur</a></li>
-                                                    <li><a href="#">Usd</a></li>
-                                                </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">English</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">English</a></li>
-                                                    <li><a href="#">French</a></li>
-                                                    <li><a href="#">Spanish</a></li>
-                                                </ul>
-                                            </div><!-- End .header-menu -->
-                                        </div>
-                                    </li>
-                                    <a href="login.html">Sign in / Sign up</a>
+                            <!-- Currency Dropdown -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">USD <i class="icon-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">EUR</a></li>
+                                    <li><a href="#">USD</a></li>
                                 </ul>
                             </li>
-                        </ul><!-- End .top-menu -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-top -->
+                            
+                            <!-- Language Dropdown -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">English <i class="icon-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                            
+                            <!-- Login Link -->
+                            <li><a href="login.html">Sign in / Sign up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Header Middle (Logo, Search, Cart) -->
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
@@ -113,65 +309,77 @@
                             <i class="icon-bars"></i>
                         </button>
                         
-                        <a href="index-4.html" class="logo">
+                        <a href="index.php" class="logo">
                             <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
                         </a>
-                    </div><!-- End .header-left -->
+                    </div>
 
                     <div class="header-center">
-                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
-                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                        <!-- Desktop Search (hidden on mobile) -->
+                        <div class="header-search header-search-extended d-none d-lg-block">
                             <form action="#" method="get">
-                                <div class="header-search-wrapper search-wrapper-wide">
+                                <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
-                                </div><!-- End .header-search-wrapper -->
+                                </div>
                             </form>
-                        </div><!-- End .header-search -->
+                        </div>
+                        
+                        <!-- Mobile Search Toggle (visible on mobile) -->
+                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
+                            <i class="icon-search"></i>
+                        </a>
                     </div>
 
                     <div class="header-right">
+                        <!-- Mobile Search Form (hidden by default) -->
+                        <div class="header-search mobile-search-form">
+                            <form action="#" method="get">
+                                <div class="header-search-wrapper">
+                                    <input type="search" class="form-control" name="q" id="q-mobile" placeholder="Search..." required>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Cart Dropdown -->
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">0</span>
                                 </div>
                                 <p>Cart</p>
                             </a>
-
                             <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <!-- Cart items will be dynamically loaded here -->
-                                </div><!-- End .cart-product -->
-
+                                <div class="dropdown-cart-products"></div>
                                 <div class="dropdown-cart-total">
                                     <span>Total</span>
                                     <span class="cart-total-price">$0.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-
+                                </div>
                                 <div class="dropdown-cart-action">
                                     <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
+                                    <a href="checkout.html" class="btn btn-outline-primary-2">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Header Bottom (Navigation) -->
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-left">
+                        <!-- Category Dropdown -->
                         <div class="dropdown category-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Browse Categories <i class="icon-angle-down"></i>
                             </a>
-
                             <div class="dropdown-menu">
                                 <nav class="side-nav">
-                                    <ul class="menu-vertical sf-arrows">
+                                    <ul class="menu-vertical">
                                         <?php
                                         $pdo = new Database();
                                         $conn = $pdo->open();
@@ -182,57 +390,103 @@
                                             
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li>
-                                                        <a href="category.php?category='.$slug.'">'.$category['name'].'</a>
-                                                    </li>';
+                                                echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                             }
                                         } catch(PDOException $e) {
                                             echo "<li><a href='#'>Error loading categories</a></li>";
                                         }
                                         ?>
-                                    </ul><!-- menu-vertical -->
-                                </nav><!-- End .side-nav -->
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .category-dropdown -->
-                    </div><!-- End .header-left -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="header-center">
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="index.php" class="sf-with-ul">Home</a>
-                                </li>
+                        <!-- Main Navigation (hidden on mobile) -->
+                        <nav class="main-nav d-none d-lg-block">
+                            <ul class="menu">
+                                <li class="active"><a href="index.php">Home</a></li>
+                                <li><a href="category.php?category=all">Shop</a></li>
                                 <li>
-                                    <a href="category.php?category=all" class="sf-with-ul">Shop</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
+                                    <a href="#">Pages</a>
                                     <ul>
-                                        <li>
-                                            <a href="about.html" class="sf-with-ul">About</a>
-                                        </li>
-                                        <li>
-                                            <a href="contact.html" class="sf-with-ul">Contact</a>
-                                        </li>
+                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
                                         <li><a href="login.html">Login</a></li>
                                         <li><a href="faq.html">FAQs</a></li>
                                         <li><a href="404.html">Error 404</a></li>
                                         <li><a href="coming-soon.html">Coming Soon</a></li>
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="blog.html" class="sf-with-ul">Blog</a>
-                                </li>
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-center -->
-
-                    <div class="header-right">
-                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                                <li><a href="blog.html">Blog</a></li>
+                            </ul>
+                        </nav>
                     </div>
-                </div><!-- End .container -->
-            </div><!-- End .header-bottom -->
-        </header><!-- End .header -->
+
+                    <div class="header-right d-none d-lg-block">
+                        <i class="la la-lightbulb-o"></i>
+                        <p>Clearance<span class="highlight"> Up to 30% Off</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Container -->
+            <div class="mobile-menu-container">
+                <div class="mobile-menu-wrapper">
+                    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+                    
+                    <!-- Mobile Search -->
+                    <form action="#" method="get" class="mobile-search">
+                        <label for="mobile-search" class="sr-only">Search</label>
+                        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                    </form>
+                    
+                    <!-- Mobile Navigation -->
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li class="active"><a href="index.php">Home</a></li>
+                            <li><a href="category.php?category=all">Shop</a></li>
+                            <li>
+                                <a href="#">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="faq.html">FAQs</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="blog.html">Blog</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <!-- Mobile Categories -->
+                    <div class="mobile-cats">
+                        <h3 class="mobile-cats-title">Browse Categories</h3>
+                        <ul class="mobile-cats-nav">
+                            <?php
+                            try {
+                                $stmt = $conn->prepare("SELECT * FROM category");
+                                $stmt->execute();
+                                $categories = $stmt->fetchAll();
+                                
+                                foreach ($categories as $category) {
+                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                }
+                            } catch(PDOException $e) {
+                                echo "<li><a href='#'>Error loading categories</a></li>";
+                            }
+                            $pdo->close();
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
 
         <main class="main">
             <div class="intro-slider-container mb-5">
