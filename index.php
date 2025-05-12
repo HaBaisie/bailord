@@ -33,6 +33,196 @@
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
     <style>
+        :root {
+    /* Color Palette */
+    --dominant-color: #2a5bd7;       /* Primary blue (60%) */
+    --secondary-color: #28a745;      /* Green (30%) */
+    --accent-color: #fd7e14;         /* Orange (10%) */
+    
+    /* Complementary shades */
+    --complementary-blue: #1e429f;   /* Darker blue */
+    --complementary-orange: #e67700; /* Darker orange */
+    
+    /* Neutrals */
+    --light-neutral: #f8f9fa;
+    --medium-neutral: #e9ecef;
+    --dark-neutral: #495057;
+    
+    /* Text colors */
+    --text-dark: #212529;
+    --text-light: #f8f9fa;
+    
+    /* Gradients */
+    --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
+    --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
+    }
+
+    /* Base Styles */
+    body {
+        background-color: var(--light-neutral);
+        color: var(--text-dark);
+        font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Header */
+    .header {
+        background: var(--blue-gradient);
+        color: var(--text-light);
+    }
+
+    .header-top {
+        background-color: var(--complementary-blue);
+    }
+
+    /* Navigation */
+    .main-nav .menu > li > a {
+        color: var(--text-light);
+    }
+
+    .main-nav .menu > li:hover > a {
+        color: var(--accent-color);
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background-color: var(--dominant-color);
+        border-color: var(--dominant-color);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--complementary-blue);
+        border-color: var(--complementary-blue);
+    }
+
+    .btn-outline-primary {
+        color: var(--dominant-color);
+        border-color: var(--dominant-color);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--dominant-color);
+        color: var(--text-light);
+    }
+
+    /* Accent Elements */
+    .highlight, .intro-subtitle.text-third, .intro-price .text-third {
+        color: var(--accent-color);
+    }
+
+    .deal-countdown, .mobile-menu-toggler, .cart-dropdown .icon {
+        color: var(--accent-color);
+    }
+
+    /* Secondary Color Elements */
+    .header-right .top-menu a:hover, 
+    .category-dropdown .dropdown-toggle, 
+    .banner-subtitle a {
+        color: var(--secondary-color);
+    }
+
+    .ratings-val {
+        background-color: var(--secondary-color);
+    }
+
+    /* Product Cards */
+    .product {
+        background-color: white;
+        border: 1px solid var(--medium-neutral);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-title a {
+        color: var(--text-dark);
+    }
+
+    .product-title a:hover {
+        color: var(--dominant-color);
+    }
+
+    /* Deals Section */
+    .deal {
+        background-color: var(--dominant-color);
+        color: var(--text-light);
+    }
+
+    .deal-content .product-price .new-price {
+        color: var(--accent-color);
+    }
+
+    /* Footer */
+    .footer {
+        background-color: var(--dark-neutral);
+        color: var(--text-light);
+    }
+
+    .footer a {
+        color: var(--medium-neutral);
+    }
+
+    .footer a:hover {
+        color: var(--accent-color);
+    }
+
+    /* Accessibility Enhancements */
+    a, button {
+        transition: color 0.2s, background-color 0.2s;
+    }
+
+    a:focus, button:focus {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    /* Contrast checks for accessibility */
+    .btn-primary, .header, .deal {
+        color: white; /* Ensures proper contrast with dark backgrounds */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 991px) {
+        .mobile-menu-container {
+            background-color: rgba(42, 91, 215, 0.95); /* Semi-transparent dominant color */
+        }
+        
+        .mobile-menu-wrapper {
+            background: var(--light-neutral);
+        }
+        
+        .mobile-nav .mobile-menu > li > a {
+            color: var(--text-dark);
+        }
+    }
+
+    /* Gradient Applications */
+    .intro-slide, .cta {
+        background-blend-mode: overlay;
+    }
+
+    .banner-overlay-light:after {
+        background: rgba(255,255,255,0.8);
+    }
+
+    /* Color Distribution Enforcement */
+    /* Approximately 60% dominant color in these elements: */
+    .header, .header-top, .footer, .deal-col {
+        background-color: var(--dominant-color);
+    }
+
+    /* Approximately 30% secondary color in these elements: */
+    .btn-success, .ratings-val, .highlight-bg {
+        background-color: var(--secondary-color);
+    }
+
+    /* Approximately 10% accent color in these elements: */
+    .highlight, .btn-warning, .deal-countdown, .product-action .btn-cart:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
         .categories-grid {
             display: flex;
             flex-wrap: wrap;
