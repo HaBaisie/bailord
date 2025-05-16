@@ -1147,7 +1147,7 @@
                                     </form>
                                     <div class="custom-control custom-checkbox" style="text-align: left;">
                                         <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-                                        <label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
+                                        <label class="custom-control-label" for="register-policy-2">Do not show this again</label>
                                     </div>
                                 </div>
                             </div>
