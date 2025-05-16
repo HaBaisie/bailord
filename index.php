@@ -251,8 +251,75 @@
             -webkit-touch-callout: none;
             user-select: none;
         }
+        /* Mobile Menu Styles */
+        .mobile-menu-container {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .mobile-menu li.menu-item-has-children > a {
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .mobile-menu .icon-angle-down {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu li.menu-item-has-children.active > .icon-angle-down {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .mobile-menu .sub-menu {
+            display: none;
+            padding-left: 15px;
+        }
+
+        /* Touch-friendly sizes */
+        .mobile-menu a {
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        /* Desktop dropdown improvements */
+        @media (min-width: 992px) {
+            .dropdown-menu {
+                min-width: 200px;
+            }
+            
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+            
+            .menu > li > a {
+                padding: 15px 20px;
+            }
+        }
     </style>
     <script>
+        // Mobile menu dropdown toggle
+        document.querySelectorAll('.mobile-menu li.menu-item-has-children > a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    e.preventDefault();
+                    const subMenu = this.nextElementSibling;
+                    const icon = this.querySelector('.icon-angle-down');
+                    
+                    this.parentElement.classList.toggle('active');
+                    subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+                    
+                    if (icon) {
+                        icon.style.transform = subMenu.style.display === 'block' 
+                            ? 'translateY(-50%) rotate(180deg)'
+                            : 'translateY(-50%)';
+                    }
+                }
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
@@ -499,15 +566,16 @@
                         </div>
                     </div>
 
+                    <!-- Header Center - Desktop Navigation -->
                     <div class="header-center">
                         <!-- Main Navigation (hidden on mobile) -->
                         <nav class="main-nav d-none d-lg-block">
                             <ul class="menu">
                                 <li class="active"><a href="index.php">Home</a></li>
                                 <li><a href="category.php?category=all">Shop</a></li>
-                                <li>
-                                    <a href="#">Pages</a>
-                                    <ul>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <i class="icon-angle-down"></i></a>
+                                    <ul class="dropdown-menu">
                                         <li><a href="about.html">About</a></li>
                                         <li><a href="contact.html">Contact</a></li>
                                         <li><a href="login.html">Login</a></li>
@@ -521,44 +589,45 @@
                         </nav>
                     </div>
 
+                    <!-- Header Right - Desktop Only -->
                     <div class="header-right d-none d-lg-block">
                         <i class="la la-lightbulb-o"></i>
                         <p>Clearance<span class="highlight"> Up to 30% Off</span></p>
                     </div>
-                </div>
-            </div>
 
-            <!-- Mobile Menu Container -->
-            <div class="mobile-menu-container">
-                <div class="mobile-menu-wrapper">
-                    <span class="mobile-menu-close"><i class="icon-close"></i></span>
-                    
-                    <!-- Mobile Search -->
-                    <form action="#" method="get" class="mobile-search">
-                        <label for="mobile-search" class="sr-only">Search</label>
-                        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                    </form>
-                    
-                    <!-- Mobile Navigation -->
-                    <nav class="mobile-nav">
-                        <ul class="mobile-menu">
-                            <li class="active"><a href="index.php">Home</a></li>
-                            <li><a href="category.php?category=all">Shop</a></li>
-                            <li>
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="faq.html">FAQs</a></li>
-                                    <li><a href="404.html">Error 404</a></li>
-                                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                    <!-- Mobile Menu Container -->
+                    <div class="mobile-menu-container">
+                        <div class="mobile-menu-wrapper">
+                            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+                            
+                            <!-- Mobile Search -->
+                            <form action="#" method="get" class="mobile-search">
+                                <label for="mobile-search" class="sr-only">Search</label>
+                                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
+                                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                            </form>
+                            
+                            <!-- Mobile Navigation -->
+                            <nav class="mobile-nav">
+                                <ul class="mobile-menu">
+                                    <li class="active"><a href="index.php">Home</a></li>
+                                    <li><a href="category.php?category=all">Shop</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Pages <i class="icon-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            <li><a href="about.html">About</a></li>
+                                            <li><a href="contact.html">Contact</a></li>
+                                            <li><a href="login.html">Login</a></li>
+                                            <li><a href="faq.html">FAQs</a></li>
+                                            <li><a href="404.html">Error 404</a></li>
+                                            <li><a href="coming-soon.html">Coming Soon</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="blog.html">Blog</a></li>
                                 </ul>
-                            </li>
-                            <li><a href="blog.html">Blog</a></li>
-                        </ul>
-                    </nav>
+                            </nav>
+                        </div>
+                    </div>
                     
                     <!-- Mobile Categories -->
                     <div class="mobile-cats">
