@@ -1145,10 +1145,10 @@
                                             </div><!-- .End .input-group-append -->
                                         </div><!-- .End .input-group -->
                                     </form>
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="custom-control custom-checkbox" style="text-align: left;">
                                         <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
                                         <label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
-                                    </div><!-- End .custom-checkbox -->
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xl-2-5col col-lg-5 ">
