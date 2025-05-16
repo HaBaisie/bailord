@@ -470,58 +470,50 @@
             <!-- Header Bottom (Navigation) -->
             <div class="header-bottom sticky-header">
                 <div class="container">
-                    <div class="header-left">
-                        <!-- Category Dropdown -->
-                        <div class="dropdown category-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Browse Categories <i class="icon-angle-down"></i>
-                            </a>
-                            <div class="dropdown-menu">
-                                <nav class="side-nav">
-                                    <ul class="menu-vertical">
-                                        <?php
-                                        $pdo = new Database();
-                                        $conn = $pdo->open();
-                                        try {
-                                            $stmt = $conn->prepare("SELECT * FROM category");
-                                            $stmt->execute();
-                                            $categories = $stmt->fetchAll();
-                                            
-                                            foreach ($categories as $category) {
-                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                            }
-                                        } catch(PDOException $e) {
-                                            echo "<li><a href='#'>Error loading categories</a></li>";
+                    <nav class="main-nav d-none d-lg-block">
+                        <ul class="menu">
+                            <li class="active"><a href="index.php">Home</a></li>
+                            <li><a href="category.php?category=all">Shop</a></li>
+                            
+                            <!-- Browse Categories Dropdown (now part of main nav) -->
+                            <li>
+                                <a href="#">Browse Categories</a>
+                                <ul>
+                                    <?php
+                                    $pdo = new Database();
+                                    $conn = $pdo->open();
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        $categories = $stmt->fetchAll();
+                                        
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
-                                        ?>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="header-center">
-                        <!-- Main Navigation (hidden on mobile) -->
-                        <nav class="main-nav d-none d-lg-block">
-                            <ul class="menu">
-                                <li class="active"><a href="index.php">Home</a></li>
-                                <li><a href="category.php?category=all">Shop</a></li>
-                                <li>
-                                    <a href="#">Pages</a>
-                                    <ul>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="faq.html">FAQs</a></li>
-                                        <li><a href="404.html">Error 404</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </li>
+                            
+                            <!-- Pages Dropdown -->
+                            <li>
+                                <a href="#">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="faq.html">FAQs</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li><a href="blog.html">Blog</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
 
