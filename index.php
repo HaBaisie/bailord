@@ -529,11 +529,36 @@
                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
                     
-                    <!-- Mobile Navigation -->
+                    <!-- Mobile Navigation (Updated) -->
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
+                            
+                            <!-- Browse Categories Dropdown (now part of main mobile menu) -->
+                            <li>
+                                <a href="#">Browse Categories</a>
+                                <ul>
+                                    <?php
+                                    $pdo = new Database();
+                                    $conn = $pdo->open();
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        $categories = $stmt->fetchAll();
+                                        
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                        }
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </li>
+                            
+                            <!-- Pages Dropdown -->
                             <li>
                                 <a href="#">Pages</a>
                                 <ul>
@@ -545,31 +570,12 @@
                                     <li><a href="coming-soon.html">Coming Soon</a></li>
                                 </ul>
                             </li>
+                            
                             <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
                     
-                    <!-- Mobile Categories -->
-                    <div class="mobile-cats">
-                        <h3 class="mobile-cats-title">Browse Categories</h3>
-                        <ul class="mobile-cats-nav">
-                            <?php
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                }
-                            } catch(PDOException $e) {
-                                echo "<li><a href='#'>Error loading categories</a></li>";
-                            }
-                            $pdo->close();
-                            ?>
-                        </ul>
-                    </div>
+                    <!-- Removed the separate mobile-cats section since it's now integrated -->
                 </div>
             </div>
         </header>
