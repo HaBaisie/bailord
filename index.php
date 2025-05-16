@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bailord</title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Bailord eCommerce Template">
@@ -32,82 +32,225 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
+
+        <!-- Preload critical resources -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href="assets/js/jquery.min.js" as="script">
+    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
         :root {
-    /* Color Palette */
-    --dominant-color: #2a5bd7;       /* Primary blue (60%) */
-    --secondary-color: #28a745;      /* Green (30%) */
-    --accent-color: #fd7e14;         /* Orange (10%) */
-    
-    /* Complementary shades */
-    --complementary-blue: #1e429f;   /* Darker blue */
-    --complementary-orange: #e67700; /* Darker orange */
-    
-    /* Neutrals */
-    --light-neutral: #f8f9fa;
-    --medium-neutral: #e9ecef;
-    --dark-neutral: #495057;
-    
-    /* Text colors */
-    --text-dark: #212529;
-    --text-light: #f8f9fa;
-    
-    /* Gradients */
-    --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
-    --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
-    }
+        /* Color Palette */
+        --dominant-color: #2a5bd7;       /* Primary blue (60%) */
+        --secondary-color: #28a745;      /* Green (30%) */
+        --accent-color: #fd7e14;         /* Orange (10%) */
+        
+        /* Complementary shades */
+        --complementary-blue: #1e429f;   /* Darker blue */
+        --complementary-orange: #e67700; /* Darker orange */
+        
+        /* Neutrals */
+        --light-neutral: #f8f9fa;
+        --medium-neutral: #e9ecef;
+        --dark-neutral: #495057;
+        
+        /* Text colors */
+        --text-dark: #212529;
+        --text-light: #f8f9fa;
+        
+        /* Gradients */
+        --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
+        --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
+        }
 
-    /* Base Styles */
-    body {
-        background-color: var(--light-neutral);
-        color: var(--text-dark);
-        font-family: 'Segoe UI', Roboto, sans-serif;
-    }
+        /* Base Styles */
+        body {
+            background-color: var(--light-neutral);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
 
-    /* Header */
-    .header {
-        background: var(--blue-gradient);
-        color: var(--text-light);
-    }
+        /* Header */
+        .header {
+            background: var(--blue-gradient);
+            color: var(--text-light);
+        }
 
-    .header-top {
-        background-color: var(--complementary-blue);
-    }
+        .header-top {
+            background-color: var(--complementary-blue);
+        }
 
-    /* Navigation */
-    .main-nav .menu > li > a {
-        color: var(--text-light);
-    }
+        /* Navigation */
+        .main-nav .menu > li > a {
+            color: var(--text-light);
+        }
 
-    .main-nav .menu > li:hover > a {
-        color: var(--accent-color);
-    }
+        .main-nav .menu > li:hover > a {
+            color: var(--accent-color);
+        }
 
-    /* Buttons */ 
-    .btn-primary {
-        background-color: var(--dominant-color);
-        border-color: var(--dominant-color);
-    }
+        /* Buttons */ 
+        .btn-primary {
+            background-color: var(--dominant-color);
+            border-color: var(--dominant-color);
+        }
 
-    .btn-primary:hover {
-        background-color: var(--complementary-blue);
-        border-color: var(--complementary-blue);
-    }
+        .btn-primary:hover {
+            background-color: var(--complementary-blue);
+            border-color: var(--complementary-blue);
+        }
 
-    .btn-outline-primary {
-        color: var(--dominant-color);
-        border-color: var(--dominant-color);
-    }
+        .btn-outline-primary {
+            color: var(--dominant-color);
+            border-color: var(--dominant-color);
+        }
 
-    .btn-outline-primary:hover {
-        background-color: var(--dominant-color);
-        color: var(--text-light);
-    }
+        .btn-outline-primary:hover {
+            background-color: var(--dominant-color);
+            color: var(--text-light);
+        }
 
-    /* Accent Elements */
-    .highlight, .intro-subtitle.text-third, .intro-price .text-third {
-        color: var(--accent-color);
-    }
+        /* Accent Elements */
+        .highlight, .intro-subtitle.text-third, .intro-price .text-third {
+            color: var(--accent-color);
+        }
+        /* Mobile-specific styles */
+        @media (max-width: 767px) {
+            /* Header adjustments */
+            .header-top {
+                padding: 5px 0;
+            }
+            
+            .header-contact, .top-menu li a {
+                font-size: 12px;
+                padding: 5px;
+            }
+            
+            /* Logo size reduction */
+            .logo img {
+                width: 80px;
+                height: auto;
+            }
+            
+            /* Category blocks */
+            .cat-blocks-container .col-6 {
+                padding: 5px;
+            }
+            
+            .cat-block-title {
+                font-size: 12px;
+            }
+            
+            /* Slider text adjustments */
+            .intro-content {
+                padding: 15px;
+            }
+            
+            .intro-title {
+                font-size: 24px;
+                line-height: 1.2;
+            }
+            
+            .intro-subtitle {
+                font-size: 14px;
+            }
+            
+            /* Product grid adjustments */
+            .product {
+                margin-bottom: 15px;
+            }
+            
+            .product-title {
+                font-size: 14px;
+            }
+            
+            .product-price {
+                font-size: 15px;
+            }
+            
+            /* Navigation menu adjustments */
+            .mobile-menu-container {
+                width: 85%;
+            }
+            
+            /* Button sizes */
+            .btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            /* Deal sections */
+            .deal {
+                min-height: 250px;
+            }
+            
+            .deal-content {
+                padding: 15px;
+            }
+            
+            .deal h2 {
+                font-size: 18px;
+            }
+            
+            .deal h3 {
+                font-size: 16px;
+            }
+            
+            /* Footer adjustments */
+            .footer .col-sm-6 {
+                margin-bottom: 20px;
+            }
+            
+            /* Hide some elements on mobile */
+            .header-right.d-none.d-lg-block,
+            .heading-right {
+                display: none !important;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .intro-title {
+                font-size: 36px;
+            }
+            
+            .product {
+                margin-bottom: 20px;
+            }
+            
+            .cat-block-title {
+                font-size: 14px;
+            }
+        }
+        /* Touch targets */
+        .btn, .dropdown-toggle, .mobile-menu-toggler, 
+        .mobile-search-toggle, .product-media a {
+            min-height: 44px; /* Recommended minimum touch target size */
+            min-width: 44px;
+            position: relative;
+        }
+
+        /* Increase tap area for small elements */
+        .btn-product-icon:before, 
+        .icon-phone:before, 
+        .icon-search:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+        }
+
+        /* Prevent text selection on tap */
+        a, button {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -170,8 +313,50 @@
                     }
                 });
             }
+            
+            // Better touch handling for dropdowns
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        if (menu.style.display === 'block') {
+                            menu.style.display = 'none';
+                        } else {
+                            // Close any other open dropdowns
+                            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                                if (m !== menu) m.style.display = 'none';
+                            });
+                            menu.style.display = 'block';
+                        }
+                    }
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                }
+            });
+            
+            // Prevent zooming on double-tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
         });
-        </script>
+        
+    </script>
 </head>
 
 <body>
@@ -585,19 +770,20 @@
                 <div class="tab-content tab-content-carousel just-action-icons-sm">
                     <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                         <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                            data-owl-options='{
-                                "nav": true, 
-                                "dots": true,
-                                "margin": 20,
-                                "loop": false,
-                                "responsive": {
-                                    "0": {"items":1},
-                                    "480": {"items":2},
-                                    "768": {"items":3},
-                                    "992": {"items":5},  <!-- Changed from 4 to 5 -->
-                                    "1200": {"items":5}  <!-- Ensures 5 items on larger screens -->
-                                }
-                            }'>
+                        data-owl-options='{
+                            "nav": true, 
+                            "dots": true,
+                            "margin": 10,
+                            "loop": false,
+                            "responsive": {
+                                "0": {"items":1},
+                                "400": {"items":2},
+                                "576": {"items":3},
+                                "768": {"items":4},
+                                "992": {"items":5},
+                                "1200": {"items":5}
+                            }
+                        }'>
                             <?php
                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15"); // 15 products for 3 slides of 5
                             $stmt->execute();
@@ -735,18 +921,20 @@
             <div class="container">
                 <hr class="mb-0">
                 <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl" 
-                    data-owl-options='{
-                        "nav": false, 
-                        "dots": false,
-                        "margin": 30,
-                        "loop": false,
-                        "responsive": {
-                            "0": {"items":2},
-                            "420": {"items":3},
-                            "600": {"items":4},
-                            "900": {"items":5},
-                            "1024": {"items":6}
-                        }
+                data-owl-options='{
+                    "nav": true, 
+                    "dots": true,
+                    "margin": 10,
+                    "loop": false,
+                    "responsive": {
+                        "0": {"items":1},
+                        "400": {"items":2},
+                        "576": {"items":3},
+                        "768": {"items":4},
+                        "992": {"items":5},
+                        "1200": {"items":5}
+                    }
+                }'
                     }'>
                     <img src="assets/images/brands/brand1.png" alt="Brand">
                     <img src="assets/images/brands/brand2.png" alt="Brand">
@@ -795,18 +983,20 @@
                             <div class="tab-content tab-content-carousel just-action-icons-sm">
                                 <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                        data-owl-options='{
-                                            "nav": true, 
-                                            "dots": false,
-                                            "margin": 20,
-                                            "loop": false,
-                                            "responsive": {
-                                                "0": {"items":2},
-                                                "480": {"items":2},
-                                                "768": {"items":3},
-                                                "992": {"items":4}
-                                            }
-                                        }'>
+                                    data-owl-options='{
+                                        "nav": true, 
+                                        "dots": true,
+                                        "margin": 10,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {"items":1},
+                                            "400": {"items":2},
+                                            "576": {"items":3},
+                                            "768": {"items":4},
+                                            "992": {"items":5},
+                                            "1200": {"items":5}
+                                        }
+                                    }'>
                                         <?php
                                         $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
                                         $stmt->execute();
@@ -837,18 +1027,20 @@
                                 
                                 <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                        data-owl-options='{
-                                            "nav": true, 
-                                            "dots": false,
-                                            "margin": 20,
-                                            "loop": false,
-                                            "responsive": {
-                                                "0": {"items":2},
-                                                "480": {"items":2},
-                                                "768": {"items":3},
-                                                "992": {"items":4}
-                                            }
-                                        }'>
+                                    data-owl-options='{
+                                        "nav": true, 
+                                        "dots": true,
+                                        "margin": 10,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {"items":1},
+                                            "400": {"items":2},
+                                            "576": {"items":3},
+                                            "768": {"items":4},
+                                            "992": {"items":5},
+                                            "1200": {"items":5}
+                                        }
+                                    }'>
                                         <?php
                                         $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
                                         $stmt->execute();
@@ -865,18 +1057,20 @@
                                 
                                 <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                        data-owl-options='{
-                                            "nav": true, 
-                                            "dots": false,
-                                            "margin": 20,
-                                            "loop": false,
-                                            "responsive": {
-                                                "0": {"items":2},
-                                                "480": {"items":2},
-                                                "768": {"items":3},
-                                                "992": {"items":4}
-                                            }
-                                        }'>
+                                    data-owl-options='{
+                                        "nav": true, 
+                                        "dots": true,
+                                        "margin": 10,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {"items":1},
+                                            "400": {"items":2},
+                                            "576": {"items":3},
+                                            "768": {"items":4},
+                                            "992": {"items":5},
+                                            "1200": {"items":5}
+                                        }
+                                    }'>
                                         <?php
                                         $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
                                         $stmt->execute();
@@ -940,7 +1134,7 @@
                         <div class="row no-gutters bg-white newsletter-popup-content">
                             <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
                                 <div class="banner-content text-center">
-                                    <img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
+                                    <img src="images/logo.png" class="logo" alt="logo" width="60" height="15">
                                     <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
                                     <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
                                     <form action="#">
