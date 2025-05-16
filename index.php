@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
 
-        <!-- Preload critical resources -->
+    <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
     <link rel="preload" href="assets/css/style.css" as="style">
     <link rel="preload" href="assets/js/jquery.min.js" as="script">
@@ -251,6 +251,48 @@
             -webkit-touch-callout: none;
             user-select: none;
         }
+        
+        /* New styles for header layout */
+        .header-middle .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .header-middle .header-left,
+        .header-middle .header-center,
+        .header-middle .header-right {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .header-middle .header-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-middle .header-center {
+            flex-grow: 2;
+            padding: 0 15px;
+        }
+        
+        .login-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: var(--dominant-color);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--complementary-blue);
+            color: white;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -362,41 +404,6 @@
 <body>
     <div class="page-wrapper">      
         <header class="header header-intro-clearance header-4">
-            <!-- Header Top (Contact, Currency, Language) -->
-            <div class="header-top">
-                <div class="container">
-                    <div class="header-left">
-                        <a href="tel:#" class="header-contact"><i class="icon-phone"></i>Call: +0123 456 789</a>
-                    </div>
-
-                    <div class="header-right">
-                        <ul class="top-menu">
-                            <!-- Currency Dropdown -->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">USD <i class="icon-angle-down"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">EUR</a></li>
-                                    <li><a href="#">USD</a></li>
-                                </ul>
-                            </li>
-                            
-                            <!-- Language Dropdown -->
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">English <i class="icon-angle-down"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">Spanish</a></li>
-                                </ul>
-                            </li>
-                            
-                            <!-- Login Link -->
-                            <li><a href="login.html">Sign in / Sign up</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
             <!-- Header Middle (Logo, Search, Cart) -->
             <div class="header-middle">
                 <div class="container">
@@ -430,15 +437,10 @@
                     </div>
 
                     <div class="header-right">
-                        <!-- Mobile Search Form (hidden by default) -->
-                        <div class="header-search mobile-search-form">
-                            <form action="#" method="get">
-                                <div class="header-search-wrapper">
-                                    <input type="search" class="form-control" name="q" id="q-mobile" placeholder="Search..." required>
-                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                                </div>
-                            </form>
-                        </div>
+                        <!-- Login/Signup Button -->
+                        <a href="login.html" class="login-btn">
+                            <i class="icon-user"></i> Login/Signup
+                        </a>
                         
                         <!-- Cart Dropdown -->
                         <div class="dropdown cart-dropdown">
@@ -520,11 +522,6 @@
                             </ul>
                         </nav>
                     </div>
-
-                    <div class="header-right d-none d-lg-block">
-                        <i class="la la-lightbulb-o"></i>
-                        <p>Clearance<span class="highlight"> Up to 30% Off</span></p>
-                    </div>
                 </div>
             </div>
 
@@ -585,6 +582,7 @@
             </div>
         </header>
 
+        <!-- Rest of your HTML content remains the same -->
         <main class="main">
             <div class="intro-slider-container mb-5">
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
@@ -835,7 +833,7 @@
                         <div class="col-md-12">
                             <div class="cta-content">
                                 <div class="cta-text text-right text-white">
-                                    <p>Shop Today’s Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
+                                    <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div><!-- End .cta-text -->
                                 <a href="#" class="btn btn-primary btn-round"><span>Shop Now - $429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .cta-content -->
@@ -1173,7 +1171,4 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/demos/demo-4.js"></script>
 </body>
-
-
-<!-- Mirrored from portotheme.com/html/molla/index-4.html-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 May 2025 19:33:04 GMT -->
-</html>"
+</html>
