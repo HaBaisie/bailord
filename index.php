@@ -319,6 +319,22 @@
         .mobile-menu li.active > ul {
             display: block; /* Show sub-menu when parent has active class */
         }
+        /* Mobile menu link colors */
+        .mobile-menu-container .mobile-menu li a {
+            color: var(--text-dark); /* Black text for mobile menu links */
+        }
+        
+        .mobile-menu-container .mobile-menu li a:hover {
+            color: var(--accent-color); /* Orange on hover */
+        }
+        
+        .mobile-menu-container .mobile-menu li ul li a {
+            color: var(--text-dark); /* Black text for sub-menu links */
+        }
+        
+        .mobile-menu-container .mobile-menu li ul li a:hover {
+            color: var(--accent-color); /* Orange on hover */
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
