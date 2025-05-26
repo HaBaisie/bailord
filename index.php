@@ -85,7 +85,7 @@
 
         /* Navigation */
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: var(--text-dark);
         }
 
         .main-nav .menu > li:hover > a {
