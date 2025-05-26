@@ -174,9 +174,19 @@
             /* Navigation menu adjustments */
             .mobile-menu-container {
                 width: 85%;
-            }
-            
+                display: none; /* Hidden by default */
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background-color: var(--light-neutral);
+                z-index: 1000;
+                overflow-y: auto;
+                }
             /* Button sizes */
+            .mobile-menu-container.visible {
+            display: block; /* Show when visible */
+            }
             .btn {
                 padding: 8px 15px;
                 font-size: 14px;
@@ -293,6 +303,22 @@
             background-color: var(--complementary-blue);
             color: white;
         }
+        /* Add to your existing <style> block */
+        .mobile-menu li {
+            position: relative;
+        }
+
+        .mobile-menu li ul {
+            display: none; /* Hide sub-menus by default */
+            position: static; /* Stack sub-menus naturally */
+            width: 100%;
+            padding-left: 20px; /* Indent sub-menu items */
+            background-color: var(--medium-neutral); /* Optional: distinguish sub-menu */
+        }
+
+        .mobile-menu li.active > ul {
+            display: block; /* Show sub-menu when parent has active class */
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -334,12 +360,28 @@
             });
             
             // Make mobile submenus work
+            // Replace the existing mobileMenuItems handler
             const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
             mobileMenuItems.forEach(item => {
                 if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
                     item.addEventListener('click', function(e) {
                         e.preventDefault();
-                        this.parentElement.classList.toggle('active');
+                        const parentLi = this.parentElement;
+                        const subMenu = this.nextElementSibling;
+
+                        // Toggle active class
+                        parentLi.classList.toggle('active');
+
+                        // Toggle sub-menu visibility
+                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+
+                        // Close other open sub-menus to avoid overlap
+                        mobileMenuItems.forEach(otherItem => {
+                            if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
+                                otherItem.parentElement.classList.remove('active');
+                                otherItem.nextElementSibling.style.display = 'none';
+                            }
+                        });
                     });
                 }
             });
@@ -357,20 +399,23 @@
             }
             
             // Better touch handling for dropdowns
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            // Replace the existing dropdownToggles handler
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.mobile-menu .dropdown-toggle)');
             dropdownToggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     if (window.innerWidth < 992) {
                         e.preventDefault();
                         const menu = this.nextElementSibling;
-                        if (menu.style.display === 'block') {
-                            menu.style.display = 'none';
-                        } else {
-                            // Close any other open dropdowns
-                            document.querySelectorAll('.dropdown-menu').forEach(m => {
-                                if (m !== menu) m.style.display = 'none';
-                            });
-                            menu.style.display = 'block';
+                        if (menu && menu.classList.contains('dropdown-menu')) {
+                            if (menu.style.display === 'block') {
+                                menu.style.display = 'none';
+                            } else {
+                                // Close other dropdowns
+                                document.querySelectorAll('.dropdown-menu').forEach(m => {
+                                    if (m !== menu) m.style.display = 'none';
+                                });
+                                menu.style.display = 'block';
+                            }
                         }
                     }
                 });
