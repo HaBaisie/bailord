@@ -13,6 +13,16 @@
             <div class="row">
                 <div class="col-sm-9">
                     <h1 class="page-header">YOUR CART</h1>
+                    <?php
+                        // Display payment status message
+                        if (isset($_GET['payment'])) {
+                            if ($_GET['payment'] === 'success') {
+                                echo "<div class='alert alert-success'>Payment successful! Your cart has been cleared.</div>";
+                            } elseif ($_GET['payment'] === 'failed') {
+                                echo "<div class='alert alert-danger'>Payment failed. Please try again.</div>";
+                            }
+                        }
+                    ?>
                     <div class="box box-solid">
                         <div class="box-body">
                         <table class="table table-bordered">
