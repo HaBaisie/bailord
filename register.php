@@ -48,9 +48,9 @@ if (isset($_POST['signup'])) {
         $message = "
             <h2>Thank you for Registering.</h2>
             <p>Your Account:</p>
-            <p>Email: " . $email . "</p>
+            <p>Email: " . htmlspecialchars($email) . "</p>
             <p>Please click the link below to activate your account.</p>
-            <a href='http://localhost/ecommerce/activate.php?code=" . $code . "&user=" . $userid . "'>Activate Account</a>
+            <a href='http://localhost/ecommerce/activate.php?code=" . urlencode($code) . "&user=" . $userid . "'>Activate Account</a>
         ";
 
         // Load PHPMailer
@@ -61,7 +61,7 @@ if (isset($_POST['signup'])) {
             // Enable debug output for troubleshooting
             $mail->SMTPDebug = 2; // Set to 0 in production
             $mail->Debugoutput = function($str, $level) {
-                file_put_contents('phpmailer.log', gmdate('Y-m-d H:i:s')."\t$level\t$str\n", FILE_APPEND);
+                file_put_contents('phpmailer.log', gmdate('Y-m-d H:i:s') . "\t$level\t$str\n", FILE_APPEND);
             };
 
             // Server settings
@@ -69,9 +69,9 @@ if (isset($_POST['signup'])) {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'habeebullahilawal14@gmail.com';
-            $mail->Password = 'yvck oijb kaqn umwy'; // Replace with Gmail App Password
-            $mail->SMTPSecure = 'tls'; // Use TLS instead of SSL
-            $mail->Port = 587; // Use port 587 for TLS
+            $mail->Password = 'pupl lqql ehaq gmgs'; // Replace with newly generated Gmail App Password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
             $mail->setFrom('habeebullahilawal14@gmail.com', 'Bailord');
             $mail->addAddress($email);
@@ -79,7 +79,7 @@ if (isset($_POST['signup'])) {
 
             // Content
             $mail->isHTML(true);
-            $mail->Subject = 'Bailord';
+            $mail->Subject = 'Bailord Sign Up';
             $mail->Body = $message;
 
             $mail->send();
@@ -95,7 +95,7 @@ if (isset($_POST['signup'])) {
             header('location: signup.php');
         }
     } catch (PDOException $e) {
-        $_SESSION['error'] = $e->getMessage();
+        $_SESSION['error'] = 'Database Error: ' . $e->getMessage();
         header('location: signup.php');
     }
 
