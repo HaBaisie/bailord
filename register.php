@@ -49,7 +49,6 @@ if (isset($_POST['signup'])) {
             <h2>Thank you for Registering.</h2>
             <p>Your Account:</p>
             <p>Email: " . $email . "</p>
-            <p>Password: " . $_POST['password'] . "</p>
             <p>Please click the link below to activate your account.</p>
             <a href='http://localhost/ecommerce/activate.php?code=" . $code . "&user=" . $userid . "'>Activate Account</a>
         ";
@@ -59,29 +58,28 @@ if (isset($_POST['signup'])) {
 
         $mail = new PHPMailer(true);
         try {
+            // Enable debug output for troubleshooting
+            $mail->SMTPDebug = 2; // Set to 0 in production
+            $mail->Debugoutput = function($str, $level) {
+                file_put_contents('phpmailer.log', gmdate('Y-m-d H:i:s')."\t$level\t$str\n", FILE_APPEND);
+            };
+
             // Server settings
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'testsourcecodester@gmail.com';
-            $mail->Password = 'mysourcepass'; // Replace with your actual Gmail App Password
-            $mail->SMTPOptions = [
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                ]
-            ];
-            $mail->SMTPSecure = 'ssl';
-            $mail->Port = 465;
+            $mail->Username = 'habeebullahilawal14@gmail.com';
+            $mail->Password = 'yvck oijb kaqn umwy'; // Replace with Gmail App Password
+            $mail->SMTPSecure = 'tls'; // Use TLS instead of SSL
+            $mail->Port = 587; // Use port 587 for TLS
 
-            $mail->setFrom('testsourcecodester@gmail.com');
+            $mail->setFrom('habeebullahilawal14@gmail.com', 'Bailord');
             $mail->addAddress($email);
-            $mail->addReplyTo('testsourcecodester@gmail.com');
+            $mail->addReplyTo('habeebullahilawal14@gmail.com');
 
             // Content
             $mail->isHTML(true);
-            $mail->Subject = 'ECommerce Site Sign Up';
+            $mail->Subject = 'Bailord';
             $mail->Body = $message;
 
             $mail->send();
