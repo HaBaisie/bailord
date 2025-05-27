@@ -499,7 +499,7 @@
 
                     <div class="header-right">
                         <!-- Login/Signup Button -->
-                        <a href="login.html" class="login-btn">
+                        <a href="login.php" class="login-btn">
                             <i class="icon-user"></i> Login/Signup
                         </a>
                         
