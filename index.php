@@ -535,6 +535,7 @@
                         <ul class="menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
+                            <li><a href="profile.php">Orders</a></li>
                             
                             <!-- Browse Categories Dropdown (now part of main nav) -->
                             <li>
@@ -595,6 +596,7 @@
                         <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
+                            <li><a href="profile.php">Orders</a></li>
                             
                             <!-- Browse Categories Dropdown (now part of main mobile menu) -->
                             <li>
