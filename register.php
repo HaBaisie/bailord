@@ -50,7 +50,7 @@ if (isset($_POST['signup'])) {
             <p>Your Account:</p>
             <p>Email: " . htmlspecialchars($email) . "</p>
             <p>Please click the link below to activate your account.</p>
-            <a href='http://localhost/ecommerce/activate.php?code=" . urlencode($code) . "&user=" . $userid . "'>Activate Account</a>
+            <a href='https://bailord-0b4b2667ca4f.herokuapp.com/activate.php?code=" . urlencode($code) . "&user=" . $userid . "'>Activate Account</a>
         ";
 
         // Load PHPMailer
