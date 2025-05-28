@@ -891,7 +891,7 @@
                                 foreach ($group as $product) {
                                     echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">  <!-- Force 5 items per row -->
                                         <figure class="product-media">
-                                            <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
                                                 <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                             </a>
                                             <div class="product-action-vertical">
