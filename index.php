@@ -948,66 +948,61 @@
 
                 <div class="row">
                     <?php
-                    // Get two most recent products
-                    $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
-                    $stmt->execute();
-                    $deals = $stmt->fetchAll();
-                    
-                    // First deal (Deal of the Day)
-                    if (isset($deals[0])) {
-                        $product1 = $deals[0];
-                        echo '<div class="col-lg-6 deal-col">
-                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product1['photo']).'\');">
-                                <div class="deal-top">
-                                    <h2>Deal of the Day.</h2>
-                                    <h4>Limited quantities. </h4>
-                                </div><!-- End .deal-top -->
-
-                                <div class="deal-content">
-                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product1['slug']).'">'.htmlspecialchars($product1['name']).'</a></h3><!-- End .product-title -->
-
-                                    <div class="product-price">
-                                        <span class="new-price">$'.number_format($product1['price'] * 0.9, 2).'</span>
-                                        <span class="old-price">Was $'.number_format($product1['price'], 2).'</span>
-                                    </div><!-- End .product-price -->
-
-                                    <a href="product.php?slug='.htmlspecialchars($product1['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .deal-content -->
-
-                                <div class="deal-bottom">
-                                    <div class="deal-countdown daily-deal-countdown" data-until="+10h"></div><!-- End .deal-countdown -->
-                                </div><!-- End .deal-bottom -->
-                            </div><!-- End .deal -->
-                        </div><!-- End .col-lg-6 -->';
-                    }
-                    
-                    // Second deal (Exclusive Offer)
-                    if (isset($deals[1])) {
-                        $product2 = $deals[1];
-                        echo '<div class="col-lg-6 deal-col">
-                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product2['photo']).'\');">
-                                <div class="deal-top">
-                                    <h2>Your Exclusive Offers.</h2>
-                                    <h4>Sign in to see amazing deals.</h4>
-                                </div><!-- End .deal-top -->
-
-                                <div class="deal-content">
-                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product2['slug']).'">'.htmlspecialchars($product2['name']).'</a></h3><!-- End .product-title -->
-
-                                    <div class="product-price">
-                                        <span class="new-price">$'.number_format($product2['price'] * 0.85, 2).'</span>
-                                    </div><!-- End .product-price -->
-
-                                    <a href="login.html" class="btn btn-link"><span>Sign In and Save money</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .deal-content -->
-
-                                <div class="deal-bottom">
-                                    <div class="deal-countdown offer-countdown" data-until="+11d"></div><!-- End .deal-countdown -->
-                                </div><!-- End .deal-bottom -->
-                            </div><!-- End .deal -->
-                        </div><!-- End .col-lg-6 -->';
-                    }
-                    ?>
+                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
+                        $stmt->execute();
+                        $deals = $stmt->fetchAll();
+                        
+                        if (isset($deals[0])) {
+                            $product1 = $deals[0];
+                            $image_path = !empty($product1['photo']) && file_exists('images/' . $product1['photo']) 
+                                ? 'images/' . htmlspecialchars($product1['photo']) 
+                                : 'images/' . $default_image;
+                            echo '<div class="col-lg-6 deal-col">
+                                <div class="deal" style="background-image: url(\''.$image_path.'\');">
+                                    <div class="deal-top">
+                                        <h2>Deal of the Day.</h2>
+                                        <h4>Limited quantities.</h4>
+                                    </div>
+                                    <div class="deal-content">
+                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product1['slug']).'">'.htmlspecialchars($product1['name']).'</a></h3>
+                                        <div class="product-price">
+                                            <span class="new-price">$'.number_format($product1['price'] * 0.9, 2).'</span>
+                                            <span class="old-price">Was $'.number_format($product1['price'], 2).'</span>
+                                        </div>
+                                        <a href="product.php?product='.htmlspecialchars($product1['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
+                                    </div>
+                                    <div class="deal-bottom">
+                                        <div class="deal-countdown daily-deal-countdown" data-until="+10h"></div>
+                                    </div>
+                                </div>
+                            </div>';
+                        }
+                        
+                        if (isset($deals[1])) {
+                            $product2 = $deals[1];
+                            $image_path = !empty($product2['photo']) && file_exists('images/' . $product2['photo']) 
+                                ? 'images/' . htmlspecialchars($product2['photo']) 
+                                : 'images/' . $default_image;
+                            echo '<div class="col-lg-6 deal-col">
+                                <div class="deal" style="background-image: url(\''.$image_path.'\');">
+                                    <div class="deal-top">
+                                        <h2>Your Exclusive Offers.</h2>
+                                        <h4>Sign in to see amazing deals.</h4>
+                                    </div>
+                                    <div class="deal-content">
+                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product2['slug']).'">'.htmlspecialchars($product2['name']).'</a></h3>
+                                        <div class="product-price">
+                                            <span class="new-price">$'.number_format($product2['price'] * 0.85, 2).'</span>
+                                        </div>
+                                        <a href="product.php?product='.htmlspecialchars($product2['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
+                                    </div>
+                                    <div class="deal-bottom">
+                                        <div class="deal-countdown offer-countdown" data-until="+11d"></div>
+                                    </div>
+                                </div>
+                            </div>';
+                        }
+                        ?>
                 </div><!-- End .row -->
 
                 <div class="more-container text-center mt-1 mb-5">
@@ -1095,30 +1090,33 @@
                                         }
                                     }'>
                                         <?php
-                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
-                                        $stmt->execute();
-                                        $trending = $stmt->fetchAll();
-                                        
-                                        foreach ($trending as $product) {
-                                            echo '<div class="product">
-                                                <figure class="product-media">
-                                                    <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
-                                                        <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                    </a>
-                                                </figure>
-                                                <div class="product-body">
-                                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                    <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                            $stmt->execute();
+                                            $trending = $stmt->fetchAll();
+                                            
+                                            foreach ($trending as $product) {
+                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
+                                                    ? 'images/' . htmlspecialchars($product['photo']) 
+                                                    : 'images/' . $default_image;
+                                                echo '<div class="product">
+                                                    <figure class="product-media">
+                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        </a>
+                                                    </figure>
+                                                    <div class="product-body">
+                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="ratings-container">
+                                                            <div class="ratings">
+                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                            </div>
+                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                         </div>
-                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                     </div>
-                                                </div>
-                                            </div>';
-                                        }
-                                        ?>
+                                                </div>';
+                                            }
+                                            ?>
                                     </div>
                                 </div>
                                 
@@ -1139,16 +1137,33 @@
                                         }
                                     }'>
                                         <?php
-                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
-                                        $stmt->execute();
-                                        $bestSelling = $stmt->fetchAll();
-                                        
-                                        foreach ($bestSelling as $product) {
-                                            echo '<div class="product">
-                                                <!-- Same product structure as above -->
-                                            </div>';
-                                        }
-                                        ?>
+                                            $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                            $stmt->execute();
+                                            $bestSelling = $stmt->fetchAll();
+                                            
+                                            foreach ($bestSelling as $product) {
+                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
+                                                    ? 'images/' . htmlspecialchars($product['photo']) 
+                                                    : 'images/' . $default_image;
+                                                echo '<div class="product">
+                                                    <figure class="product-media">
+                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        </a>
+                                                    </figure>
+                                                    <div class="product-body">
+                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="ratings-container">
+                                                            <div class="ratings">
+                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                            </div>
+                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                            }
+                                            ?>
                                     </div>
                                 </div>
                                 
@@ -1169,16 +1184,33 @@
                                         }
                                     }'>
                                         <?php
-                                        $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
-                                        $stmt->execute();
-                                        $onSale = $stmt->fetchAll();
-                                        
-                                        foreach ($onSale as $product) {
-                                            echo '<div class="product">
-                                                <!-- Same product structure as above -->
-                                            </div>';
-                                        }
-                                        ?>
+                                            $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
+                                            $stmt->execute();
+                                            $onSale = $stmt->fetchAll();
+                                            
+                                            foreach ($onSale as $product) {
+                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
+                                                    ? 'images/' . htmlspecialchars($product['photo']) 
+                                                    : 'images/' . $default_image;
+                                                echo '<div class="product">
+                                                    <figure class="product-media">
+                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        </a>
+                                                    </figure>
+                                                    <div class="product-body">
+                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="ratings-container">
+                                                            <div class="ratings">
+                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                            </div>
+                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                            }
+                                            ?>
                                     </div>
                                 </div>
                             </div>
@@ -1201,27 +1233,30 @@
 
                 <div class="products">
                     <div class="row justify-content-center">
-                        <?php
-                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
-                        $stmt->execute();
-                        $recommended = $stmt->fetchAll();
-                        
-                        foreach ($recommended as $product) {
-                            echo '<div class="col-6 col-md-4 col-lg-2">
-                                <div class="product">
-                                    <figure class="product-media">
-                                        <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
-                                            <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                        </a>
-                                    </figure>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                       <?php
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                            $stmt->execute();
+                            $recommended = $stmt->fetchAll();
+                            
+                            foreach ($recommended as $product) {
+                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
+                                    ? 'images/' . htmlspecialchars($product['photo']) 
+                                    : 'images/' . $default_image;
+                                echo '<div class="col-6 col-md-4 col-lg-2">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>';
-                        }
-                        ?>
+                                </div>';
+                            }
+                            ?>
                     </div>
                 </div>
             </div>
