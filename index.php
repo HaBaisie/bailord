@@ -879,42 +879,45 @@
                             }
                         }'>
                             <?php
-                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15"); // 15 products for 3 slides of 5
-                            $stmt->execute();
-                            $products = $stmt->fetchAll();
-                            
-                            // Group products into sets of 5
-                            $productGroups = array_chunk($products, 5);
-                            
-                            foreach ($productGroups as $group) {
-                                echo '<div class="products-slide d-flex">';  
-                                foreach ($group as $product) {
-                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">  <!-- Force 5 items per row -->
-                                        <figure class="product-media">
-                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                            </a>
-                                            <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                            </div>
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                            </div>
-                                        </figure>
-                                        <div class="product-body">
-                                            <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                $default_image = 'noimage.jpg';
+                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                                $stmt->execute();
+                                $products = $stmt->fetchAll();
+                                
+                                $productGroups = array_chunk($products, 5);
+                                
+                                foreach ($productGroups as $group) {
+                                    echo '<div class="products-slide d-flex">';
+                                    foreach ($group as $product) {
+                                        $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
+                                            ? 'images/' . htmlspecialchars($product['photo']) 
+                                            : 'images/' . $default_image;
+                                        echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                            <figure class="product-media">
+                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                    <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                </a>
+                                                <div class="product-action-vertical">
+                                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                                 </div>
-                                                <span class="ratings-text">( 5 Reviews )</span>
+                                                <div class="product-action">
+                                                    <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-body">
+                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div>
+                                                    </div>
+                                                    <span class="ratings-text">( 5 Reviews )</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>';
+                                        </div>';
+                                    }
+                                    echo '</div>';
                                 }
-                                echo '</div>';
-                            }
                             ?>
                         </div>
                     </div>
@@ -1247,377 +1250,6 @@
                             </div>
                             <div class="col-xl-2-5col col-lg-5 ">
                                 <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ------------------------------------------------------------------------------- -->
-                    <!-- New Arrivals -->
-                    <div class="container new-arrivals">
-                        <div class="heading heading-flex mb-3">
-                            <div class="heading-left">
-                                <h2 class="title">New Arrivals</h2>
-                            </div>
-                            <div class="heading-right">
-                                <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    
-                        <div class="tab-content tab-content-carousel just-action-icons-sm">
-                            <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
-                                <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                     data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 10,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
-                                        }
-                                    }'>
-                                    <?php
-                                    $default_image = 'noimage.jpg';
-                                    $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
-                                    $stmt->execute();
-                                    $products = $stmt->fetchAll();
-                                    
-                                    $productGroups = array_chunk($products, 5);
-                                    
-                                    foreach ($productGroups as $group) {
-                                        echo '<div class="products-slide d-flex">';
-                                        foreach ($group as $product) {
-                                            $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                ? 'images/' . htmlspecialchars($product['photo']) 
-                                                : 'images/' . $default_image;
-                                            echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                                <figure class="product-media">
-                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                        <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                    </a>
-                                                    <div class="product-action-vertical">
-                                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                                    </div>
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                    </div>
-                                                </figure>
-                                                <div class="product-body">
-                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                    <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: 100%;"></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 5 Reviews )</span>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                        }
-                                        echo '</div>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Deals & Outlet -->
-                    <div class="container">
-                        <div class="heading text-center mb-3">
-                            <h2 class="title">Deals & Outlet</h2>
-                            <p class="title-desc">Today's deal and more</p>
-                        </div>
-                    
-                        <div class="row">
-                            <?php
-                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
-                            $stmt->execute();
-                            $deals = $stmt->fetchAll();
-                            
-                            if (isset($deals[0])) {
-                                $product1 = $deals[0];
-                                $image_path = !empty($product1['photo']) && file_exists('images/' . $product1['photo']) 
-                                    ? 'images/' . htmlspecialchars($product1['photo']) 
-                                    : 'images/' . $default_image;
-                                echo '<div class="col-lg-6 deal-col">
-                                    <div class="deal" style="background-image: url(\''.$image_path.'\');">
-                                        <div class="deal-top">
-                                            <h2>Deal of the Day.</h2>
-                                            <h4>Limited quantities.</h4>
-                                        </div>
-                                        <div class="deal-content">
-                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product1['slug']).'">'.htmlspecialchars($product1['name']).'</a></h3>
-                                            <div class="product-price">
-                                                <span class="new-price">$'.number_format($product1['price'] * 0.9, 2).'</span>
-                                                <span class="old-price">Was $'.number_format($product1['price'], 2).'</span>
-                                            </div>
-                                            <a href="product.php?product='.htmlspecialchars($product1['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                                        </div>
-                                        <div class="deal-bottom">
-                                            <div class="deal-countdown daily-deal-countdown" data-until="+10h"></div>
-                                        </div>
-                                    </div>
-                                </div>';
-                            }
-                            
-                            if (isset($deals[1])) {
-                                $product2 = $deals[1];
-                                $image_path = !empty($product2['photo']) && file_exists('images/' . $product2['photo']) 
-                                    ? 'images/' . htmlspecialchars($product2['photo']) 
-                                    : 'images/' . $default_image;
-                                echo '<div class="col-lg-6 deal-col">
-                                    <div class="deal" style="background-image: url(\''.$image_path.'\');">
-                                        <div class="deal-top">
-                                            <h2>Your Exclusive Offers.</h2>
-                                            <h4>Sign in to see amazing deals.</h4>
-                                        </div>
-                                        <div class="deal-content">
-                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product2['slug']).'">'.htmlspecialchars($product2['name']).'</a></h3>
-                                            <div class="product-price">
-                                                <span class="new-price">$'.number_format($product2['price'] * 0.85, 2).'</span>
-                                            </div>
-                                            <a href="product.php?product='.htmlspecialchars($product2['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                                        </div>
-                                        <div class="deal-bottom">
-                                            <div class="deal-countdown offer-countdown" data-until="+11d"></div>
-                                        </div>
-                                    </div>
-                                </div>';
-                            }
-                            ?>
-                        </div>
-                    
-                        <div class="more-container text-center mt-1 mb-5">
-                            <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    
-                    <!-- Trending Products -->
-                    <div class="bg-light pt-5 pb-6">
-                        <div class="container trending-products">
-                            <div class="heading heading-flex mb-3">
-                                <div class="heading-left">
-                                    <h2 class="title">Trending Products</h2>
-                                </div>
-                                <div class="heading-right">
-                                    <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                    
-                            <div class="row">
-                                <div class="col-xl-5col d-none d-xl-block">
-                                    <div class="banner banner-overlay banner-overlay-light">
-                                        <a href="category.php">
-                                            <img src="images/Banner.jpg" alt="Banner">
-                                        </a>
-                                        <div class="banner-content">
-                                            <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
-                                            <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                            <a href="category.php" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4-5col">
-                                    <div class="tab-content tab-content-carousel just-action-icons-sm">
-                                        <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
-                                            <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                                 data-owl-options='{
-                                                    "nav": true, 
-                                                    "dots": true,
-                                                    "margin": 10,
-                                                    "loop": false,
-                                                    "responsive": {
-                                                        "0": {"items":1},
-                                                        "400": {"items":2},
-                                                        "576": {"items":3},
-                                                        "768": {"items":4},
-                                                        "992": {"items":5},
-                                                        "1200": {"items":5}
-                                                    }
-                                                }'>
-                                                <?php
-                                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
-                                                $stmt->execute();
-                                                $trending = $stmt->fetchAll();
-                                                
-                                                foreach ($trending as $product) {
-                                                    $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                        ? 'images/' . htmlspecialchars($product['photo']) 
-                                                        : 'images/' . $default_image;
-                                                    echo '<div class="product">
-                                                        <figure class="product-media">
-                                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="product-body">
-                                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                                            <div class="ratings-container">
-                                                                <div class="ratings">
-                                                                    <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                                </div>
-                                                                <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
-                                            <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                                 data-owl-options='{
-                                                    "nav": true, 
-                                                    "dots": true,
-                                                    "margin": 10,
-                                                    "loop": false,
-                                                    "responsive": {
-                                                        "0": {"items":1},
-                                                        "400": {"items":2},
-                                                        "576": {"items":3},
-                                                        "768": {"items":4},
-                                                        "992": {"items":5},
-                                                        "1200": {"items":5}
-                                                    }
-                                                }'>
-                                                <?php
-                                                $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
-                                                $stmt->execute();
-                                                $bestSelling = $stmt->fetchAll();
-                                                
-                                                foreach ($bestSelling as $product) {
-                                                    $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                        ? 'images/' . htmlspecialchars($product['photo']) 
-                                                        : 'images/' . $default_image;
-                                                    echo '<div class="product">
-                                                        <figure class="product-media">
-                                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="product-body">
-                                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                                            <div class="ratings-container">
-                                                                <div class="ratings">
-                                                                    <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                                </div>
-                                                                <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
-                                            <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                                 data-owl-options='{
-                                                    "nav": true, 
-                                                    "dots": true,
-                                                    "margin": 10,
-                                                    "loop": false,
-                                                    "responsive": {
-                                                        "0": {"items":1},
-                                                        "400": {"items":2},
-                                                        "576": {"items":3},
-                                                        "768": {"items":4},
-                                                        "992": {"items":5},
-                                                        "1200": {"items":5}
-                                                    }
-                                                }'>
-                                                <?php
-                                                $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
-                                                $stmt->execute();
-                                                $onSale = $stmt->fetchAll();
-                                                
-                                                foreach ($onSale as $product) {
-                                                    $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                        ? 'images/' . htmlspecialchars($product['photo']) 
-                                                        : 'images/' . $default_image;
-                                                    echo '<div class="product">
-                                                        <figure class="product-media">
-                                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="product-body">
-                                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                                            <div class="ratings-container">
-                                                                <div class="ratings">
-                                                                    <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                                </div>
-                                                                <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Recommendation For You -->
-                    <div class="container for-you">
-                        <div class="heading heading-flex mb-3">
-                            <div class="heading-left">
-                                <h2 class="title">Recommendation For You</h2>
-                            </div>
-                            <div class="heading-right">
-                                <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    
-                        <div class="products">
-                            <div class="row justify-content-center">
-                                <?php
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
-                                $stmt->execute();
-                                $recommended = $stmt->fetchAll();
-                                
-                                foreach ($recommended as $product) {
-                                    $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                        ? 'images/' . htmlspecialchars($product['photo']) 
-                                        : 'images/' . $default_image;
-                                    echo '<div class="col-6 col-md-4 col-lg-2">
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                            </div>
-                                        </div>
-                                    </div>';
-                                }
-                                ?>
                             </div>
                         </div>
                     </div>
