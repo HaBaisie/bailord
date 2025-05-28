@@ -117,6 +117,27 @@
         .highlight, .intro-subtitle.text-third, .intro-price .text-third {
             color: var(--accent-color);
         }
+        .user-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: var(--secondary-color); /* Green */
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        .user-btn:hover {
+            background-color: #1e7e34; /* Darker green */
+            color: white;
+        }
+        /* Ensure consistency with existing styles */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         /* Mobile-specific styles */
         @media (max-width: 767px) {
             /* Header adjustments */
@@ -447,6 +468,9 @@
                     }
                 }
             });
+            document.addEventListener('DOMContentLoaded', function() {
+            // ... (your existing JavaScript for mobile menu, search, dropdowns, etc.) ...
+                });
             
             // Prevent zooming on double-tap
             let lastTouchEnd = 0;
@@ -498,10 +522,21 @@
                     </div>
 
                     <div class="header-right">
-                        <!-- Login/Signup Button -->
-                        <a href="login.php" class="login-btn">
-                            <i class="icon-user"></i> Login/Signup
-                        </a>
+                        <!-- Conditional Login/Signup or Profile/Logout Links -->
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <!-- Show when logged in -->
+                            <a href="profile.php" class="user-btn" title="User Profile">
+                                <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                            </a>
+                            <a href="logout.php" class="user-btn" title="Logout">
+                                <i class="las la-sign-out-alt"></i> Logout
+                            </a>
+                        <?php else: ?>
+                            <!-- Show when not logged in -->
+                            <a href="login.php" class="login-btn">
+                                <i class="icon-user"></i> Login/Signup
+                            </a>
+                        <?php endif; ?>
                         
                         <!-- Cart Dropdown -->
                         <div class="dropdown cart-dropdown">
