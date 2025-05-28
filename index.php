@@ -519,8 +519,8 @@
                                     <span class="cart-total-price">$0.00</span>
                                 </div>
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2">Checkout</a>
+                                    <a href="cart_view.php" class="btn btn-primary">View Cart</a>
+                                    <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
                                 </div>
                             </div>
                         </div>
