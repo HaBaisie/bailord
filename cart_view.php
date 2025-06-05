@@ -149,7 +149,7 @@ $(function(){
     $('#paystack-checkout').on('click', function(e){
         e.preventDefault();
         var handler = PaystackPop.setup({
-            key: 'sk_test_73a80011cd7cc3926aa141d442bd6130afab1b6d'', // Test Public Key
+            key: 'pk_test_79848b3271a3d80eef6a4c34d9d84f00d7a46dcb', // Test Public Key
             email: '<?php echo htmlspecialchars($user_email); ?>',
             amount: total * 100, // NGN in kobo
             currency: 'NGN',
