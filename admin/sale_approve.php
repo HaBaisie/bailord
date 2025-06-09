@@ -5,17 +5,25 @@ require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-if (!isset($_SESSION['admin'])) {
-    error_log('No admin session found');
-    header('location: login.php');
-    exit;
-}
-
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', '../error.log');
 
-$conn = $pdo->open();
+if (!isset($_SESSION['admin'])) {
+    error_log('No admin session found');
+    $_SESSION['error'] = 'Please log in as admin';
+    header('location: login.php');
+    exit;
+}
+
+try {
+    $conn = $pdo->open();
+} catch (PDOException $e) {
+    error_log('Database connection failed: ' . $e->getMessage());
+    $_SESSION['error'] = 'Database connection failed';
+    header('location: ../admin_sales.php');
+    exit;
+}
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     error_log('Invalid or missing sale ID');
@@ -28,6 +36,7 @@ $sale_id = (int)$_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $location = trim($_POST['location'] ?? '');
+    error_log('POST received for sale_id: ' . $sale_id . ', location: ' . $location);
 
     if (empty($location)) {
         error_log('Empty location provided for sale_id: ' . $sale_id);
@@ -61,12 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Send email notification
         $mail = new PHPMailer(true);
         try {
-            // Server settings
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'habeebullahilawal14@gmail.com';
-            $mail->Password = 'pupl lqql ehaq gmgs'; // Gmail App Password
+            $mail->Password = 'pupl lqql ehaq gmgs';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
@@ -83,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ";
 
             $mail->send();
+            error_log('Email sent for sale_id: ' . $sale_id);
             $_SESSION['success'] = 'Sale approved and email sent';
         } catch (Exception $e) {
             error_log('PHPMailer error for sale_id ' . $sale_id . ': ' . $e->getMessage());
@@ -99,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch sale for form
 try {
     $stmt = $conn->prepare("SELECT s.id, s.pay_id, s.status FROM sales s WHERE s.id = :id");
     $stmt->execute(['id' => $sale_id]);
@@ -143,7 +151,7 @@ $pdo->close();
                         <form method="POST" action="">
                             <div class="form-group">
                                 <label for="location">Shipping Location</label>
-                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter shipping location (e.g., Lahore, Punjab)" required>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter shipping location (e.g., Lagos, Nigeria)" required>
                             </div>
                             <button type="submit" class="btn btn-success">Approve and Notify</button>
                             <a href="../admin_sales.php" class="btn btn-default">Cancel</a>
