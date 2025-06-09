@@ -906,7 +906,7 @@
                                             </figure>
                                             <div class="product-body">
                                                 <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                                 <div class="ratings-container">
                                                     <div class="ratings">
                                                         <div class="ratings-val" style="width: 100%;"></div>
@@ -940,70 +940,7 @@
                     </div><!-- End .row -->
                 </div><!-- End .cta -->
             </div><!-- End .container -->
-            <div class="container">
-                <div class="heading text-center mb-3">
-                    <h2 class="title">Deals & Outlet</h2><!-- End .title -->
-                    <p class="title-desc">Today's deal and more</p><!-- End .title-desc -->
-                </div><!-- End .heading -->
-
-                <div class="row">
-                    <?php
-                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
-                        $stmt->execute();
-                        $deals = $stmt->fetchAll();
-                        
-                        if (isset($deals[0])) {
-                            $product1 = $deals[0];
-                            $image_path = !empty($product1['photo']) && file_exists('images/' . $product1['photo']) 
-                                ? 'images/' . htmlspecialchars($product1['photo']) 
-                                : 'images/' . $default_image;
-                            echo '<div class="col-lg-6 deal-col">
-                                <div class="deal" style="background-image: url(\''.$image_path.'\');">
-                                    <div class="deal-top">
-                                        <h2>Deal of the Day.</h2>
-                                        <h4>Limited quantities.</h4>
-                                    </div>
-                                    <div class="deal-content">
-                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product1['slug']).'">'.htmlspecialchars($product1['name']).'</a></h3>
-                                        <div class="product-price">
-                                            <span class="new-price">$'.number_format($product1['price'] * 0.9, 2).'</span>
-                                            <span class="old-price">Was $'.number_format($product1['price'], 2).'</span>
-                                        </div>
-                                        <a href="product.php?product='.htmlspecialchars($product1['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                                    </div>
-                                    <div class="deal-bottom">
-                                        <div class="deal-countdown daily-deal-countdown" data-until="+10h"></div>
-                                    </div>
-                                </div>
-                            </div>';
-                        }
-                        
-                        if (isset($deals[1])) {
-                            $product2 = $deals[1];
-                            $image_path = !empty($product2['photo']) && file_exists('images/' . $product2['photo']) 
-                                ? 'images/' . htmlspecialchars($product2['photo']) 
-                                : 'images/' . $default_image;
-                            echo '<div class="col-lg-6 deal-col">
-                                <div class="deal" style="background-image: url(\''.$image_path.'\');">
-                                    <div class="deal-top">
-                                        <h2>Your Exclusive Offers.</h2>
-                                        <h4>Sign in to see amazing deals.</h4>
-                                    </div>
-                                    <div class="deal-content">
-                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product2['slug']).'">'.htmlspecialchars($product2['name']).'</a></h3>
-                                        <div class="product-price">
-                                            <span class="new-price">$'.number_format($product2['price'] * 0.85, 2).'</span>
-                                        </div>
-                                        <a href="product.php?product='.htmlspecialchars($product2['slug']).'" class="btn btn-link"><span>Shop Now</span><i class="icon-long-arrow-right"></i></a>
-                                    </div>
-                                    <div class="deal-bottom">
-                                        <div class="deal-countdown offer-countdown" data-until="+11d"></div>
-                                    </div>
-                                </div>
-                            </div>';
-                        }
-                        ?>
-                </div><!-- End .row -->
+            
 
                 <div class="more-container text-center mt-1 mb-5">
                     <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
@@ -1106,7 +1043,7 @@
                                                     </figure>
                                                     <div class="product-body">
                                                         <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                                         <div class="ratings-container">
                                                             <div class="ratings">
                                                                 <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
@@ -1153,7 +1090,7 @@
                                                     </figure>
                                                     <div class="product-body">
                                                         <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                                         <div class="ratings-container">
                                                             <div class="ratings">
                                                                 <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
@@ -1200,7 +1137,7 @@
                                                     </figure>
                                                     <div class="product-body">
                                                         <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                                         <div class="ratings-container">
                                                             <div class="ratings">
                                                                 <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
@@ -1251,7 +1188,7 @@
                                         </figure>
                                         <div class="product-body">
                                             <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                            <div class="product-price">$'.number_format($product['price'], 2).'</div>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                         </div>
                                     </div>
                                 </div>';
