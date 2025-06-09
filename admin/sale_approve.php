@@ -21,14 +21,14 @@ try {
 } catch (PDOException $e) {
     error_log('Database connection failed: ' . $e->getMessage());
     $_SESSION['error'] = 'Database connection failed';
-    header('location: ../admin_sales.php');
+    header('location: admin_sales.php');
     exit;
 }
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     error_log('Invalid or missing sale ID');
     $_SESSION['error'] = 'No sale ID provided';
-    header('location: ../admin_sales.php');
+    header('location: admin_sales.php');
     exit;
 }
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$sale) {
             error_log('Sale not found or not pending for sale_id: ' . $sale_id);
             $_SESSION['error'] = 'Sale not found or already processed';
-            header('location: ../admin_sales.php');
+            header('location: admin_sales.php');
             exit;
         }
 
@@ -98,12 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['error'] = 'Sale approved but email failed: ' . $e->getMessage();
         }
 
-        header('location: ../admin_sales.php');
+        header('location: admin_sales.php');
         exit;
     } catch (PDOException $e) {
         error_log('PDO error for sale_id ' . $sale_id . ': ' . $e->getMessage());
         $_SESSION['error'] = 'Failed to approve sale: ' . $e->getMessage();
-        header('location: ../admin_sales.php');
+        header('location: admin_sales.php');
         exit;
     }
 }
@@ -116,13 +116,13 @@ try {
     if (!$sale || $sale['status'] !== 'pending') {
         error_log('Sale not found or not pending for sale_id: ' . $sale_id);
         $_SESSION['error'] = 'Sale not found or not pending';
-        header('location: ../admin_sales.php');
+        header('location: admin_sales.php');
         exit;
     }
 } catch (PDOException $e) {
     error_log('PDO error fetching sale_id ' . $sale_id . ': ' . $e->getMessage());
     $_SESSION['error'] = 'Failed to load sale';
-    header('location: ../admin_sales.php');
+    header('location: admin_sales.php');
     exit;
 }
 
@@ -148,13 +148,13 @@ $pdo->close();
                 ?>
                 <div class="box box-solid">
                     <div class="box-body">
-                        <form method="POST" action="">
+                        <form method="POST" action="sale_approve.php?id=<?php echo $sale_id; ?>">
                             <div class="form-group">
                                 <label for="location">Shipping Location</label>
                                 <input type="text" class="form-control" id="location" name="location" placeholder="Enter shipping location (e.g., Lagos, Nigeria)" required>
                             </div>
                             <button type="submit" class="btn btn-success">Approve and Notify</button>
-                            <a href="../admin_sales.php" class="btn btn-default">Cancel</a>
+                            <a href="admin_sales.php" class="btn btn-default">Cancel</a>
                         </form>
                     </div>
                 </div>
