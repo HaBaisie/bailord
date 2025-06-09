@@ -1,5 +1,5 @@
 <?php
-include '../includes/session.php';
+include '/includes/session.php';
 require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
