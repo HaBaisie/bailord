@@ -1,5 +1,5 @@
 <?php
-include '../includes/session.php';
+include 'includes/session.php';
 require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -7,9 +7,9 @@ use PHPMailer\PHPMailer\Exception;
 
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-ini_set('error_log', '../error.log');
+ini_set('error_log', 'error.log');
 
-if (!isset($_SESSION['admin'])) {
+if (!isset($_SESSION['admin']) || trim($_SESSION['admin']) == '') {
     error_log('No admin session found');
     $_SESSION['error'] = 'Please log in as admin';
     header('location: login.php');
@@ -128,10 +128,10 @@ try {
 
 $pdo->close();
 ?>
-<?php include '../includes/header.php'; ?>
+<?php include 'includes/header.php'; ?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include '../includes/admin_navbar.php'; ?>
+    <?php include 'includes/admin_navbar.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
@@ -161,8 +161,8 @@ $pdo->close();
             </section>
         </div>
     </div>
-    <?php include '../includes/footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 </div>
-<?php include '../includes/scripts.php'; ?>
+<?php include 'includes/scripts.php'; ?>
 </body>
 </html>
