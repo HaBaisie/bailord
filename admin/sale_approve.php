@@ -1,8 +1,7 @@
 <?php
 include 'includes/session.php';
 require 'vendor/autoload.php';
-<?php include 'includes/navbar.php'; ?>
-<?php include 'includes/menubar.php'; ?>
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -52,16 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Send email notification
         $mail = new PHPMailer(true);
         try {
+            // Server settings
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = $_ENV['SMTP_USERNAME'];
-            $mail->Password = $_ENV['SMTP_PASSWORD'];
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Username = 'habeebullahilawal14@gmail.com';
+            $mail->Password = 'pupl lqql ehaq gmgs'; // Gmail App Password
+            $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
-            $mail->setFrom($_ENV['SMTP_USERNAME'], 'Bailord eCommerce');
+            $mail->setFrom('habeebullahilawal14@gmail.com', 'Bailord');
             $mail->addAddress($sale['email']);
+            $mail->addReplyTo('habeebullahilawal14@gmail.com');
             $mail->isHTML(true);
             $mail->Subject = 'Your Order Has Been Approved';
             $mail->Body = "
