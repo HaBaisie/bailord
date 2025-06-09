@@ -701,9 +701,9 @@
                                     <h1 class="intro-title">A3</h1><!-- End .intro-title -->
 
                                     <div class="intro-price">
-                                        <sup class="intro-old-price">$349,95</sup>
+                                        <sup class="intro-old-price">₦349,95</sup>
                                         <span class="text-third">
-                                            $279<sup>.99</sup>
+                                            ₦279<sup>.99</sup>
                                         </span>
                                     </div><!-- End .intro-price -->
 
@@ -726,7 +726,7 @@
                                     <div class="intro-price">
                                         <sup>Today:</sup>
                                         <span class="text-primary">
-                                            $999<sup>.99</sup>
+                                            ₦999<sup>.99</sup>
                                         </span>
                                     </div><!-- End .intro-price -->
 
@@ -811,7 +811,7 @@
 
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4><!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#">Save $150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3><!-- End .banner-title -->
+                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3><!-- End .banner-title -->
                                 <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .banner-content -->
                         </div><!-- End .banner -->
@@ -839,7 +839,7 @@
 
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4><!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save $70</a></h3><!-- End .banner-title -->
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3><!-- End .banner-title -->
                                 <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .banner-content -->
                         </div><!-- End .banner -->
@@ -934,7 +934,7 @@
                                 <div class="cta-text text-right text-white">
                                     <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div><!-- End .cta-text -->
-                                <a href="#" class="btn btn-primary btn-round"><span>Shop Now - $429.99</span><i class="icon-long-arrow-right"></i></a>
+                                <a href="#" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .cta-content -->
                         </div><!-- End .col-md-12 -->
                     </div><!-- End .row -->
