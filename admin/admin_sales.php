@@ -34,10 +34,9 @@ try {
 $pdo->close();
 ?>
 <?php include 'includes/header.php'; ?>
-  <?php include 'includes/menubar.php'; ?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include 'includes/navbar.php'; ?>
+    <?php include 'includes/admin_navbar.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
@@ -79,7 +78,7 @@ $pdo->close();
                                         <td><?php echo htmlspecialchars($row['location'] ?: '-'); ?></td>
                                         <td>
                                             <?php if ($row['status'] === 'pending'): ?>
-                                                <a href="sale_approve.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Approve</a>
+                                                <a href="admin/sale_approve.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Approve</a>
                                             <?php endif; ?>
                                             <a href="sale_details.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-info">Details</a>
                                         </td>
