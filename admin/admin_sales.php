@@ -78,7 +78,7 @@ $pdo->close();
                                         <td><?php echo htmlspecialchars($row['location'] ?: '-'); ?></td>
                                         <td>
                                             <?php if ($row['status'] === 'pending'): ?>
-                                                <a href="admin/sale_approve.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Approve</a>
+                                                <a href="sale_approve.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success">Approve</a>
                                             <?php endif; ?>
                                             <a href="sale_details.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-info">Details</a>
                                         </td>
