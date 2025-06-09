@@ -1,31 +1,40 @@
 <?php
-include 'includes/session.php';
-require 'vendor/autoload.php';
+include '../includes/session.php';
+require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (!isset($_SESSION['admin'])) {
-    header('location: admin/login.php');
+    error_log('No admin session found');
+    header('location: login.php');
     exit;
 }
 
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-ini_set('error_log', 'error.log');
+ini_set('error_log', '../error.log');
 
 $conn = $pdo->open();
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    error_log('Invalid or missing sale ID');
     $_SESSION['error'] = 'No sale ID provided';
-    header('location: admin_sales.php');
+    header('location: ../admin_sales.php');
     exit;
 }
 
-$sale_id = $_GET['id'];
+$sale_id = (int)$_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $location = $_POST['location'] ?? '';
+    $location = trim($_POST['location'] ?? '');
+
+    if (empty($location)) {
+        error_log('Empty location provided for sale_id: ' . $sale_id);
+        $_SESSION['error'] = 'Location is required';
+        header('location: sale_approve.php?id=' . $sale_id);
+        exit;
+    }
 
     try {
         // Fetch sale and user details
@@ -39,8 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sale = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$sale) {
+            error_log('Sale not found or not pending for sale_id: ' . $sale_id);
             $_SESSION['error'] = 'Sale not found or already processed';
-            header('location: admin_sales.php');
+            header('location: ../admin_sales.php');
             exit;
         }
 
@@ -75,16 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->send();
             $_SESSION['success'] = 'Sale approved and email sent';
         } catch (Exception $e) {
-            error_log('PHPMailer error: ' . $e->getMessage());
+            error_log('PHPMailer error for sale_id ' . $sale_id . ': ' . $e->getMessage());
             $_SESSION['error'] = 'Sale approved but email failed: ' . $e->getMessage();
         }
 
-        header('location: admin_sales.php');
+        header('location: ../admin_sales.php');
         exit;
     } catch (PDOException $e) {
-        error_log('PDO error: ' . $e->getMessage());
+        error_log('PDO error for sale_id ' . $sale_id . ': ' . $e->getMessage());
         $_SESSION['error'] = 'Failed to approve sale: ' . $e->getMessage();
-        header('location: admin_sales.php');
+        header('location: ../admin_sales.php');
         exit;
     }
 }
@@ -96,23 +106,24 @@ try {
     $sale = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$sale || $sale['status'] !== 'pending') {
+        error_log('Sale not found or not pending for sale_id: ' . $sale_id);
         $_SESSION['error'] = 'Sale not found or not pending';
-        header('location: admin_sales.php');
+        header('location: ../admin_sales.php');
         exit;
     }
 } catch (PDOException $e) {
-    error_log('PDO error: ' . $e->getMessage());
+    error_log('PDO error fetching sale_id ' . $sale_id . ': ' . $e->getMessage());
     $_SESSION['error'] = 'Failed to load sale';
-    header('location: admin_sales.php');
+    header('location: ../admin_sales.php');
     exit;
 }
 
 $pdo->close();
 ?>
-<?php include 'includes/header.php'; ?>
+<?php include '../includes/header.php'; ?>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include 'includes/admin_navbar.php'; ?>
+    <?php include '../includes/admin_navbar.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
@@ -132,18 +143,18 @@ $pdo->close();
                         <form method="POST" action="">
                             <div class="form-group">
                                 <label for="location">Shipping Location</label>
-                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter shipping location (e.g., Lagos, Nigeria)" required>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter shipping location (e.g., Lahore, Punjab)" required>
                             </div>
                             <button type="submit" class="btn btn-success">Approve and Notify</button>
-                            <a href="admin_sales.php" class="btn btn-default">Cancel</a>
+                            <a href="../admin_sales.php" class="btn btn-default">Cancel</a>
                         </form>
                     </div>
                 </div>
             </section>
         </div>
     </div>
-    <?php include 'includes/footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>
 </div>
-<?php include 'includes/scripts.php'; ?>
+<?php include '../includes/scripts.php'; ?>
 </body>
 </html>
