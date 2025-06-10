@@ -707,7 +707,7 @@
                                         </span>
                                     </div><!-- End .intro-price -->
 
-                                    <a href="category.html" class="btn btn-primary btn-round">
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </a>
@@ -775,7 +775,7 @@
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4><!-- End .banner-subtitle -->
                                 <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3><!-- End .banner-title -->
-                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .banner-content -->
                         </div><!-- End .banner -->
                     </div><!-- End .col-md-4 -->
@@ -789,7 +789,7 @@
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4><!-- End .banner-subtitle -->
                                 <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3><!-- End .banner-title -->
-                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .banner-content -->
                         </div><!-- End .banner -->
                     </div><!-- End .col-md-4 -->
@@ -803,7 +803,7 @@
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4><!-- End .banner-subtitle -->
                                 <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3><!-- End .banner-title -->
-                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .banner-content -->
                         </div><!-- End .banner -->
                     </div><!-- End .col-lg-4 -->
@@ -897,7 +897,7 @@
                                 <div class="cta-text text-right text-white">
                                     <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div><!-- End .cta-text -->
-                                <a href="#" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .cta-content -->
                         </div><!-- End .col-md-12 -->
                     </div><!-- End .row -->
@@ -906,7 +906,7 @@
             
 
                 <div class="more-container text-center mt-1 mb-5">
-                    <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
+                    <a href="category.php?category=all" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
                 </div><!-- End .more-container -->
             </div><!-- End .container -->
 
@@ -967,7 +967,7 @@
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                    <a href="category.php" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
