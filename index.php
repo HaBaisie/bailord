@@ -267,6 +267,56 @@
             }
         }
     </style>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Mobile menu toggle
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
+                const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+                const mobileMenuClose = document.querySelector('.mobile-menu-close');
+                
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.toggle('visible');
+                });
+                
+                mobileMenuClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.remove('visible');
+                });
+
+                // Mobile menu sub-menu toggle
+                const mobileMenuItems = document.querySelectorAll('.mobile-menu li > a');
+                mobileMenuItems.forEach(item => {
+                    if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
+                        item.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const parentLi = this.parentElement;
+                            parentLi.classList.toggle('active');
+                        });
+                    }
+                });
+
+                // Mobile search toggle
+                const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+                const mobileSearchForm = document.querySelector('.mobile-search');
+                mobileSearchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileSearchForm.classList.toggle('visible');
+                });
+
+                // Update cart count dynamically
+                function updateCartCount() {
+                    fetch('get_cart_count.php')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector('.cart-count').textContent = data.count || 0;
+                            document.querySelector('.cart-total-price').textContent = `₦${(data.total || 0).toFixed(2)}`;
+                        });
+                }
+                updateCartCount();
+                setInterval(updateCartCount, 60000); // Update every minute
+            });
+        </script>
 </head>
 <body>
     <div class="page-wrapper">
@@ -669,56 +719,6 @@
         <script src="assets/js/jquery.countdown.min.js"></script>
         <script src="assets/js/main.js"></script>
         <script src="assets/js/demos/demo-4.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Mobile menu toggle
-                const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-                const mobileMenuContainer = document.querySelector('.mobile-menu-container');
-                const mobileMenuClose = document.querySelector('.mobile-menu-close');
-                
-                mobileMenuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    mobileMenuContainer.classList.toggle('visible');
-                });
-                
-                mobileMenuClose.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    mobileMenuContainer.classList.remove('visible');
-                });
-
-                // Mobile menu sub-menu toggle
-                const mobileMenuItems = document.querySelectorAll('.mobile-menu li > a');
-                mobileMenuItems.forEach(item => {
-                    if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
-                        item.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            const parentLi = this.parentElement;
-                            parentLi.classList.toggle('active');
-                        });
-                    }
-                });
-
-                // Mobile search toggle
-                const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-                const mobileSearchForm = document.querySelector('.mobile-search');
-                mobileSearchToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    mobileSearchForm.classList.toggle('visible');
-                });
-
-                // Update cart count dynamically
-                function updateCartCount() {
-                    fetch('get_cart_count.php')
-                        .then(response => response.json())
-                        .then(data => {
-                            document.querySelector('.cart-count').textContent = data.count || 0;
-                            document.querySelector('.cart-total-price').textContent = `₦${(data.total || 0).toFixed(2)}`;
-                        });
-                }
-                updateCartCount();
-                setInterval(updateCartCount, 60000); // Update every minute
-            });
-        </script>
     </div>
 </body>
 </html>
