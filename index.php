@@ -714,266 +714,259 @@
                             </div><!-- End .row -->
                         </div><!-- End .intro-content -->
                     </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10C.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">TECNO POP</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">10C</h1>
-
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP10.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">TECNO POP</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">10</h1>
-
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_YO4.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">VIVO</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">YO4</h1>
-
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">ZTE BLADE</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">A35</h1>
-
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">ZTE BLADE</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">A55</h1>
-
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_CITY_100.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">ITEL CITY</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">100</h1>
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_C75.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">REALME</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">C75</h1>
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDM1_A5.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">REDMI</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">A5</h1>
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_NOTE50.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">REALME</h1><!-- End .intro-title -->
-                                    <h1 class="intro-title">NOTE50</h1>
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/OPPO.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">OPPO</h1>
-                                    <h1 class="intro-title">A3</h1><!-- End .intro-title -->
-
-                                    <div class="intro-price">
-                                        <sup class="intro-old-price">₦349,95</sup>
-                                        <span class="text-third">
-                                            ₦279<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-lg-11 offset-lg-1 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
-                        <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">INIFINIX</h1>
-                                    <h1 class="intro-title">SMART 10</h1><!-- End .intro-title -->
-
-                                    <div class="intro-price">
-                                        <sup class="intro-old-price">₦349,95</sup>
-                                        <span class="text-third">
-                                            ₦279<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div><!-- End .col-lg-11 offset-lg-1 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-
-                <span class="slider-loader"></span><!-- End .slider-loader -->
-            </div><!-- End .intro-slider-container -->
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10C.png);">
+                            <div class="container intro-content">
+                                <div class="row justify-content-end">
+                                    <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                        <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                        <h1 class="intro-title">TECNO POP</h1><!-- End .intro-title -->
+                                        <h1 class="intro-title">10C</h1>
+    
+                                        <div class="intro-price">
+                                            <sup>Today:</sup>
+                                            <span class="text-primary">
+                                                ₦999<sup>.99</sup>
+                                            </span>
+                                        </div><!-- End .intro-price -->
+    
+                                        <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                            <span>Shop More</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </a>
+                                    </div><!-- End .col-md-6 offset-md-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .intro-content -->
+                        </div><!-- End .intro-slide -->
+                        <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP10.png);">
+                                <div class="container intro-content">
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                            <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                            <h1 class="intro-title">TECNO POP</h1><!-- End .intro-title -->
+                                            <h1 class="intro-title">10</h1>
+        
+                                            <div class="intro-price">
+                                                <sup>Today:</sup>
+                                                <span class="text-primary">
+                                                    ₦999<sup>.99</sup>
+                                                </span>
+                                            </div><!-- End .intro-price -->
+        
+                                            <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                <span>Shop More</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </a>
+                                        </div><!-- End .col-md-6 offset-md-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .intro-content -->
+                            </div><!-- End .intro-slide -->
+                            <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_YO4.png);">
+                                    <div class="container intro-content">
+                                        <div class="row justify-content-end">
+                                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                <h1 class="intro-title">VIVO</h1><!-- End .intro-title -->
+                                                <h1 class="intro-title">YO4</h1>
+            
+                                                <div class="intro-price">
+                                                    <sup>Today:</sup>
+                                                    <span class="text-primary">
+                                                        ₦999<sup>.99</sup>
+                                                    </span>
+                                                </div><!-- End .intro-price -->
+            
+                                                <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                    <span>Shop More</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </a>
+                                            </div><!-- End .col-md-6 offset-md-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .intro-content -->
+                                </div><!-- End .intro-slide -->
+                                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png);">
+                                        <div class="container intro-content">
+                                            <div class="row justify-content-end">
+                                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                    <h1 class="intro-title">ZTE BLADE</h1><!-- End .intro-title -->
+                                                    <h1 class="intro-title">A35</h1>
+                
+                                                    <div class="intro-price">
+                                                        <sup>Today:</sup>
+                                                        <span class="text-primary">
+                                                            ₦999<sup>.99</sup>
+                                                        </span>
+                                                    </div><!-- End .intro-price -->
+                
+                                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                        <span>Shop More</span>
+                                                        <i class="icon-long-arrow-right"></i>
+                                                    </a>
+                                                </div><!-- End .col-md-6 offset-md-6 -->
+                                            </div><!-- End .row -->
+                                        </div><!-- End .intro-content -->
+                                    </div><!-- End .intro-slide -->
+                                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png);">
+                                            <div class="container intro-content">
+                                                <div class="row justify-content-end">
+                                                    <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                        <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                        <h1 class="intro-title">ZTE BLADE</h1><!-- End .intro-title -->
+                                                        <h1 class="intro-title">A55</h1>
+                    
+                                                        <div class="intro-price">
+                                                            <sup>Today:</sup>
+                                                            <span class="text-primary">
+                                                                ₦999<sup>.99</sup>
+                                                            </span>
+                                                        </div><!-- End .intro-price -->
+                    
+                                                        <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                            <span>Shop More</span>
+                                                            <i class="icon-long-arrow-right"></i>
+                                                        </a>
+                                                    </div><!-- End .col-md-6 offset-md-6 -->
+                                                </div><!-- End .row -->
+                                            </div><!-- End .intro-content -->
+                                        </div><!-- End .intro-slide -->
+                                        <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_CITY_100.png);">
+                                                <div class="container intro-content">
+                                                    <div class="row justify-content-end">
+                                                        <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                            <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                            <h1 class="intro-title">ITEL CITY</h1><!-- End .intro-title -->
+                                                            <h1 class="intro-title">100</h1>
+                                                            <div class="intro-price">
+                                                                <sup>Today:</sup>
+                                                                <span class="text-primary">
+                                                                    ₦999<sup>.99</sup>
+                                                                </span>
+                                                            </div><!-- End .intro-price -->
+                        
+                                                            <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                <span>Shop More</span>
+                                                                <i class="icon-long-arrow-right"></i>
+                                                            </a>
+                                                        </div><!-- End .col-md-6 offset-md-6 -->
+                                                    </div><!-- End .row -->
+                                                </div><!-- End .intro-content -->
+                                            </div><!-- End .intro-slide -->
+                                            <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_C75.png);">
+                                                    <div class="container intro-content">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                                <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                                <h1 class="intro-title">REALME</h1><!-- End .intro-title -->
+                                                                <h1 class="intro-title">C75</h1>
+                                                                <div class="intro-price">
+                                                                    <sup>Today:</sup>
+                                                                    <span class="text-primary">
+                                                                        ₦999<sup>.99</sup>
+                                                                    </span>
+                                                                </div><!-- End .intro-price -->
+                            
+                                                                <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                    <span>Shop More</span>
+                                                                    <i class="icon-long-arrow-right"></i>
+                                                                </a>
+                                                            </div><!-- End .col-md-6 offset-md-6 -->
+                                                        </div><!-- End .row -->
+                                                    </div><!-- End .intro-content -->
+                                                </div><!-- End .intro-slide -->
+                                                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDM1_A5.png);">
+                                                    <div class="container intro-content">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                                <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                                <h1 class="intro-title">REDMI</h1><!-- End .intro-title -->
+                                                                <h1 class="intro-title">A5</h1>
+                                                                <div class="intro-price">
+                                                                    <sup>Today:</sup>
+                                                                    <span class="text-primary">
+                                                                        ₦999<sup>.99</sup>
+                                                                    </span>
+                                                                </div><!-- End .intro-price -->
+                            
+                                                                <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                    <span>Shop More</span>
+                                                                    <i class="icon-long-arrow-right"></i>
+                                                                </a>
+                                                            </div><!-- End .col-md-6 offset-md-6 -->
+                                                        </div><!-- End .row -->
+                                                    </div><!-- End .intro-content -->
+                                                </div><!-- End .intro-slide -->
+                                                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_NOTE50.png);">
+                                                        <div class="container intro-content">
+                                                            <div class="row justify-content-end">
+                                                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
+                                                                    <h1 class="intro-title">REALME</h1><!-- End .intro-title -->
+                                                                    <h1 class="intro-title">NOTE50</h1>
+                                                                    <div class="intro-price">
+                                                                        <sup>Today:</sup>
+                                                                        <span class="text-primary">
+                                                                            ₦999<sup>.99</sup>
+                                                                        </span>
+                                                                    </div><!-- End .intro-price -->
+                                
+                                                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                        <span>Shop More</span>
+                                                                        <i class="icon-long-arrow-right"></i>
+                                                                    </a>
+                                                                </div><!-- End .col-md-6 offset-md-6 -->
+                                                            </div><!-- End .row -->
+                                                        </div><!-- End .intro-content -->
+                                                    </div><!-- End .intro-slide -->
+                                                    </div><!-- End .intro-slider owl-carousel owl-simple -->
+                                                        <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/OPPO.png);">
+                                                            <div class="container intro-content">
+                                                                <div class="row justify-content-end">
+                                                                    <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                                        <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                                                                        <h1 class="intro-title">OPPO</h1>
+                                                                        <h1 class="intro-title">A3</h1><!-- End .intro-title -->
+                                    
+                                                                        <div class="intro-price">
+                                                                            <sup class="intro-old-price">₦349,95</sup>
+                                                                            <span class="text-third">
+                                                                                ₦279<sup>.99</sup>
+                                                                            </span>
+                                                                        </div><!-- End .intro-price -->
+                                    
+                                                                        <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                            <span>Shop More</span>
+                                                                            <i class="icon-long-arrow-right"></i>
+                                                                        </a>
+                                                                    </div><!-- End .col-lg-11 offset-lg-1 -->
+                                                                </div><!-- End .row -->
+                                                            </div><!-- End .intro-content -->
+                                                        </div><!-- End .intro-slide -->
+                                                        <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
+                                                            <div class="container intro-content">
+                                                                <div class="row justify-content-end">
+                                                                    <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                                                        <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                                                                        <h1 class="intro-title">INIFINIX</h1>
+                                                                        <h1 class="intro-title">SMART 10</h1><!-- End .intro-title -->
+                                    
+                                                                        <div class="intro-price">
+                                                                            <sup class="intro-old-price">₦349,95</sup>
+                                                                            <span class="text-third">
+                                                                                ₦279<sup>.99</sup>
+                                                                            </span>
+                                                                        </div><!-- End .intro-price -->
+                                    
+                                                                        <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                                                            <span>Shop More</span>
+                                                                            <i class="icon-long-arrow-right"></i>
+                                                                        </a>
+                                                                    </div><!-- End .col-lg-11 offset-lg-1 -->
+                                                                </div><!-- End .row -->
+                                                            </div><!-- End .intro-content -->
+                                                        </div><!-- End .intro-slide -->
+                                                </div><!-- End .intro-slider owl-carousel owl-simple -->
+                                                <span class="slider-loader"></span><!-- End .slider-loader -->
+                                        </div><!-- End .intro-slider-container -->
 
             <div class="container">
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
