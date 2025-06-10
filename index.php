@@ -489,42 +489,33 @@
 <body>
     <div class="page-wrapper">      
         <header class="header header-intro-clearance header-4">
-            <!-- Header Middle (Logo, Search, Cart) -->
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
-                        <button class="mobile-menu-toggler">
+                        <button class="mobile-menu-toggler" aria-label="Toggle mobile menu">
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-                        
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord eCommerce Logo" width="105" height="25" loading="lazy">
                         </a>
                     </div>
-
                     <div class="header-center">
-                        <!-- Desktop Search (hidden on mobile) -->
                         <div class="header-search header-search-extended d-none d-lg-block">
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
-                                    <label for="q" class="sr-only">Search</label>
+                                    <label for="q" class="sr-only">Search products</label>
                                     <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
-                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <button class="btn btn-primary" type="submit" aria-label="Search"><i class="icon-search"></i></button>
                                 </div>
                             </form>
                         </div>
-                        
-                        <!-- Mobile Search Toggle (visible on mobile) -->
-                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
+                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button" aria-label="Toggle search">
                             <i class="icon-search"></i>
                         </a>
                     </div>
-
                     <div class="header-right">
-                        <!-- Conditional Login/Signup or Profile/Logout Links -->
                         <?php if (isset($_SESSION['user'])): ?>
-                            <!-- Show when logged in -->
                             <a href="profile.php" class="user-btn" title="User Profile">
                                 <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
                             </a>
@@ -532,13 +523,10 @@
                                 <i class="las la-sign-out-alt"></i> Logout
                             </a>
                         <?php else: ?>
-                            <!-- Show when not logged in -->
                             <a href="login.php" class="login-btn">
                                 <i class="icon-user"></i> Login/Signup
                             </a>
                         <?php endif; ?>
-                        
-                        <!-- Cart Dropdown -->
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="icon">
@@ -562,8 +550,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Header Bottom (Navigation) -->
             <div class="header-bottom sticky-header">
                 <div class="container">
                     <nav class="main-nav d-none d-lg-block">
@@ -571,31 +557,12 @@
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
-                            
-                            <!-- Browse Categories Dropdown (now part of main nav) -->
                             <li>
                                 <a href="#">Browse Categories</a>
                                 <ul>
-                                    <?php
-                                    $pdo = new Database();
-                                    $conn = $pdo->open();
-                                    try {
-                                        $stmt = $conn->prepare("SELECT * FROM category");
-                                        $stmt->execute();
-                                        $categories = $stmt->fetchAll();
-                                        
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                        }
-                                    } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
-                                    }
-                                    ?>
+                                    <?php echo renderCategories($conn); ?>
                                 </ul>
                             </li>
-                            
-                            <!-- Pages Dropdown -->
                             <li>
                                 <a href="#">Pages</a>
                                 <ul>
@@ -607,56 +574,30 @@
                                     <li><a href="coming-soon.html">Coming Soon</a></li>
                                 </ul>
                             </li>
-                            
                             <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
-
-            <!-- Mobile Menu Container -->
             <div class="mobile-menu-container">
                 <div class="mobile-menu-wrapper">
-                    <span class="mobile-menu-close"><i class="icon-close"></i></span>
-                    
-                    <!-- Mobile Search -->
+                    <span class="mobile-menu-close" aria-label="Close mobile menu"><i class="icon-close"></i></span>
                     <form action="#" method="get" class="mobile-search">
-                        <label for="mobile-search" class="sr-only">Search</label>
+                        <label for="mobile-search" class="sr-only">Search products</label>
                         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                        <button class="btn btn-primary" type="submit" aria-label="Search"><i class="icon-search"></i></button>
                     </form>
-                    
-                    <!-- Mobile Navigation (Updated) -->
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
-                            
-                            <!-- Browse Categories Dropdown (now part of main mobile menu) -->
                             <li>
                                 <a href="#">Browse Categories</a>
                                 <ul>
-                                    <?php
-                                    $pdo = new Database();
-                                    $conn = $pdo->open();
-                                    try {
-                                        $stmt = $conn->prepare("SELECT * FROM category");
-                                        $stmt->execute();
-                                        $categories = $stmt->fetchAll();
-                                        
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                        }
-                                    } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
-                                    }
-                                    ?>
+                                    <?php echo renderCategories($conn); ?>
                                 </ul>
                             </li>
-                            
-                            <!-- Pages Dropdown -->
                             <li>
                                 <a href="#">Pages</a>
                                 <ul>
@@ -668,17 +609,12 @@
                                     <li><a href="coming-soon.html">Coming Soon</a></li>
                                 </ul>
                             </li>
-                            
                             <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
-                    
-                    <!-- Removed the separate mobile-cats section since it's now integrated -->
                 </div>
             </div>
         </header>
-
-        <!-- Rest of your HTML content remains the same -->
         <main class="main">
             <div class="intro-slider-container mb-5">
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
@@ -696,157 +632,91 @@
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">OPPO</h1>
-                                    <h1 class="intro-title">A3</h1><!-- End .intro-title -->
-
+                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
+                                    <h1 class="intro-title">OPPO A3</h1>
                                     <div class="intro-price">
                                         <sup class="intro-old-price">₦349,95</sup>
-                                        <span class="text-third">
-                                            ₦279<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
+                                        <span class="text-third">₦279<sup>.99</sup></span>
+                                    </div>
                                     <a href="category.html" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </a>
-                                </div><!-- End .col-lg-11 offset-lg-1 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_P70.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3><!-- End .h3 intro-subtitle -->
-                                    <h1 class="intro-title">ITEL P70</h1><!-- End .intro-title -->
-
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">ITEL P70</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div><!-- End .intro-price -->
-
+                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                    </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </a>
-                                </div><!-- End .col-md-6 offset-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
-                </div><!-- End .intro-slider owl-carousel owl-simple -->
-
-                <span class="slider-loader"></span><!-- End .slider-loader -->
-            </div><!-- End .intro-slider-container -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="slider-loader"></span>
+            </div>
             <div class="container">
-                    <h2 class="title text-center mb-4">Explore Popular Categories</h2><!-- End .title text-center -->
-                    
-                    <div class="cat-blocks-container">
-                        <div class="row">
-                            <?php
-                            
-                            // Define a default image in case category image doesn't exist
-                            $default_image = 'category-default.jpg';
-                            
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    
-                                    // Create image path - check if you want to use ID, slug, or name
-                                    //$image_name = 'category-' . $category['id'] . '.jpg'; // Using ID
-                                    $image_name = $slug . '.jpg'; // Using slug
-                                    
-                                    // Check if image exists, otherwise use default
-                                    $image_path = file_exists('images/' . $image_name) 
-                                            ? 'images/' . $image_name 
-                                            : 'images/' . $default_image;
-                                    
-                                    echo '
-                                    <div class="col-6 col-sm-4 col-lg-2">
-                                        <a href="category.php?slug='.$slug.'" class="cat-block">
-                                            <figure>
-                                                <span>
-                                                    <img src="'.$image_path.'" alt="'.$category['name'].'">
-                                                </span>
-                                            </figure>
-                                            <h3 class="cat-block-title">'.$category['name'].'</h3>
-                                        </a>
-                                    </div>';
-                                }
-                                
-                                $pdo->close();
-                            }
-                            catch(PDOException $e) {
-                                echo "There is some problem in connection: " . $e->getMessage();
-                            }
-                            ?>
-                        </div><!-- End .row -->
-                    </div><!-- End .cat-blocks-container -->
-                </div><!-- End .container -->
-
-            <div class="mb-4"></div><!-- End .mb-4 -->
-
-            <div class="container">
-                <div class="row justify-content-center">
-                    <!-- Promo banners will be dynamically loaded here -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-
-            <div class="mb-3"></div><!-- End .mb-5 -->
+                <h2 class="title text-center mb-4">Explore Popular Categories</h2>
+                <div class="cat-blocks-container">
+                    <div class="row">
+                        <?php echo renderCategoryBlocks($conn); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4"></div>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Samsung Galaxy Note9 Smart Offer" loading="lazy">
                             </a>
-
                             <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4><!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3><!-- End .banner-title -->
+                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
+                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3>
                                 <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .banner-content -->
-                        </div><!-- End .banner -->
-                    </div><!-- End .col-md-4 -->
-
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Bose SoundSport Time Deal" loading="lazy">
                             </a>
-
                             <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4><!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3><!-- End .banner-title -->
+                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
                                 <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .banner-content -->
-                        </div><!-- End .banner -->
-                    </div><!-- End .col-md-4 -->
-
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="GoPro Fusion 360 Clearance" loading="lazy">
                             </a>
-
                             <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4><!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3><!-- End .banner-title -->
+                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
                                 <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .banner-content -->
-                        </div><!-- End .banner -->
-                    </div><!-- End .col-lg-4 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3"></div>
             <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
@@ -860,61 +730,32 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="tab-content tab-content-carousel just-action-icons-sm">
                     <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                         <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                        data-owl-options='{
-                            "nav": true, 
-                            "dots": true,
-                            "margin": 10,
-                            "loop": false,
-                            "responsive": {
-                                "0": {"items":1},
-                                "400": {"items":2},
-                                "576": {"items":3},
-                                "768": {"items":4},
-                                "992": {"items":5},
-                                "1200": {"items":5}
-                            }
-                        }'>
+                            data-owl-options='{
+                                "nav": true, 
+                                "dots": true,
+                                "margin": 10,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {"items":1},
+                                    "400": {"items":2},
+                                    "576": {"items":3},
+                                    "768": {"items":4},
+                                    "992": {"items":5},
+                                    "1200": {"items":5}
+                                }
+                            }'>
                             <?php
-                                $default_image = 'noimage.jpg';
                                 $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
                                 $stmt->execute();
                                 $products = $stmt->fetchAll();
-                                
                                 $productGroups = array_chunk($products, 5);
-                                
                                 foreach ($productGroups as $group) {
                                     echo '<div class="products-slide d-flex">';
                                     foreach ($group as $product) {
-                                        $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                            ? 'images/' . htmlspecialchars($product['photo']) 
-                                            : 'images/' . $default_image;
-                                        echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                                </div>
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 100%;"></div>
-                                                    </div>
-                                                    <span class="ratings-text">( 5 Reviews )</span>
-                                                </div>
-                                            </div>
-                                        </div>';
+                                        echo renderProductCard($product);
                                     }
                                     echo '</div>';
                                 }
@@ -923,57 +764,50 @@
                     </div>
                 </div>
             </div>
-
             <div class="mb-6"></div>
             <div class="container">
                 <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
-                    <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
+                    <img src="assets/images/demos/demo-4/camera.png" alt="HERO7 Black Camera" class="cta-img" loading="lazy">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <div class="cta-content">
                                 <div class="cta-text text-right text-white">
                                     <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
-                                </div><!-- End .cta-text -->
+                                </div>
                                 <a href="#" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .cta-content -->
-                        </div><!-- End .col-md-12 -->
-                    </div><!-- End .row -->
-                </div><!-- End .cta -->
-            </div><!-- End .container -->
-            
-
-                <div class="more-container text-center mt-1 mb-5">
-                    <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
-                </div><!-- End .more-container -->
-            </div><!-- End .container -->
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="more-container text-center mt-1 mb-5">
+                <a href="category.php?deal=1" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
+            </div>
             <div class="container">
                 <hr class="mb-0">
                 <div class="owl-carousel mt-5 mb-5 owl-simple" data-toggle="owl" 
-                data-owl-options='{
-                    "nav": true, 
-                    "dots": true,
-                    "margin": 10,
-                    "loop": false,
-                    "responsive": {
-                        "0": {"items":1},
-                        "400": {"items":2},
-                        "576": {"items":3},
-                        "768": {"items":4},
-                        "992": {"items":5},
-                        "1200": {"items":5}
-                    }
-                }'
+                    data-owl-options='{
+                        "nav": true, 
+                        "dots": true,
+                        "margin": 10,
+                        "loop": false,
+                        "responsive": {
+                            "0": {"items":1},
+                            "400": {"items":2},
+                            "576": {"items":3},
+                            "768": {"items":4},
+                            "992": {"items":5},
+                            "1200": {"items":5}
+                        }
                     }'>
-                    <img src="assets/images/brands/brand1.png" alt="Brand">
-                    <img src="assets/images/brands/brand2.png" alt="Brand">
-                    <img src="assets/images/brands/brand3.png" alt="Brand">
-                    <img src="assets/images/brands/brand4.png" alt="Brand">
-                    <img src="assets/images/brands/brand5.png" alt="Brand">
-                    <img src="assets/images/brands/brand6.png" alt="Brand">
+                    <img src="assets/images/brands/brand1.png" alt="Brand 1 Logo" loading="lazy">
+                    <img src="assets/images/brands/brand2.png" alt="Brand 2 Logo" loading="lazy">
+                    <img src="assets/images/brands/brand3.png" alt="Brand 3 Logo" loading="lazy">
+                    <img src="assets/images/brands/brand4.png" alt="Brand 4 Logo" loading="lazy">
+                    <img src="assets/images/brands/brand5.png" alt="Brand 5 Logo" loading="lazy">
+                    <img src="assets/images/brands/brand6.png" alt="Brand 6 Logo" loading="lazy">
                 </div>
             </div>
-
             <div class="bg-light pt-5 pb-6">
                 <div class="container trending-products">
                     <div class="heading heading-flex mb-3">
@@ -994,12 +828,11 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
                                 <a href="category.php">
-                                    <img src="images/Banner.jpg" alt="Banner">
+                                    <img src="images/Banner.jpg" alt="New Collection Banner" loading="lazy">
                                 </a>
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
@@ -1012,142 +845,77 @@
                             <div class="tab-content tab-content-carousel just-action-icons-sm">
                                 <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 10,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
-                                        }
-                                    }'>
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 10,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":1},
+                                                "400": {"items":2},
+                                                "576": {"items":3},
+                                                "768": {"items":4},
+                                                "992": {"items":5},
+                                                "1200": {"items":5}
+                                            }
+                                        }'>
                                         <?php
                                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
                                             $stmt->execute();
-                                            $trending = $stmt->fetchAll();
-                                            
-                                            foreach ($trending as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                        </div>
-                                                    </div>
-                                                </div>';
+                                            foreach ($stmt->fetchAll() as $product) {
+                                                echo renderProductCard($product, true);
                                             }
-                                            ?>
+                                        ?>
                                     </div>
                                 </div>
-                                
                                 <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 10,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
-                                        }
-                                    }'>
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 10,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":1},
+                                                "400": {"items":2},
+                                                "576": {"items":3},
+                                                "768": {"items":4},
+                                                "992": {"items":5},
+                                                "1200": {"items":5}
+                                            }
+                                        }'>
                                         <?php
                                             $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
                                             $stmt->execute();
-                                            $bestSelling = $stmt->fetchAll();
-                                            
-                                            foreach ($bestSelling as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                        </div>
-                                                    </div>
-                                                </div>';
+                                            foreach ($stmt->fetchAll() as $product) {
+                                                echo renderProductCard($product, true);
                                             }
-                                            ?>
+                                        ?>
                                     </div>
                                 </div>
-                                
                                 <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 10,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
-                                        }
-                                    }'>
-                                        <?php
-                                            $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
-                                            $stmt->execute();
-                                            $onSale = $stmt->fetchAll();
-                                            
-                                            foreach ($onSale as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                        </div>
-                                                    </div>
-                                                </div>';
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 10,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items":1},
+                                                "400": {"items":2},
+                                                "576": {"items":3},
+                                                "768": {"items":4},
+                                                "992": {"items":5},
+                                                "1200": {"items":5}
                                             }
-                                            ?>
+                                        }'>
+                                        <?php
+                                            $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY id LIMIT 8");
+                                            $stmt->execute();
+                                            foreach ($stmt->fetchAll() as $product) {
+                                                echo renderProductCard($product, true);
+                                            }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -1155,9 +923,7 @@
                     </div>
                 </div>
             </div>
-
             <div class="mb-5"></div>
-
             <div class="container for-you">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
@@ -1167,33 +933,15 @@
                         <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
                     </div>
                 </div>
-
                 <div class="products">
                     <div class="row justify-content-center">
-                       <?php
+                        <?php
                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
                             $stmt->execute();
-                            $recommended = $stmt->fetchAll();
-                            
-                            foreach ($recommended as $product) {
-                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                    : 'images/' . $default_image;
-                                echo '<div class="col-6 col-md-4 col-lg-2">
-                                    <div class="product">
-                                        <figure class="product-media">
-                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                            </a>
-                                        </figure>
-                                        <div class="product-body">
-                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                        </div>
-                                    </div>
-                                </div>';
+                            foreach ($stmt->fetchAll() as $product) {
+                                echo '<div class="col-6 col-md-4 col-lg-2">' . renderProductCard($product, false, false) . '</div>';
                             }
-                            ?>
+                        ?>
                     </div>
                 </div>
             </div>
@@ -1203,16 +951,16 @@
                         <div class="row no-gutters bg-white newsletter-popup-content">
                             <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
                                 <div class="banner-content text-center">
-                                    <img src="images/logo.png" class="logo" alt="logo" width="60" height="15">
+                                    <img src="images/logo.png" class="logo" alt="Bailord Logo" width="60" height="15" loading="lazy">
                                     <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
                                     <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
                                     <form action="#">
                                         <div class="input-group input-group-round">
-                                            <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
+                                            <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Address" required>
                                             <div class="input-group-append">
-                                                <button class="btn" type="submit"><span>go</span></button>
-                                            </div><!-- .End .input-group-append -->
-                                        </div><!-- .End .input-group -->
+                                                <button class="btn" type="submit" aria-label="Submit"><span>go</span></button>
+                                            </div>
+                                        </div>
                                     </form>
                                     <div class="custom-control custom-checkbox" style="text-align: left;">
                                         <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
@@ -1220,14 +968,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-2-5col col-lg-5 ">
-                                <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                            <div class="col-xl-2-5col col-lg-5">
+                                <img src="images/img-1.jpg" class="newsletter-img" alt="Newsletter Promotional Image" loading="lazy">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Plugins JS File -->
+        </main>
+    </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/jquery.hoverIntent.min.js"></script>
@@ -1238,7 +987,6 @@
     <script src="assets/js/jquery.plugin.min.js"></script>
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
     <script src="assets/js/jquery.countdown.min.js"></script>
-    <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/demos/demo-4.js"></script>
 </body>
