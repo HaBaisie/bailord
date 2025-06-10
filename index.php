@@ -715,7 +715,7 @@
                             </div><!-- End .row -->
                         </div><!-- End .intro-content -->
                     </div><!-- End .intro-slide -->
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/INIFINIX_SMART_10.png);">
+                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
