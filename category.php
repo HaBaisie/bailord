@@ -38,6 +38,21 @@ try {
 }
 
 $pdo->close();
+
+if (isset($_GET['category']) && !empty($_GET['category']) && $_GET['category'] !== 'all') {
+    $category_slug = htmlspecialchars($_GET['category']);
+    $stmt = $conn->prepare("SELECT id, name FROM category WHERE cat_slug = :slug");
+    $stmt->execute(['slug' => $category_slug]);
+    $category = $stmt->fetch();
+    if ($category) {
+        $category_name = htmlspecialchars($category['name']);
+        $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = :category_id");
+        $stmt->execute(['category_id' => $category['id']]);
+        $products = $stmt->fetchAll();
+    } else {
+        $error_message = 'Category not found.';
+    }
+}
 ?>
 <?php include 'includes/header.php'; ?>
 <style>
