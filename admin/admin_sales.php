@@ -1,7 +1,5 @@
 <?php
 include 'includes/session.php';
- <?php include 'includes/navbar.php'; ?>
- <?php include 'includes/menubar.php'; ?>
 if (!isset($_SESSION['admin']) || trim($_SESSION['admin']) == '') {
     header('location: login.php');
     exit;
