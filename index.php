@@ -742,55 +742,18 @@
 
                 <span class="slider-loader"></span><!-- End .slider-loader -->
             </div><!-- End .intro-slider-container -->
+
             <div class="container">
-                    <h2 class="title text-center mb-4">Explore Popular Categories</h2><!-- End .title text-center -->
-                    
-                    <div class="cat-blocks-container">
-                        <div class="row">
-                            <?php
-                            
-                            // Define a default image in case category image doesn't exist
-                            $default_image = 'category-default.jpg';
-                            
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    
-                                    // Create image path - check if you want to use ID, slug, or name
-                                    //$image_name = 'category-' . $category['id'] . '.jpg'; // Using ID
-                                    $image_name = $slug . '.jpg'; // Using slug
-                                    
-                                    // Check if image exists, otherwise use default
-                                    $image_path = file_exists('images/' . $image_name) 
-                                            ? 'images/' . $image_name 
-                                            : 'images/' . $default_image;
-                                    
-                                    echo '
-                                    <div class="col-6 col-sm-4 col-lg-2">
-                                        <a href="category.php?slug='.$slug.'" class="cat-block">
-                                            <figure>
-                                                <span>
-                                                    <img src="'.$image_path.'" alt="'.$category['name'].'">
-                                                </span>
-                                            </figure>
-                                            <h3 class="cat-block-title">'.$category['name'].'</h3>
-                                        </a>
-                                    </div>';
-                                }
-                                
-                                $pdo->close();
-                            }
-                            catch(PDOException $e) {
-                                echo "There is some problem in connection: " . $e->getMessage();
-                            }
-                            ?>
-                        </div><!-- End .row -->
-                    </div><!-- End .cat-blocks-container -->
-                </div><!-- End .container -->
+                <h2 class="title text-center mb-4">Explore Popular Categories</h2>
+                <div class="cat-blocks-container">
+                    <div class="row">
+                        <?php echo renderCategoryBlocks($conn); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4"></div>
+            
+        
 
             <div class="mb-4"></div><!-- End .mb-4 -->
 
