@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -268,7 +269,6 @@
     </style>
 </head>
 <body>
-    <?php include 'includes/session.php'; ?>
     <div class="page-wrapper">
         <header class="header header-4">
             <div class="header-middle">
