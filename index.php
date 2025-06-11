@@ -1235,27 +1235,6 @@
                                                 ? htmlspecialchars($product['photo'])
                                                 : $default_image;
                                             ?>
-                                            <div class="product">
-                                                <figure class="product-media">
-                                                    <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
-                                                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
-                                                    </a>
-                                                </figure>
-                                                <div class="product-body">
-                                                    <h3 class="product-title">
-                                                        <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
-                                                            <?php echo htmlspecialchars($product['name']); ?>
-                                                        </a>
-                                                    </h3>
-                                                    <div class="product-price">₦<?php echo number_format($product['price'], 2); ?></div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: <?php echo rand(80, 100); ?>%;"></div>
-                                                        </div>
-                                                        <span class="ratings-text">( <?php echo rand(5, 50); ?> Reviews )</span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         <?php } ?>
                                     </div>
                                 </div>
