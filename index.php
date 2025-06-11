@@ -737,7 +737,7 @@
                                 </div><!-- End .row -->
                             </div><!-- End .intro-content -->
                         </div><!-- End .intro-slide -->
-                        <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP10.png);">
+                        <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10.png);">
                                 <div class="container intro-content">
                                     <div class="row justify-content-end">
                                         <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -760,7 +760,7 @@
                                     </div><!-- End .row -->
                                 </div><!-- End .intro-content -->
                             </div><!-- End .intro-slide -->
-                            <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_YO4.png);">
+                            <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_Y04.png);">
                                     <div class="container intro-content">
                                         <div class="row justify-content-end">
                                             <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -873,7 +873,7 @@
                                                         </div><!-- End .row -->
                                                     </div><!-- End .intro-content -->
                                                 </div><!-- End .intro-slide -->
-                                                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDM1_A5.png);">
+                                                <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDMI_A5.png);">
                                                     <div class="container intro-content">
                                                         <div class="row justify-content-end">
                                                             <div class="col-auto col-sm-7 col-md-6 col-lg-5">
