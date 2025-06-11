@@ -1154,7 +1154,7 @@
                             </ul>
                         </div>
                     </div>
-
+            
                     <div class="row">
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
@@ -1187,18 +1187,19 @@
                                         }
                                     }'>
                                         <?php
+                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg'; // Cloudinary-hosted default
                                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
                                             $stmt->execute();
                                             $trending = $stmt->fetchAll();
                                             
                                             foreach ($trending as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
+                                                $image_url = !empty($product['photo']) 
+                                                    ? htmlspecialchars($product['photo']) 
+                                                    : $default_image;
                                                 echo '<div class="product">
                                                     <figure class="product-media">
                                                         <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                                         </a>
                                                     </figure>
                                                     <div class="product-body">
@@ -1213,7 +1214,7 @@
                                                     </div>
                                                 </div>';
                                             }
-                                            ?>
+                                        ?>
                                     </div>
                                 </div>
                                 
@@ -1234,18 +1235,19 @@
                                         }
                                     }'>
                                         <?php
+                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
                                             $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
                                             $stmt->execute();
                                             $bestSelling = $stmt->fetchAll();
                                             
                                             foreach ($bestSelling as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
+                                                $image_url = !empty($product['photo']) 
+                                                    ? htmlspecialchars($product['photo']) 
+                                                    : $default_image;
                                                 echo '<div class="product">
                                                     <figure class="product-media">
                                                         <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                                         </a>
                                                     </figure>
                                                     <div class="product-body">
@@ -1260,7 +1262,7 @@
                                                     </div>
                                                 </div>';
                                             }
-                                            ?>
+                                        ?>
                                     </div>
                                 </div>
                                 
@@ -1281,19 +1283,20 @@
                                         }
                                     }'>
                                         <?php
+                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
                                             $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
                                             $stmt->execute();
                                             $onSale = $stmt->fetchAll();
                                             
                                             foreach ($onSale as $product) {
-                                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                                    : 'images/' . $default_image;
+                                                $image_url = !empty($product['photo']) 
+                                                    ? htmlspecialchars($product['photo']) 
+                                                    : $default_image;
                                                 echo '<div class="product">
                                                     <figure class="product-media">
                                                         <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a>
+                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        </a></div>
                                                     </figure>
                                                     <div class="product-body">
                                                         <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
@@ -1302,20 +1305,19 @@
                                                             <div class="ratings">
                                                                 <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
                                                             </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                            <span class="ratings-text">'.rand(5,50).' Reviews )</span>
                                                         </div>
                                                     </div>
                                                 </div>';
                                             }
-                                            ?>
+                                        ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            
             <div class="mb-5"></div>
 
             <div class="container for-you">
@@ -1327,23 +1329,24 @@
                         <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
                     </div>
                 </div>
-
+            
                 <div class="products">
                     <div class="row justify-content-center">
-                       <?php
+                        <?php
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg'; // Cloudinary-hosted default
                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
                             $stmt->execute();
                             $recommended = $stmt->fetchAll();
                             
                             foreach ($recommended as $product) {
-                                $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                    ? 'images/' . htmlspecialchars($product['photo']) 
-                                    : 'images/' . $default_image;
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
                                 echo '<div class="col-6 col-md-4 col-lg-2">
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                             </a>
                                         </figure>
                                         <div class="product-body">
@@ -1353,7 +1356,7 @@
                                     </div>
                                 </div>';
                             }
-                            ?>
+                        ?>
                     </div>
                 </div>
             </div>
