@@ -1065,45 +1065,45 @@
                             }
                         }'>
                             <?php
-                                $default_image = 'noimage.jpg';
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
-                                $stmt->execute();
-                                $products = $stmt->fetchAll();
-                                
-                                $productGroups = array_chunk($products, 5);
-                                
-                                foreach ($productGroups as $group) {
-                                    echo '<div class="products-slide d-flex">';
-                                    foreach ($group as $product) {
-                                        $image_path = !empty($product['photo']) && file_exists('images/' . $product['photo']) 
-                                            ? 'images/' . htmlspecialchars($product['photo']) 
-                                            : 'images/' . $default_image;
-                                        echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_path.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                                </div>
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 100%;"></div>
-                                                    </div>
-                                                    <span class="ratings-text">( 5 Reviews )</span>
-                                                </div>
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg'; // Cloudinary-hosted default image
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                            
+                            $productGroups = array_chunk($products, 5);
+                            
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';
+                                foreach ($group as $product) {
+                                    $image_url = !empty($product['photo']) 
+                                        ? htmlspecialchars($product['photo']) 
+                                        : $default_image;
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                             </div>
-                                        </div>';
-                                    }
-                                    echo '</div>';
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
+                                            </div>
+                                        </div>
+                                    </div>';
                                 }
+                                echo '</div>';
+                            }
                             ?>
                         </div>
                     </div>
