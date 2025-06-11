@@ -1,7 +1,7 @@
 <?php include 'includes/session.php'; ?>
 <?php
 // Check if category parameter exists
-if(!isset($_GET['category'])) {
+if (!isset($_GET['category'])) {
     header('location: index.php');
     exit;
 }
@@ -10,7 +10,7 @@ $slug = $_GET['category'];
 $conn = $pdo->open();
 
 try {
-    if($slug == 'all') {
+    if ($slug == 'all') {
         // Handle "All Products" case
         $stmt = $conn->prepare("SELECT * FROM products");
         $page_title = "All Products";
@@ -21,7 +21,7 @@ try {
         $stmt->execute(['slug' => $slug]);
         $cat = $stmt->fetch();
         
-        if(!$cat) {
+        if (!$cat) {
             $_SESSION['error'] = 'Category not found';
             header('location: index.php');
             exit;
@@ -31,7 +31,7 @@ try {
         $page_title = $cat['name'];
         $show_all_products = false;
     }
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     $_SESSION['error'] = $e->getMessage();
     header('location: index.php');
     exit;
@@ -192,7 +192,7 @@ if (isset($_GET['category']) && !empty($_GET['category']) && $_GET['category'] !
     padding: 0 15px;
   }
 
-  /* Buttons (if included in scripts) */
+  /* Buttons */
   .btn-primary {
     background-color: var(--dominant-color);
     border-color: #2980b9;
@@ -238,59 +238,60 @@ if (isset($_GET['category']) && !empty($_GET['category']) && $_GET['category'] !
 </style>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-
     <?php include 'includes/navbar.php'; ?>
-     
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
                 <div class="row">
                     <div class="col-sm-9">
-                        <h1 class="page-header"><?php echo $page_title; ?></h1>
+                        <h1 class="page-header"><?php echo htmlspecialchars($page_title); ?></h1>
                         <?php
-                            $conn = $pdo->open();
-                            try {
-                                $inc = 3;
-                                
-                                if($show_all_products) {
-                                    $stmt = $conn->prepare("SELECT * FROM products");
-                                    $stmt->execute();
-                                } else {
-                                    $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = :catid");
-                                    $stmt->execute(['catid' => $catid]);
-                                }
-                                
-                                if($stmt->rowCount() > 0) {
-                                    foreach ($stmt as $row) {
-                                        $image = (!empty($row['photo'])) ? 'images/'.$row['photo'] : 'images/noimage.jpg';
-                                        $inc = ($inc == 3) ? 1 : $inc + 1;
-                                        if($inc == 1) echo "<div class='row'>";
-                                        echo "
-                                            <div class='col-sm-4'>
-                                                <div class='box box-solid'>
-                                                    <div class='box-body prod-body'>
-                                                        <img src='".$image."' width='100%' height='230px' class='thumbnail'>
-                                                        <h5><a href='product.php?product=".$row['slug']."'>".$row['name']."</a></h5>
-                                                    </div>
-                                                    <div class='box-footer'>
-                                                        <b>&#36; ".number_format($row['price'], 2)."</b>
-                                                    </div>
+                        $conn = $pdo->open();
+                        try {
+                            $inc = 3;
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg'; // Cloudinary-hosted default
+
+                            if ($show_all_products) {
+                                $stmt = $conn->prepare("SELECT * FROM products");
+                                $stmt->execute();
+                            } else {
+                                $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = :catid");
+                                $stmt->execute(['catid' => $catid]);
+                            }
+
+                            if ($stmt->rowCount() > 0) {
+                                foreach ($stmt as $row) {
+                                    $image_url = !empty($row['photo'])
+                                        ? htmlspecialchars($row['photo'])
+                                        : $default_image;
+                                    $inc = ($inc == 3) ? 1 : $inc + 1;
+                                    if ($inc == 1) echo "<div class='row'>";
+                                    echo "
+                                        <div class='col-sm-4'>
+                                            <div class='box box-solid'>
+                                                <div class='box-body prod-body'>
+                                                    <img src='".$image_url."' width='100%' height='230px' class='thumbnail' alt='".htmlspecialchars($row['name'])."'>
+                                                    <h5><a href='product.php?product=".htmlspecialchars($row['slug'])."'>".htmlspecialchars($row['name'])."</a></h5>
+                                                </div>
+                                                <div class='box-footer'>
+                                                    <b>₦ ".number_format($row['price'], 2)."</b>
                                                 </div>
                                             </div>
-                                        ";
-                                        if($inc == 3) echo "</div>";
-                                    }
-                                    // Close row if not already closed
-                                    if($inc == 1) echo "<div class='col-sm-4'></div><div class='col-sm-4'></div></div>"; 
-                                    if($inc == 2) echo "<div class='col-sm-4'></div></div>";
-                                } else {
-                                    echo "<div class='alert alert-info'>No products found.</div>";
+                                        </div>
+                                    ";
+                                    if ($inc == 3) echo "</div>";
                                 }
-                            } catch(PDOException $e) {
-                                echo "<div class='alert alert-danger'>Error loading products: ".$e->getMessage()."</div>";
+                                // Close row if not already closed
+                                if ($inc == 1) echo "<div class='col-sm-4'></div><div class='col-sm-4'></div></div>";
+                                if ($inc == 2) echo "<div class='col-sm-4'></div></div>";
+                            } else {
+                                echo "<div class='alert alert-info'>No products found.</div>";
                             }
-                            $pdo->close();
-                        ?> 
+                        } catch (PDOException $e) {
+                            echo "<div class='alert alert-danger'>Error loading products: ".htmlspecialchars($e->getMessage())."</div>";
+                        }
+                        $pdo->close();
+                        ?>
                     </div>
                     <div class="col-sm-3">
                         <?php include 'includes/sidebar.php'; ?>
@@ -299,10 +300,8 @@ if (isset($_GET['category']) && !empty($_GET['category']) && $_GET['category'] !
             </section>
         </div>
     </div>
-  
     <?php include 'includes/footer.php'; ?>
 </div>
-
 <?php include 'includes/scripts.php'; ?>
 </body>
 </html>
