@@ -1308,9 +1308,6 @@
                         </div>
                     </div>
                 </div>
-            
-            <div class="mb-5"></div>
-
             <div class="container for-you">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
