@@ -1,7 +1,7 @@
 <?php
 include 'includes/session.php';
 include 'includes/slugify.php';
-require 'vendor/autoload.php'; // Load Composer dependencies
+require '../vendor/autoload.php'; // Load Composer dependencies
 use Cloudinary\Cloudinary;
 
 if (isset($_POST['add'])) {
