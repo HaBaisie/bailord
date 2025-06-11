@@ -594,21 +594,6 @@
                                     ?>
                                 </ul>
                             </li>
-                            
-                            <!-- Pages Dropdown -->
-                            <li>
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="faq.html">FAQs</a></li>
-                                    <li><a href="404.html">Error 404</a></li>
-                                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
                 </div>
