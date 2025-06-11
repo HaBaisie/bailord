@@ -1,8 +1,6 @@
 <?php
 include 'includes/session.php';
 require '../vendor/autoload.php';
-<?php include 'includes/navbar.php'; ?>
-<?php include 'includes/menubar.php'; ?>
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
