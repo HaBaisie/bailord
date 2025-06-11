@@ -1156,167 +1156,159 @@
                     </div>
             
                     <div class="row">
-                        <div class="col-xl-5col d-none d-xl-block">
-                            <div class="banner banner-overlay banner-overlay-light">
-                                <a href="category.php">
-                                    <img src="images/Banner.jpg" alt="Banner">
-                                </a>
-                                <div class="banner-content">
-                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
-                                    <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4-5col">
+                        <div class="col-12">
                             <div class="tab-content tab-content-carousel just-action-icons-sm">
                                 <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
-                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" data-owl-options='{
+                                        "nav": true,
                                         "dots": true,
                                         "margin": 10,
                                         "loop": false,
                                         "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
+                                            "0": {"items": 1},
+                                            "400": {"items": 2},
+                                            "576": {"items": 3},
+                                            "768": {"items": 4},
+                                            "992": {"items": 5},
+                                            "1200": {"items": 5}
                                         }
                                     }'>
                                         <?php
-                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg'; // Cloudinary-hosted default
-                                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
-                                            $stmt->execute();
-                                            $trending = $stmt->fetchAll();
-                                            
-                                            foreach ($trending as $product) {
-                                                $image_url = !empty($product['photo']) 
-                                                    ? htmlspecialchars($product['photo']) 
-                                                    : $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+            
+                                        foreach ($trending as $product) {
+                                            $image_url = !empty($product['photo'])
+                                                ? htmlspecialchars($product['photo'])
+                                                : $default_image;
+                                            ?>
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title">
+                                                        <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                            <?php echo htmlspecialchars($product['name']); ?>
                                                         </a>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </h3>
+                                                    <div class="product-price">₦<?php echo number_format($product['price'], 2); ?></div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: <?php echo rand(80, 100); ?>%;"></div>
                                                         </div>
+                                                        <span class="ratings-text">( <?php echo rand(5, 50); ?> Reviews )</span>
                                                     </div>
-                                                </div>';
-                                            }
-                                        ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                                
+            
                                 <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
-                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" data-owl-options='{
+                                        "nav": true,
                                         "dots": true,
                                         "margin": 10,
                                         "loop": false,
                                         "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
+                                            "0": {"items": 1},
+                                            "400": {"items": 2},
+                                            "576": {"items": 3},
+                                            "768": {"items": 4},
+                                            "992": {"items": 5},
+                                            "1200": {"items": 5}
                                         }
                                     }'>
                                         <?php
-                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                            $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
-                                            $stmt->execute();
-                                            $bestSelling = $stmt->fetchAll();
-                                            
-                                            foreach ($bestSelling as $product) {
-                                                $image_url = !empty($product['photo']) 
-                                                    ? htmlspecialchars($product['photo']) 
-                                                    : $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+            
+                                        foreach ($bestSelling as $product) {
+                                            $image_url = !empty($product['photo'])
+                                                ? htmlspecialchars($product['photo'])
+                                                : $default_image;
+                                            ?>
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title">
+                                                        <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                            <?php echo htmlspecialchars($product['name']); ?>
                                                         </a>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </h3>
+                                                    <div class="product-price">₦<?php echo number_format($product['price'], 2); ?></div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: <?php echo rand(80, 100); ?>%;"></div>
                                                         </div>
+                                                        <span class="ratings-text">( <?php echo rand(5, 50); ?> Reviews )</span>
                                                     </div>
-                                                </div>';
-                                            }
-                                        ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                                
+            
                                 <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
-                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" data-owl-options='{
+                                        "nav": true,
                                         "dots": true,
                                         "margin": 10,
                                         "loop": false,
                                         "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
+                                            "0": {"items": 1},
+                                            "400": {"items": 2},
+                                            "576": {"items": 3},
+                                            "768": {"items": 4},
+                                            "992": {"items": 5},
+                                            "1200": {"items": 5}
                                         }
                                     }'>
                                         <?php
-                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                            $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
-                                            $stmt->execute();
-                                            $onSale = $stmt->fetchAll();
-                                            
-                                            foreach ($onSale as $product) {
-                                                $image_url = !empty($product['photo']) 
-                                                    ? htmlspecialchars($product['photo']) 
-                                                    : $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a></div>
-                                                    </figure>
-                                                    <div class="product-body">
-                                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                        <div class="ratings-container">
-                                                            <div class="ratings">
-                                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                            </div>
-                                                            <span class="ratings-text">'.rand(5,50).' Reviews )</span>
-                                                        </div>
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
+                                        $stmt->execute();
+                                        $onSale = $stmt->fetchAll();
+            
+                                        foreach ($onSale as $product) {
+                                            $image_url = !empty($product['photo'])
+                                                ? htmlspecialchars($product['photo'])
+                                                : $default_image;
+                                            ?>
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title">
+                                                        <a href="product.php?product=<?php echo htmlspecialchars($product['slug']); ?>">
+                                                            <?php echo htmlspecialchars($product['name']); ?>
+                                                        </a>
+                                                    </h3>
                                                     </div>
-                                                </div>';
-                                            }
-                                        ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             
             <div class="mb-5"></div>
 
