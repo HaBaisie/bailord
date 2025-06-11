@@ -1265,45 +1265,6 @@
                                         ?>
                                     </div>
                                 </div>
-                                
-                                <div class="tab-pane p-0 fade" id="trending-sale-tab" role="tabpanel" aria-labelledby="trending-sale-link">
-                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 10,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
-                                        }
-                                    }'>
-                                        <?php
-                                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                            $stmt = $conn->prepare("SELECT * FROM products WHERE price < (SELECT AVG(price) FROM products) ORDER BY RAND() LIMIT 8");
-                                            $stmt->execute();
-                                            $onSale = $stmt->fetchAll();
-                                            
-                                            foreach ($onSale as $product) {
-                                                $image_url = !empty($product['photo']) 
-                                                    ? htmlspecialchars($product['photo']) 
-                                                    : $default_image;
-                                                echo '<div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                        </a></div>
-                                                    </figure>
-                                                    </div>
-                                                </div>';
-                                            }
-                                        ?>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
