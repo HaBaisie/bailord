@@ -159,68 +159,109 @@
 
             /* Adjusted Slider Styles for Mobile */
             .intro-slider-container {
-                height: 200px; /* Reduced height for mobile */
+                height: 150px; /* Further reduced height */
+                padding: 0 10px;
             }
 
             .intro-slide {
                 background-size: cover;
                 background-position: center;
-                height: 200px; /* Match container height */
+                height: 150px;
+                border-radius: 8px;
+                margin: 0 5px; /* Space for adjacent slides */
             }
 
             .intro-content {
-                padding: 10px;
+                padding: 8px;
             }
 
             .intro-title {
-                font-size: 18px;
+                font-size: 14px;
                 line-height: 1.2;
             }
 
             .intro-subtitle {
-                font-size: 12px;
-            }
-
-            .intro-price {
-                font-size: 14px;
-            }
-
-            .intro-price sup {
                 font-size: 10px;
             }
 
-            .btn-round {
-                padding: 6px 12px;
+            .intro-price {
                 font-size: 12px;
             }
 
+            .intro-price sup {
+                font-size: 8px;
+            }
+
+            .btn-round {
+                padding: 5px 10px;
+                font-size: 10px;
+            }
+
+            /* Product Styles for Mobile */
             .product {
-                margin-bottom: 15px;
+                margin-bottom: 10px;
+            }
+
+            .product-media img {
+                width: 100%;
+                height: 120px; /* Smaller product images */
+                object-fit: cover;
             }
 
             .product-title {
-                font-size: 14px;
+                font-size: 12px;
+                line-height: 1.3;
             }
 
             .product-price {
-                font-size: 15px;
+                font-size: 13px;
             }
 
+            .ratings-container {
+                font-size: 10px;
+            }
+
+            .ratings-text {
+                font-size: 10px;
+            }
+
+            /* Mobile Menu as Modal */
             .mobile-menu-container {
-                width: 85%;
                 position: fixed;
                 top: 0;
                 left: 0;
+                width: 85%;
                 height: 100%;
                 background-color: var(--light-neutral);
                 z-index: 1000;
                 overflow-y: auto;
-                transform: translateX(-100%); /* Initially off-screen */
-                transition: transform 0.3s ease-in-out;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
             }
 
             .mobile-menu-container.visible {
-                transform: translateX(0); /* Slide in when visible */
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Backdrop for Mobile Menu */
+            .mobile-menu-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            .mobile-menu-backdrop.visible {
+                opacity: 1;
+                visibility: visible;
             }
 
             .btn {
@@ -229,19 +270,19 @@
             }
 
             .deal {
-                min-height: 200px;
+                min-height: 180px;
             }
 
             .deal-content {
-                padding: 10px;
+                padding: 8px;
             }
 
             .deal h2 {
-                font-size: 16px;
+                font-size: 14px;
             }
 
             .deal h3 {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .footer .col-sm-6 {
@@ -257,23 +298,27 @@
         /* Tablet adjustments */
         @media (min-width: 768px) and (max-width: 991px) {
             .intro-slider-container {
-                height: 300px;
+                height: 250px;
             }
 
             .intro-slide {
-                height: 300px;
+                height: 250px;
             }
 
             .intro-title {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .intro-subtitle {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .product {
-                margin-bottom: 20px;
+                margin-bottom: 15px;
+            }
+
+            .product-media img {
+                height: 150px;
             }
 
             .cat-block-title {
@@ -291,7 +336,7 @@
 
         .btn-product-icon:before, 
         .icon-phone:before, 
-        .icon-search BEFORE {
+        .icon-search:before {
             content: '';
             position: absolute;
             top: -10px;
@@ -385,11 +430,16 @@
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
             const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileMenuBackdrop = document.createElement('div');
+            mobileMenuBackdrop.classList.add('mobile-menu-backdrop');
+            document.body.appendChild(mobileMenuBackdrop);
 
             if (mobileMenuToggle && mobileMenuContainer) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileMenuContainer.classList.toggle('visible');
+                    mobileMenuContainer.classList.add('visible');
+                    mobileMenuBackdrop.classList.add('visible');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
                 });
             }
 
@@ -397,6 +447,16 @@
                 mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
+                    mobileMenuBackdrop.classList.remove('visible');
+                    document.body.style.overflow = ''; // Restore scrolling
+                });
+            }
+
+            if (mobileMenuBackdrop) {
+                mobileMenuBackdrop.addEventListener('click', function() {
+                    mobileMenuContainer.classList.remove('visible');
+                    mobileMenuBackdrop.classList.remove('visible');
+                    document.body.style.overflow = '';
                 });
             }
 
@@ -408,15 +468,6 @@
                 mobileSearchToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileSearchForm.classList.toggle('visible');
-                });
-            }
-
-            // Close mobile menu when clicking outside
-            if (mobileMenuContainer) {
-                mobileMenuContainer.addEventListener('click', function(e) {
-                    if (e.target === mobileMenuContainer) {
-                        mobileMenuContainer.classList.remove('visible');
-                    }
                 });
             }
 
@@ -477,7 +528,6 @@
                     if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
                         document.querySelectorAll('.dropdown-menu').forEach(menu => {
                             menu.style.display = 'none';
- Johnson
                         });
                     }
                 }
@@ -649,11 +699,24 @@
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
                     data-owl-options='{
                         "dots": true,
-                        "nav": false, 
+                        "nav": false,
+                        "center": true,
+                        "items": 1,
+                        "margin": 10,
                         "responsive": {
+                            "0": {
+                                "stagePadding": 30,
+                                "items": 1
+                            },
+                            "768": {
+                                "stagePadding": 50,
+                                "items": 1
+                            },
                             "1200": {
                                 "nav": true,
-                                "dots": false
+                                "dots": false,
+                                "stagePadding": 0,
+                                "items": 1
                             }
                         }
                     }'>
@@ -784,23 +847,18 @@
                     </div>
                     <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_CITY_100.png);">
                         <div class="container intro-content">
-                            <div class="row justify-content-end">
-                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                    <h1 class="intro-title">ITEL CITY</h1>
-                                    <h1 class="intro-title">100</h1>
-                                    <div class="intro-price">
-                                        <sup>Today:</sup>
-                                        <span class="text-primary">
-                                            ₦999<sup>.99</sup>
-                                        </span>
-                                    </div>
-                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                        <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </a>
-                                </div>
+                            <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                            <h1 class="intro-title">ITEL CITY</h1>
+                            <h1 class="intro-title">100</h1>
+                            <div class="intro-price">
+                                <sup>Today:</sup>
+                                <span class="text-primary">
+                                    ₦999<sup>.99</sup>
+                                </span>
                             </div>
+                            <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                <span>Shop More</span>
+                                <i class="icon-long-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_C75.png);">
@@ -887,7 +945,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
+                    <div class="intro-slide" style="background-image: url(images/INIFINIX.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -916,7 +974,7 @@
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php echo renderCategoryBlocks($conn); ?>
+                        <?php echo htmlspecialchars($conn->renderCategoryBlocks()); ?>
                     </div>
                 </div>
             </div>
@@ -934,7 +992,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners" alt="Banner">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
@@ -946,24 +1004,24 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners" alt="Banner">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
-                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
-                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <h3 class="banner-title"><a href="#"><strong>Highlight</strong> <br>Time Deal -30%</a></h3>
+                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners" alt="Banner">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
                                 <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
-                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <a href="#" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -978,7 +1036,7 @@
                     <div class="heading-right">
                         <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" aria-controls="new-all-tab" aria-selected="true">All</a>
                             </li>
                         </ul>
                     </div>
@@ -987,17 +1045,17 @@
                     <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
                         <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
                         data-owl-options='{
-                            "nav": true, 
+                            "nav": true,
                             "dots": true,
-                            "margin": 10,
+                            "margin": 2,
                             "loop": false,
                             "responsive": {
-                                "0": {"items":1},
-                                "400": {"items":2},
-                                "576": {"items":3},
-                                "768": {"items":4},
-                                "992": {"items":5},
-                                "1200": {"items":5}
+                                "0": {"items":2},
+                                "400": {"items":3},
+                                "576": {"items":4},
+                                "768": {"items":5},
+                                "992": {"items":6},
+                                "1200": {"items":6}
                             }
                         }'>
                             <?php
@@ -1005,38 +1063,33 @@
                             $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
                             $stmt->execute();
                             $products = $stmt->fetchAll();
-                            $productGroups = array_chunk($products, 5);
-                            foreach ($productGroups as $group) {
-                                echo '<div class="products-slide d-flex">';
-                                foreach ($group as $product) {
-                                    $image_url = !empty($product['photo']) 
-                                        ? htmlspecialchars($product['photo']) 
-                                        : $default_image;
-                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                        <figure class="product-media">
-                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                            </a>
-                                            <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                            </div>
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                            </div>
-                                        </figure>
-                                        <div class="product-body">
-                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 100%;"></div>
-                                                </div>
-                                                <span class="ratings-text">( 5 Reviews )</span>
-                                            </div>
+                            foreach ($products as $product) {
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
+                                echo '<div class="product">
+                                    <figure class="product-media">
+                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                        </a>
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                         </div>
-                                    </div>';
-                                }
-                                echo '</div>';
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-body">
+                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="ratings-text">( 5 Reviews )</span>
+                                        </div>
+                                    </div>
+                                </div>';
                             }
                             ?>
                         </div>
@@ -1077,10 +1130,10 @@
                                     <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                    <a class="nav-link" id="trending-best-link" href="#trending-best-tab" data-toggle="tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                    <a class="nav-link" id="trending-sale-link" href="#trending-sale-tab" data-toggle="tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
                                 </li>
                             </ul>
                         </div>
@@ -1093,6 +1146,7 @@
                                 </a>
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
+                                    <div>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
                                     <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                                 </div>
@@ -1103,17 +1157,17 @@
                                 <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
                                     data-owl-options='{
-                                        "nav": true, 
+                                        "nav": true,
                                         "dots": true,
-                                        "margin": 10,
+                                        "margin": 2,
                                         "loop": false,
                                         "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
+                                            "0": {"items":2},
+                                            "400": {"items":3},
+                                            "576": {"items":4},
+                                            "768": {"items":5},
+                                            "992": {"items":6},
+                                            "1200": {"items":6}
                                         }
                                     }'>
                                         <?php
@@ -1149,17 +1203,17 @@
                                 <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
                                     data-owl-options='{
-                                        "nav": true, 
+                                        "nav": true,
                                         "dots": true,
-                                        "margin": 10,
+                                        "margin": 2,
                                         "loop": false,
                                         "responsive": {
-                                            "0": {"items":1},
-                                            "400": {"items":2},
-                                            "576": {"items":3},
-                                            "768": {"items":4},
-                                            "992": {"items":5},
-                                            "1200": {"items":5}
+                                            "0": {"items":2},
+                                            "400": {"items":3},
+                                            "576": {"items":4},
+                                            "768": {"items":5},
+                                            "992": {"items":6},
+                                            "1200": {"items":6}
                                         }
                                     }'>
                                         <?php
