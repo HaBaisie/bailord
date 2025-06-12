@@ -1,35 +1,4 @@
-<?php 
-include 'includes/session.php'; 
-require_once 'includes/database.php'; // Ensure Database class is included
-
-// Fallback function if renderCategoryBlocks is undefined
-if (!function_exists('renderCategoryBlocks')) {
-    function renderCategoryBlocks($conn) {
-        try {
-            $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
-            $stmt->execute();
-            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $output = '';
-            foreach ($categories as $category) {
-                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                $output .= '<div class="col-6 col-md-4 col-lg-2">';
-                $output .= '<a href="category.php?category=' . htmlspecialchars($slug) . '" class="cat-block">';
-                $output .= '<figure>';
-                $output .= '<span>';
-                $output .= '<img src="assets/images/demos/demo-4/cats/' . htmlspecialchars($category['name']) . '.jpg" alt="' . htmlspecialchars($category['name']) . '">';
-                $output .= '</span>';
-                $output .= '</figure>';
-                $output .= '<h3 class="cat-block-title">' . htmlspecialchars($category['name']) . '</h3>';
-                $output .= '</a>';
-                $output .= '</div>';
-            }
-            return $output;
-        } catch (PDOException $e) {
-            return '<div class="col-12"><p>Error loading categories: ' . htmlspecialchars($e->getMessage()) . '</p></div>';
-        }
-    }
-}
-?>
+<?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,11 +43,12 @@ if (!function_exists('renderCategoryBlocks')) {
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
         :root {
-            --dominant-color: #2a5bd7;
-            --secondary-color: #28a745;
-            --accent-color: #fd7e14;
-            --complementary-blue: #1e429f;
-            --complementary-orange: #e67700;
+            /* Color Palette */
+            --dominant-color: #2a5bd7;       /* Primary blue (60%) */
+            --secondary-color: #28a745;      /* Green (30%) */
+            --accent-color: #fd7e14;         /* Orange (10%) */
+            --complementary-blue: #1e429f;   /* Darker blue */
+            --complementary-orange: #e67700; /* Darker orange */
             --light-neutral: #f8f9fa;
             --medium-neutral: #e9ecef;
             --dark-neutral: #495057;
@@ -88,12 +58,14 @@ if (!function_exists('renderCategoryBlocks')) {
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
 
+        /* Base Styles */
         body {
             background-color: var(--light-neutral);
             color: var(--text-dark);
             font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
+        /* Header */
         .header {
             background: var(--blue-gradient);
             color: var(--text-light);
@@ -103,6 +75,7 @@ if (!function_exists('renderCategoryBlocks')) {
             background-color: var(--complementary-blue);
         }
 
+        /* Navigation */
         .main-nav .menu > li > a {
             color: var(--text-dark);
         }
@@ -111,6 +84,7 @@ if (!function_exists('renderCategoryBlocks')) {
             color: var(--accent-color);
         }
 
+        /* Buttons */
         .btn-primary {
             background-color: var(--dominant-color);
             border-color: var(--dominant-color);
@@ -131,6 +105,7 @@ if (!function_exists('renderCategoryBlocks')) {
             color: var(--text-light);
         }
 
+        /* Accent Elements */
         .highlight, .intro-subtitle.text-third, .intro-price .text-third {
             color: var(--accent-color);
         }
@@ -158,6 +133,7 @@ if (!function_exists('renderCategoryBlocks')) {
             gap: 10px;
         }
 
+        /* Mobile-specific styles */
         @media (max-width: 767px) {
             .header-top {
                 padding: 5px 0;
@@ -181,107 +157,70 @@ if (!function_exists('renderCategoryBlocks')) {
                 font-size: 12px;
             }
 
+            /* Adjusted Slider Styles for Mobile */
             .intro-slider-container {
-                height: 150px;
-                padding: 0 10px;
+                height: 200px; /* Reduced height for mobile */
             }
 
             .intro-slide {
                 background-size: cover;
                 background-position: center;
-                height: 150px;
-                border-radius: 8px;
-                margin: 0 5px;
+                height: 200px; /* Match container height */
             }
 
             .intro-content {
-                padding: 8px;
+                padding: 10px;
             }
 
             .intro-title {
-                font-size: 14px;
+                font-size: 18px;
                 line-height: 1.2;
             }
 
             .intro-subtitle {
-                font-size: 10px;
+                font-size: 12px;
             }
 
             .intro-price {
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .intro-price sup {
-                font-size: 8px;
+                font-size: 10px;
             }
 
             .btn-round {
-                padding: 5px 10px;
-                font-size: 10px;
+                padding: 6px 12px;
+                font-size: 12px;
             }
 
             .product {
-                margin-bottom: 10px;
-            }
-
-            .product-media img {
-                width: 100%;
-                height: 120px;
-                object-fit: cover;
+                margin-bottom: 15px;
             }
 
             .product-title {
-                font-size: 12px;
-                line-height: 1.3;
+                font-size: 14px;
             }
 
             .product-price {
-                font-size: 13px;
-            }
-
-            .ratings-container {
-                font-size: 10px;
-            }
-
-            .ratings-text {
-                font-size: 10px;
+                font-size: 15px;
             }
 
             .mobile-menu-container {
+                width: 85%;
                 position: fixed;
                 top: 0;
                 left: 0;
-                width: 85%;
                 height: 100%;
                 background-color: var(--light-neutral);
                 z-index: 1000;
                 overflow-y: auto;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease, visibility 0.3s ease;
+                transform: translateX(-100%); /* Initially off-screen */
+                transition: transform 0.3s ease-in-out;
             }
 
             .mobile-menu-container.visible {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .mobile-menu-backdrop {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.3s ease, visibility 0.3s ease;
-            }
-
-            .mobile-menu-backdrop.visible {
-                opacity: 1;
-                visibility: visible;
+                transform: translateX(0); /* Slide in when visible */
             }
 
             .btn {
@@ -290,19 +229,19 @@ if (!function_exists('renderCategoryBlocks')) {
             }
 
             .deal {
-                min-height: 180px;
+                min-height: 200px;
             }
 
             .deal-content {
-                padding: 8px;
+                padding: 10px;
             }
 
             .deal h2 {
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .deal h3 {
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .footer .col-sm-6 {
@@ -315,29 +254,26 @@ if (!function_exists('renderCategoryBlocks')) {
             }
         }
 
+        /* Tablet adjustments */
         @media (min-width: 768px) and (max-width: 991px) {
             .intro-slider-container {
-                height: 250px;
+                height: 300px;
             }
 
             .intro-slide {
-                height: 250px;
+                height: 300px;
             }
 
             .intro-title {
-                font-size: 20px;
+                font-size: 24px;
             }
 
             .intro-subtitle {
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .product {
-                margin-bottom: 15px;
-            }
-
-            .product-media img {
-                height: 150px;
+                margin-bottom: 20px;
             }
 
             .cat-block-title {
@@ -345,6 +281,7 @@ if (!function_exists('renderCategoryBlocks')) {
             }
         }
 
+        /* Touch targets */
         .btn, .dropdown-toggle, .mobile-menu-toggler, 
         .mobile-search-toggle, .product-media a {
             min-height: 44px;
@@ -354,7 +291,7 @@ if (!function_exists('renderCategoryBlocks')) {
 
         .btn-product-icon:before, 
         .icon-phone:before, 
-        .icon-search:before {
+        .icon-search BEFORE {
             content: '';
             position: absolute;
             top: -10px;
@@ -441,33 +378,18 @@ if (!function_exists('renderCategoryBlocks')) {
         .mobile-menu-container .mobile-menu li ul li a:hover {
             color: var(--accent-color);
         }
-
-        /* Ensure slider visibility */
-        .intro-slider-container {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Debug: Log to check if script runs
-            console.log('DOM fully loaded');
-
             // Mobile menu toggle
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
             const mobileMenuClose = document.querySelector('.mobile-menu-close');
-            const mobileMenuBackdrop = document.createElement('div');
-            mobileMenuBackdrop.classList.add('mobile-menu-backdrop');
-            document.body.appendChild(mobileMenuBackdrop);
 
             if (mobileMenuToggle && mobileMenuContainer) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileMenuContainer.classList.add('visible');
-                    mobileMenuBackdrop.classList.add('visible');
-                    document.body.style.overflow = 'hidden';
+                    mobileMenuContainer.classList.toggle('visible');
                 });
             }
 
@@ -475,16 +397,6 @@ if (!function_exists('renderCategoryBlocks')) {
                 mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
-                    mobileMenuBackdrop.classList.remove('visible');
-                    document.body.style.overflow = '';
-                });
-            }
-
-            if (mobileMenuBackdrop) {
-                mobileMenuBackdrop.addEventListener('click', function() {
-                    mobileMenuContainer.classList.remove('visible');
-                    mobileMenuBackdrop.classList.remove('visible');
-                    document.body.style.overflow = '';
                 });
             }
 
@@ -496,6 +408,15 @@ if (!function_exists('renderCategoryBlocks')) {
                 mobileSearchToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileSearchForm.classList.toggle('visible');
+                });
+            }
+
+            // Close mobile menu when clicking outside
+            if (mobileMenuContainer) {
+                mobileMenuContainer.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuContainer) {
+                        mobileMenuContainer.classList.remove('visible');
+                    }
                 });
             }
 
@@ -556,6 +477,7 @@ if (!function_exists('renderCategoryBlocks')) {
                     if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
                         document.querySelectorAll('.dropdown-menu').forEach(menu => {
                             menu.style.display = 'none';
+ Johnson
                         });
                     }
                 }
@@ -570,26 +492,6 @@ if (!function_exists('renderCategoryBlocks')) {
                 }
                 lastTouchEnd = now;
             }, false);
-
-            // Debug: Check if Owl Carousel is loaded
-            if (typeof $.fn.owlCarousel === 'undefined') {
-                console.error('Owl Carousel plugin is not loaded');
-            } else {
-                console.log('Owl Carousel initialized');
-                // Force re-initialize slider
-                $('.intro-slider').owlCarousel('destroy').owlCarousel({
-                    dots: true,
-                    nav: false,
-                    center: true,
-                    items: 1,
-                    margin: 10,
-                    responsive: {
-                        0: { stagePadding: 30, items: 1 },
-                        768: { stagePadding: 50, items: 1 },
-                        1200: { nav: true, dots: false, stagePadding: 0, items: 1 }
-                    }
-                });
-            }
         });
     </script>
 </head>
@@ -672,16 +574,18 @@ if (!function_exists('renderCategoryBlocks')) {
                                 <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
+                                    $pdo = new Database();
+                                    $conn = $pdo->open();
                                     try {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
-                                        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        $categories = $stmt->fetchAll();
                                         foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category=' . htmlspecialchars($slug) . '">' . htmlspecialchars($category['name']) . '</a></li>';
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories: " . htmlspecialchars($e->getMessage()) . "</a></li>";
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
                                     ?>
                                 </ul>
@@ -711,13 +615,13 @@ if (!function_exists('renderCategoryBlocks')) {
                                     try {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
-                                        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        $categories = $stmt->fetchAll();
                                         foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category=' . htmlspecialchars($slug) . '">' . htmlspecialchars($category['name']) . '</a></li>';
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories: " . htmlspecialchars($e->getMessage()) . "</a></li>";
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
                                     ?>
                                 </ul>
@@ -745,14 +649,12 @@ if (!function_exists('renderCategoryBlocks')) {
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
                     data-owl-options='{
                         "dots": true,
-                        "nav": false,
-                        "center": true,
-                        "items": 1,
-                        "margin": 10,
+                        "nav": false, 
                         "responsive": {
-                            "0": {"stagePadding": 30, "items": 1},
-                            "768": {"stagePadding": 50, "items": 1},
-                            "1200": {"nav": true, "dots": false, "stagePadding": 0, "items": 1}
+                            "1200": {
+                                "nav": true,
+                                "dots": false
+                            }
                         }
                     }'>
                     <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_P70.png);">
@@ -763,7 +665,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">ITEL P70</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -782,7 +686,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">10C</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -801,7 +707,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">10</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -820,7 +728,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">YO4</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -839,7 +749,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">A35</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -849,7 +761,7 @@ if (!function_exists('renderCategoryBlocks')) {
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLADE_A55.png);">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -858,7 +770,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">A55</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup></span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -877,7 +791,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">100</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -896,7 +812,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">C75</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -915,7 +833,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">A5</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -934,8 +854,9 @@ if (!function_exists('renderCategoryBlocks')) {
                                     <h1 class="intro-title">NOTE50</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
-                                        <span class="text-primary">₦999<sup>.99</sup>
-                                    </span>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
@@ -964,14 +885,14 @@ if (!function_exists('renderCategoryBlocks')) {
                                     </a>
                                 </div>
                             </div>
-                            </div>
+                        </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/INFINIX_SMART_10.png);">
+                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
-                                    <h1 class="intro-title">INFINIX</h1>
+                                    <h1 class="intro-title">INIFINIX</h1>
                                     <h1 class="intro-title">SMART 10</h1>
                                     <div class="intro-price">
                                         <sup class="intro-old-price">₦349,95</sup>
@@ -995,7 +916,7 @@ if (!function_exists('renderCategoryBlocks')) {
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php echo htmlspecialchars($conn->renderCategoryBlocks()); ?>
+                        <?php echo renderCategoryBlocks($conn); ?>
                     </div>
                 </div>
             </div>
@@ -1013,7 +934,7 @@ if (!function_exists('renderCategoryBlocks')) {
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-1.jpg" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
@@ -1037,11 +958,11 @@ if (!function_exists('renderCategoryBlocks')) {
                     <div class="col-md-6 col-lg-4">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
-                                <img src="assets/images/demos/demo-4/banners/banner-3.jpg" alt="Banner">
+                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
-                                <h3 class="banner-title"><a href="#">GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
                                 <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
@@ -1064,57 +985,58 @@ if (!function_exists('renderCategoryBlocks')) {
                 </div>
                 <div class="tab-content tab-content-carousel just-action-icons-sm">
                     <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
-                        <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                            data-owl-options='{
-                                "nav": true,
-                                "dots": true,
-                                "margin": 2,
-                                "loop": false,
-                                "responsive": {
-                                    "0": {"items": 2},
-                                    "400": {"items": 3},
-                                    "576": {"items": 4},
-                                    "768": {"items": 5},
-                                    "992": {"items": 6},
-                                    "1200": {"items": 6}
-                                }
-                            }'>
+                        <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                        data-owl-options='{
+                            "nav": true, 
+                            "dots": true,
+                            "margin": 10,
+                            "loop": false,
+                            "responsive": {
+                                "0": {"items":1},
+                                "400": {"items":2},
+                                "576": {"items":3},
+                                "768": {"items":4},
+                                "992": {"items":5},
+                                "1200": {"items":5}
+                            }
+                        }'>
                             <?php
                             $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
-                                $stmt->execute();
-                                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                if (empty($products)) {
-                                    echo '<p>No products available.</p>';
-                                } else {
-                                    foreach ($products as $product) {
-                                        $image_url = !empty($product['photo']) ? htmlspecialchars($product['photo']) : $default_image;
-                                        echo '<div class="product">';
-                                        echo '<figure class="product-media">';
-                                        echo '<a href="product.php?product=' . htmlspecialchars($product['slug']) . '">';
-                                        echo '<img src="' . $image_url . '" alt="' . htmlspecialchars($product['name']) . '" class="product-image">';
-                                        echo '</a>';
-                                        echo '<div class="product-action-vertical">';
-                                        echo '<a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>';
-                                        echo '</div>';
-                                        echo '<div class="product-action">';
-                                        echo '<a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>';
-                                        echo '</div>';
-                                        echo '</figure>';
-                                        echo '<div class="product-body">';
-                                        echo '<h3 class="product-title"><a href="product.php?product=' . htmlspecialchars($product['slug']) . '">' . htmlspecialchars($product['name']) . '</a></h3>';
-                                        echo '<div class="product-price">₦' . number_format($product['price'], 2) . '</div>';
-                                        echo '<div class="ratings-container">';
-                                        echo '<div class="ratings"><div class="ratings-val" style="width: 100%;"></div></div>';
-                                        echo '<span class="ratings-text">( 5 Reviews )</span>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                    }
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                            $productGroups = array_chunk($products, 5);
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';
+                                foreach ($group as $product) {
+                                    $image_url = !empty($product['photo']) 
+                                        ? htmlspecialchars($product['photo']) 
+                                        : $default_image;
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                            </div>
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
+                                            </div>
+                                        </div>
+                                    </div>';
                                 }
-                            } catch (PDOException $e) {
-                                echo '<p>Error loading products: ' . htmlspecialchars($e->getMessage()) . '</p>';
+                                echo '</div>';
                             }
                             ?>
                         </div>
@@ -1166,11 +1088,11 @@ if (!function_exists('renderCategoryBlocks')) {
                     <div class="row">
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
-                                <a href="category.php?category=all">
-                                    <img src="assets/images/banner.jpg" alt="Banner">
+                                <a href="category.php">
+                                    <img src="images/Banner.jpg" alt="Banner">
                                 </a>
                                 <div class="banner-content">
-                                    <h3 class="banner-title text-white"><a href="#">New Collection</a></h3>
+                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
                                     <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                                 </div>
@@ -1180,98 +1102,92 @@ if (!function_exists('renderCategoryBlocks')) {
                             <div class="tab-content tab-content-carousel just-action-icons-sm">
                                 <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                        data-owl-options='{
-                                            "nav": true,
-                                            "dots": true,
-                                            "margin": 2,
-                                            "loop": false,
-                                            "responsive": {
-                                                "0": {"items": 2},
-                                                "400": {"items": 3},
-                                                "576": {"items": 4},
-                                                "768": {"items": 5},
-                                                "992": {"items": 6},
-                                                "1200": {"items": 6}
-                                            }
-                                        }'>
+                                    data-owl-options='{
+                                        "nav": true, 
+                                        "dots": true,
+                                        "margin": 10,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {"items":1},
+                                            "400": {"items":2},
+                                            "576": {"items":3},
+                                            "768": {"items":4},
+                                            "992": {"items":5},
+                                            "1200": {"items":5}
+                                        }
+                                    }'>
                                         <?php
-                                        try {
-                                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
-                                            $stmt->execute();
-                                            $trending = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                            if (empty($trending)) {
-                                                echo '<p>No trending products available.</p>';
-                                            } else {
-                                                foreach ($trending as $product) {
-                                                    $image_url = !empty($product['photo']) ? htmlspecialchars($product['photo']) : $default_image;
-                                                    echo '<div class="product">';
-                                                    echo '<figure class="product-media">';
-                                                    echo '<a href="product.php?product=' . htmlspecialchars($product['slug']) . '">';
-                                                    echo '<img src="' . $image_url . '" alt="' . htmlspecialchars($product['name']) . '" class="product-image">';
-                                                    echo '</a>';
-                                                    echo '</figure>';
-                                                    echo '<div class="product-body">';
-                                                    echo '<h3 class="product-title"><a href="product.php?product=' . htmlspecialchars($product['slug']) . '">' . htmlspecialchars($product['name']) . '</a></h3>';
-                                                    echo '<div class="product-price">₦' . number_format($product['price'], 2) . '</div>';
-                                                    echo '<div class="ratings-container">';
-                                                    echo '<div class="ratings"><div class="ratings-val" style="width: ' . rand(80, 100) . '%;"></div></div>';
-                                                    echo '<span class="ratings-text">( ' . rand(5, 50) . ' Reviews )</span>';
-                                                    echo '</div>';
-                                                    echo '</div>';
-                                                    echo '</div>';
-                                                }
-                                            }
-                                        } catch (PDOException $e) {
-                                            echo '<p>Error loading trending products: ' . htmlspecialchars($e->getMessage()) . '</p>';
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        foreach ($trending as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
                                         }
                                         ?>
                                     </div>
                                 </div>
                                 <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
                                     <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                        data-owl-options='{
-                                            "nav": true,
-                                            "dots": true,
-                                            "margin": 2,
-                                            "loop": false,
-                                            "responsive": {
-                                                "0": {"items": 2},
-                                                "400": {"items": 3},
-                                                "576": {"items": 4},
-                                                "768": {"items": 5},
-                                                "992": {"items": 6},
-                                                "1200": {"items": 6}
-                                            }
-                                        }'>
+                                    data-owl-options='{
+                                        "nav": true, 
+                                        "dots": true,
+                                        "margin": 10,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {"items":1},
+                                            "400": {"items":2},
+                                            "576": {"items":3},
+                                            "768": {"items":4},
+                                            "992": {"items":5},
+                                            "1200": {"items":5}
+                                        }
+                                    }'>
                                         <?php
-                                        try {
-                                            $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
-                                            $stmt->execute();
-                                            $bestSelling = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                            if (empty($bestSelling)) {
-                                                echo '<p>No best-selling products available.</p>';
-                                            } else {
-                                                foreach ($bestSelling as $product) {
-                                                    $image_url = !empty($product['photo']) ? htmlspecialchars($product['photo']) : $default_image;
-                                                    echo '<div class="product">';
-                                                    echo '<figure class="product-media">';
-                                                    echo '<a href="product.php?product=' . htmlspecialchars($product['slug']) . '>';
-                                                    echo '<img src="' . $image_url . '" alt="' . htmlspecialchars($product['name']) . '" class="product-image">';
-                                                    echo '</a>';
-                                                    echo '</figure>';
-                                                    echo '<div class="product-body">';
-                                                    echo '<h3 class="product-title"><a href="product.php?product=' . htmlspecialchars($product['slug']) . '">' . htmlspecialchars($product['name']) . '</a></h3>';
-                                                    echo '<div class="product-price">₦' . number_format($product['price'], 2) . '</div>';
-                                                    echo '<div class="ratings-container">';
-                                                    echo '<div class="ratings"><div class="ratings-val" style="width: ' . rand(80,100) . '%;"></div></div>';
-                                                    echo '<span class="ratings-text">>( ' . rand(5,50) . ' Reviews )</span>';
-                                                    echo '</div>';
-                                                    echo '</div>';
-                                                    echo '</div>';
-                                                }
-                                            }
-                                        } catch (PDOException $e) {
-                                            echo '<p>Error loading best-selling products: ' . htmlspecialchars($e->getMessage()) . '</p>';
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        foreach ($bestSelling as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
                                         }
                                         ?>
                                     </div>
@@ -1286,38 +1202,33 @@ if (!function_exists('renderCategoryBlocks')) {
                             <h2 class="title">Recommendation For You</h2>
                         </div>
                         <div class="heading-right">
-                            <a href="category.php" class="title-link">View All Recommendations <i class="icon-long-arrow-right"></i></a>
+                            <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="products">
                         <div class="row justify-content-center">
                             <?php
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
-                                $stmt->execute();
-                                $recommended = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                if (empty($recommended)) {
-                                    echo '<p>No recommended products available.</p>';
-                                } else {
-                                    foreach ($recommended as $product) {
-                                        $image_url = !empty($product['photo']) ? htmlspecialchars($product['photo']) : $default_image;
-                                        echo '<div class="col-6 col-md-4 col-lg-2">';
-                                        echo '<div class="product">';
-                                        echo '<figure class="product-media">';
-                                        echo '<a href="product.php?product=' . htmlspecialchars($product['slug']) . '">';
-                                        echo '<img src="' . $image_url . '" alt="' . htmlspecialchars($product['name']) . '" class="product-image">';
-                                        echo '</a>';
-                                        echo '</figure>';
-                                        echo '<div class="product-body">';
-                                        echo '<h3 class="product-title"><a href="product.php?product=' . htmlspecialchars($product['slug']) . '">' . htmlspecialchars($product['name']) . '</a></h3>';
-                                        echo '<div class="product-price">₦' . number_format($product['price'], 2) . '</div>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                    }
-                                }
-                            } catch (PDOException $e) {
-                                echo '<p>Error loading recommended products: ' . htmlspecialchars($e->getMessage()) . '</p>';
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                            $stmt->execute();
+                            $recommended = $stmt->fetchAll();
+                            foreach ($recommended as $product) {
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
+                                echo '<div class="col-6 col-md-4 col-lg-2">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                        </div>
+                                    </div>
+                                </div>';
                             }
                             ?>
                         </div>
@@ -1329,7 +1240,7 @@ if (!function_exists('renderCategoryBlocks')) {
                             <div class="row no-gutters bg-white newsletter-popup-content">
                                 <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
                                     <div class="banner-content text-center">
-                                        <img src="assets/images/logo.png" class="logo" alt="logo" width="60" height="15">
+                                        <img src="images/logo.png" class="logo" alt="logo" width="60" height="15">
                                         <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
                                         <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
                                         <form action="#">
@@ -1347,25 +1258,23 @@ if (!function_exists('renderCategoryBlocks')) {
                                     </div>
                                 </div>
                                 <div class="col-xl-2-5col col-lg-5">
-                                    <img src="assets/images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                    <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
-
-            <script src="assets/js/jquery.min.js"></script>
-            <script src="assets/js/bootstrap.bundle.min.js"></script>
-            <script src="assets/js/jquery.hoverIntent.min.js"></script>
-            <script src="assets/js/jquery.waypoints.min.js"></script>
-            <script src="assets/js/superfish.min.js"></script>
-            <script src="assets/js/owl.carousel.min.js"></script>
-            <script src="assets/js/bootstrap-input-spinner.js"></script>
-            <script src="assets/js/jquery.plugin.min.js"></script>
-            <script src="assets/js/jquery.magnific-popup.min.js"></script>
-            <script src="assets/js/jquery.countdown.min.js"></script>
-            <script src="assets/js/main.js"></script>
-            <script src="assets/js/demos/demo-4.js"></script>
-        </body>
-        </html>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/js/bootstrap.bundle.min.js"></script>
+                <script src="assets/js/jquery.hoverIntent.min.js"></script>
+                <script src="assets/js/jquery.waypoints.min.js"></script>
+                <script src="assets/js/superfish.min.js"></script>
+                <script src="assets/js/owl.carousel.min.js"></script>
+                <script src="assets/js/bootstrap-input-spinner.js"></script>
+                <script src="assets/js/jquery.plugin.min.js"></script>
+                <script src="assets/js/jquery.magnific-popup.min.js"></script>
+                <script src="assets/js/jquery.countdown.min.js"></script>
+                <script src="assets/js/main.js"></script>
+                <script src="assets/js/demos/demo-4.js"></script>
+</body>
+</html>
