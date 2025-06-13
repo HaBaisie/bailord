@@ -1,134 +1,98 @@
-<?php include 'includes/session.php'; ?>
-<header class="header header-4">
-    <div class="header-middle">
-        <div class="container">
-            <div class="header-left">
-                <button class="mobile-menu-toggler">
-                    <span class="sr-only">Toggle mobile menu</span>
-                    <i class="las la-bars"></i>
-                </button>
-                <a href="index.php" class="logo">
-                    <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
-                </a>
-            </div>
-            <div class="header-center">
-                <div class="header-search header-search-extended d-none d-lg-block">
-                    <form action="#" method="get">
-                        <div class="header-search-wrapper">
-                            <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
-                            <button class="btn btn-primary" type="submit"><i class="las la-search"></i></button>
-                        </div>
-                    </form>
-                </div>
-                <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
-                    <i class="las la-search"></i>
-                </a>
-            </div>
-            <div class="header-right">
-                <?php if (isset($_SESSION['user'])): ?>
-                    <a href="profile.php" class="user-btn" title="User Profile">
-                        <i class="las la-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
-                    </a>
-                    <a href="logout.php" class="user-btn" title="Logout">
-                        <i class="las la-sign-out-alt"></i> Logout
-                    </a>
-                <?php else: ?>
-                    <a href="login.php" class="login-btn">
-                        <i class="las la-user"></i> Login/Signup
-                    </a>
-                <?php endif; ?>
-                <div class="dropdown cart-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="icon">
-                            <i class="las la-shopping-cart"></i>
-                            <span class="cart-count">0</span>
-                        </div>
-                        <p>Cart</p>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products"></div>
-                        <div class="dropdown-cart-total">
-                            <span>Total</span>
-                            <span class="cart-total-price">$0.00</span>
-                        </div>
-                        <div class="dropdown-cart-action">
-                            <a href="cart_view.php" class="btn btn-primary">View Cart</a>
-                            <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="header-bottom sticky-header">
-        <div class="container">
-            <nav class="main-nav d-none d-lg-block">
-                <ul class="menu">
-                    <li class="active"><a href="index.php">Home</a></li>
-                    <li><a href="category.php?category=all">Shop</a></li>
-                    <li><a href="profile.php">Orders</a></li>
-                    <li>
-                        <a href="#">Browse Categories</a>
-                        <ul>
-                            <?php
-                            $pdo = new Database();
-                            $conn = $pdo->open();
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                }
-                            } catch(PDOException $e) {
-                                echo "<li><a href='#'>Error loading categories</a></li>";
-                            }
-                            $conn = $pdo->close();
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <div class="mobile-menu-container">
-        <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="las la-times"></i></span>
-            <form action="#" method="get" class="mobile-search">
-                <label for="mobile-search" class="sr-only">Search</label>
-                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                <button class="btn btn-primary" type="submit"><i class="las la-search"></i></button>
-            </form>
-            <nav class="mobile-nav">
-                <ul class="mobile-menu">
-                    <li class="active"><a href="index.php">Home</a></li>
-                    <li><a href="category.php?category=all">Shop</a></li>
-                    <li><a href="profile.php">Orders</a></li>
-                    <li>
-                        <a href="#">Browse Categories</a>
-                        <ul>
-                            <?php
-                            $pdo = new Database();
-                            $conn = $pdo->open();
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                }
-                            } catch(PDOException $e) {
-                                echo "<li><a href='#'>Error loading categories</a></li>";
-                            }
-                            $conn = $pdo->close();
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</header>
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<title>Bailord</title>
+    <link rel="icon" href="bailordlogo.jpg" type="image/jpeg">
+  	<!-- Tell the browser to be responsive to screen width -->
+  	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  	<!-- Bootstrap 3.3.7 -->
+  	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  	<!-- DataTables -->
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  	<!-- Font Awesome -->
+  	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  	<!-- Theme style -->
+  	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  	<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <!-- Magnify -->
+    <link rel="stylesheet" href="magnify/magnify.min.css">
+
+  	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  	<!--[if lt IE 9]>
+  	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  	<![endif]-->
+
+  	<!-- Google Font -->
+  	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <!-- Paypal Express -->
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <!-- Google Recaptcha -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+  	<!-- Custom CSS -->
+    <style type="text/css">
+    /* Small devices (tablets, 768px and up) */
+    @media (min-width: 768px){ 
+      #navbar-search-input{ 
+        width: 60px; 
+      }
+      #navbar-search-input:focus{ 
+        width: 100px; 
+      }
+    }
+
+    /* Medium devices (desktops, 992px and up) */
+    @media (min-width: 992px){ 
+      #navbar-search-input{ 
+        width: 150px; 
+      }
+      #navbar-search-input:focus{ 
+        width: 250px; 
+      } 
+    }
+
+    .word-wrap{
+      overflow-wrap: break-word;
+    }
+    .prod-body{
+      height:300px;
+    }
+
+    .box:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .register-box{
+      margin-top:20px;
+    }
+
+    #trending{
+      list-style: none;
+      padding:10px 5px 10px 15px;
+    }
+    #trending li {
+      padding-left: 1.3em;
+    }
+    #trending li:before {
+      content: "\f046";
+      font-family: FontAwesome;
+      display: inline-block;
+      margin-left: -1.3em; 
+      width: 1.3em;
+    }
+
+    /*Magnify*/
+    .magnify > .magnify-lens {
+      width: 100px;
+      height: 100px;
+    }
+
+    </style>
+
+</head>
