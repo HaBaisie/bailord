@@ -46,7 +46,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 1rem;
         }
 
@@ -62,6 +61,13 @@
             border-radius: 1.5rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            transform: scale(0);
+            transition: transform 0.5s ease-in-out;
+            transition-delay: 0.5s;
+        }
+
+        .container.sign-in .form {
+            transform: scale(1);
         }
 
         .input-group {
@@ -77,6 +83,7 @@
             transform: translateY(-50%);
             font-size: 1.4rem;
             color: var(--gray-2);
+            transition: color 0.3s ease;
         }
 
         .input-group input {
@@ -121,9 +128,11 @@
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
 
         .form a:hover {
+            color: var(--secondary-color);
             text-decoration: underline;
         }
 
@@ -133,6 +142,14 @@
             border-radius: .5rem;
             text-align: center;
             font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .container.sign-in .callout {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .callout-danger {
@@ -143,6 +160,45 @@
         .callout-success {
             background-color: #d4edda;
             color: #155724;
+        }
+
+        .text {
+            margin: 4rem;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .text h2 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 2rem 0;
+            transform: translateX(-250%);
+            transition: transform 1s ease-in-out;
+        }
+
+        .container.sign-in .text h2 {
+            transform: translateX(0);
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 200vw;
+            transform: translate(35%, 0);
+            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            transition: transform 1s ease-in-out;
+            z-index: -1;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-bottom-right-radius: max(50vw, 50vh);
+            border-top-left-radius: max(50vw, 50vh);
+        }
+
+        .container.sign-in::before {
+            transform: translate(0, 0);
+            right: 50%;
         }
 
         @media only screen and (max-width: 425px) {
@@ -158,6 +214,7 @@
             .form {
                 padding: 1rem;
                 border-radius: 1rem;
+                transition-delay: 0.3s;
             }
 
             .input-group {
@@ -185,6 +242,26 @@
             .callout {
                 font-size: 0.85rem;
             }
+
+            .text {
+                margin: 2rem 0;
+            }
+
+            .text h2 {
+                font-size: 2rem;
+                margin: 1rem 0;
+            }
+
+            .container::before {
+                width: 100vw;
+                right: 0;
+                transform: none;
+                border-radius: 0;
+            }
+
+            .container.sign-in::before {
+                transform: translateY(0);
+            }
         }
 
         @media only screen and (max-width: 375px) {
@@ -201,11 +278,18 @@
             .form p {
                 font-size: 0.8rem;
             }
+
+            .text h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-<div id="container" class="container">
+<div id="container" class="container sign-in">
+    <div class="text">
+        <h2>Welcome</h2>
+    </div>
     <div class="form-wrapper">
         <div class="form sign-in">
             <?php
