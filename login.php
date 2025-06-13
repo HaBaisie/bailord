@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
-            --primary-color: #4EA685;
-            --secondary-color: #57B894;
+            --primary-color: #1E90FF; /* DodgerBlue */
+            --secondary-color: #4169E1; /* RoyalBlue */
             --black: #000000;
             --white: #ffffff;
             --gray: #efefef;
@@ -38,6 +38,7 @@
         html, body {
             height: 100vh;
             overflow: auto;
+            background-color: var(--white);
         }
 
         .container {
@@ -47,12 +48,16 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            overflow: hidden;
+            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            will-change: transform;
         }
 
         .form-wrapper {
             width: 100%;
             max-width: 28rem;
             padding: 1.5rem;
+            z-index: 2;
         }
 
         .form {
@@ -61,13 +66,15 @@
             border-radius: 1.5rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            transform: scale(0);
-            transition: transform 0.5s ease-in-out;
-            transition-delay: 0.5s;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            transition-delay: 0.3s;
         }
 
         .container.sign-in .form {
             transform: scale(1);
+            opacity: 1;
         }
 
         .input-group {
@@ -111,11 +118,12 @@
             color: var(--white);
             font-size: 1.2rem;
             outline: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
         .form p {
@@ -145,6 +153,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0.5s;
         }
 
         .container.sign-in .callout {
@@ -163,47 +172,49 @@
         }
 
         .text {
-            margin: 4rem;
+            position: absolute;
+            top: 2rem;
+            left: 0;
+            width: 100%;
             color: var(--white);
             text-align: center;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .text h2 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 2rem 0;
-            transform: translateX(-250%);
-            transition: transform 1s ease-in-out;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
         }
 
-        .container.sign-in .text h2 {
-            transform: translateX(0);
+        .container.sign-in .text {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .container::before {
             content: "";
             position: absolute;
             top: 0;
-            right: 0;
-            height: 100vh;
-            width: 200vw;
-            transform: translate(35%, 0);
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            transition: transform 1s ease-in-out;
-            z-index: -1;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            border-bottom-right-radius: max(50vw, 50vh);
-            border-top-left-radius: max(50vw, 50vh);
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            clip-path: circle(0% at 0% 0%);
+            transition: clip-path 1.2s ease-in-out;
+            z-index: 0;
         }
 
         .container.sign-in::before {
-            transform: translate(0, 0);
-            right: 50%;
+            clip-path: circle(150% at 0% 0%);
         }
 
         @media only screen and (max-width: 425px) {
             .container {
-                padding: 1rem;
+                padding: 0.5rem;
                 align-items: flex-start;
             }
 
@@ -214,7 +225,7 @@
             .form {
                 padding: 1rem;
                 border-radius: 1rem;
-                transition-delay: 0.3s;
+                transition-delay: 0.2s;
             }
 
             .input-group {
@@ -244,23 +255,19 @@
             }
 
             .text {
-                margin: 2rem 0;
+                top: 1rem;
             }
 
             .text h2 {
-                font-size: 2rem;
-                margin: 1rem 0;
+                font-size: 1.8rem;
             }
 
             .container::before {
-                width: 100vw;
-                right: 0;
-                transform: none;
-                border-radius: 0;
+                clip-path: circle(0% at 50% 0%);
             }
 
             .container.sign-in::before {
-                transform: translateY(0);
+                clip-path: circle(150% at 50% 0%);
             }
         }
 
@@ -280,7 +287,7 @@
             }
 
             .text h2 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
         }
     </style>
@@ -288,7 +295,7 @@
 <body>
 <div id="container" class="container sign-in">
     <div class="text">
-        <h2>Welcome</h2>
+        <h2>Welcome Back</h2>
     </div>
     <div class="form-wrapper">
         <div class="form sign-in">
@@ -317,7 +324,7 @@
                 </p>
                 <p>
                     <span>Don't have an account?</span>
-                    <b><a href="signup.php" class="pointer">Sign up here</a></b>
+                    <b><a href="signup.php">Sign up here</a></b>
                 </p>
                 <p>
                     <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
