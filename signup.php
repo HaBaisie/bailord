@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
-            --primary-color: #4EA685;
-            --secondary-color: #57B894;
+            --primary-color: #1E90FF; /* DodgerBlue */
+            --secondary-color: #4169E1; /* RoyalBlue */
             --black: #000000;
             --white: #ffffff;
             --gray: #efefef;
@@ -37,13 +37,14 @@
 
         html, body {
             height: 100vh;
-            overflow: hidden;
+            overflow: auto;
         }
 
         .container {
             position: relative;
             min-height: 100vh;
             overflow: hidden;
+            will-change: transform;
         }
 
         .row {
@@ -54,6 +55,9 @@
 
         .col {
             width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .align-items-center {
@@ -66,23 +70,31 @@
         .form-wrapper {
             width: 100%;
             max-width: 28rem;
+            padding: 1.5rem;
         }
 
         .form {
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: var(--white);
             border-radius: 1.5rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
             transform: scale(0);
-            transition: .5s ease-in-out;
-            transition-delay: 1s;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            transition-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .container.sign-in .form.sign-in,
+        .container.sign-up .form.sign-up {
+            transform: scale(1);
+            opacity: 1;
         }
 
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1rem 0;
+            margin: 1.2rem 0;
         }
 
         .input-group i {
@@ -92,6 +104,7 @@
             transform: translateY(-50%);
             font-size: 1.4rem;
             color: var(--gray-2);
+            transition: color 0.3s ease;
         }
 
         .input-group input {
@@ -102,6 +115,7 @@
             border-radius: .5rem;
             border: 0.125rem solid var(--white);
             outline: none;
+            transition: border 0.3s ease;
         }
 
         .input-group input:focus {
@@ -111,33 +125,41 @@
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: .6rem 0;
+            padding: 0.8rem;
             border-radius: .5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
             font-size: 1.2rem;
             outline: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .form button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
         .form p {
             margin: 1rem 0;
-            font-size: .7rem;
+            font-size: 0.9rem;
+            color: var(--gray-2);
         }
 
-        .flex-col {
-            flex-direction: column;
+        .form a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .form a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
         }
 
         .pointer {
             cursor: pointer;
-        }
-
-        .container.sign-in .form.sign-in,
-        .container.sign-in .form.sign-in div,
-        .container.sign-up .form.sign-up,
-        .container.sign-up .form.sign-up div {
-            transform: scale(1);
         }
 
         .content-row {
@@ -152,124 +174,44 @@
         .text {
             margin: 4rem;
             color: var(--white);
+            text-align: center;
         }
 
         .text h2 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 2rem 0;
-            transition: 1s ease-in-out;
-        }
-
-        .text p {
-            font-weight: 600;
-            transition: 1s ease-in-out;
-            transition-delay: .2s;
-        }
-
-        .text.sign-in h2,
-        .text.sign-in p {
-            transform: translateX(-250%);
-        }
-
-        .text.sign-up h2,
-        .text.sign-up p {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
             transform: translateX(250%);
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+            opacity: 0;
         }
 
-        .container.sign-in .text.sign-in h2,
-        .container.sign-in .text.sign-in p,
         .container.sign-up .text.sign-up h2,
-        .container.sign-up .text.sign-up p {
+        .container.sign-in .text.sign-in h2 {
             transform: translateX(0);
+            opacity: 1;
         }
 
         .container::before {
             content: "";
             position: absolute;
             top: 0;
-            right: 0;
-            height: 100vh;
-            width: 300vw;
-            transform: translate(35%, 0);
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            clip-path: circle(0% at 0% 0%);
+            transition: clip-path 1.2s ease-in-out;
+            z-index: 0;
             background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            transition: 1s ease-in-out;
-            z-index: 6;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            border-bottom-right-radius: max(50vw, 50vh);
-            border-top-left-radius: max(50vw, 50vh);
         }
 
         .container.sign-in::before {
-            transform: translate(0, 0);
-            right: 50%;
+            clip-path: circle(150% at 100% 100%);
         }
 
         .container.sign-up::before {
-            transform: translate(100%, 0);
-            right: 50%;
-        }
-
-        @media only screen and (max-width: 425px) {
-            .container::before,
-            .container.sign-in::before,
-            .container.sign-up::before {
-                height: 100vh;
-                border-bottom-right-radius: 0;
-                border-top-left-radius: 0;
-                z-index: 0;
-                transform: none;
-                right: 0;
-            }
-
-            .container.sign-in .col.sign-in,
-            .container.sign-up .col.sign-up {
-                transform: translateY(0);
-            }
-
-            .content-row {
-                align-items: flex-start !important;
-            }
-
-            .content-row .col {
-                transform: translateY(0);
-                background-color: unset;
-            }
-
-            .col {
-                width: 100%;
-                position: absolute;
-                padding: 2rem;
-                background-color: var(--white);
-                border-top-left-radius: 2rem;
-                border-top-right-radius: 2rem;
-                transform: translateY(100%);
-                transition: 1s ease-in-out;
-            }
-
-            .row {
-                align-items: flex-end;
-                justify-content: flex-end;
-            }
-
-            .form {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
-
-            .text {
-                margin: 0;
-            }
-
-            .text p {
-                display: none;
-            }
-
-            .text h2 {
-                margin: .5rem;
-                font-size: 2rem;
-            }
+            clip-path: circle(150% at 0% 0%);
         }
 
         .callout {
@@ -277,6 +219,17 @@
             margin: 1rem 0;
             border-radius: .5rem;
             text-align: center;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0.5s;
+        }
+
+        .container.sign-in .form.sign-in .callout,
+        .container.sign-up .form.sign-up .callout {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .callout-danger {
@@ -287,6 +240,108 @@
         .callout-success {
             background-color: #d4edda;
             color: #155724;
+        }
+
+        @media only screen and (max-width: 425px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .row {
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .col {
+                width: 100%;
+                position: relative;
+                padding: 1rem;
+                background-color: transparent;
+                transform: translateY(0);
+                transition: none;
+            }
+
+            .container.sign-in .col.sign-in,
+            .container.sign-up .col.sign-up {
+                transform: translateY(0);
+            }
+
+            .form-wrapper {
+                padding: 1rem;
+            }
+
+            .form {
+                padding: 1rem;
+                border-radius: 1rem;
+                transition-delay: 0.2s;
+                box-shadow: none;
+                background-color: var(--white);
+            }
+
+            .input-group {
+                margin: 0.8rem 0;
+            }
+
+            .input-group input {
+                padding: 0.9rem 2.5rem;
+                font-size: 0.95rem;
+            }
+
+            .input-group i {
+                font-size: 1.2rem;
+            }
+
+            .form button {
+                padding: 0.7rem;
+                font-size: 1.1rem;
+            }
+
+            .form p {
+                font-size: 0.85rem;
+                margin: 0.5rem 0;
+            }
+
+            .text {
+                margin: 1rem 0;
+            }
+
+            .text h2 {
+                font-size: 1.8rem;
+                margin: 0.5rem 0;
+            }
+
+            .container::before {
+                clip-path: circle(0% at 50% 0%);
+            }
+
+            .container.sign-in::before,
+            .container.sign-up::before {
+                clip-path: circle(150% at 50% 0%);
+            }
+
+            .callout {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media only screen and (max-width: 375px) {
+            .input-group input {
+                padding: 0.8rem 2.2rem;
+                font-size: 0.9rem;
+            }
+
+            .form button {
+                padding: 0.6rem;
+                font-size: 1rem;
+            }
+
+            .form p {
+                font-size: 0.8rem;
+            }
+
+            .text h2 {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
@@ -388,7 +443,7 @@
         <!-- SIGN IN CONTENT -->
         <div class="col align-items-center flex-col">
             <div class="text sign-in">
-                <h2>Welcome</h2>
+                <h2>Welcome Back</h2>
             </div>
         </div>
         <!-- END SIGN IN CONTENT -->
