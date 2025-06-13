@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login and Signup</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
@@ -74,7 +74,9 @@
             border-radius: 1.5rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            transform: scale(1);
+            transform: scale(0);
+            transition: .5s ease-in-out;
+            transition-delay: 1s;
         }
 
         .input-group {
@@ -131,6 +133,13 @@
             cursor: pointer;
         }
 
+        .container.sign-in .form.sign-in,
+        .container.sign-in .form.sign-in div,
+        .container.sign-up .form.sign-up,
+        .container.sign-up .form.sign-up div {
+            transform: scale(1);
+        }
+
         .content-row {
             position: absolute;
             top: 0;
@@ -149,31 +158,82 @@
             font-size: 3.5rem;
             font-weight: 800;
             margin: 2rem 0;
+            transition: 1s ease-in-out;
+        }
+
+        .text p {
+            font-weight: 600;
+            transition: 1s ease-in-out;
+            transition-delay: .2s;
+        }
+
+        .text.sign-in h2,
+        .text.sign-in p {
+            transform: translateX(-250%);
+        }
+
+        .text.sign-up h2,
+        .text.sign-up p {
+            transform: translateX(250%);
+        }
+
+        .container.sign-in .text.sign-in h2,
+        .container.sign-in .text.sign-in p,
+        .container.sign-up .text.sign-up h2,
+        .container.sign-up .text.sign-up p {
+            transform: translateX(0);
         }
 
         .container::before {
             content: "";
             position: absolute;
             top: 0;
-            right: 50%;
+            right: 0;
             height: 100vh;
             width: 300vw;
-            transform: translate(0, 0);
+            transform: translate(35%, 0);
             background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            transition: 1s ease-in-out;
             z-index: 6;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
             border-bottom-right-radius: max(50vw, 50vh);
             border-top-left-radius: max(50vw, 50vh);
         }
 
+        .container.sign-in::before {
+            transform: translate(0, 0);
+            right: 50%;
+        }
+
+        .container.sign-up::before {
+            transform: translate(100%, 0);
+            right: 50%;
+        }
+
         @media only screen and (max-width: 425px) {
-            .container::before {
+            .container::before,
+            .container.sign-in::before,
+            .container.sign-up::before {
                 height: 100vh;
                 border-bottom-right-radius: 0;
                 border-top-left-radius: 0;
                 z-index: 0;
                 transform: none;
                 right: 0;
+            }
+
+            .container.sign-in .col.sign-in,
+            .container.sign-up .col.sign-up {
+                transform: translateY(0);
+            }
+
+            .content-row {
+                align-items: flex-start !important;
+            }
+
+            .content-row .col {
+                transform: translateY(0);
+                background-color: unset;
             }
 
             .col {
@@ -185,10 +245,6 @@
                 border-top-right-radius: 2rem;
                 transform: translateY(100%);
                 transition: 1s ease-in-out;
-            }
-
-            .container .col.sign-in {
-                transform: translateY(0);
             }
 
             .row {
@@ -204,6 +260,10 @@
 
             .text {
                 margin: 0;
+            }
+
+            .text p {
+                display: none;
             }
 
             .text h2 {
@@ -234,6 +294,47 @@
 <div id="container" class="container">
     <!-- FORM SECTION -->
     <div class="row">
+        <!-- SIGN UP -->
+        <div class="col align-items-center flex-col sign-up">
+            <div class="form-wrapper align-items-center">
+                <div class="form sign-up">
+                    <?php
+                    if(isset($_SESSION['error'])){
+                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                        unset($_SESSION['error']);
+                    }
+                    if(isset($_SESSION['success'])){
+                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                        unset($_SESSION['success']);
+                    }
+                    ?>
+                    <form action="signup.php" method="POST">
+                        <div class="input-group">
+                            <i class='bx bxs-user'></i>
+                            <input type="text" name="username" placeholder="Username" required>
+                        </div>
+                        <div class="input-group">
+                            <i class='bx bx-mail-send'></i>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="confirm_password" placeholder="Confirm password" required>
+                        </div>
+                        <button type="submit" name="signup">Sign up</button>
+                        <p>
+                            <span>Already have an account?</span>
+                            <b onclick="toggle()" class="pointer">Sign in here</b>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END SIGN UP -->
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
             <div class="form-wrapper align-items-center">
@@ -284,9 +385,29 @@
             </div>
         </div>
         <!-- END SIGN IN CONTENT -->
+        <!-- SIGN UP CONTENT -->
+        <div class="col align-items-center flex-col">
+            <div class="text sign-up">
+                <h2>Join with us</h2>
+            </div>
+        </div>
+        <!-- END SIGN UP CONTENT -->
     </div>
     <!-- END CONTENT SECTION -->
 </div>
+
+<script>
+    let container = document.getElementById('container');
+
+    function toggle() {
+        container.classList.toggle('sign-in');
+        container.classList.toggle('sign-up');
+    }
+
+    setTimeout(() => {
+        container.classList.add('sign-in');
+    }, 200);
+</script>
 
 <?php include 'includes/scripts.php'; ?>
 </body>
