@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
@@ -37,52 +37,37 @@
 
         html, body {
             height: 100vh;
-            overflow: hidden;
+            overflow: auto;
         }
 
         .container {
             position: relative;
             min-height: 100vh;
-            overflow: hidden;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            height: 100vh;
-        }
-
-        .col {
-            width: 50%;
-        }
-
-        .align-items-center {
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
+            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 1rem;
         }
 
         .form-wrapper {
             width: 100%;
             max-width: 28rem;
+            padding: 1.5rem;
         }
 
         .form {
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: var(--white);
             border-radius: 1.5rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            transform: scale(0);
-            transition: .5s ease-in-out;
-            transition-delay: 1s;
         }
 
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1rem 0;
+            margin: 1.2rem 0;
         }
 
         .input-group i {
@@ -102,6 +87,7 @@
             border-radius: .5rem;
             border: 0.125rem solid var(--white);
             outline: none;
+            transition: border 0.3s ease;
         }
 
         .input-group input:focus {
@@ -111,165 +97,34 @@
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: .6rem 0;
+            padding: 0.8rem;
             border-radius: .5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
             font-size: 1.2rem;
             outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .form button:hover {
+            background-color: var(--secondary-color);
         }
 
         .form p {
             margin: 1rem 0;
-            font-size: .7rem;
+            font-size: 0.9rem;
+            color: var(--gray-2);
         }
 
-        .flex-col {
-            flex-direction: column;
+        .form a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
         }
 
-        .pointer {
-            cursor: pointer;
-        }
-
-        .container.sign-in .form.sign-in,
-        .container.sign-in .form.sign-in div,
-        .container.sign-up .form.sign-up,
-        .container.sign-up .form.sign-up div {
-            transform: scale(1);
-        }
-
-        .content-row {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 6;
-            width: 100%;
-        }
-
-        .text {
-            margin: 4rem;
-            color: var(--white);
-        }
-
-        .text h2 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 2rem 0;
-            transition: 1s ease-in-out;
-        }
-
-        .text p {
-            font-weight: 600;
-            transition: 1s ease-in-out;
-            transition-delay: .2s;
-        }
-
-        .text.sign-in h2,
-        .text.sign-in p {
-            transform: translateX(-250%);
-        }
-
-        .text.sign-up h2,
-        .text.sign-up p {
-            transform: translateX(250%);
-        }
-
-        .container.sign-in .text.sign-in h2,
-        .container.sign-in .text.sign-in p,
-        .container.sign-up .text.sign-up h2,
-        .container.sign-up .text.sign-up p {
-            transform: translateX(0);
-        }
-
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100vh;
-            width: 300vw;
-            transform: translate(35%, 0);
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            transition: 1s ease-in-out;
-            z-index: 6;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            border-bottom-right-radius: max(50vw, 50vh);
-            border-top-left-radius: max(50vw, 50vh);
-        }
-
-        .container.sign-in::before {
-            transform: translate(0, 0);
-            right: 50%;
-        }
-
-        .container.sign-up::before {
-            transform: translate(100%, 0);
-            right: 50%;
-        }
-
-        @media only screen and (max-width: 425px) {
-            .container::before,
-            .container.sign-in::before,
-            .container.sign-up::before {
-                height: 100vh;
-                border-bottom-right-radius: 0;
-                border-top-left-radius: 0;
-                z-index: 0;
-                transform: none;
-                right: 0;
-            }
-
-            .container.sign-in .col.sign-in,
-            .container.sign-up .col.sign-up {
-                transform: translateY(0);
-            }
-
-            .content-row {
-                align-items: flex-start !important;
-            }
-
-            .content-row .col {
-                transform: translateY(0);
-                background-color: unset;
-            }
-
-            .col {
-                width: 100%;
-                position: absolute;
-                padding: 2rem;
-                background-color: var(--white);
-                border-top-left-radius: 2rem;
-                border-top-right-radius: 2rem;
-                transform: translateY(100%);
-                transition: 1s ease-in-out;
-            }
-
-            .row {
-                align-items: flex-end;
-                justify-content: flex-end;
-            }
-
-            .form {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
-
-            .text {
-                margin: 0;
-            }
-
-            .text p {
-                display: none;
-            }
-
-            .text h2 {
-                margin: .5rem;
-                font-size: 2rem;
-            }
+        .form a:hover {
+            text-decoration: underline;
         }
 
         .callout {
@@ -277,6 +132,7 @@
             margin: 1rem 0;
             border-radius: .5rem;
             text-align: center;
+            font-size: 0.9rem;
         }
 
         .callout-danger {
@@ -288,126 +144,104 @@
             background-color: #d4edda;
             color: #155724;
         }
+
+        @media only screen and (max-width: 425px) {
+            .container {
+                padding: 1rem;
+                align-items: flex-start;
+            }
+
+            .form-wrapper {
+                padding: 1rem;
+            }
+
+            .form {
+                padding: 1rem;
+                border-radius: 1rem;
+            }
+
+            .input-group {
+                margin: 0.8rem 0;
+            }
+
+            .input-group input {
+                padding: 0.9rem 2.5rem;
+                font-size: 0.95rem;
+            }
+
+            .input-group i {
+                font-size: 1.2rem;
+            }
+
+            .form button {
+                padding: 0.7rem;
+                font-size: 1.1rem;
+            }
+
+            .form p {
+                font-size: 0.85rem;
+            }
+
+            .callout {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media only screen and (max-width: 375px) {
+            .input-group input {
+                padding: 0.8rem 2.2rem;
+                font-size: 0.9rem;
+            }
+
+            .form button {
+                padding: 0.6rem;
+                font-size: 1rem;
+            }
+
+            .form p {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
 <div id="container" class="container">
-    <!-- FORM SECTION -->
-    <div class="row">
-        <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-up">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="signup.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="username" placeholder="Username" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="confirm_password" placeholder="Confirm password" required>
-                        </div>
-                        <button type="submit" name="signup">Sign up</button>
-                        <p>
-                            <span>Already have an account?</span>
-                            <b onclick="toggle()" class="pointer">Sign in here</b>
-                        </p>
-                    </form>
+    <div class="form-wrapper">
+        <div class="form sign-in">
+            <?php
+            if(isset($_SESSION['error'])){
+                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                unset($_SESSION['error']);
+            }
+            if(isset($_SESSION['success'])){
+                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                unset($_SESSION['success']);
+            }
+            ?>
+            <form action="verify.php" method="POST">
+                <div class="input-group">
+                    <i class='bx bx-mail-send'></i>
+                    <input type="email" name="email" placeholder="Email" required>
                 </div>
-            </div>
-        </div>
-        <!-- END SIGN UP -->
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="verify.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" name="login">Sign in</button>
-                        <p>
-                            <b><a href="password_forgot.php">Forgot password?</a></b>
-                        </p>
-                        <p>
-                            <span>Don't have an account?</span>
-                            <b><a href="signup.php" class="pointer">Sign up here</a></b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
+                <div class="input-group">
+                    <i class='bx bxs-lock-alt'></i>
+                    <input type="password" name="password" placeholder="Password" required>
                 </div>
-            </div>
+                <button type="submit" name="login">Sign in</button>
+                <p>
+                    <b><a href="password_forgot.php">Forgot password?</a></b>
+                </p>
+                <p>
+                    <span>Don't have an account?</span>
+                    <b><a href="signup.php" class="pointer">Sign up here</a></b>
+                </p>
+                <p>
+                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                </p>
+            </form>
         </div>
-        <!-- END SIGN IN -->
     </div>
-    <!-- END FORM SECTION -->
-    <!-- CONTENT SECTION -->
-    <div class="row content-row">
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h2>Welcome</h2>
-            </div>
-        </div>
-        <!-- END SIGN IN CONTENT -->
-        <!-- SIGN UP CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-up">
-                <h2>Join with us</h2>
-            </div>
-        </div>
-        <!-- END SIGN UP CONTENT -->
-    </div>
-    <!-- END CONTENT SECTION -->
 </div>
-
-<script>
-    let container = document.getElementById('container');
-
-    function toggle() {
-        container.classList.toggle('sign-in');
-        container.classList.toggle('sign-up');
-    }
-
-    setTimeout(() => {
-        container.classList.add('sign-in');
-    }, 200);
-</script>
 
 <?php include 'includes/scripts.php'; ?>
 </body>
