@@ -8,15 +8,15 @@
                     <i class="icon-bars"></i>
                 </button>
                 <a href="index.php" class="logo">
-                    <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
+                    <img src="images/logo.png" alt="Bailord Logo" width="105" height="50">
                 </a>
             </div>
             <div class="header-center">
                 <div class="header-search header-search-extended d-none d-lg-block">
-                    <form action="#" method="get">
+                    <form action="search.php" method="POST">
                         <div class="header-search-wrapper">
-                            <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
+                            <label for="navbar-search-input" class="sr-only">Search</label>
+                            <input type="text" class="form-control" id="navbar-search-input" name="keyword" placeholder="Search for Product" required>
                             <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                         </div>
                     </form>
@@ -27,34 +27,39 @@
             </div>
             <div class="header-right">
                 <?php if (isset($_SESSION['user'])): ?>
+                    <?php $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg'; ?>
                     <a href="profile.php" class="user-btn" title="User Profile">
-                        <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                        <img src="<?php echo $image; ?>" class="user-image" alt="User Image" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 5px;">
+                        <?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
                     </a>
                     <a href="logout.php" class="user-btn" title="Logout">
-                        <i class="las la-sign-out-alt"></i> Logout
+                        <i class="las la-sign-out-alt"></i> Sign out
                     </a>
                 <?php else: ?>
                     <a href="login.php" class="login-btn">
-                        <i class="icon-user"></i> Login/Signup
+                        <i class="icon-user"></i> Login
+                    </a>
+                    <a href="signup.php" class="login-btn">
+                        <i class="icon-user"></i> Signup
                     </a>
                 <?php endif; ?>
                 <div class="dropdown cart-dropdown">
                     <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="icon">
                             <i class="icon-shopping-cart"></i>
-                            <span class="cart-count">0</span>
+                            <span class="cart-count label label-success"></span>
                         </div>
                         <p>Cart</p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products"></div>
+                        <div class="dropdown-cart-products">
+                            <ul class="menu" id="cart_menu"></ul>
+                        </div>
                         <div class="dropdown-cart-total">
-                            <span>Total</span>
-                            <span class="cart-total-price">$0.00</span>
+                            <span>You have <span class="cart_count"></span> item(s) in cart</span>
                         </div>
                         <div class="dropdown-cart-action">
-                            <a href="cart_view.php" class="btn btn-primary">View Cart</a>
-                            <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
+                            <a href="cart_view.php" class="btn btn-primary">Go to Cart</a>
                         </div>
                     </div>
                 </div>
@@ -65,26 +70,24 @@
         <div class="container">
             <nav class="main-nav d-none d-lg-block">
                 <ul class="menu">
-                    <li class="active"><a href="index.php">Home</a></li>
-                    <li><a href="category.php?category=all">Shop</a></li>
-                    <li><a href="profile.php">Orders</a></li>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="">ABOUT US</a></li>
+                    <li><a href="">CONTACT US</a></li>
                     <li>
-                        <a href="#">Browse Categories</a>
+                        <a href="#">CATEGORY</a>
                         <ul>
                             <?php
-                            $pdo = new Database();
                             $conn = $pdo->open();
                             try {
                                 $stmt = $conn->prepare("SELECT * FROM category");
                                 $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                foreach ($stmt as $row) {
+                                    echo '<li><a href="category.php?category='.$row['cat_slug'].'">'.$row['name'].'</a></li>';
                                 }
                             } catch(PDOException $e) {
-                                echo "<li><a href='#'>Error loading categories</a></li>";
+                                echo "<li><a href='#'>There is some problem in connection: ".$e->getMessage()."</a></li>";
                             }
+                            $pdo->close();
                             ?>
                         </ul>
                     </li>
@@ -95,46 +98,34 @@
     <div class="mobile-menu-container">
         <div class="mobile-menu-wrapper">
             <span class="mobile-menu-close"><i class="icon-close"></i></span>
-            <form action="#" method="get" class="mobile-search">
+            <form action="search.php" method="POST" class="mobile-search">
                 <label for="mobile-search" class="sr-only">Search</label>
-                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
+                <input type="text" class="form-control" name="keyword" id="mobile-search" placeholder="Search for Product" required>
                 <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
             </form>
             <nav class="mobile-nav">
                 <ul class="mobile-menu">
-                    <li class="active"><a href="index.php">Home</a></li>
-                    <li><a href="category.php?category=all">Shop</a></li>
-                    <li><a href="profile.php">Orders</a></li>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="">ABOUT US</a></li>
+                    <li><a href="">CONTACT US</a></li>
                     <li>
-                        <a href="#">Browse Categories</a>
+                        <a href="#">CATEGORY</a>
                         <ul>
                             <?php
+                            $conn = $pdo->open();
                             try {
                                 $stmt = $conn->prepare("SELECT * FROM category");
                                 $stmt->execute();
-                                $categories = $stmt->fetchAll();
-                                foreach ($categories as $category) {
-                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                    echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                foreach ($stmt as $row) {
+                                    echo '<li><a href="category.php?category='.$row['cat_slug'].'">'.$row['name'].'</a></li>';
                                 }
                             } catch(PDOException $e) {
-                                echo "<li><a href='#'>Error loading categories</a></li>";
+                                echo "<li><a href='#'>There is some problem in connection: ".$e->getMessage()."</a></li>";
                             }
+                            $pdo->close();
                             ?>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#">Pages</a>
-                        <ul>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="faq.html">FAQs</a></li>
-                            <li><a href="404.html">Error 404</a></li>
-                            <li><a href="coming-soon.html">Coming Soon</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="blog.html">Blog</a></li>
                 </ul>
             </nav>
         </div>
@@ -370,16 +361,6 @@
                 });
             }
         });
-        const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
-        if (categoryToggle) {
-            categoryToggle.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) {
-                    e.preventDefault();
-                    const menu = this.nextElementSibling;
-                    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                }
-            });
-        }
         const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.mobile-menu .dropdown-toggle)');
         dropdownToggles.forEach(toggle => {
             toggle.addEventListener('click', function(e) {
