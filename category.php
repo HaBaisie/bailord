@@ -195,7 +195,7 @@ $pdo->close();
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include 'includes/nav.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
