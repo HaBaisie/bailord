@@ -1,12 +1,10 @@
 <?php
-// Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'includes/session.php';
+require_once 'includes/session.php';
 
-// Check if category parameter exists
 if (!isset($_GET['category'])) {
     header('location: index.php');
     exit;
@@ -50,22 +48,19 @@ $pdo->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - Bailord</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <!-- Line Awesome Icons -->
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-    <!-- Custom Styles -->
     <style>
         :root {
-            --dominant-color: #3498db;       /* Blue - 60% */
-            --secondary-color: #2ecc71;      /* Green - 30% */
-            --accent-color: #e67e22;         /* Orange - 10% */
+            --dominant-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e67e22;
             --complementary-blue: #1e429f;
             --complementary-orange: #e67700;
-            --neutral-light: #f8f9fa;        /* Light gray background */
-            --neutral-dark: #343a40;         /* Dark gray for text */
-            --text-color: #333;              /* Main text color */
-            --text-light: #fff;              /* Light text for dark backgrounds */
+            --neutral-light: #f8f9fa;
+            --neutral-dark: #343a40;
+            --text-color: #333;
+            --text-light: #fff;
             --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
@@ -187,15 +182,11 @@ $pdo->close();
                 width: 100%;
             }
         }
-        /* Ensure mobile menu is hidden by default */
-        .mobile-menu-container {
-            transform: translateX(-100%);
-        }
     </style>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include 'includes/navbar.php'; ?>
+    <?php require_once 'includes/navbar.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
@@ -252,15 +243,14 @@ $pdo->close();
                         ?>
                     </div>
                     <div class="col-sm-3">
-                        <?php include 'includes/sidebar.php'; ?>
+                        <?php require_once 'includes/sidebar.php'; ?>
                     </div>
                 </div>
             </section>
         </div>
     </div>
-    <?php include 'includes/footer.php'; ?>
+    <?php require_once 'includes/footer.php'; ?>
 </div>
-<!-- JavaScript Dependencies -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
