@@ -342,6 +342,27 @@
             .text h2 {
                 font-size: 1.6rem;
             }
+            .text.sign-up h1 {
+              font-size: 4rem;
+              font-weight: 700;
+              margin: 1rem 0;
+              transform: translateX(250%);
+              transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+              opacity: 0;
+          }
+          
+          @media only screen and (max-width: 425px) {
+              .text.sign-up h1 {
+                  font-size: 2.4rem;
+                  margin: 0.5rem 0;
+              }
+          }
+          
+          @media only screen and (max-width: 375px) {
+              .text.sign-up h1 {
+                  font-size: 2.2rem;
+              }
+          }
         }
     </style>
 </head>
@@ -450,7 +471,7 @@
         <!-- SIGN UP CONTENT -->
         <div class="col align-items-center flex-col">
             <div class="text sign-up">
-                <h2>Join with us</h2>
+                <h1>Become a Member</h1>
             </div>
         </div>
         <!-- END SIGN UP CONTENT -->
