@@ -1,4 +1,3 @@
-<?php include 'includes/session.php'; ?>
 <header class="header header-intro-clearance header-4">
     <div class="header-middle">
         <div class="container">
