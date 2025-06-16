@@ -4,7 +4,7 @@
       <div class="navbar-header">
         <a href="index.php" class="navbar-brand">
         </a>
-        <img src="../images/logo.jpg" alt="Bailord Logo" style="height: 50px; display: inline-block;">
+        <img src="../images/logo.png" alt="Bailord Logo" style="height: 50px; display: inline-block;">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
