@@ -600,7 +600,7 @@
                             "1200": {"nav": true, "dots": false, "stagePadding": 80}
                         }
                     }'>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_P70.png);">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slider1.png);">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
