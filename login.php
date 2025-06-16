@@ -443,7 +443,7 @@
         <!-- SIGN IN CONTENT -->
         <div class="col align-items-center flex-col">
             <div class="text sign-in">
-                <h2>Welcome Back</h2>
+                <h1>Welcome Back</h1>
             </div>
         </div>
         <!-- END SIGN IN CONTENT -->
