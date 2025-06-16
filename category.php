@@ -238,7 +238,7 @@ if (isset($_GET['category']) && !empty($_GET['category']) && $_GET['category'] !
 </style>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-    <?php include 'includes/navbar.php'; ?>
+    <?php include 'includes/nav.php'; ?>
     <div class="content-wrapper">
         <div class="container">
             <section class="content">
