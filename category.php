@@ -62,7 +62,7 @@
         body.menu-open {
             overflow: hidden;
         }
-        .wrapper {
+        .page-wrapper {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -85,36 +85,60 @@
             position: relative;
             z-index: 1000;
         }
-        .navbar {
-            background: transparent;
-            padding: 10px 0;
+        .header-middle .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
-        .navbar-header.header-left {
+        .header-middle .header-left,
+        .header-middle .header-center,
+        .header-middle .header-right {
+            flex: 1;
+            min-width: 0;
+        }
+        .header-middle .header-left {
             display: flex;
             align-items: center;
         }
-        .navbar-brand img {
-            height: 50px;
-            width: auto;
+        .header-middle .header-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
         }
-        .navbar-nav.main-nav.menu > li > a {
+        .header-middle .header-center {
+            flex-grow: 2;
+            padding: 0 15px;
+        }
+        .logo img {
+            width: 105px;
+            height: auto;
+        }
+        .header-search-extended {
+            width: 100%;
+            max-width: 500px;
+        }
+        .header-search-wrapper {
+            position: relative;
+        }
+        .header-search-wrapper .form-control {
+            border-radius: 4px 0 0 4px;
+            border: 1px solid var(--medium-neutral);
+            padding: 8px 15px;
+        }
+        .header-search-wrapper .btn {
+            border-radius: 0 4px 4px 0;
+            background-color: var(--dominant-color);
             color: var(--text-light);
-            padding: 10px 15px;
-            font-size: 16px;
-            text-transform: uppercase;
+            border: none;
         }
-        .navbar-nav.main-nav.menu > li:hover > a {
-            color: var(--accent-color);
+        .header-search-wrapper .btn:hover {
+            background-color: var(--complementary-blue);
         }
-        .navbar-form.navbar-left {
-            margin: 8px 15px;
-        }
-        .navbar-custom-menu .navbar-nav > li > a {
+        .search-toggle {
             color: var(--text-light);
-            padding: 10px;
-        }
-        .navbar-custom-menu .navbar-nav > li:hover > a {
-            color: var(--accent-color);
+            font-size: 20px;
         }
         .user-btn, .login-btn {
             display: inline-flex;
@@ -124,7 +148,6 @@
             color: var(--text-light);
             border-radius: 4px;
             text-decoration: none;
-            margin: 0 5px;
             font-size: 14px;
             transition: background-color 0.3s;
         }
@@ -133,17 +156,42 @@
         }
         .user-btn:hover, .login-btn:hover {
             background-color: var(--complementary-blue);
+        }
+        .cart-dropdown .dropdown-toggle {
+            display: flex;
+            align-items: center;
             color: var(--text-light);
+            text-decoration: none;
         }
-        .navbar-custom-menu {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+        .cart-dropdown .icon {
+            position: relative;
+            font-size: 24px;
         }
-        .navbar-custom-menu .navbar-nav {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .cart-dropdown .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+        .cart-dropdown .dropdown-menu {
+            width: 300px;
+            padding: 15px;
+        }
+        .header-bottom {
+            background-color: var(--complementary-blue);
+        }
+        .main-nav .menu > li > a {
+            color: var(--text-light);
+            padding: 10px 15px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .main-nav .menu > li:hover > a {
+            color: var(--accent-color);
         }
         .mobile-menu-container {
             position: fixed;
@@ -155,7 +203,6 @@
             z-index: 1000;
             display: flex;
             justify-content: flex-start;
-            align-items: flex-start;
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
         }
@@ -194,6 +241,15 @@
         }
         .mobile-menu li.active > ul {
             display: block;
+        }
+        .mobile-search .form-control {
+            border-radius: 4px 0 0 4px;
+            padding: 8px 15px;
+        }
+        .mobile-search .btn {
+            border-radius: 0 4px 4px 0;
+            background-color: var(--dominant-color);
+            color: var(--text-light);
         }
         .page-header {
             color: var(--dominant-color);
@@ -256,14 +312,17 @@
         }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
-            .navbar-collapse.header-center {
+            .header-middle .header-center .header-search-extended {
                 display: none;
             }
-            .navbar-custom-menu {
+            .header-middle .header-center .search-toggle {
+                display: inline-block;
+            }
+            .header-middle .header-right {
                 justify-content: center;
             }
-            .navbar-brand img {
-                height: 40px;
+            .logo img {
+                width: 80px;
             }
             .col-sm-9, .col-sm-3 {
                 flex: 0 0 100%;
@@ -281,11 +340,11 @@
             }
         }
         @media (max-width: 767px) {
-            .navbar-header.header-left {
+            .header-middle .header-left {
                 justify-content: space-between;
                 width: 100%;
             }
-            .navbar-custom-menu {
+            .header-middle .header-right {
                 display: none;
             }
             .col-sm-4 {
@@ -295,10 +354,16 @@
             .thumbnail {
                 height: 150px;
             }
+            .mobile-search {
+                display: block;
+            }
         }
         @media (min-width: 992px) {
             .mobile-menu-container {
                 display: none;
+            }
+            .main-nav {
+                display: block !important;
             }
             .col-sm-9 {
                 flex: 0 0 75%;
@@ -319,6 +384,8 @@
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
             const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+            const mobileSearchForm = document.querySelector('.mobile-search');
             if (mobileMenuToggle && mobileMenuContainer) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -341,6 +408,12 @@
                     }
                 });
             }
+            if (mobileSearchToggle && mobileSearchForm) {
+                mobileSearchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileSearchForm.classList.toggle('visible');
+                });
+            }
             const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
             mobileMenuItems.forEach(item => {
                 if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
@@ -359,17 +432,7 @@
                     });
                 }
             });
-            const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
-            if (categoryToggle) {
-                categoryToggle.addEventListener('click', function(e) {
-                    if (window.innerWidth < 992) {
-                        e.preventDefault();
-                        const menu = this.nextElementSibling;
-                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                    }
-                });
-            }
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.mobile-menu .dropdown-toggle)');
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
             dropdownToggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     if (window.innerWidth < 992) {
@@ -397,154 +460,152 @@
     </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
-<div class="wrapper">
+<div class="page-wrapper">
     <?php include 'includes/session.php'; ?>
-    <header class="main-header header" style="background: var(--blue-gradient);">
-        <nav class="navbar navbar-static-top" style="background: transparent;">
+    <header class="header header-intro-clearance header-4">
+        <div class="header-middle">
             <div class="container">
-                <div class="navbar-header header-left">
-                    <a href="index.php" class="navbar-brand">
-                        <img src="../images/logo.png" alt="Bailord Logo" style="height: 50px; display: inline-block;">
-                    </a>
-                    <button type="button" class="navbar-toggle collapsed mobile-menu-toggler" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-                        <i class="fa fa-bars"></i>
+                <div class="header-left">
+                    <button class="mobile-menu-toggler">
+                        <span class="sr-only">Toggle mobile menu</span>
+                        <i class="icon-bars"></i>
                     </button>
+                    <a href="index.php" class="logo">
+                        <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
+                    </a>
                 </div>
-                <div class="collapse navbar-collapse pull-left header-center" id="navbar-collapse">
-                    <ul class="nav navbar-nav main-nav menu">
-                        <li><a href="index.php">HOME</a></li>
-                        <li><a href="about.php">ABOUT US</a></li>
-                        <li><a href="contact.php">CONTACT US</a></li>
-                        <li class="dropdown category-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">CATEGORY <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
+                <div class="header-center">
+                    <div class="header-search header-search-extended d-none d-lg-block">
+                        <form action="search.php" method="POST">
+                            <div class="header-search-wrapper">
+                                <label for="q" class="sr-only">Search</label>
+                                <input type="search" class="form-control" name="keyword" id="q" placeholder="Search product..." required>
+                                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
+                        <i class="icon-search"></i>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <?php if (isset($_SESSION['user'])): ?>
+                        <a href="profile.php" class="user-btn" title="User Profile">
+                            <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                        </a>
+                        <a href="logout.php" class="user-btn" title="Logout">
+                            <i class="las la-sign-out-alt"></i> Logout
+                        </a>
+                    <?php else: ?>
+                        <a href="login.php" class="login-btn">
+                            <i class="icon-user"></i> Login/Signup
+                        </a>
+                    <?php endif; ?>
+                    <div class="dropdown cart-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="icon">
+                                <i class="icon-shopping-cart"></i>
+                                <span class="cart-count cart_count">0</span>
+                            </div>
+                            <p>Cart</p>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-cart-products" id="cart_menu"></div>
+                            <div class="dropdown-cart-total">
+                                <span>Total</span>
+                                <span class="cart-total-price">$0.00</span>
+                            </div>
+                            <div class="dropdown-cart-action">
+                                <a href="cart_view.php" class="btn btn-primary">View Cart</a>
+                                <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom sticky-header">
+            <div class="container">
+                <nav class="main-nav d-none d-lg-block">
+                    <ul class="menu">
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="category.php?category=all">Shop</a></li>
+                        <li><a href="profile.php">Orders</a></li>
+                        <li>
+                            <a href="#">Browse Categories</a>
+                            <ul>
                                 <?php
                                     $conn = $pdo->open();
                                     try {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         foreach ($stmt as $row) {
-                                            echo "<li><a href='category.php?category=".htmlspecialchars($row['cat_slug'])."'>".htmlspecialchars($row['name'])."</a></li>";
+                                            $slug = !empty($row['cat_slug']) ? htmlspecialchars($row['cat_slug']) : strtolower(str_replace(' ', '-', $row['name']));
+                                            echo "<li><a href='category.php?category=$slug'>".htmlspecialchars($row['name'])."</a></li>";
                                         }
-                                    } catch (PDOException $e) {
-                                        echo "<li><a href='#'>Error: ".htmlspecialchars($e->getMessage())."</a></li>";
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
                                     $pdo->close();
                                 ?>
                             </ul>
                         </li>
                     </ul>
-                    <form method="POST" class="navbar-form navbar-left mobile-search" action="search.php">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="navbar-search-input" name="keyword" placeholder="Search for Product" required>
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                <div class="navbar-custom-menu header-right">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span class="label label-success cart_count"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">You have <span class="cart_count"></span> item(s) in cart</li>
-                                <li>
-                                    <ul class="menu" id="cart_menu"></ul>
-                                </li>
-                                <li class="footer"><a href="cart_view.php">Go to Cart</a></li>
-                            </ul>
-                        </li>
-                        <?php
-                            if (isset($_SESSION['user'])) {
-                                $image = (!empty($user['photo'])) ? 'images/'.htmlspecialchars($user['photo']) : 'images/profile.jpg';
-                                echo '
-                                    <li class="dropdown user user-menu">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <img src="'.$image.'" class="user-image" alt="User Image">
-                                            <span class="hidden-xs">'.htmlspecialchars($user['firstname']).' '.htmlspecialchars($user['lastname']).'</span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="user-header">
-                                                <img src="'.$image.'" class="img-circle" alt="User Image">
-                                                <p>
-                                                    '.htmlspecialchars($user['firstname']).' '.htmlspecialchars($user['lastname']).'
-                                                    <small>Member since '.date('M. Y', strtotime($user['created_on'])).'</small>
-                                                </p>
-                                            </li>
-                                            <li class="user-footer">
-                                                <div class="pull-left">
-                                                    <a href="profile.php" class="btn btn-default btn-flat">Profile</a>
-                                                </div>
-                                                <div class="pull-right">
-                                                    <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                ';
-                            } else {
-                                echo '
-                                    <li><a href="login.php" class="user-btn login-btn">LOGIN</a></li>
-                                    <li><a href="signup.php" class="user-btn">SIGNUP</a></li>
-                                ';
-                            }
-                        ?>
-                    </ul>
-                </div>
+                </nav>
             </div>
-        </nav>
+        </div>
         <div class="mobile-menu-container">
             <div class="mobile-menu-wrapper">
-                <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
-                <ul class="mobile-menu mobile-nav">
-                    <li><a href="index.php">HOME</a></li>
-                    <li><a href="about.php">ABOUT US</a></li>
-                    <li><a href="contact.php">CONTACT US</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">CATEGORY <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <?php
-                                $conn = $pdo->open();
-                                try {
-                                    $stmt = $conn->prepare("SELECT * FROM category");
-                                    $stmt->execute();
-                                    foreach ($stmt as $row) {
-                                        echo "<li><a href='category.php?category=".htmlspecialchars($row['cat_slug'])."'>".htmlspecialchars($row['name'])."</a></li>";
-                                    }
-                                } catch (PDOException $e) {
-                                    echo "<li><a href='#'>Error: ".htmlspecialchars($e->getMessage())."</a></li>";
-                                }
-                                $pdo->close();
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-                <form method="POST" class="mobile-search" action="search.php">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="keyword" placeholder="Search for Product" required>
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default btn-flat"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
+                <span class="mobile-menu-close"><i class="icon-close"></i></span>
+                <form action="search.php" method="POST" class="mobile-search">
+                    <label for="mobile-search" class="sr-only">Search</label>
+                    <input type="search" class="form-control" name="keyword" id="mobile-search" placeholder="Search..." required>
+                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </form>
+                <nav class="mobile-nav">
+                    <ul class="mobile-menu">
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="category.php?category=all">Shop</a></li>
+                        <li><a href="profile.php">Orders</a></li>
+                        <li>
+                            <a href="#">Browse Categories</a>
+                            <ul>
+                                <?php
+                                    $conn = $pdo->open();
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        foreach ($stmt as $row) {
+                                            $slug = !empty($row['cat_slug']) ? htmlspecialchars($row['cat_slug']) : strtolower(str_replace(' ', '-', $row['name']));
+                                            echo "<li><a href='category.php?category=$slug'>".htmlspecialchars($row['name'])."</a></li>";
+                                        }
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
+                                    $pdo->close();
+                                ?>
+                            </ul>
+                        </li>
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <li><a href="profile.php"><?php echo htmlspecialchars($user['firstname']); ?></a></li>
+                            <li><a href="logout.php">Logout</a></li>
+                        <?php else: ?>
+                            <li><a href="login.php">Login/Signup</a></li>
+                        <?php endif; ?>
+                        <li><a href="cart_view.php">Cart</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </header>
-    <div class="wrapper">
+    <div class="content-wrapper">
         <?php
-            // Check if category parameter exists
             if (!isset($_GET['category'])) {
                 header('location: index.php');
                 exit;
             }
-
             $slug = $_GET['category'];
             $conn = $pdo->open();
-
             try {
                 if ($slug == 'all') {
                     $stmt = $conn->prepare("SELECT * FROM products");
@@ -554,13 +615,11 @@
                     $stmt = $conn->prepare("SELECT * FROM category WHERE cat_slug = :slug");
                     $stmt->execute(['slug' => $slug]);
                     $cat = $stmt->fetch();
-                    
                     if (!$cat) {
                         $_SESSION['error'] = 'Category not found';
                         header('location: index.php');
                         exit;
                     }
-                    
                     $catid = $cat['id'];
                     $page_title = $cat['name'];
                     $show_all_products = false;
@@ -570,71 +629,67 @@
                 header('location: index.php');
                 exit;
             }
-
             $pdo->close();
         ?>
-        <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h1 class="page-header"><?php echo htmlspecialchars($page_title); ?></h1>
-                            <?php
-                                $conn = $pdo->open();
-                                try {
-                                    $inc = 3;
-                                    $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-
-                                    if ($show_all_products) {
-                                        $stmt = $conn->prepare("SELECT * FROM products");
-                                        $stmt->execute();
-                                    } else {
-                                        $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = :catid");
-                                        $stmt->execute(['catid' => $catid]);
-                                    }
-
-                                    if ($stmt->rowCount() > 0) {
-                                        foreach ($stmt as $row) {
-                                            $image_url = !empty($row['photo'])
-                                                ? htmlspecialchars($row['photo'])
-                                                : $default_image;
-                                            $inc = ($inc == 3) ? 1 : $inc + 1;
-                                            if ($inc == 1) echo "<div class='row'>";
-                                            echo "
-                                                <div class='col-sm-4'>
-                                                    <div class='box box-solid'>
-                                                        <div class='prod-body'>
-                                                            <img src='".$image_url."' width='100%' height='230px' class='thumbnail' alt='".htmlspecialchars($row['name'])."'>
-                                                            <h5><a href='product.php?product=".htmlspecialchars($row['slug'])."'>".htmlspecialchars($row['name'])."</a></h5>
-                                                        </div>
-                                                        <div class='box-footer'>
-                                                            <b>₦ ".number_format($row['price'], 2)."</b>
-                                                        </div>
+        <div class="container">
+            <section class="content">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h1 class="page-header"><?php echo htmlspecialchars($page_title); ?></h1>
+                        <?php
+                            $conn = $pdo->open();
+                            try {
+                                $inc = 3;
+                                $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                if ($show_all_products) {
+                                    $stmt = $conn->prepare("SELECT * FROM products");
+                                    $stmt->execute();
+                                } else {
+                                    $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = :catid");
+                                    $stmt->execute(['catid' => $catid]);
+                                }
+                                if ($stmt->rowCount() > 0) {
+                                    foreach ($stmt as $row) {
+                                        $image_url = !empty($row['photo'])
+                                            ? htmlspecialchars($row['photo'])
+                                            : $default_image;
+                                        $inc = ($inc == 3) ? 1 : $inc + 1;
+                                        if ($inc == 1) echo "<div class='row'>";
+                                        echo "
+                                            <div class='col-sm-4'>
+                                                <div class='box box-solid'>
+                                                    <div class='prod-body'>
+                                                        <img src='$image_url' width='100%' height='230px' class='thumbnail' alt='".htmlspecialchars($row['name'])."'>
+                                                        <h5><a href='product.php?product=".htmlspecialchars($row['slug'])."'>".htmlspecialchars($row['name'])."</a></h5>
+                                                    </div>
+                                                    <div class='box-footer'>
+                                                        <b>₦ ".number_format($row['price'], 2)."</b>
                                                     </div>
                                                 </div>
-                                            ";
-                                            if ($inc == 3) echo "</div>";
-                                        }
-                                        if ($inc == 1) echo "<div class='col-sm-4'></div><div class='col-sm-4'></div></div>";
-                                        if ($inc == 2) echo "<div class='col-sm-4'></div></div>";
-                                    } else {
-                                        echo "<div class='alert alert-info'>No products found.</div>";
+                                            </div>
+                                        ";
+                                        if ($inc == 3) echo "</div>";
                                     }
-                                } catch (PDOException $e) {
-                                    echo "<div class='alert alert-danger'>Error loading products: ".htmlspecialchars($e->getMessage())."</div>";
+                                    if ($inc == 1) echo "<div class='col-sm-4'></div><div class='col-sm-4'></div></div>";
+                                    if ($inc == 2) echo "<div class='col-sm-4'></div></div>";
+                                } else {
+                                    echo "<div class='alert alert-info'>No products found.</div>";
                                 }
-                                $pdo->close();
-                            ?>
-                        </div>
-                        <div class="col-sm-3">
-                            <?php include 'includes/sidebar.php'; ?>
-                        </div>
+                            } catch (PDOException $e) {
+                                echo "<div class='alert alert-danger'>Error loading products: ".htmlspecialchars($e->getMessage())."</div>";
+                            }
+                            $pdo->close();
+                        ?>
                     </div>
-                </section>
-            </div>
+                    <div class="col-sm-3">
+                        <?php include 'includes/sidebar.php'; ?>
+                    </div>
+                </div>
+            </section>
         </div>
-        <?php include 'includes/footer.php'; ?>
     </div>
+    <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
+</div>
 </body>
 </html>
