@@ -1,181 +1,132 @@
-<header class="header header-intro-clearance header-4">
-    <div class="header-middle">
+<header class="main-header">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <div class="header-left">
-                <button class="mobile-menu-toggler">
-                    <span class="sr-only">Toggle mobile menu</span>
-                    <i class="icon-bars"></i>
-                </button>
-                <a href="index.php" class="logo">
-                    <img src="images/logo.png" alt="Bailord Logo" width="105" height="50">
-                </a>
-            </div>
-            <div class="header-center">
-                <div class="header-search header-search-extended d-none d-lg-block">
-                    <form action="search.php" method="POST">
-                        <div class="header-search-wrapper">
-                            <label for="navbar-search-input" class="sr-only">Search</label>
-                            <input type="text" class="form-control" id="navbar-search-input" name="keyword" placeholder="Search for Product" required>
-                            <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            <a class="navbar-brand" href="index.php">
+                <img src="images/logo.png" alt="Bailord Logo" style="height: 50px; display: inline-block;">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="las la-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.php">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">ABOUT US</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">CONTACT US</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            CATEGORY <span class="caret"><i class="las la-caret-down"></i></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                            <?php
+                            $conn = $pdo->open();
+                            try {
+                                $stmt = $conn->prepare("SELECT * FROM category");
+                                $stmt->execute();
+                                foreach ($stmt as $row) {
+                                    echo '<a class="dropdown-item" href="category.php?category='.htmlspecialchars($row['cat_slug']).'">'.htmlspecialchars($row['name']).'</a>';
+                                }
+                            } catch(PDOException $e) {
+                                echo '<div class="dropdown-item">Error: '.htmlspecialchars($e->getMessage()).'</div>';
+                            }
+                            $pdo->close();
+                            ?>
                         </div>
-                    </form>
-                </div>
-                <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
-                    <i class="icon-search"></i>
-                </a>
-            </div>
-            <div class="header-right">
-                <?php if (isset($_SESSION['user'])): ?>
-                    <?php $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg'; ?>
-                    <a href="profile.php" class="user-btn" title="User Profile">
-                        <img src="<?php echo $image; ?>" class="user-image" alt="User Image" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 5px;">
-                        <?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
-                    </a>
-                    <a href="logout.php" class="user-btn" title="Logout">
-                        <i class="las la-sign-out-alt"></i> Sign out
-                    </a>
-                <?php else: ?>
-                    <a href="login.php" class="login-btn">
-                        <i class="icon-user"></i> Login
-                    </a>
-                    <a href="signup.php" class="login-btn">
-                        <i class="icon-user"></i> Signup
-                    </a>
-                <?php endif; ?>
-                <div class="dropdown cart-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="icon">
-                            <i class="icon-shopping-cart"></i>
-                            <span class="cart-count label label-success"></span>
-                        </div>
-                        <p>Cart</p>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products">
-                            <ul class="menu" id="cart_menu"></ul>
-                        </div>
-                        <div class="dropdown-cart-total">
-                            <span>You have <span class="cart_count"></span> item(s) in cart</span>
-                        </div>
-                        <div class="dropdown-cart-action">
-                            <a href="cart_view.php" class="btn btn-primary">Go to Cart</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" method="POST" action="search.php">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="navbar-search-input" name="keyword" placeholder="Search for Product" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit"><i class="las la-search"></i></button>
                         </div>
                     </div>
-                </div>
+                </form>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="cartDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="las la-shopping-cart"></i>
+                            <span class="badge badge-success cart_count"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cartDropdown">
+                            <div class="dropdown-header">You have <span class="cart_count"></span> item(s) in cart</div>
+                            <ul class="list-unstyled" id="cart_menu"></ul>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="cart_view.php">Go to Cart</a>
+                        </div>
+                    </li>
+                    <?php if (isset($_SESSION['user'])): ?>
+                        <?php $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg'; ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="<?php echo htmlspecialchars($image); ?>" class="user-image rounded-circle" alt="User Image" style="width: 24px; height: 24px; margin-right: 5px;">
+                                <span class="d-none d-lg-inline"><?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <div class="dropdown-header text-center">
+                                    <img src="<?php echo htmlspecialchars($image); ?>" class="img-circle" alt="User Image" style="width: 60px; height: 60px;">
+                                    <p>
+                                        <?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
+                                        <small>Member since <?php echo date('M. Y', strtotime($user['created_on'])); ?></small>
+                                    </p>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="profile.php">Profile</a>
+                                <a class="dropdown-item" href="logout.php">Sign out</a>
+                            </div>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>
+                        <li class="nav-item"><a class="nav-link" href="signup.php">SIGNUP</a></li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
-    </div>
-    <div class="header-bottom sticky-header">
-        <div class="container">
-            <nav class="main-nav d-none d-lg-block">
-                <ul class="menu">
-                    <li><a href="index.php">HOME</a></li>
-                    <li><a href="">ABOUT US</a></li>
-                    <li><a href="">CONTACT US</a></li>
-                    <li>
-                        <a href="#">CATEGORY</a>
-                        <ul>
-                            <?php
-                            $conn = $pdo->open();
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                foreach ($stmt as $row) {
-                                    echo '<li><a href="category.php?category='.$row['cat_slug'].'">'.$row['name'].'</a></li>';
-                                }
-                            } catch(PDOException $e) {
-                                echo "<li><a href='#'>There is some problem in connection: ".$e->getMessage()."</a></li>";
-                            }
-                            $pdo->close();
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <div class="mobile-menu-container">
-        <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="icon-close"></i></span>
-            <form action="search.php" method="POST" class="mobile-search">
-                <label for="mobile-search" class="sr-only">Search</label>
-                <input type="text" class="form-control" name="keyword" id="mobile-search" placeholder="Search for Product" required>
-                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-            </form>
-            <nav class="mobile-nav">
-                <ul class="mobile-menu">
-                    <li><a href="index.php">HOME</a></li>
-                    <li><a href="">ABOUT US</a></li>
-                    <li><a href="">CONTACT US</a></li>
-                    <li>
-                        <a href="#">CATEGORY</a>
-                        <ul>
-                            <?php
-                            $conn = $pdo->open();
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM category");
-                                $stmt->execute();
-                                foreach ($stmt as $row) {
-                                    echo '<li><a href="category.php?category='.$row['cat_slug'].'">'.$row['name'].'</a></li>';
-                                }
-                            } catch(PDOException $e) {
-                                echo "<li><a href='#'>There is some problem in connection: ".$e->getMessage()."</a></li>";
-                            }
-                            $pdo->close();
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    </nav>
 </header>
 <style>
     :root {
-        --dominant-color: #2a5bd7;
-        --secondary-color: #28a745;
-        --accent-color: #fd7e14;
+        --dominant-color: #3498db;
+        --secondary-color: #2ecc71;
+        --accent-color: #e67e22;
         --complementary-blue: #1e429f;
         --complementary-orange: #e67700;
-        --light-neutral: #f8f9fa;
-        --medium-neutral: #e9ecef;
-        --dark-neutral: #495057;
-        --text-dark: #212529;
-        --text-light: #f8f9fa;
+        --neutral-light: #f8f9fa;
+        --neutral-dark: #343a40;
+        --text-color: #333;
+        --text-light: #fff;
         --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
-        --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
     }
-    .header {
+    .main-header {
         background: var(--blue-gradient);
         color: var(--text-light);
     }
-    .header-middle .container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+    .navbar {
+        background: var(--blue-gradient);
     }
-    .header-middle .header-left,
-    .header-middle .header-center,
-    .header-middle .header-right {
-        flex: 1;
-        min-width: 0;
+    .navbar-brand img {
+        height: 50px;
     }
-    .header-middle .header-right {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 15px;
+    .navbar-nav .nav-link {
+        color: var(--text-light);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
     }
-    .header-middle .header-center {
-        flex-grow: 2;
-        padding: 0 15px;
-    }
-    .main-nav .menu > li > a {
-        color: var(--text-dark);
-    }
-    .main-nav .menu > li:hover > a {
+    .navbar-nav .nav-link:hover {
         color: var(--accent-color);
+    }
+    .dropdown-menu {
+        background-color: var(--neutral-light);
+        border: 1px solid var(--neutral-dark);
+    }
+    .dropdown-item {
+        color: var(--text-color);
+    }
+    .dropdown-item:hover {
+        background-color: var(--neutral-light);
+        color: var(--accent-color);
+    }
+    .form-inline .input-group {
+        width: 200px;
     }
     .btn-primary {
         background-color: var(--dominant-color);
@@ -185,212 +136,49 @@
         background-color: var(--complementary-blue);
         border-color: var(--complementary-blue);
     }
-    .btn-outline-primary {
-        color: var(--dominant-color);
-        border-color: var(--dominant-color);
-    }
-    .btn-outline-primary:hover {
-        background-color: var(--dominant-color);
-        color: var(--text-light);
-    }
-    .user-btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 15px;
+    .badge-success {
         background-color: var(--secondary-color);
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        margin-left: 10px;
-        font-size: 14px;
     }
-    .user-btn:hover {
-        background-color: #1e7e34;
-        color: white;
+    .user-image {
+        vertical-align: middle;
     }
-    .login-btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 15px;
-        background-color: var(--dominant-color);
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
+    .dropdown-header {
+        padding: 0.5rem 1rem;
+        color: var(--text-color);
     }
-    .login-btn:hover {
-        background-color: var(--complementary-blue);
-        color: white;
+    .dropdown-divider {
+        border-top: 1px solid var(--neutral-dark);
     }
-    .mobile-menu-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
-    }
-    .mobile-menu-container.visible {
-        transform: translateX(0);
-    }
-    .mobile-menu-wrapper {
-        width: 80%;
-        max-width: 300px;
-        height: 100%;
-        background-color: var(--light-neutral);
-        overflow-y: auto;
-        padding: 15px;
-    }
-    .mobile-menu-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-    .mobile-menu li {
-        position: relative;
-    }
-    .mobile-menu li ul {
-        display: none;
-        position: static;
-        width: 100%;
-        padding-left: 20px;
-        background-color: var(--medium-neutral);
-    }
-    .mobile-menu li.active > ul {
-        display: block;
-    }
-    .mobile-menu-container .mobile-menu li a {
-        color: var(--text-dark);
-    }
-    .mobile-menu-container .mobile-menu li a:hover {
-        color: var(--accent-color);
-    }
-    .mobile-menu-container .mobile-menu li ul li a {
-        color: var(--text-dark);
-    }
-    .mobile-menu-container .mobile-menu li ul li a:hover {
-        color: var(--accent-color);
-    }
-    .btn, .dropdown-toggle, .mobile-menu-toggler, 
-    .mobile-search-toggle {
-        min-height: 44px;
-        min-width: 44px;
-        position: relative;
-    }
-    .btn-product-icon:before, 
-    .icon-search:before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-    }
-    a, button {
-        -webkit-tap-highlight-color: transparent;
-        -webkit-touch-callout: none;
-        user-select: none;
-    }
-    @media (max-width: 767px) {
-        .header-right.d-none.d-lg-block {
-            display: none !important;
+    @media (max-width: 991px) {
+        .navbar-collapse {
+            background-color: var(--neutral-light);
+            padding: 1rem;
         }
-        .logo img {
-            width: 80px;
-            height: auto;
+        .navbar-nav .nav-link {
+            color: var(--text-color);
+        }
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color);
+        }
+        .form-inline .input-group {
+            width: 100%;
+            margin-bottom: 1rem;
         }
     }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-        const mobileMenuContainer = document.querySelector('.mobile-menu-container');
-        const mobileMenuClose = document.querySelector('.mobile-menu-close');
-        if (mobileMenuToggle && mobileMenuContainer) {
-            mobileMenuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileMenuContainer.classList.toggle('visible');
-                document.body.classList.toggle('menu-open');
+        // Ensure jQuery is available for Bootstrap dropdowns
+        if (typeof jQuery === 'undefined') {
+            console.error('jQuery is required for Bootstrap dropdowns.');
+        }
+        // Handle navbar toggle
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('#navbar-collapse');
+        if (navbarToggler && navbarCollapse) {
+            navbarToggler.addEventListener('click', function(e) {
+                navbarCollapse.classList.toggle('show');
             });
         }
-        if (mobileMenuClose && mobileMenuContainer) {
-            mobileMenuClose.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileMenuContainer.classList.remove('visible');
-                document.body.classList.remove('menu-open');
-            });
-        }
-        const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-        const mobileSearchForm = document.querySelector('.mobile-search');
-        if (mobileSearchToggle && mobileSearchForm) {
-            mobileSearchToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileSearchForm.classList.toggle('visible');
-            });
-        }
-        if (mobileMenuContainer) {
-            mobileMenuContainer.addEventListener('click', function(e) {
-                if (e.target === mobileMenuContainer) {
-                    mobileMenuContainer.classList.remove('visible');
-                    document.body.classList.remove('menu-open');
-                }
-            });
-        }
-        const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
-        mobileMenuItems.forEach(item => {
-            if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const parentLi = this.parentElement;
-                    const subMenu = this.nextElementSibling;
-                    parentLi.classList.toggle('active');
-                    subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
-                    mobileMenuItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
-                            otherItem.parentElement.classList.remove('active');
-                            otherItem.nextElementSibling.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.mobile-menu .dropdown-toggle)');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) {
-                    e.preventDefault();
-                    const menu = this.nextElementSibling;
-                    if (menu && menu.classList.contains('dropdown-menu')) {
-                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                        document.querySelectorAll('.dropdown-menu').forEach(m => {
-                            if (m !== menu) m.style.display = 'none';
-                        });
-                    }
-                }
-            });
-        });
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth < 992) {
-                if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                        menu.style.display = 'none';
-                    });
-                }
-            }
-        });
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
     });
 </script>
