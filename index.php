@@ -443,7 +443,6 @@
 </head>
 
 <body>
-    <?php include 'includes/nav.php'; ?>
     <div class="page-wrapper">
         <header class="header header-intro-clearance header-4">
             <div class="header-middle">
