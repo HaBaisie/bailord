@@ -69,12 +69,12 @@
 
         .form-wrapper {
             width: 100%;
-            max-width: 28rem;
-            padding: 1.5rem;
+            max-width: 36rem; /* Increased from 28rem to make form larger */
+            padding: 2rem; /* Increased padding */
         }
 
         .form {
-            padding: 1.5rem;
+            padding: 2rem; /* Increased padding */
             background-color: var(--white);
             border-radius: 1.5rem;
             width: 100%;
@@ -94,23 +94,23 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.2rem 0;
+            margin: 1.5rem 0; /* Increased margin */
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1rem;
+            left: 1.2rem;
             transform: translateY(-50%);
-            font-size: 1.4rem;
+            font-size: 1.6rem; /* Increased icon size */
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1rem 3rem;
-            font-size: 1rem;
+            padding: 1.2rem 3.5rem; /* Increased padding */
+            font-size: 1.1rem; /* Increased font size */
             background-color: var(--gray);
             border-radius: .5rem;
             border: 0.125rem solid var(--white);
@@ -125,12 +125,12 @@
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 0.8rem;
+            padding: 1rem; /* Increased padding */
             border-radius: .5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.2rem;
+            font-size: 1.3rem; /* Increased font size */
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
@@ -141,8 +141,8 @@
         }
 
         .form p {
-            margin: 1rem 0;
-            font-size: 0.9rem;
+            margin: 1.2rem 0; /* Increased margin */
+            font-size: 1rem; /* Increased font size */
             color: var(--gray-2);
         }
 
@@ -215,11 +215,11 @@
         }
 
         .callout {
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 1.2rem; /* Increased padding */
+            margin: 1.2rem 0; /* Increased margin */
             border-radius: .5rem;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 1rem; /* Increased font size */
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -267,11 +267,12 @@
             }
 
             .form-wrapper {
-                padding: 1rem;
+                padding: 1.5rem; /* Increased padding for mobile */
+                max-width: 100%; /* Ensure full width on smaller screens */
             }
 
             .form {
-                padding: 1rem;
+                padding: 1.5rem; /* Increased padding */
                 border-radius: 1rem;
                 transition-delay: 0.2s;
                 box-shadow: none;
@@ -279,26 +280,26 @@
             }
 
             .input-group {
-                margin: 0.8rem 0;
+                margin: 1rem 0; /* Increased margin */
             }
 
             .input-group input {
-                padding: 0.9rem 2.5rem;
-                font-size: 0.95rem;
+                padding: 1rem 3rem; /* Adjusted padding */
+                font-size: 1rem; /* Increased font size */
             }
 
             .input-group i {
-                font-size: 1.2rem;
+                font-size: 1.4rem; /* Increased icon size */
             }
 
             .form button {
-                padding: 0.7rem;
-                font-size: 1.1rem;
+                padding: 0.8rem; /* Increased padding */
+                font-size: 1.2rem; /* Increased font size */
             }
 
             .form p {
-                font-size: 0.85rem;
-                margin: 0.5rem 0;
+                font-size: 0.9rem; /* Increased font size */
+                margin: 0.8rem 0; /* Increased margin */
             }
 
             .text {
@@ -320,23 +321,23 @@
             }
 
             .callout {
-                font-size: 0.85rem;
+                font-size: 0.9rem; /* Increased font size */
             }
         }
 
         @media only screen and (max-width: 375px) {
             .input-group input {
-                padding: 0.8rem 2.2rem;
-                font-size: 0.9rem;
+                padding: 0.9rem 2.8rem; /* Adjusted padding */
+                font-size: 0.95rem; /* Increased font size */
             }
 
             .form button {
-                padding: 0.6rem;
-                font-size: 1rem;
+                padding: 0.7rem; /* Increased padding */
+                font-size: 1.1rem; /* Increased font size */
             }
 
             .form p {
-                font-size: 0.8rem;
+                font-size: 0.85rem; /* Increased font size */
             }
 
             .text h2 {
@@ -446,7 +447,6 @@
                 <h1>Welcome Back</h1>
             </div>
         </div>
-        <!-- END SIGN IN CONTENT -->
         <!-- SIGN UP CONTENT -->
         <div class="col align-items-center flex-col">
             <div class="text sign-up">
