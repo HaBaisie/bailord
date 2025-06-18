@@ -218,49 +218,88 @@
         @media only screen and (max-width: 425px) {
             .container {
                 padding: 0.5rem;
+                display: flex; /* Ensure container uses flexbox for centering */
+                align-items: center; /* Center vertically */
+                justify-content: center; /* Center horizontally */
             }
-
-            .form-wrapper {
+        
+            .row {
+                align-items: center; /* Center vertically */
+                justify-content: center;
+                height: auto; /* Allow row to adjust height based on content */
+                min-height: 100vh; /* Ensure it takes full viewport height */
+            }
+        
+            .col.sign-in {
+                width: 100%;
+                position: relative;
                 padding: 1rem;
+                background-color: transparent;
+                display: flex; /* Use flexbox to center form */
+                align-items: center; /* Center vertically */
+                justify-content: center; /* Center horizontally */
+                min-height: 100vh; /* Ensure full viewport height */
+            }
+        
+            .form-wrapper {
+                padding: 2.25rem;
                 max-width: 100%;
+                display: flex; /* Use flexbox to center form */
+                align-items: center; /* Center vertically */
+                justify-content: center; /* Center horizontally */
             }
-
+        
             .form {
-                padding: 1.5rem;
-                border-radius: 0.75rem;
+                padding: 2.25rem;
+                border-radius: 1.5rem;
+                transition-delay: 0.2s;
+                box-shadow: none;
+                background-color: var(--white);
             }
-
+        
             .input-group {
-                margin: 0.8rem 0;
+                margin: 1.5rem 0;
             }
-
+        
             .input-group input {
-                padding: 0.7rem 1rem 0.7rem 2.2rem;
-                font-size: 0.9rem;
-            }
-
-            .input-group i {
-                font-size: 1rem;
-                left: 0.8rem;
-            }
-
-            .form button {
-                padding: 0.7rem;
-                font-size: 0.9rem;
-            }
-
-            .form p {
-                font-size: 0.8rem;
-                margin: 0.6rem 0;
-            }
-
-            .text h2 {
+                padding: 1.5rem 4.5rem;
                 font-size: 1.5rem;
             }
-
+        
+            .input-group i {
+                font-size: 2.1rem;
+            }
+        
+            .form button {
+                padding: 1.2rem;
+                font-size: 1.8rem;
+            }
+        
+            .form p {
+                font-size: 1.35rem;
+                margin: 1.2rem 0;
+            }
+        
+            .text {
+                margin: 1rem 0;
+            }
+        
+            .text h2 {
+                font-size: 1.8rem;
+                margin: 0.5rem 0;
+            }
+        
+            .container::before {
+                clip-path: circle(0% at 50% 0%);
+            }
+        
+            .container.sign-in::before,
+            .container.sign-up::before {
+                clip-path: circle(150% at 50% 0%);
+            }
+        
             .callout {
-                font-size: 0.8rem;
-                padding: 0.8rem;
+                font-size: 1.35rem;
             }
         }
 
