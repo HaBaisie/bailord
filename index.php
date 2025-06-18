@@ -119,22 +119,33 @@
             max-width: 1200px;
             margin: 0 auto 3rem;
             overflow: hidden;
+            position: relative;
+        }
+        .intro-slider {
+            width: 100%;
+            height: 150px;
         }
         .intro-slide {
             position: relative;
-            width: 600px;
+            width: 550px;
             height: 150px;
             overflow: hidden;
             border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .intro-slide img {
-            width: 600px;
-            height: 150px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             object-position: center;
             display: block;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
         .intro-content {
             position: absolute;
@@ -146,6 +157,7 @@
             align-items: center;
             justify-content: flex-end;
             padding: 15px;
+            z-index: 1;
         }
         @media (max-width: 767px) {
             .header-top {
@@ -169,13 +181,16 @@
                 height: 100px;
                 padding: 0 10px;
             }
+            .intro-slider {
+                height: 100px;
+            }
             .intro-slide {
-                width: 300px;
-                height: 75px;
+                width: 366.67px;
+                height: 100px;
             }
             .intro-slide img {
-                width: 300px;
-                height: 75px;
+                width: 100%;
+                height: 100%;
             }
             .intro-content {
                 padding: 8px;
@@ -276,13 +291,16 @@
                 height: 120px;
                 padding: 0 15px;
             }
+            .intro-slider {
+                height: 120px;
+            }
             .intro-slide {
-                width: 480px;
+                width: 440px;
                 height: 120px;
             }
             .intro-slide img {
-                width: 480px;
-                height: 120px;
+                width: 100%;
+                height: 100%;
             }
             .intro-title {
                 font-size: 16px;
@@ -634,9 +652,9 @@
                         "items": 1,
                         "margin": 10,
                         "responsive": {
-                            "0": {"stagePadding": 20},
-                            "768": {"stagePadding": 40},
-                            "1200": {"nav": true, "dots": false, "stagePadding": 60}
+                            "0": {"stagePadding": 20, "items": 1},
+                            "768": {"stagePadding": 40, "items": 1},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 60, "items": 1}
                         }
                     }'>
                     <div class="intro-slide">
@@ -1203,7 +1221,7 @@
                                 $image_url = !empty($product['photo']) 
                                     ? htmlspecialchars($product['photo']) 
                                     : $default_image;
-                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2>
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
