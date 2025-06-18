@@ -114,6 +114,39 @@
             align-items: center;
             gap: 10px;
         }
+        .intro-slider-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            overflow: hidden;
+        }
+        .intro-slide {
+            position: relative;
+            width: 600px;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .intro-slide img {
+            width: 600px;
+            height: 150px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        .intro-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 15px;
+        }
         @media (max-width: 767px) {
             .header-top {
                 padding: 5px 0;
@@ -133,34 +166,36 @@
                 font-size: 12px;
             }
             .intro-slider-container {
-                height: 180px;
+                height: 100px;
                 padding: 0 10px;
             }
             .intro-slide {
-                background-size: cover;
-                background-position: center;
-                height: 180px;
-                border-radius: 8px;
+                width: 300px;
+                height: 75px;
+            }
+            .intro-slide img {
+                width: 300px;
+                height: 75px;
             }
             .intro-content {
                 padding: 8px;
             }
             .intro-title {
-                font-size: 16px;
+                font-size: 12px;
                 line-height: 1.2;
             }
             .intro-subtitle {
-                font-size: 11px;
-            }
-            .intro-price {
-                font-size: 13px;
-            }
-            .intro-price sup {
                 font-size: 9px;
             }
+            .intro-price {
+                font-size: 10px;
+            }
+            .intro-price sup {
+                font-size: 7px;
+            }
             .btn-round {
-                padding: 5px 10px;
-                font-size: 11px;
+                padding: 4px 8px;
+                font-size: 9px;
             }
             .product {
                 margin-bottom: 10px;
@@ -238,18 +273,22 @@
         }
         @media (min-width: 768px) and (max-width: 991px) {
             .intro-slider-container {
-                height: 250px;
+                height: 120px;
                 padding: 0 15px;
             }
             .intro-slide {
-                height: 250px;
-                border-radius: 8px;
+                width: 480px;
+                height: 120px;
+            }
+            .intro-slide img {
+                width: 480px;
+                height: 120px;
             }
             .intro-title {
-                font-size: 20px;
+                font-size: 16px;
             }
             .intro-subtitle {
-                font-size: 13px;
+                font-size: 11px;
             }
             .product {
                 margin-bottom: 15px;
@@ -595,12 +634,13 @@
                         "items": 1,
                         "margin": 10,
                         "responsive": {
-                            "0": {"stagePadding": 40},
-                            "768": {"stagePadding": 60},
-                            "1200": {"nav": true, "dots": false, "stagePadding": 80}
+                            "0": {"stagePadding": 20},
+                            "768": {"stagePadding": 40},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 60}
                         }
                     }'>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slider1.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -620,7 +660,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10C.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -641,7 +682,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -662,7 +704,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_Y04.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -683,7 +726,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -704,7 +748,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png" alt="ZTE BLADE A55">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -725,7 +770,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_CITY_100.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -746,7 +792,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_C75.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -767,7 +814,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDMI_A5.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -788,7 +836,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_NOTE50.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/REALME_NOTE50.png" alt="REALME NOTE50">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -809,7 +858,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/OPPO.png);">
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/OPPO.png" alt="OPPO A3">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -830,7 +880,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
+                    <div class="intro-slide">
+                        <img src="images/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
                         <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -1216,4 +1267,3 @@
     </div>
 </body>
 </html>
-```
