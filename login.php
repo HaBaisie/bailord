@@ -69,16 +69,16 @@
 
         .form-wrapper {
             width: 100%;
-            max-width: 36rem; /* Increased from 28rem to make form larger */
-            padding: 2rem; /* Increased padding */
+            max-width: 54rem; /* Increased from 36rem (50% increase) */
+            padding: 3rem; /* Increased from 2rem (50% increase) */
         }
 
         .form {
-            padding: 2rem; /* Increased padding */
+            padding: 3rem; /* Increased from 2rem (50% increase) */
             background-color: var(--white);
-            border-radius: 1.5rem;
+            border-radius: 2.25rem; /* Increased from 1.5rem (50% increase) */
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px; /* Increased from 5px 15px (50% increase) */
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             transition-delay: 0.3s;
@@ -94,55 +94,55 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.5rem 0; /* Increased margin */
+            margin: 2.25rem 0; /* Increased from 1.5rem (50% increase) */
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.2rem;
+            left: 1.8rem; /* Increased from 1.2rem (50% increase) */
             transform: translateY(-50%);
-            font-size: 1.6rem; /* Increased icon size */
+            font-size: 2.4rem; /* Increased from 1.6rem (50% increase) */
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.2rem 3.5rem; /* Increased padding */
-            font-size: 1.1rem; /* Increased font size */
+            padding: 1.8rem 5.25rem; /* Increased from 1.2rem 3.5rem (50% increase) */
+            font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
             background-color: var(--gray);
-            border-radius: .5rem;
-            border: 0.125rem solid var(--white);
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            border: 0.1875rem solid var(--white); /* Increased from 0.125rem (50% increase) */
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.125rem solid var(--primary-color);
+            border: 0.1875rem solid var(--primary-color); /* Adjusted to match increased border */
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1rem; /* Increased padding */
-            border-radius: .5rem;
+            padding: 1.5rem; /* Increased from 1rem (50% increase) */
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.3rem; /* Increased font size */
+            font-size: 1.95rem; /* Increased from 1.3rem (50% increase) */
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-2px);
+            transform: translateY(-3px); /* Increased from -2px for proportionality */
         }
 
         .form p {
-            margin: 1.2rem 0; /* Increased margin */
-            font-size: 1rem; /* Increased font size */
+            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
+            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
             color: var(--gray-2);
         }
 
@@ -215,13 +215,13 @@
         }
 
         .callout {
-            padding: 1.2rem; /* Increased padding */
-            margin: 1.2rem 0; /* Increased margin */
-            border-radius: .5rem;
+            padding: 1.8rem; /* Increased from 1.2rem (50% increase) */
+            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
             text-align: center;
-            font-size: 1rem; /* Increased font size */
+            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px); /* Increased from 20px (50% increase) */
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -267,39 +267,39 @@
             }
 
             .form-wrapper {
-                padding: 1.5rem; /* Increased padding for mobile */
+                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
                 max-width: 100%; /* Ensure full width on smaller screens */
             }
 
             .form {
-                padding: 1.5rem; /* Increased padding */
-                border-radius: 1rem;
+                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
+                border-radius: 1.5rem; /* Increased from 1rem (50% increase) */
                 transition-delay: 0.2s;
                 box-shadow: none;
                 background-color: var(--white);
             }
 
             .input-group {
-                margin: 1rem 0; /* Increased margin */
+                margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
             }
 
             .input-group input {
-                padding: 1rem 3rem; /* Adjusted padding */
-                font-size: 1rem; /* Increased font size */
+                padding: 1.5rem 4.5rem; /* Increased from 1rem 3rem (50% increase) */
+                font-size: 1.5rem; /* Increased from 1rem (50% increase) */
             }
 
             .input-group i {
-                font-size: 1.4rem; /* Increased icon size */
+                font-size: 2.1rem; /* Increased from 1.4rem (50% increase) */
             }
 
             .form button {
-                padding: 0.8rem; /* Increased padding */
-                font-size: 1.2rem; /* Increased font size */
+                padding: 1.2rem; /* Increased from 0.8rem (50% increase) */
+                font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
             }
 
             .form p {
-                font-size: 0.9rem; /* Increased font size */
-                margin: 0.8rem 0; /* Increased margin */
+                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+                margin: 1.2rem 0; /* Increased from 0.8rem (50% increase) */
             }
 
             .text {
@@ -321,23 +321,23 @@
             }
 
             .callout {
-                font-size: 0.9rem; /* Increased font size */
+                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
             }
         }
 
         @media only screen and (max-width: 375px) {
             .input-group input {
-                padding: 0.9rem 2.8rem; /* Adjusted padding */
-                font-size: 0.95rem; /* Increased font size */
+                padding: 1.35rem 4.2rem; /* Increased from 0.9rem 2.8rem (50% increase) */
+                font-size: 1.425rem; /* Increased from 0.95rem (50% increase) */
             }
 
             .form button {
-                padding: 0.7rem; /* Increased padding */
-                font-size: 1.1rem; /* Increased font size */
+                padding: 1.05rem; /* Increased from 0.7rem (50% increase) */
+                font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
             }
 
             .form p {
-                font-size: 0.85rem; /* Increased font size */
+                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
             }
 
             .text h2 {
