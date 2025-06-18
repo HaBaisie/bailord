@@ -114,153 +114,73 @@
             align-items: center;
             gap: 10px;
         }
-        /* Slider Styles */
-        .banner-slider-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .banner-slider {
-            width: 100%;
-        }
-        .banner-slide {
-            position: relative;
-            width: 100%;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .banner-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        .banner-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 20px;
-        }
-        .banner-content .row {
-            width: 100%;
-        }
-        .intro-subtitle {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-        .intro-title {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 10px;
-        }
-        .intro-price {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .intro-price sup {
-            font-size: 12px;
-            top: -0.5em;
-        }
-        .btn-round {
-            padding: 8px 20px;
-            font-size: 14px;
-            border-radius: 20px;
-        }
-        .owl-nav .owl-prev,
-        .owl-nav .owl-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            color: var(--text-light);
-            background-color: rgba(0, 0, 0, 0.5);
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            border-radius: 50%;
-        }
-        .owl-nav .owl-prev {
-            left: 10px;
-        }
-        .owl-nav .owl-next {
-            right: 10px;
-        }
-        .owl-dots {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-        }
-        .owl-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            margin: 0 5px;
-        }
-        .owl-dot.active {
-            background-color: var(--dominant-color);
-        }
-        /* Newsletter Popup */
-        .newsletter-popup-container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        .newsletter-img {
-            width: 100%;
-            height: auto;
-        }
-        .banner-content .logo {
-            margin-bottom: 10px;
-        }
-        /* Product Listings */
-        .product-price {
-            color: var(--dominant-color);
-            font-weight: 600;
-        }
-        .ratings-text {
-            font-size: 12px;
-            color: var(--dark-neutral);
-        }
         @media (max-width: 767px) {
-            .header-top { padding: 5px 0; }
-            .header-contact, .top-menu li a { font-size: 12px; padding: 5px; }
-            .logo img { width: 80px; height: auto; }
-            .cat-blocks-container .col-6 { padding: 5px; }
-            .cat-block-title { font-size: 12px; }
-            .banner-slider-container { margin: 0 10px 2rem; }
-            .banner-slide { height: 100px; }
-            .banner-content { padding: 10px; }
-            .intro-subtitle { font-size: 10px; }
-            .intro-title { font-size: 16px; }
-            .intro-price { font-size: 12px; }
-            .intro-price sup { font-size: 8px; }
-            .btn-round { padding: 5px 10px; font-size: 10px; }
-            .product { margin-bottom: 10px; }
-            .product-media img { max-width: 100%; height: auto; max-height: 120px; object-fit: contain; }
-            .product-title { font-size: 13px; line-height: 1.3; }
-            .product-price { font-size: 14px; }
-            .ratings-container { font-size: 12px; }
+            .header-top {
+                padding: 5px 0;
+            }
+            .header-contact, .top-menu li a {
+                font-size: 12px;
+                padding: 5px;
+            }
+            .logo img {
+                width: 80px;
+                height: auto;
+            }
+            .cat-blocks-container .col-6 {
+                padding: 5px;
+            }
+            .cat-block-title {
+                font-size: 12px;
+            }
+            .intro-slider-container {
+                height: 180px;
+                padding: 0 10px;
+            }
+            .intro-slide {
+                background-size: cover;
+                background-position: center;
+                height: 180px;
+                border-radius: 8px;
+            }
+            .intro-content {
+                padding: 8px;
+            }
+            .intro-title {
+                font-size: 16px;
+                line-height: 1.2;
+            }
+            .intro-subtitle {
+                font-size: 11px;
+            }
+            .intro-price {
+                font-size: 13px;
+            }
+            .intro-price sup {
+                font-size: 9px;
+            }
+            .btn-round {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+            .product {
+                margin-bottom: 10px;
+            }
+            .product-media img {
+                max-width: 100%;
+                height: auto;
+                max-height: 120px;
+                object-fit: contain;
+            }
+            .product-title {
+                font-size: 13px;
+                line-height: 1.3;
+            }
+            .product-price {
+                font-size: 14px;
+            }
+            .ratings-container {
+                font-size: 12px;
+            }
             .mobile-menu-container {
                 position: fixed;
                 top: 0;
@@ -275,7 +195,9 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease-in-out;
             }
-            .mobile-menu-container.visible { transform: translateX(0); }
+            .mobile-menu-container.visible {
+                transform: translateX(0);
+            }
             .mobile-menu-wrapper {
                 width: 80%;
                 max-width: 300px;
@@ -290,30 +212,64 @@
                 right: 10px;
                 cursor: pointer;
             }
-            .btn { padding: 7px 12px; font-size: 13px; }
-            .deal { min-height: 180px; }
-            .deal-content { padding: 8px; }
-            .deal h2 { font-size: 14px; }
-            .deal h3 { font-size: 12px; }
-            .footer .col-sm-6 { margin-bottom: 15px; }
-            .header-right.d-none.d-lg-block, .heading-right { display: none !important; }
+            .btn {
+                padding: 7px 12px;
+                font-size: 13px;
+            }
+            .deal {
+                min-height: 180px;
+            }
+            .deal-content {
+                padding: 8px;
+            }
+            .deal h2 {
+                font-size: 14px;
+            }
+            .deal h3 {
+                font-size: 12px;
+            }
+            .footer .col-sm-6 {
+                margin-bottom: 15px;
+            }
+            .header-right.d-none.d-lg-block,
+            .heading-right {
+                display: none !important;
+            }
         }
         @media (min-width: 768px) and (max-width: 991px) {
-            .banner-slide { height: 120px; }
-            .banner-content { padding: 15px; }
-            .intro-subtitle { font-size: 12px; }
-            .intro-title { font-size: 20px; }
-            .intro-price { font-size: 14px; }
-            .product { margin-bottom: 15px; }
-            .product-media img { max-height: 150px; }
-            .cat-block-title { font-size: 13px; }
+            .intro-slider-container {
+                height: 250px;
+                padding: 0 15px;
+            }
+            .intro-slide {
+                height: 250px;
+                border-radius: 8px;
+            }
+            .intro-title {
+                font-size: 20px;
+            }
+            .intro-subtitle {
+                font-size: 13px;
+            }
+            .product {
+                margin-bottom: 15px;
+            }
+            .product-media img {
+                max-height: 150px;
+            }
+            .cat-block-title {
+                font-size: 13px;
+            }
         }
-        .btn, .dropdown-toggle, .mobile-menu-toggler, .mobile-search-toggle, .product-media a {
+        .btn, .dropdown-toggle, .mobile-menu-toggler, 
+        .mobile-search-toggle, .product-media a {
             min-height: 44px;
             min-width: 44px;
             position: relative;
         }
-        .btn-product-icon:before, .icon-phone:before, .icon-search:before {
+        .btn-product-icon:before, 
+        .icon-phone:before, 
+        .icon-search:before {
             content: '';
             position: absolute;
             top: -10px;
@@ -332,7 +288,9 @@
             justify-content: space-between;
             flex-wrap: wrap;
         }
-        .header-middle .header-left, .header-middle .header-center, .header-middle .header-right {
+        .header-middle .header-left,
+        .header-middle .header-center,
+        .header-middle .header-right {
             flex: 1;
             min-width: 0;
         }
@@ -359,7 +317,9 @@
             background-color: var(--complementary-blue);
             color: white;
         }
-        .mobile-menu li { position: relative; }
+        .mobile-menu li {
+            position: relative;
+        }
         .mobile-menu li ul {
             display: none;
             position: static;
@@ -367,11 +327,21 @@
             padding-left: 20px;
             background-color: var(--medium-neutral);
         }
-        .mobile-menu li.active > ul { display: block; }
-        .mobile-menu-container .mobile-menu li a { color: var(--text-dark); }
-        .mobile-menu-container .mobile-menu li a:hover { color: var(--accent-color); }
-        .mobile-menu-container .mobile-menu li ul li a { color: var(--text-dark); }
-        .mobile-menu-container .mobile-menu li ul li a:hover { color: var(--accent-color); }
+        .mobile-menu li.active > ul {
+            display: block;
+        }
+        .mobile-menu-container .mobile-menu li a {
+            color: var(--text-dark);
+        }
+        .mobile-menu-container .mobile-menu li a:hover {
+            color: var(--accent-color);
+        }
+        .mobile-menu-container .mobile-menu li ul li a {
+            color: var(--text-dark);
+        }
+        .mobile-menu-container .mobile-menu li ul li a:hover {
+            color: var(--accent-color);
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -468,23 +438,6 @@
                 }
                 lastTouchEnd = now;
             }, false);
-            // Initialize Owl Carousel
-            if (jQuery) {
-                jQuery('.banner-slider').owlCarousel({
-                    items: 1,
-                    loop: true,
-                    margin: 0,
-                    nav: true,
-                    dots: true,
-                    autoplay: true,
-                    autoplayTimeout: 5000,
-                    responsive: {
-                        0: { stagePadding: 10 },
-                        768: { stagePadding: 20 },
-                        1200: { stagePadding: 30 }
-                    }
-                });
-            }
         });
     </script>
 </head>
@@ -572,7 +525,7 @@
                                         $categories = $stmt->fetchAll();
                                         foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
                                         echo "<li><a href='#'>Error loading categories</a></li>";
@@ -607,7 +560,7 @@
                                         $categories = $stmt->fetchAll();
                                         foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
                                         echo "<li><a href='#'>Error loading categories</a></li>";
@@ -633,11 +586,22 @@
             </div>
         </header>
         <main class="main">
-            <div class="banner-slider-container mb-5">
-                <div class="banner-slider owl-carousel owl-theme">
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
-                        <div class="banner-content container">
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false,
+                        "center": true,
+                        "items": 1,
+                        "margin": 10,
+                        "responsive": {
+                            "0": {"stagePadding": 40},
+                            "768": {"stagePadding": 60},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 80}
+                        }
+                    }'>
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slider1.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -656,9 +620,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10C.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -678,9 +641,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/TECNO_POP_10.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -700,14 +662,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/VIVO_Y04.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
                                     <h1 class="intro-title">VIVO</h1>
-                                    <h1 class="intro-title">Y04</h1>
+                                    <h1 class="intro-title">YO4</h1>
                                     <div class="intro-price">
                                         <sup>Today:</sup>
                                         <span class="text-primary">
@@ -722,9 +683,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -744,9 +704,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A55.png" alt="ZTE BLADE A55">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -766,9 +725,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/ITEL_CITY_100.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -788,9 +746,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_C75.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -810,9 +767,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REDMI_A5.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -832,9 +788,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/REALME_NOTE50.png" alt="REALME NOTE50">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/REALME_NOTE50.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -854,16 +809,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/OPPO.png" alt="OPPO A3">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/OPPO.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
                                     <h1 class="intro-title">OPPO</h1>
                                     <h1 class="intro-title">A3</h1>
                                     <div class="intro-price">
-                                        <sup class="intro-old-price">₦349.95</sup>
+                                        <sup class="intro-old-price">₦349,95</sup>
                                         <span class="text-third">
                                             ₦279<sup>.99</sup>
                                         </span>
@@ -876,16 +830,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/slider/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
-                        <div class="banner-content container">
+                    <div class="intro-slide" style="background-image: url(images/INIFINIX_SMART_10.png);">
+                        <div class="container intro-content">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
                                     <h1 class="intro-title">INIFINIX</h1>
                                     <h1 class="intro-title">SMART 10</h1>
                                     <div class="intro-price">
-                                        <sup class="intro-old-price">₦349.95</sup>
+                                        <sup class="intro-old-price">₦349,95</sup>
                                         <span class="text-third">
                                             ₦279<sup>.99</sup>
                                         </span>
@@ -899,6 +852,7 @@
                         </div>
                     </div>
                 </div>
+                <span class="slider-loader"></span>
             </div>
             <div class="container">
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
@@ -911,7 +865,7 @@
             <div class="mb-4"></div>
             <div class="container">
                 <div class="row justify-content-center">
-                    <!-- Promo banners -->
+                    <!-- Promo banners will be dynamically loaded here -->
                 </div>
             </div>
             <div class="mb-3"></div>
@@ -1222,12 +1176,12 @@
                             <div class="row no-gutters bg-white newsletter-popup-content">
                                 <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
                                     <div class="banner-content text-center">
-                                        <img src="assets/images/logoo.jpg" class="logo" alt="logo" width="60" height="15">
+                                        <img src="images/logoo.jpg" class="logo" alt="logo" width="60" height="15">
                                         <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
                                         <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
                                         <form action="#">
                                             <div class="input-group input-group-round">
-                                                <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Address" required>
+                                                <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
                                                 <div class="input-group-append">
                                                     <button class="btn" type="submit"><span>go</span></button>
                                                 </div>
@@ -1240,7 +1194,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2-5col col-lg-5">
-                                    <img src="assets/images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                    <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
                                 </div>
                             </div>
                         </div>
