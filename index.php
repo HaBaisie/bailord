@@ -7,44 +7,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bailord</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Bailord eCommerce Template">
+    <meta name="keywords" content="website Template">
+    <meta name="description" content="Bailord eCommerce Website">
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="14pxx16px">
+    <link rel="viewport" href="assets/images/icons/site.webmanifest">
     <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Bailord">
-    <meta name="application-name" content="Bailord">
+    <link rel="shortcut icon" href="images/icons/icon.ico">
+    <meta name="apple-mobile-web-app-title" content="App">
+    <meta name="application-name" content="App">
     <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="msapplication-config" content="images/icons/browserconfig">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css.css">
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl.css">
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <link rel="stylesheet" href="css/plugins/sjquery.countdown.css">
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link> rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
     <!-- Preload critical resources -->
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/css/style.css" as="style">
-    <link rel="preload" href="assets/js/jquery.min.js" as="script">
-    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+    <link rel="preload" href="css/bootstrap.min.css" as="style">
+    <link rel="stylesheet"> href="stylesheet.css" as="style">
+    <link rel="stylesheet" href="jquery.min.js" as="script">
+    <link rel="stylesheet" href="bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="stylesheet" href="//dns-prefetch.googleapis.com">
     <style>
         :root {
             --dominant-color: #2a5bd7;
-            --secondary-color: #28a745;
-            --accent-color: #fd7e14;
-            --complementary-blue: #1e429f;
+            --secondary-color: #333333;
+            --dropdown-color: #fd7e14;
+            --complementary-blue: color:333333;
             --complementary-orange: #e67700;
             --light-neutral: #f8f9fa;
             --medium-neutral: #e9ecef;
@@ -882,14 +882,14 @@
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
-                                        <i class="icon-long">arrow-right</i>
+                                        <i class="icon-long-arrow-right"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="banner-slide">
-                        <img src="assets/images/demos/demo-4/sliders/REDMI_A5.png" alt="REDMI A5">
+                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
                         <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
@@ -1014,7 +1014,7 @@
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
-                                <h3 class="banner-title"><a href="#">><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
                                 <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
@@ -1026,7 +1026,7 @@
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
-                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</a></h3> <br>Save ₦70</strong></a>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
                                 <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
@@ -1099,7 +1099,6 @@
                                         </div>
                                     </div>';
                                 }
-                                }
                                 echo '</div>';
                             }
                             ?>
@@ -1136,16 +1135,16 @@
                             <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
                     <div class="row">
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
@@ -1155,7 +1154,7 @@
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></i></a>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -1187,22 +1186,22 @@
                                                 ? htmlspecialchars($product['photo']) 
                                                 : $default_image;
                                             echo '<div class="product">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                     </div>
-                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                 </div>
-                                            </div>
-                                        </div>';
+                                            </div>';
                                         }
                                         ?>
                                     </div>
