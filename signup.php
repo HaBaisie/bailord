@@ -69,16 +69,16 @@
 
         .form-wrapper {
             width: 100%;
-            max-width: 28rem;
-            padding: 1.5rem;
+            max-width: 42rem; /* Increased from 28rem (50% increase) */
+            padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
         }
 
         .form {
-            padding: 1.5rem;
+            padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
             background-color: var(--white);
-            border-radius: 1.5rem;
+            border-radius: 2.25rem; /* Increased from 1.5rem (50% increase) */
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px; /* Increased from 5px 15px (50% increase) */
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             transition-delay: 0.3s;
@@ -94,55 +94,55 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.2rem 0;
+            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1rem;
+            left: 1.5rem; /* Increased from 1rem (50% increase) */
             transform: translateY(-50%);
-            font-size: 1.4rem;
+            font-size: 2.1rem; /* Increased from 1.4rem (50% increase) */
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1rem 3rem;
-            font-size: 1rem;
+            padding: 1.5rem 4.5rem; /* Increased from 1rem 3rem (50% increase) */
+            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
             background-color: var(--gray);
-            border-radius: .5rem;
-            border: 0.125rem solid var(--white);
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            border: 0.1875rem solid var(--white); /* Increased from 0.125rem (50% increase) */
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.125rem solid var(--primary-color);
+            border: 0.1875rem solid var(--primary-color); /* Adjusted to match increased border */
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 0.8rem;
-            border-radius: .5rem;
+            padding: 1.2rem; /* Increased from 0.8rem (50% increase) */
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.2rem;
+            font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-2px);
+            transform: translateY(-3px); /* Increased from -2px for proportionality */
         }
 
         .form p {
-            margin: 1rem 0;
-            font-size: 0.9rem;
+            margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
+            font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
             color: var(--gray-2);
         }
 
@@ -215,13 +215,13 @@
         }
 
         .callout {
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: .5rem;
+            padding: 1.5rem; /* Increased from 1rem (50% increase) */
+            margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
+            border-radius: .75rem; /* Increased from .5rem (50% increase) */
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px); /* Increased from 20px (50% increase) */
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -267,38 +267,38 @@
             }
 
             .form-wrapper {
-                padding: 1rem;
+                padding: 1.5rem; /* Increased from 1rem (50% increase) */
             }
 
             .form {
-                padding: 1rem;
-                border-radius: 1rem;
+                padding: 1.5rem; /* Increased from 1rem (50% increase) */
+                border-radius: 1.5rem; /* Increased from 1rem (50% increase) */
                 transition-delay: 0.2s;
                 box-shadow: none;
                 background-color: var(--white);
             }
 
             .input-group {
-                margin: 0.8rem 0;
+                margin: 1.2rem 0; /* Increased from 0.8rem (50% increase) */
             }
 
             .input-group input {
-                padding: 0.9rem 2.5rem;
-                font-size: 0.95rem;
+                padding: 1.35rem 3.75rem; /* Increased from 0.9rem 2.5rem (50% increase) */
+                font-size: 1.425rem; /* Increased from 0.95rem (50% increase) */
             }
 
             .input-group i {
-                font-size: 1.2rem;
+                font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
             }
 
             .form button {
-                padding: 0.7rem;
-                font-size: 1.1rem;
+                padding: 1.05rem; /* Increased from 0.7rem (50% increase) */
+                font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
             }
 
             .form p {
-                font-size: 0.85rem;
-                margin: 0.5rem 0;
+                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
+                margin: 0.75rem 0; /* Increased from 0.5rem (50% increase) */
             }
 
             .text {
@@ -320,49 +320,50 @@
             }
 
             .callout {
-                font-size: 0.85rem;
+                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
             }
         }
 
         @media only screen and (max-width: 375px) {
             .input-group input {
-                padding: 0.8rem 2.2rem;
-                font-size: 0.9rem;
+                padding: 1.2rem 3.3rem; /* Increased from 0.8rem 2.2rem (50% increase) */
+                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
             }
 
             .form button {
-                padding: 0.6rem;
-                font-size: 1rem;
+                padding: 0.9rem; /* Increased from 0.6rem (50% increase) */
+                font-size: 1.5rem; /* Increased from 1rem (50% increase) */
             }
 
             .form p {
-                font-size: 0.8rem;
+                font-size: 1.2rem; /* Increased from 0.8rem (50% increase) */
             }
 
             .text h2 {
                 font-size: 1.6rem;
             }
+
             .text.sign-up h1 {
-              font-size: 4rem;
-              font-weight: 700;
-              margin: 1rem 0;
-              transform: translateX(250%);
-              transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-              opacity: 0;
-          }
-          
-          @media only screen and (max-width: 425px) {
-              .text.sign-up h1 {
-                  font-size: 2.4rem;
-                  margin: 0.5rem 0;
-              }
-          }
-          
-          @media only screen and (max-width: 375px) {
-              .text.sign-up h1 {
-                  font-size: 2.2rem;
-              }
-          }
+                font-size: 6rem; /* Increased from 4rem (50% increase) */
+                font-weight: 700;
+                margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
+                transform: translateX(250%);
+                transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+                opacity: 0;
+            }
+
+            @media only screen and (max-width: 425px) {
+                .text.sign-up h1 {
+                    font-size: 3.6rem; /* Increased from 2.4rem (50% increase) */
+                    margin: 0.75rem 0; /* Increased from 0.5rem (50% increase) */
+                }
+            }
+
+            @media only screen and (max-width: 375px) {
+                .text.sign-up h1 {
+                    font-size: 3.3rem; /* Increased from 2.2rem (50% increase) */
+                }
+            }
         }
     </style>
 </head>
