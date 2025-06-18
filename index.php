@@ -368,18 +368,10 @@
             background-color: var(--medium-neutral);
         }
         .mobile-menu li.active > ul { display: block; }
-        .mobile-menu-container .mobile-menu li a {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li a:hover {
-            color: var(--second-color-accent);
-        }
-        .mobile-menu-container .mobile-menu li ul {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li a:hover {
-            color: var(--accent-color);
-        }
+        .mobile-menu-container .mobile-menu li a { color: var(--text-dark); }
+        .mobile-menu-container .mobile-menu li a:hover { color: var(--accent-color); }
+        .mobile-menu-container .mobile-menu li ul li a { color: var(--text-dark); }
+        .mobile-menu-container .mobile-menu li ul li a:hover { color: var(--accent-color); }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -456,9 +448,9 @@
                                 if (m !== menu) m.style.display = 'none';
                             });
                         }
-                        }
-                    });
+                    }
                 });
+            });
             document.addEventListener('click', function(e) {
                 if (window.innerWidth < 992) {
                     if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
@@ -515,8 +507,8 @@
                         <div class="header-search header-search-extended d-none d-lg-block">
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
-                                    <div class="label" for="q" class="sr-only">Search</div>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." type="required">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div>
                             </form>
@@ -531,21 +523,20 @@
                                 <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
                             </a>
                             <a href="logout.php" class="user-btn" title="Logout">
-                                <i class="las la-sign-out"></i> Logout
+                                <i class="las la-sign-out-alt"></i> Logout
                             </a>
                         <?php else: ?>
                             <a href="login.php" class="login-btn">
                                 <i class="icon-user"></i> Login/Signup
                             </a>
-                        </div>
-                        </div>
+                        <?php endif; ?>
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">0</span>
                                 </div>
-                                <p class="title">Cart</p>
+                                <p>Cart</p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products"></div>
@@ -561,70 +552,69 @@
                         </div>
                     </div>
                 </div>
-            </div class="header-bottom">
-                <div class="sticky-header">
-                    .container">
-                        <nav class="main-nav d-none d-lg-block">
-                            <ul ul class="menu">
-                                <li class="active"><a href="index.php">Home</a></li>
-                                <li><a href="category.php?category=all">Shop</a></li>
-                                <li><a href="profile.php">Orders</a></a>
-                                <li>
-                                    <a href="#">Browse Categories</a>
-                                    <ul>
-                                        <?php
-                                            $pdo = new Database();
-                                            $conn = $pdo->open();
-                                            try {
-                                                $stmt = $conn->prepare("SELECT * FROM category");
-                                                $stmt->execute();
-                                                $categories = $stmt->fetchAll();
-                                                foreach ($categories as $category) {
-                                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                    echo '<li><a href="category.php?category=$slug">'.htmlspecialchars($category['name']).'</a></li>';
-                                                }
-                                            } catch(PDOException $e) {
-                                                echo "<li><a href='#'>Error loading categories</a></a></li>";
-                                            }
-                                        ?>
-                                        </ul>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+            </div>
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <nav class="main-nav d-none d-lg-block">
+                        <ul class="menu">
+                            <li class="active"><a href="index.php">Home</a></li>
+                            <li><a href="category.php?category=all">Shop</a></li>
+                            <li><a href="profile.php">Orders</a></li>
+                            <li>
+                                <a href="#">Browse Categories</a>
+                                <ul>
+                                    <?php
+                                    $pdo = new Database();
+                                    $conn = $pdo->open();
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        $categories = $stmt->fetchAll();
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                        }
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-            </div class="mobile-menu-container">
+            </div>
+            <div class="mobile-menu-container">
                 <div class="mobile-menu-wrapper">
                     <span class="mobile-menu-close"><i class="icon-close"></i></span>
                     <form action="#" method="get" class="mobile-search">
                         <label for="mobile-search" class="sr-only">Search</label>
-                        <input type="search" class="form-control" name="mobile-search-mobile" id="mobile-search" placeholder="Search..." required>
+                        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
-                            <li><a href="profile.php">Orders</a></a></li>
+                            <li><a href="profile.php">Orders</a></li>
                             <li>
                                 <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
-                                        try {
-                                            $stmt = $conn->prepare("SELECT * FROM category");
-                                            $stmt->execute();
-                                            $categories = $stmt->fetchAll();
-                                            foreach ($categories as $category) {
-                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] ? $category['cat_slug'] : otherlowercase(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category=$slug">'.htmlspecialchars($category['name']).'</a></li>';
-                                            }
-                                        } catch(PDOException $e) {
-                                            echo "<li><a href='#'>Error loading categories</a></a></li>";
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        $categories = $stmt->fetchAll();
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
                                         }
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
                                     ?>
-                                    </ul>
-                                </li>
+                                </ul>
+                            </li>
                             <li>
                                 <a href="#">Pages</a>
                                 <ul>
@@ -637,639 +627,638 @@
                                 </ul>
                             </li>
                             <li><a href="blog.html">Blog</a></li>
-                            </ul>
                         </ul>
                     </nav>
                 </div>
             </div>
         </header>
-    <main class="main">
-        <div class="banner-slider-container mb-5">
-            <div class="banner-slider owl-carousel owl-theme">
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">ITEL P70</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
-                                </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">TECNO POP</h1>
-                                <h1 class="intro-title">10C</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+        <main class="main">
+            <div class="banner-slider-container mb-5">
+                <div class="banner-slider owl-carousel owl-theme">
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">ITEL P70</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">TECNO POP</h1>
-                                <h1 class="intro-title">10</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">TECNO POP</h1>
+                                    <h1 class="intro-title">10C</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">VIVO</h1>
-                                <h1 class="intro-title">YO4</h1>
-                                <div class="intro-price">
-                                    <div class="sup">Today:</sup>
-                                    <div class="span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </div>
-                                    </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">ZTE BLADE</h1>
-                                <h1 class="intro-title">A35</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">TECNO POP</h1>
+                                    <h1 class="intro-title">10</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A55.png" alt="ZTE BLADE A55">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">ZTE BLADE</h1>
-                                <h1 class="intro-title">A55</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">VIVO</h1>
+                                    <h1 class="intro-title">Y04</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">ITEL CITY</h1>
-                                <h1 class="intro-title">100</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">ZTE BLADE</h1>
+                                    <h1 class="intro-title">A35</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/demo-4/REALME_C75.png" alt="REALME C75">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">REALME</h1>
-                                <h1 class="intro-title">C75</h1>
-                                <div class="intro-price">
-                                    <sup>Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A55.png" alt="ZTE BLADE A55">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">ZTE BLADE</h1>
+                                    <h1 class="intro-title">A55</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/demo-4/REDMI_A5.png" alt="REDMI A5">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">REDMI</h1>
-                                <h1 class="intro-title">A5</h1>
-                                <div class="intro-price">
-                                    <div class="sup">Today:</sup>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">ITEL CITY</h1>
+                                    <h1 class="intro-title">100</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/demo-4/REALME_NOTE50.png" alt="REALME NOTE50">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                                <h1 class="intro-title">REALME</h1>
-                                <h1 class="intro-title">NOTE50</h1>
-                                <div class="intro-price">
-                                    <div class="sup">Today:</div>
-                                    <span class="text-primary">
-                                        ₦999<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">REALME</h1>
+                                    <h1 class="intro-title">C75</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="assets/images/demos/demo-4/demo-4/OPPO.png" alt="OPPO A3">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
-                                <h1 class="intro-title">OPPO</h1>
-                                <h1 class="intro-title">>A3</h1>
-                                <div class="intro-price">
-                                    <sup class="intro-old-price">₦349,95</sup>
-                                    <span class="text-third">
-                                        ₦279<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">REDMI</h1>
+                                    <h1 class="intro-title">A5</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="images/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
-                    <div class="banner-content container">
-                        <div class="row justify-content-end">
-                            <div class="col-auto col-sm-7 col-md-6 col-lg-5">
-                                <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
-                                <h1 class="intro-title">INIFINIX</h1>
-                                <h1 class="intro-title">SMART 10</h1>
-                                <div class="intro-price">
-                                    <sup class="intro-old-price">₦349,95</sup>
-                                    <span class="text-third">
-                                        ₦279<sup>.99</sup>
-                                    </span>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/REALME_NOTE50.png" alt="REALME NOTE50">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-primary">New Arrival</h3>
+                                    <h1 class="intro-title">REALME</h1>
+                                    <h1 class="intro-title">NOTE50</h1>
+                                    <div class="intro-price">
+                                        <sup>Today:</sup>
+                                        <span class="text-primary">
+                                            ₦999<sup>.99</sup>
+                                        </span>
                                     </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round">
-                                    <span>Shop More</span>
-                                    <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/OPPO.png" alt="OPPO A3">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
+                                    <h1 class="intro-title">OPPO</h1>
+                                    <h1 class="intro-title">A3</h1>
+                                    <div class="intro-price">
+                                        <sup class="intro-old-price">₦349.95</sup>
+                                        <span class="text-third">
+                                            ₦279<sup>.99</sup>
+                                        </span>
+                                    </div>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/slider/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
+                        <div class="banner-content container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto col-sm-7 col-md-6 col-lg-5">
+                                    <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
+                                    <h1 class="intro-title">INIFINIX</h1>
+                                    <h1 class="intro-title">SMART 10</h1>
+                                    <div class="intro-price">
+                                        <sup class="intro-old-price">₦349.95</sup>
+                                        <span class="text-third">
+                                            ₦279<sup>.99</sup>
+                                        </span>
+                                    </div>
+                                    <a href="category.php?category=all" class="btn btn-primary btn-round">
+                                        <span>Shop More</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            <h2 class="title text-center mb-4">Explore Popular Categories</h2>
-            <div class="cat-blocks-container">
-                <div class="row">
-                    <?php echo renderCategoryBlocks($conn); ?>
+            <div class="container">
+                <h2 class="title text-center mb-4">Explore Popular Categories</h2>
+                <div class="cat-blocks-container">
+                    <div class="row">
+                        <?php echo renderCategoryBlocks($conn); ?>
                     </div>
                 </div>
             </div>
-        <div class="mb-4"></div>
-        <div class="container">
-            <div class="row justify-content-center">
-                <!-- Promo banners -->
-                </div>
-            </div>
-        <div class="mb-3"></div>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="banner banner-overlay banner-overlay-light">
-                        <a href="#">
-                            <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
-                        </a>
-                        <div class="banner-content">
-                            <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
-                            <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3>
-                            <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="banner banner-overlay banner-overlay-light">
-                        <a href="#">
-                            <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content">
-                            <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
-                            <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
-                            <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="banner banner-overlay banner-overlay-light">
-                        <a href="#">
-                            <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
-                        </a>
-                        <div class="banner-content">
-                            <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
-                            <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
-                            <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container new-arrivals">
-            <div class="heading heading-flex mb-3">
-                <div class="heading-left">
-                    <h2 class="title">New Arrivals</h2>
-                </div>
-                <div class="heading-right">
-                    <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="tab-content tab-content-carousel just-action-icons-sm">
-                <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
-                    <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                        data-owl-options='{
-                            "nav": true, 
-                            "dots": true,
-                            "margin": 5,
-                            "loop": false,
-                            "responsive": {
-                                "0": {"items": 2},
-                                "400": {"items": 2},
-                                "576": {"items": 3},
-                                "768": {"items": 4},
-                                "992": {"items": 5},
-                                "1200": {"items": 6}
-                            }
-                        }'>
-                        <?php
-                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
-                        $stmt->execute();
-                        $products = $stmt->fetchAll();
-                        $productGroups = array_chunk($products, 5);
-                        foreach ($productGroups as $group) {
-                            echo '<div class="products-slide d-flex">';
-                            foreach ($group as $product) {
-                                $image_url = !empty($product['photo']) 
-                                    ? htmlspecialchars($product['photo']) 
-                                    : $default_image;
-                                echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                    <figure class="product-media">
-                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                        </a>
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                        </div>
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                            </div>
-                                            <span class="ratings-text">( 5 Reviews )</span>
-                                        </div>
-                                    </div>
-                                </div>';
-                            }
-                            echo '</div>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mb-6"></div>
-        <div class="container">
-            <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
-                <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
+            <div class="mb-4"></div>
+            <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <div class="cta-content">
-                            <div class="cta-text text-right text-white">
-                                <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
+                    <!-- Promo banners -->
+                </div>
+            </div>
+            <div class="mb-3"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
+                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
-                            <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="more-container text-center mt-1 mb-5">
-            <a href="category.php?category=all" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
-        </div>
-        <div class="bg-light pt-5 pb-6">
-            <div class="container trending-products">
+            <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
-                        <h2 class="title">Trending Products</h2>
+                        <h2 class="title">New Arrivals</h2>
                     </div>
                     <div class="heading-right">
                         <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-5col d-none d-xl-block">
-                        <div class="banner banner-overlay banner-overlay-light">
-                            <a href="category.php">
-                                <img src="images/Banner.jpg" alt="Banner">
-                            </a>
-                            <div class="banner-content">
-                                <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
-                                <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4-5col">
-                        <div class="tab-content tab-content-carousel just-action-icons-sm">
-                            <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
-                                <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 5,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items": 2},
-                                            "400": {"items": 2},
-                                            "576": {"items": 3},
-                                            "768": {"items": 4},
-                                            "992": {"items": 5},
-                                            "1200": {"items": 6}
-                                        }
-                                    }'>
-                                    <?php
-                                    $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                    $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
-                                    $stmt->execute();
-                                    $trending = $stmt->fetchAll();
-                                    foreach ($trending as $product) {
-                                        $image_url = !empty($product['photo']) 
-                                            ? htmlspecialchars($product['photo']) 
-                                            : $default_image;
-                                        echo '<div class="product">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                    </div>
-                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                </div>
+                <div class="tab-content tab-content-carousel just-action-icons-sm">
+                    <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
+                        <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                            data-owl-options='{
+                                "nav": true, 
+                                "dots": true,
+                                "margin": 5,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {"items": 2},
+                                    "400": {"items": 2},
+                                    "576": {"items": 3},
+                                    "768": {"items": 4},
+                                    "992": {"items": 5},
+                                    "1200": {"items": 6}
+                                }
+                            }'>
+                            <?php
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                            $productGroups = array_chunk($products, 5);
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';
+                                foreach ($group as $product) {
+                                    $image_url = !empty($product['photo']) 
+                                        ? htmlspecialchars($product['photo']) 
+                                        : $default_image;
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                             </div>
-                                        </div>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
-                                <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                                    data-owl-options='{
-                                        "nav": true, 
-                                        "dots": true,
-                                        "margin": 5,
-                                        "loop": false,
-                                        "responsive": {
-                                            "0": {"items": 2},
-                                            "400": {"items": 2},
-                                            "576": {"items": 3},
-                                            "768": {"items": 4},
-                                            "992": {"items": 5},
-                                            "1200": {"items": 6}
-                                        }
-                                    }'>
-                                    <?php
-                                    $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                    $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
-                                    $stmt->execute();
-                                    $bestSelling = $stmt->fetchAll();
-                                    foreach ($bestSelling as $product) {
-                                        $image_url = !empty($product['photo']) 
-                                            ? htmlspecialchars($product['photo']) 
-                                            : $default_image;
-                                        echo '<div class="product">
-                                            <figure class="product-media">
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                    </div>
-                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                </div>
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
                                             </div>
-                                        </div>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container for-you">
-                <div class="heading heading-flex mb-3">
-                    <div class="heading-left">
-                        <h2 class="title">Recommendation For You</h2>
-                    </div>
-                    <div class="heading-right">
-                        <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="products">
-                    <div class="row justify-content-center">
-                        <?php
-                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
-                        $stmt->execute();
-                        $recommended = $stmt->fetchAll();
-                        foreach ($recommended as $product) {
-                            $image_url = !empty($product['photo']) 
-                                ? htmlspecialchars($product['photo']) 
-                                : $default_image;
-                            echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                                <div class="product">
-                                    <figure class="product-media">
-                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                        </a>
-                                    </figure>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                    </div>
-                                </div>
-                            </div>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
-                <div class="row justify-content-center">
-                    <div class="col-10">
-                        <div class="row no-gutters bg-white newsletter-popup-content">
-                            <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
-                                <div class="banner-content text-center">
-                                    <img src="images/logoo.jpg" class="logo" alt="logo" width="60" height="15">
-                                    <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
-                                    <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
-                                    <form action="#">
-                                        <div class="input-group input-group-round">
-                                            <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Address" required>
-                                            <div class="input-group-append">
-                                                <button class="btn" type="submit"><span>go</span></button>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
                                             </div>
                                         </div>
-                                    </form>
-                                    <div class="custom-control custom-checkbox" style="text-align: left;">
-                                        <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-                                        <label class="custom-control-label" for="register-policy-2">Do not show this again</label>
-                                    </div>
+                                    </div>';
+                                }
+                                echo '</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6"></div>
+            <div class="container">
+                <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                    <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="cta-content">
+                                <div class="cta-text text-right text-white">
+                                    <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div>
-                            </div>
-                            <div class="col-xl-2-5col col-lg-5">
-                                <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <script src="assets/js/jquery.min.js"></script>
-            <script src="assets/js/bootstrap.bundle.min.js"></script>
-            <script src="assets/js/jquery.hoverIntent.min.js"></script>
-            <script src="assets/js/jquery.waypoints.min.js"></script>
-            <script src="assets/js/superfish.min.js"></script>
-            <script src="assets/js/owl.carousel.min.js"></script>
-            <script src="assets/js/bootstrap-input-spinner.js"></script>
-            <script src="assets/js/jquery.plugin.min.js"></script>
-            <script src="assets/js/jquery.magnific-popup.min.js"></script>
-            <script src="assets/js/jquery.countdown.min.js"></script>
-            <script src="assets/js/main.js"></script>
-            <script src="assets/js/demos/demo-4.js"></script>
-    </main>
+            <div class="more-container text-center mt-1 mb-5">
+                <a href="category.php?category=all" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
+            </div>
+            <div class="bg-light pt-5 pb-6">
+                <div class="container trending-products">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Trending Products</h2>
+                        </div>
+                        <div class="heading-right">
+                            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5col d-none d-xl-block">
+                            <div class="banner banner-overlay banner-overlay-light">
+                                <a href="category.php">
+                                    <img src="assets/images/Banner.jpg" alt="Banner">
+                                </a>
+                                <div class="banner-content">
+                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
+                                    <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4-5col">
+                            <div class="tab-content tab-content-carousel just-action-icons-sm">
+                                <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 5,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        foreach ($trending as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 5,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        foreach ($bestSelling as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container for-you">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Recommendation For You</h2>
+                        </div>
+                        <div class="heading-right">
+                            <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="products">
+                        <div class="row justify-content-center">
+                            <?php
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                            $stmt->execute();
+                            $recommended = $stmt->fetchAll();
+                            foreach ($recommended as $product) {
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row no-gutters bg-white newsletter-popup-content">
+                                <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                                    <div class="banner-content text-center">
+                                        <img src="assets/images/logoo.jpg" class="logo" alt="logo" width="60" height="15">
+                                        <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                                        <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
+                                        <form action="#">
+                                            <div class="input-group input-group-round">
+                                                <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Address" required>
+                                                <div class="input-group-append">
+                                                    <button class="btn" type="submit"><span>go</span></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="custom-control custom-checkbox" style="text-align: left;">
+                                            <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                            <label class="custom-control-label" for="register-policy-2">Do not show this again</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2-5col col-lg-5">
+                                    <img src="assets/images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/js/bootstrap.bundle.min.js"></script>
+                <script src="assets/js/jquery.hoverIntent.min.js"></script>
+                <script src="assets/js/jquery.waypoints.min.js"></script>
+                <script src="assets/js/superfish.min.js"></script>
+                <script src="assets/js/owl.carousel.min.js"></script>
+                <script src="assets/js/bootstrap-input-spinner.js"></script>
+                <script src="assets/js/jquery.plugin.min.js"></script>
+                <script src="assets/js/jquery.magnific-popup.min.js"></script>
+                <script src="assets/js/jquery.countdown.min.js"></script>
+                <script src="assets/js/main.js"></script>
+                <script src="assets/js/demos/demo-4.js"></script>
+        </main>
     </div>
 </body>
 </html>
