@@ -569,27 +569,6 @@
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35">
                     </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider6.png" alt="ZTE BLADE A55">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider7.png" alt="ITEL CITY 100">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/REALME_NOTE50.png" alt="REALME NOTE50">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/OPPO.png" alt="OPPO A3">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="images/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
-                    </div>
                 </div>
                 <span class="slider-loader"></span>
             </div>
