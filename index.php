@@ -558,22 +558,22 @@
                         <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
+                        <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
+                        <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
+                        <img src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
+                        <img src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png" alt="ZTE BLADE A55">
+                        <img src="assets/images/demos/demo-4/slider/slider6.png" alt="ZTE BLADE A55">
                     </div>
                     <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
+                        <img src="assets/images/demos/demo-4/slider/slider7.png" alt="ITEL CITY 100">
                     </div>
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
