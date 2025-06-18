@@ -114,50 +114,111 @@
             align-items: center;
             gap: 10px;
         }
-        .intro-slider-container {
+        /* New Slider Styles */
+        .banner-slider-container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto 3rem;
-            overflow: hidden;
             position: relative;
+            overflow: hidden;
         }
-        .intro-slider {
+        .banner-slider {
+            width: 100%;
+        }
+        .banner-slide {
+            position: relative;
             width: 100%;
             height: 150px;
-        }
-        .intro-slide {
-            position: relative;
-            width: 550px;
-            height: 150px;
-            overflow: hidden;
-            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
-        .intro-slide img {
+        .banner-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
             display: block;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 1;
         }
-        .intro-content {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .banner-content {
+            position: relative;
+            z-index: 2;
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding: 15px;
-            z-index: 1;
+            padding: 20px;
+        }
+        .banner-content .row {
+            width: 100%;
+        }
+        .intro-subtitle {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .intro-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        .intro-price {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .intro-price sup {
+            font-size: 12px;
+            top: -0.5em;
+        }
+        .btn-round {
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 20px;
+        }
+        .owl-nav .owl-prev,
+        .owl-nav .owl-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--text-light);
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+        }
+        .owl-nav .owl-prev {
+            left: 10px;
+        }
+        .owl-nav .owl-next {
+            right: 10px;
+        }
+        .owl-dots {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .owl-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+        .owl-dot.active {
+            background-color: var(--dominant-color);
         }
         @media (max-width: 767px) {
             .header-top {
@@ -177,40 +238,30 @@
             .cat-block-title {
                 font-size: 12px;
             }
-            .intro-slider-container {
-                height: 100px;
-                padding: 0 10px;
+            .banner-slider-container {
+                margin: 0 10px 2rem;
             }
-            .intro-slider {
-                height: 100px;
-            }
-            .intro-slide {
-                width: 366.67px;
+            .banner-slide {
                 height: 100px;
             }
-            .intro-slide img {
-                width: 100%;
-                height: 100%;
-            }
-            .intro-content {
-                padding: 8px;
-            }
-            .intro-title {
-                font-size: 12px;
-                line-height: 1.2;
+            .banner-content {
+                padding: 10px;
             }
             .intro-subtitle {
-                font-size: 9px;
-            }
-            .intro-price {
                 font-size: 10px;
             }
+            .intro-title {
+                font-size: 16px;
+            }
+            .intro-price {
+                font-size: 12px;
+            }
             .intro-price sup {
-                font-size: 7px;
+                font-size: 8px;
             }
             .btn-round {
-                padding: 4px 8px;
-                font-size: 9px;
+                padding: 5px 10px;
+                font-size: 10px;
             }
             .product {
                 margin-bottom: 10px;
@@ -287,26 +338,20 @@
             }
         }
         @media (min-width: 768px) and (max-width: 991px) {
-            .intro-slider-container {
-                height: 120px;
-                padding: 0 15px;
-            }
-            .intro-slider {
+            .banner-slide {
                 height: 120px;
             }
-            .intro-slide {
-                width: 440px;
-                height: 120px;
-            }
-            .intro-slide img {
-                width: 100%;
-                height: 100%;
-            }
-            .intro-title {
-                font-size: 16px;
+            .banner-content {
+                padding: 15px;
             }
             .intro-subtitle {
-                font-size: 11px;
+                font-size: 12px;
+            }
+            .intro-title {
+                font-size: 20px;
+            }
+            .intro-price {
+                font-size: 14px;
             }
             .product {
                 margin-bottom: 15px;
@@ -495,6 +540,29 @@
                 }
                 lastTouchEnd = now;
             }, false);
+            // Initialize Owl Carousel for banner slider
+            if (jQuery) {
+                jQuery('.banner-slider').owlCarousel({
+                    items: 1,
+                    loop: true,
+                    margin: 0,
+                    nav: true,
+                    dots: true,
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    responsive: {
+                        0: {
+                            stagePadding: 10
+                        },
+                        768: {
+                            stagePadding: 20
+                        },
+                        1200: {
+                            stagePadding: 30
+                        }
+                    }
+                });
+            }
         });
     </script>
 </head>
@@ -643,23 +711,11 @@
             </div>
         </header>
         <main class="main">
-            <div class="intro-slider-container mb-5">
-                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
-                    data-owl-options='{
-                        "dots": true,
-                        "nav": false,
-                        "center": true,
-                        "items": 1,
-                        "margin": 10,
-                        "responsive": {
-                            "0": {"stagePadding": 20, "items": 1},
-                            "768": {"stagePadding": 40, "items": 1},
-                            "1200": {"nav": true, "dots": false, "stagePadding": 60, "items": 1}
-                        }
-                    }'>
-                    <div class="intro-slide">
+            <div class="banner-slider-container mb-5">
+                <div class="banner-slider owl-carousel owl-theme">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -678,9 +734,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/TECNO_POP_10C.png" alt="TECNO POP 10C">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -700,9 +756,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/TECNO_POP_10.png" alt="TECNO POP 10">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -722,9 +778,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/VIVO_Y04.png" alt="VIVO Y04">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -744,9 +800,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/ZTE_BLADE_A35.png" alt="ZTE BLADE A35">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -766,9 +822,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/ZTE_BLAD_A55.png" alt="ZTE BLADE A55">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -788,9 +844,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/ITEL_CITY_100.png" alt="ITEL CITY 100">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -810,9 +866,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/REALME_C75.png" alt="REALME C75">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -826,15 +882,15 @@
                                     </div>
                                     <a href="category.php?category=all" class="btn btn-primary btn-round">
                                         <span>Shop More</span>
-                                        <i class="icon-long-arrow-right"></i>
+                                        <i class="icon-long">arrow-right</i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/REDMI_A5.png" alt="REDMI A5">
-                        <div class="container intro-content">
+                    <div class="banner-slide">
+                        <img src="assets/images/demos/demo-4/sliders/REDMI_A5.png" alt="REDMI A5">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -854,9 +910,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/REALME_NOTE50.png" alt="REALME NOTE50">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-primary">New Arrival</h3>
@@ -876,9 +932,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="assets/images/demos/demo-4/slider/OPPO.png" alt="OPPO A3">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
@@ -898,9 +954,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="intro-slide">
+                    <div class="banner-slide">
                         <img src="images/INIFINIX_SMART_10.png" alt="INIFINIX SMART 10">
-                        <div class="container intro-content">
+                        <div class="banner-content container">
                             <div class="row justify-content-end">
                                 <div class="col-auto col-sm-7 col-md-6 col-lg-5">
                                     <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
@@ -921,7 +977,6 @@
                         </div>
                     </div>
                 </div>
-                <span class="slider-loader"></span>
             </div>
             <div class="container">
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
@@ -959,7 +1014,7 @@
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
-                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
+                                <h3 class="banner-title"><a href="#">><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
                                 <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
@@ -971,7 +1026,7 @@
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
-                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</a></h3> <br>Save ₦70</strong></a>
                                 <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
@@ -1044,6 +1099,7 @@
                                         </div>
                                     </div>';
                                 }
+                                }
                                 echo '</div>';
                             }
                             ?>
@@ -1080,16 +1136,16 @@
                             <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     <div class="row">
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
@@ -1099,7 +1155,7 @@
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></i></a>
                                 </div>
                             </div>
                         </div>
@@ -1131,22 +1187,22 @@
                                                 ? htmlspecialchars($product['photo']) 
                                                 : $default_image;
                                             echo '<div class="product">
-                                                <figure class="product-media">
-                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                    </a>
-                                                </figure>
-                                                <div class="product-body">
-                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
-                                                        </div>
-                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                            <figure class="product-media">
+                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                </a>
+                                            </figure>
+                                            <div class="product-body">
+                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
                                                     </div>
+                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                 </div>
-                                            </div>';
+                                            </div>
+                                        </div>';
                                         }
                                         ?>
                                     </div>
@@ -1221,7 +1277,7 @@
                                 $image_url = !empty($product['photo']) 
                                     ? htmlspecialchars($product['photo']) 
                                     : $default_image;
-                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2>
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
