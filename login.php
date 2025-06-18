@@ -69,16 +69,16 @@
 
         .form-wrapper {
             width: 100%;
-            max-width: 54rem; /* Increased from 36rem (50% increase) */
-            padding: 3rem; /* Increased from 2rem (50% increase) */
+            max-width: 54rem;
+            padding: 3rem;
         }
 
         .form {
-            padding: 3rem; /* Increased from 2rem (50% increase) */
+            padding: 3rem;
             background-color: var(--white);
-            border-radius: 2.25rem; /* Increased from 1.5rem (50% increase) */
+            border-radius: 2.25rem;
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px; /* Increased from 5px 15px (50% increase) */
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px;
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             transition-delay: 0.3s;
@@ -94,55 +94,55 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 2.25rem 0; /* Increased from 1.5rem (50% increase) */
+            margin: 2.25rem 0;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.8rem; /* Increased from 1.2rem (50% increase) */
+            left: 1.8rem;
             transform: translateY(-50%);
-            font-size: 2.4rem; /* Increased from 1.6rem (50% increase) */
+            font-size: 2.4rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.8rem 5.25rem; /* Increased from 1.2rem 3.5rem (50% increase) */
-            font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
+            padding: 1.8rem 5.25rem;
+            font-size: 1.65rem;
             background-color: var(--gray);
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
-            border: 0.1875rem solid var(--white); /* Increased from 0.125rem (50% increase) */
+            border-radius: .75rem;
+            border: 0.1875rem solid var(--white);
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.1875rem solid var(--primary-color); /* Adjusted to match increased border */
+            border: 0.1875rem solid var(--primary-color);
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1.5rem; /* Increased from 1rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 1.5rem;
+            border-radius: .75rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.95rem; /* Increased from 1.3rem (50% increase) */
+            font-size: 1.95rem;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-3px); /* Increased from -2px for proportionality */
+            transform: translateY(-3px);
         }
 
         .form p {
-            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
-            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+            margin: 1.8rem 0;
+            font-size: 1.5rem;
             color: var(--gray-2);
         }
 
@@ -181,7 +181,7 @@
             font-size: 3rem;
             font-weight: 700;
             margin: 1rem 0;
-            transform: translateX(250%);
+            transform: translateX(-250%);
             transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
             opacity: 0;
         }
@@ -200,28 +200,28 @@
             height: 100%;
             width: 100%;
             background: rgba(255, 255, 255, 0.1);
-            clip-path: circle(0% at 0% 0%);
+            clip-path: circle(0% at 100% 0%);
             transition: clip-path 1.2s ease-in-out;
             z-index: 0;
             background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
 
         .container.sign-in::before {
-            clip-path: circle(150% at 100% 100%);
+            clip-path: circle(150% at 0% 100%);
         }
 
         .container.sign-up::before {
-            clip-path: circle(150% at 0% 0%);
+            clip-path: circle(150% at 100% 0%);
         }
 
         .callout {
-            padding: 1.8rem; /* Increased from 1.2rem (50% increase) */
-            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 1.8rem;
+            margin: 1.8rem 0;
+            border-radius: .75rem;
             text-align: center;
-            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+            font-size: 1.5rem;
             opacity: 0;
-            transform: translateY(30px); /* Increased from 20px (50% increase) */
+            transform: translateY(30px);
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -267,39 +267,39 @@
             }
 
             .form-wrapper {
-                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
-                max-width: 100%; /* Ensure full width on smaller screens */
+                padding: 2.25rem;
+                max-width: 100%;
             }
 
             .form {
-                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
-                border-radius: 1.5rem; /* Increased from 1rem (50% increase) */
+                padding: 2.25rem;
+                border-radius: 1.5rem;
                 transition-delay: 0.2s;
                 box-shadow: none;
                 background-color: var(--white);
             }
 
             .input-group {
-                margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
+                margin: 1.5rem 0;
             }
 
             .input-group input {
-                padding: 1.5rem 4.5rem; /* Increased from 1rem 3rem (50% increase) */
-                font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+                padding: 1.5rem 4.5rem;
+                font-size: 1.5rem;
             }
 
             .input-group i {
-                font-size: 2.1rem; /* Increased from 1.4rem (50% increase) */
+                font-size: 2.1rem;
             }
 
             .form button {
-                padding: 1.2rem; /* Increased from 0.8rem (50% increase) */
-                font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
+                padding: 1.2rem;
+                font-size: 1.8rem;
             }
 
             .form p {
-                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
-                margin: 1.2rem 0; /* Increased from 0.8rem (50% increase) */
+                font-size: 1.35rem;
+                margin: 1.2rem 0;
             }
 
             .text {
@@ -321,23 +321,23 @@
             }
 
             .callout {
-                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+                font-size: 1.35rem;
             }
         }
 
         @media only screen and (max-width: 375px) {
             .input-group input {
-                padding: 1.35rem 4.2rem; /* Increased from 0.9rem 2.8rem (50% increase) */
-                font-size: 1.425rem; /* Increased from 0.95rem (50% increase) */
+                padding: 1.35rem 4.2rem;
+                font-size: 1.425rem;
             }
 
             .form button {
-                padding: 1.05rem; /* Increased from 0.7rem (50% increase) */
-                font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
+                padding: 1.05rem;
+                font-size: 1.65rem;
             }
 
             .form p {
-                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
+                font-size: 1.275rem;
             }
 
             .text h2 {
@@ -350,6 +350,45 @@
 <div id="container" class="container">
     <!-- FORM SECTION -->
     <div class="row">
+        <!-- SIGN IN -->
+        <div class="col align-items-center flex-col sign-in">
+            <div class="form-wrapper align-items-center">
+                <div class="form sign-in">
+                    <?php
+                    if(isset($_SESSION['error'])){
+                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                        unset($_SESSION['error']);
+                    }
+                    if(isset($_SESSION['success'])){
+                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                        unset($_SESSION['success']);
+                    }
+                    ?>
+                    <form action="verify.php" method="POST">
+                        <div class="input-group">
+                            <i class='bx bx-mail-send'></i>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-group">
+                            <i class='bx bxs-lock-alt'></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
+                        <button type="submit" name="login">Sign in</button>
+                        <p>
+                            <b><a href="password_forgot.php">Forgot password?</a></b>
+                        </p>
+                        <p>
+                            <span>Don't have an account?</span>
+                            <b><a href="signup.php">Sign up here</a></b>
+                        </p>
+                        <p>
+                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END SIGN IN -->
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
             <div class="form-wrapper align-items-center">
@@ -398,62 +437,23 @@
             </div>
         </div>
         <!-- END SIGN UP -->
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="verify.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" name="login">Sign in</button>
-                        <p>
-                            <b><a href="password_forgot.php">Forgot password?</a></b>
-                        </p>
-                        <p>
-                            <span>Don't have an account?</span>
-                            <b><a href="signup.php">Sign up here</a></b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- END SIGN IN -->
     </div>
     <!-- END FORM SECTION -->
     <!-- CONTENT SECTION -->
     <div class="row content-row">
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h1>Welcome Back</h1>
-            </div>
-        </div>
         <!-- SIGN UP CONTENT -->
         <div class="col align-items-center flex-col">
             <div class="text sign-up">
                 <h2>Join with us</h2>
             </div>
         </div>
-        <!-- END SIGN UP CONTENT -->
+        <!-- SIGN IN CONTENT -->
+        <div class="col align-items-center flex-col">
+            <div class="text sign-in">
+                <h1>Welcome Back</h1>
+            </div>
+        </div>
+        <!-- END SIGN IN CONTENT -->
     </div>
     <!-- END CONTENT SECTION -->
 </div>
