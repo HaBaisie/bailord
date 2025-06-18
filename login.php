@@ -36,52 +36,39 @@
         }
 
         html, body {
-            height: 100vh;
+            height: 100%;
             overflow: auto;
+            background-color: var(--gray);
         }
 
         .container {
             position: relative;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
             overflow: hidden;
-            will-change: transform;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            height: 100vh;
-        }
-
-        .col {
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .align-items-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
         }
 
         .form-wrapper {
             width: 100%;
-            max-width: 54rem; /* Increased from 36rem (50% increase) */
-            padding: 3rem; /* Increased from 2rem (50% increase) */
+            max-width: 28rem;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .form {
-            padding: 3rem; /* Increased from 2rem (50% increase) */
+            padding: 2rem;
             background-color: var(--white);
-            border-radius: 2.25rem; /* Increased from 1.5rem (50% increase) */
+            border-radius: 1rem;
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px; /* Increased from 5px 15px (50% increase) */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-            transition-delay: 0.3s;
             opacity: 0;
         }
 
@@ -94,56 +81,57 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 2.25rem 0; /* Increased from 1.5rem (50% increase) */
+            margin: 1rem 0;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.8rem; /* Increased from 1.2rem (50% increase) */
+            left: 1rem;
             transform: translateY(-50%);
-            font-size: 2.4rem; /* Increased from 1.6rem (50% increase) */
+            font-size: 1.2rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.8rem 5.25rem; /* Increased from 1.2rem 3.5rem (50% increase) */
-            font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            font-size: 1rem;
             background-color: var(--gray);
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
-            border: 0.1875rem solid var(--white); /* Increased from 0.125rem (50% increase) */
+            border-radius: 0.5rem;
+            border: 0.125rem solid var(--white);
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.1875rem solid var(--primary-color); /* Adjusted to match increased border */
+            border: 0.125rem solid var(--primary-color);
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1.5rem; /* Increased from 1rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 0.8rem;
+            border-radius: 0.5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.95rem; /* Increased from 1.3rem (50% increase) */
+            font-size: 1rem;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-3px); /* Increased from -2px for proportionality */
+            transform: translateY(-2px);
         }
 
         .form p {
-            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
-            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
             color: var(--gray-2);
+            text-align: center;
         }
 
         .form a {
@@ -162,33 +150,22 @@
             cursor: pointer;
         }
 
-        .content-row {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 6;
-            width: 100%;
-        }
-
         .text {
-            margin: 4rem;
             color: var(--white);
             text-align: center;
+            margin-bottom: 1rem;
         }
 
         .text h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            transform: translateX(250%);
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            transition: opacity 0.8s ease-in-out;
             opacity: 0;
         }
 
         .container.sign-up .text.sign-up h2,
         .container.sign-in .text.sign-in h2 {
-            transform: translateX(0);
             opacity: 1;
         }
 
@@ -199,29 +176,25 @@
             left: 0;
             height: 100%;
             width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            clip-path: circle(0% at 0% 0%);
+            background: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            clip-path: circle(0% at 50% 0%);
             transition: clip-path 1.2s ease-in-out;
-            z-index: 0;
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            z-index: -1;
         }
 
-        .container.sign-in::before {
-            clip-path: circle(150% at 100% 100%);
-        }
-
+        .container.sign-in::before,
         .container.sign-up::before {
-            clip-path: circle(150% at 0% 0%);
+            clip-path: circle(150% at 50% 0%);
         }
 
         .callout {
-            padding: 1.8rem; /* Increased from 1.2rem (50% increase) */
-            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
             text-align: center;
-            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+            font-size: 0.9rem;
             opacity: 0;
-            transform: translateY(30px); /* Increased from 20px (50% increase) */
+            transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -247,101 +220,75 @@
                 padding: 0.5rem;
             }
 
-            .row {
-                align-items: flex-start;
-                justify-content: center;
-            }
-
-            .col {
-                width: 100%;
-                position: relative;
-                padding: 1rem;
-                background-color: transparent;
-                transform: translateY(0);
-                transition: none;
-            }
-
-            .container.sign-in .col.sign-in,
-            .container.sign-up .col.sign-up {
-                transform: translateY(0);
-            }
-
             .form-wrapper {
-                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
-                max-width: 100%; /* Ensure full width on smaller screens */
+                padding: 1rem;
+                max-width: 100%;
             }
 
             .form {
-                padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
-                border-radius: 1.5rem; /* Increased from 1rem (50% increase) */
-                transition-delay: 0.2s;
-                box-shadow: none;
-                background-color: var(--white);
+                padding: 1.5rem;
+                border-radius: 0.75rem;
             }
 
             .input-group {
-                margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
+                margin: 0.8rem 0;
             }
 
             .input-group input {
-                padding: 1.5rem 4.5rem; /* Increased from 1rem 3rem (50% increase) */
-                font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+                padding: 0.7rem 1rem 0.7rem 2.2rem;
+                font-size: 0.9rem;
             }
 
             .input-group i {
-                font-size: 2.1rem; /* Increased from 1.4rem (50% increase) */
+                font-size: 1rem;
+                left: 0.8rem;
             }
 
             .form button {
-                padding: 1.2rem; /* Increased from 0.8rem (50% increase) */
-                font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
+                padding: 0.7rem;
+                font-size: 0.9rem;
             }
 
             .form p {
-                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
-                margin: 1.2rem 0; /* Increased from 0.8rem (50% increase) */
-            }
-
-            .text {
-                margin: 1rem 0;
+                font-size: 0.8rem;
+                margin: 0.6rem 0;
             }
 
             .text h2 {
-                font-size: 1.8rem;
-                margin: 0.5rem 0;
-            }
-
-            .container::before {
-                clip-path: circle(0% at 50% 0%);
-            }
-
-            .container.sign-in::before,
-            .container.sign-up::before {
-                clip-path: circle(150% at 50% 0%);
+                font-size: 1.5rem;
             }
 
             .callout {
-                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+                font-size: 0.8rem;
+                padding: 0.8rem;
             }
         }
 
         @media only screen and (max-width: 375px) {
+            .form {
+                padding: 1.2rem;
+            }
+
             .input-group input {
-                padding: 1.35rem 4.2rem; /* Increased from 0.9rem 2.8rem (50% increase) */
-                font-size: 1.425rem; /* Increased from 0.95rem (50% increase) */
+                padding: 0.6rem 1rem 0.6rem 2rem;
+                font-size: 0.85rem;
+            }
+
+            .input-group i {
+                font-size: 0.9rem;
             }
 
             .form button {
-                padding: 1.05rem; /* Increased from 0.7rem (50% increase) */
-                font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
+                padding: 0.6rem;
+                font-size: 0.85rem;
             }
 
             .form p {
-                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
+                font-size: 0.75rem;
             }
 
             .text h2 {
-                font-size: 1.6rem;
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -349,113 +296,91 @@
 <body>
 <div id="container" class="container">
     <!-- FORM SECTION -->
-    <div class="row">
+    <div class="form-wrapper">
         <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-up">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="register.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="repassword" placeholder="Retype password" required>
-                        </div>
-                        <button type="submit" name="signup">Sign up</button>
-                        <p>
-                            <span>Already have an account?</span>
-                            <b onclick="toggle()" class="pointer">Sign in here</b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- END SIGN UP -->
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="verify.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" name="login">Sign in</button>
-                        <p>
-                            <b><a href="password_forgot.php">Forgot password?</a></b>
-                        </p>
-                        <p>
-                            <span>Don't have an account?</span>
-                            <b><a href="signup.php">Sign up here</a></b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- END SIGN IN -->
-    </div>
-    <!-- END FORM SECTION -->
-    <!-- CONTENT SECTION -->
-    <div class="row content-row">
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h1>Welcome Back</h1>
-            </div>
-        </div>
-        <!-- SIGN UP CONTENT -->
-        <div class="col align-items-center flex-col">
+        <div class="form sign-up">
+            <?php
+            if(isset($_SESSION['error'])){
+                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                unset($_SESSION['error']);
+            }
+            if(isset($_SESSION['success'])){
+                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                unset($_SESSION['success']);
+            }
+            ?>
             <div class="text sign-up">
                 <h2>Join with us</h2>
             </div>
+            <form action="register.php" method="POST">
+                <div class="input-group">
+                    <i class='bx bxs-user'></i>
+                    <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+                </div>
+                <div class="input-group">
+                    <i class='bx bxs-user'></i>
+                    <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
+                </div>
+                <div class="input-group">
+                    <i class='bx bx-mail-send'></i>
+                    <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
+                </div>
+                <div class="input-group">
+                    <i class='bx bxs-lock-alt'></i>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class='bx bxs-lock-alt'></i>
+                    <input type="password" name="repassword" placeholder="Retype password" required>
+                </div>
+                <button type="submit" name="signup">Sign up</button>
+                <p>
+                    <span>Already have an account?</span>
+                    <b onclick="toggle()" class="pointer">Sign in here</b>
+                </p>
+                <p>
+                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                </p>
+            </form>
         </div>
-        <!-- END SIGN UP CONTENT -->
+        <!-- SIGN IN -->
+        <div class="form sign-in">
+            <?php
+            if(isset($_SESSION['error'])){
+                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                unset($_SESSION['error']);
+            }
+            if(isset($_SESSION['success'])){
+                echo "<div class="callout callout-success text-center"><p>".$_SESSION['success']."</p></div>";
+                unset($_SESSION['success']);
+            }
+            ?>
+            <div class="text sign-in">
+                <h2>Welcome Back</h2>
+            </div>
+            <form action="verify.php" method="POST">
+                <div class="input-group">
+                    <i class='bx bx-mail-send'></i>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class='bx bxs-lock-alt'></i>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" name="login">Sign in</button>
+                <p>
+                    <b><a href="password_forgot.php">Forgot password?</a></b>
+                </p>
+                <p>
+                    <span>Don't have an account?</span>
+                    <b onclick="toggle()" class="pointer">Sign up here</b>
+                </p>
+                <p>
+                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                </p>
+            </form>
+        </div>
     </div>
-    <!-- END CONTENT SECTION -->
 </div>
 
 <script>
