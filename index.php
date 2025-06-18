@@ -1071,7 +1071,7 @@
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
                                 <a href="category.php">
-                                    <img src="assets/images/Banner.jpg" alt="Banner">
+                                    <img src="images/Banner.jpg" alt="Banner">
                                 </a>
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
