@@ -12,8 +12,8 @@
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x16" href="assets/images/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
     <link rel="manifest" href="assets/images/icons/site.webmanifest">
     <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
@@ -167,32 +167,33 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
                 z-index: 1000;
                 display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                transform: translateX(-100%);
+                justify-content: center; /* Center the menu horizontally */
+                align-items: flex-start; /* Align to top */
+                transform: translateX(-100%); /* Start off-screen */
                 transition: transform 0.3s ease-in-out;
             }
             .mobile-menu-container.visible {
-                transform: translateX(0);
+                transform: translateX(0); /* Slide in when visible */
             }
             .mobile-menu-wrapper {
-                width: 90%;
-                max-width: 400px;
-                height: 100%;
+                width: 100%; /* Full width of the screen */
+                max-width: 100%; /* Remove max-width restriction */
+                height: 100%; /* Full height */
                 background-color: var(--light-neutral);
                 overflow-y: auto;
                 padding: 15px;
                 position: relative;
-                transform: none;
+                transform: none; /* No transform needed for wrapper */
             }
             .mobile-menu-close {
                 position: absolute;
                 top: 10px;
                 right: 10px;
                 cursor: pointer;
+                z-index: 1001; /* Ensure close button is above content */
             }
             .btn {
                 padding: 7px 12px;
