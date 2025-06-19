@@ -176,26 +176,28 @@
             background-color: rgba(0, 0, 0, 0.5) !important;
             z-index: 1000 !important;
             display: flex !important;
-            justify-content: flex-start !important;
-            transform: translateX(-100%) !important;
-            transition: transform 0.3s ease-in-out !important;
+            align-items: center !important;
+            justify-content: center !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease-in-out !important;
             margin: 0 !important;
             padding: 0 !important;
         }
         .mobile-menu-container.visible {
-            transform: translateX(0) !important;
+            opacity: 1 !important;
         }
         .mobile-menu-wrapper {
-            width: 80% !important;
+            width: 90% !important;
             max-width: 300px !important;
-            height: 100% !important;
+            height: auto !important;
+            max-height: 90vh !important;
             background-color: var(--light-neutral) !important;
             overflow-y: auto !important;
             padding: 15px !important;
-            margin: 0 !important;
+            margin: auto !important;
             position: relative !important;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2) !important;
-            left: 0 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
         }
         .mobile-menu-close {
             position: absolute;
@@ -260,13 +262,13 @@
                 width: 80px;
             }
             .mobile-menu-container {
-                left: 0 !important;
+                align-items: center !important;
+                justify-content: center !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
             .mobile-menu-wrapper {
-                margin: 0 !important;
-                left: 0 !important;
+                margin: auto !important;
                 padding: 15px !important;
             }
             .header-right.d-none.d-lg-block,
@@ -551,21 +553,9 @@
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
                     </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35">
-                    </div>
+                    <div>
+                    <span class="slider-loader"></span>
                 </div>
-                <span class="slider-loader"></span>
-            </div>
             <div class="container">
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
@@ -666,7 +656,7 @@
                                     echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                <img src="'.$image_url.'" alt="Product Image" class="product-image">
                                             </a>
                                             <div class="product-action-vertical">
                                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
@@ -776,7 +766,7 @@
                                             echo '<div class="product">
                                                 <figure class="product-media">
                                                     <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        <img src="'.$image_url.'" alt="Product Image" class="product-image">
                                                     </a>
                                                 </figure>
                                                 <div class="product-body">
@@ -822,7 +812,7 @@
                                             echo '<div class="product">
                                                 <figure class="product-media">
                                                     <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                        <img src="'.$image_url.'" alt="Product Image" class="product-image">
                                                     </a>
                                                 </figure>
                                                 <div class="product-body">
@@ -847,7 +837,7 @@
                 <div class="container for-you">
                     <div class="heading heading-flex mb-3">
                         <div class="heading-left">
-                            <h2 class="title">Recommendation For You</h2>
+                            <h2 class="title">Recommendation for You</h2>
                         </div>
                         <div class="heading-right">
                             <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
@@ -868,7 +858,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                <img src="'.$image_url.'" alt="Product Image" class="product-image">
                                             </a>
                                         </figure>
                                         <div class="product-body">
@@ -918,7 +908,7 @@
                 <script src="assets/js/jquery.waypoints.min.js"></script>
                 <script src="assets/js/superfish.min.js"></script>
                 <script src="assets/js/owl.carousel.min.js"></script>
-                <script src="assets/js/bootstrap-input-spinner.js"></script>
+                <script src="assets/js/bootstrap-input-spinner.min.js"></script>
                 <script src="assets/js/jquery.plugin.min.js"></script>
                 <script src="assets/js/jquery.magnific-popup.min.js"></script>
                 <script src="assets/js/jquery.countdown.min.js"></script>
