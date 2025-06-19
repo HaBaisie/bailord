@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bailord</title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Bailord eCommerce Template">
@@ -56,13 +56,25 @@
             --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
+        html {
+            overflow-y: scroll; /* Prevent content shift due to scrollbar */
+        }
         body {
             background-color: var(--light-neutral);
             color: var(--text-dark);
             font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0; /* Ensure no default margins */
         }
         body.menu-open {
             overflow: hidden;
+            position: fixed; /* Lock body in place */
+            width: 100%; /* Maintain full width */
+        }
+        .page-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
         .header {
             background: var(--blue-gradient);
@@ -138,7 +150,8 @@
                 margin-bottom: 10px;
             }
             .product-media img {
-                max-width}
+                max-width: 100%;
+            }
             .product-title {
                 font-size: 13px;
                 line-height: 1.3;
@@ -158,7 +171,7 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 z-index: 1000;
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: flex-start;
                 transform: translateX(-100%);
                 transition: transform 0.3s ease-in-out;
@@ -168,14 +181,13 @@
             }
             .mobile-menu-wrapper {
                 width: 90%;
+                max-width: 400px;
                 height: 100%;
                 background-color: var(--light-neutral);
                 overflow-y: auto;
                 padding: 15px;
-                max-width: 400px; /* Optional: increase max-width for better appearance */
-                margin: 0 auto; /* Ensure horizontal centering */
-                transform: translateX(0); /* Remove left slide-in effect */
-                position: relative; /* Ensure it stays centered */
+                position: relative;
+                transform: none;
             }
             .mobile-menu-close {
                 position: absolute;
@@ -734,10 +746,10 @@
                                     <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab" aria-controls="trending-best-tab" aria-selected="false">Best Selling</a>
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab">Best Selling</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab" aria-controls="trending-sale-tab" aria-selected="false">On Sale</a>
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab">On Sale</a>
                                 </li>
                             </ul>
                         </div>
@@ -937,4 +949,3 @@
     </div>
 </body>
 </html>
-"
