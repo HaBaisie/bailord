@@ -37,7 +37,7 @@
 
         html, body {
             height: 100vh;
-            overflow: auto;
+            overflow: hidden;
             background: linear-gradient(135deg, #e0f7fa, #bbdefb);
         }
 
@@ -47,29 +47,50 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
             padding: 1rem;
         }
 
         .phone-frame {
             position: relative;
-            width: 360px;
-            height: 720px;
+            width: 375px;
+            height: 750px;
             background: #000;
-            border-radius: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            border: 8px solid #1a1a1a;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 25px;
+            background: #1a1a1a;
+            border-radius: 12px;
+        }
+
+        .phone-frame::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 150px;
+            width: 3px;
+            height: 50px;
+            background: #333;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
             background: #fff;
-            border-radius: 20px;
+            border-radius: 35px;
             overflow-y: auto;
             position: relative;
             z-index: 2;
@@ -78,7 +99,7 @@
         .row {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            min-height: 100%;
             position: relative;
             z-index: 2;
         }
@@ -88,23 +109,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex: 1;
+            flex: 1 1 auto;
+            padding: 1rem;
         }
 
         .form-wrapper {
             width: 100%;
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .form {
-            padding: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 1rem;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 1.5rem;
             width: 100%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             opacity: 0;
+            min-height: 85%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .container.sign-in .form.sign-in,
@@ -116,55 +142,55 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.5rem 0;
+            margin: 1.8rem 0;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1rem;
+            left: 1.2rem;
             transform: translateY(-50%);
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.2rem 1.2rem 1.2rem 3rem;
-            font-size: 1.2rem;
+            padding: 1.4rem 1.4rem 1.4rem 3.5rem;
+            font-size: 1.3rem;
             background-color: var(--gray);
-            border-radius: 0.5rem;
-            border: 0.125rem solid var(--white);
+            border-radius: 0.6rem;
+            border: 0.15rem solid var(--white);
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.125rem solid var(--primary-color);
+            border: 0.15rem solid var(--primary-color);
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1rem;
-            border-radius: 0.5rem;
+            padding: 1.2rem;
+            border-radius: 0.6rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .form p {
-            margin: 1rem 0;
-            font-size: 1rem;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
             color: var(--gray-2);
             text-align: center;
         }
@@ -186,15 +212,15 @@
         }
 
         .content-row {
-            display: none; /* Hide the content row for a cleaner mobile UI */
+            display: none;
         }
 
         .callout {
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
+            padding: 1.2rem;
+            margin: 1.2rem 0;
+            border-radius: 0.6rem;
             text-align: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -222,8 +248,14 @@
                 width: 100%;
                 height: 100%;
                 border-radius: 0;
+                border: none;
                 box-shadow: none;
                 padding: 10px;
+            }
+
+            .phone-frame::before,
+            .phone-frame::after {
+                display: none;
             }
 
             .phone-screen {
@@ -231,46 +263,55 @@
             }
 
             .form-wrapper {
-                padding: 1rem;
+                padding: 1.5rem;
             }
 
             .form {
-                padding: 1rem;
-                border-radius: 0.75rem;
+                padding: 1.5rem;
+                border-radius: 1rem;
+                min-height: auto;
+            }
+
+            .input-group {
+                margin: 1.5rem 0;
             }
 
             .input-group input {
-                padding: 1rem 1rem 1rem 2.5rem;
-                font-size: 1rem;
+                padding: 1.2rem 1.2rem 1.2rem 3rem;
+                font-size: 1.2rem;
             }
 
             .input-group i {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
 
             .form button {
-                padding: 0.8rem;
-                font-size: 1.3rem;
+                padding: 1rem;
+                font-size: 1.5rem;
             }
 
             .form p {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
         }
 
         @media only screen and (max-width: 375px) {
             .input-group input {
-                padding: 0.9rem 0.9rem 0.9rem 2.2rem;
-                font-size: 0.95rem;
+                padding: 1.1rem 1.1rem 1.1rem 2.8rem;
+                font-size: 1.1rem;
+            }
+
+            .input-group i {
+                font-size: 1.6rem;
             }
 
             .form button {
-                padding: 0.7rem;
-                font-size: 1.2rem;
+                padding: 0.9rem;
+                font-size: 1.4rem;
             }
 
             .form p {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
             }
         }
     </style>
