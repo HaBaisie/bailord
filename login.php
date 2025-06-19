@@ -16,14 +16,20 @@
         :root {
             --primary-color: #1E90FF; /* DodgerBlue */
             --secondary-color: #4169E1; /* RoyalBlue */
+            --accent-blue: #87CEEB; /* SkyBlue */
+            --dark-blue: #191970; /* MidnightBlue */
             --black: #000000;
             --white: #ffffff;
-            --gray: #efefef;
-            --gray-2: #757575;
+            --gray: #e6f0fa; /* Light blue-gray */
+            --gray-2: #4682B4; /* SteelBlue for icons */
             --facebook-color: #4267B2;
             --google-color: #DB4437;
             --twitter-color: #1DA1F2;
             --insta-color: #E1306C;
+            --success-bg: #E0F7FA; /* Cyan for success */
+            --success-text: #0288D1; /* LightBlue */
+            --error-bg: #E3F2FD; /* Blue100 */
+            --error-text: #1565C0; /* Blue800 */
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
@@ -38,7 +44,7 @@
         html, body {
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+            background: linear-gradient(135deg, var(--accent-blue), var(--secondary-color));
         }
 
         .container {
@@ -61,7 +67,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 8px solid #1a1a1a;
+            border: 8px solid var(--dark-blue);
         }
 
         .phone-frame::before {
@@ -72,7 +78,7 @@
             transform: translateX(-50%);
             width: 80px;
             height: 20px;
-            background: #1a1a1a;
+            background: var(--dark-blue);
             border-radius: 10px;
         }
 
@@ -83,13 +89,13 @@
             top: 120px;
             width: 3px;
             height: 40px;
-            background: #333;
+            background: var(--dark-blue);
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
-            background: #fff;
+            background: var(--white);
             border-radius: 35px;
             overflow-y: auto;
             position: relative;
@@ -234,13 +240,13 @@
         }
 
         .callout-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: var(--error-bg);
+            color: var(--error-text);
         }
 
         .callout-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: var(--success-bg);
+            color: var(--success-text);
         }
 
         @media only screen and (max-width: 425px) {
@@ -248,7 +254,7 @@
                 width: 90vw;
                 height: 80vh;
                 border-radius: 30px;
-                border: 6px solid #1a1a1a;
+                border: 6px solid var(--dark-blue);
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
                 padding: 12px;
             }
@@ -258,6 +264,7 @@
                 height: 15px;
                 border-radius: 8px;
                 top: 6px;
+                background: var(--dark-blue);
             }
 
             .phone-frame::after {
@@ -265,6 +272,7 @@
                 top: 100px;
                 width: 2px;
                 height: 30px;
+                background: var(--dark-blue);
             }
 
             .phone-screen {
