@@ -15,9 +15,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-image: url('https://images.unsplash.com/photo-1584438784894-089d6a62b8f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-image: url('https://images.pexels.com/photos/1097930/pexels-photo-1097930.jpeg?auto=compress&cs=tinysrgb&w=1920');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             background-attachment: fixed;
             min-height: 100vh;
             display: flex;
@@ -25,6 +26,7 @@
             justify-content: center;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             position: relative;
+            background-color: #1e3a8a; /* Fallback gradient */
         }
 
         body::before {
@@ -34,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5); /* Slightly darker overlay for contrast */
             z-index: 1;
         }
 
@@ -217,6 +219,10 @@
             .social-btn {
                 padding: 0.625rem;
                 font-size: 0.875rem;
+            }
+
+            body {
+                background-attachment: scroll; /* Prevent fixed bg issues on mobile */
             }
         }
 
