@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="assets/css/slider.css">
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href выдел: "assets/css/style.css" as="style">
     <link rel="preload" href="assets/js/jquery.min.js" as="script">
     <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
@@ -57,9 +57,12 @@
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
         body {
+            margin: 0;
+            padding: 0;
             background-color: var(--light-neutral);
             color: var(--text-dark);
             font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
         }
         body.menu-open {
             overflow: hidden;
@@ -116,7 +119,80 @@
             align-items: center;
             gap: 10px;
         }
+        .mobile-menu-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu-container.visible {
+            transform: translateX(0);
+        }
+        .mobile-menu-wrapper {
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background-color: var(--light-neutral);
+            overflow-y: auto;
+            padding: 15px 10px;
+            margin: 0;
+            position: relative;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .mobile-menu-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+        .mobile-menu li {
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        .mobile-menu li ul {
+            display: none;
+            position: static;
+            width: 100%;
+            padding-left: 15px;
+            background-color: var(--medium-neutral);
+        }
+        .mobile-menu li.active > ul {
+            display: block;
+        }
+        .mobile-menu-container .mobile-menu li a {
+            color: var(--text-dark);
+            display: block;
+            padding: 10px 5px;
+            text-decoration: none;
+        }
+        .mobile-menu-container .mobile-menu li a:hover {
+            color: var(--accent-color);
+        }
+        .mobile-menu-container .mobile-menu li ul li a {
+            color: var(--text-dark);
+        }
+        .mobile-menu-container .mobile-menu li ul li a:hover {
+            color: var(--accent-color);
+        }
         @media (max-width: 767px) {
+            .page-wrapper {
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
             .header-top {
                 padding: 5px 0;
             }
@@ -138,7 +214,8 @@
                 margin-bottom: 10px;
             }
             .product-media img {
-                max-width}
+                max-width: 100%;
+            }
             .product-title {
                 font-size: 13px;
                 line-height: 1.3;
@@ -150,35 +227,14 @@
                 font-size: 12px;
             }
             .mobile-menu-container {
-                position: fixed;
-                top: 0;
                 left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 1000;
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease-in-out;
-            }
-            .mobile-menu-container.visible {
-                transform: translateX(0);
             }
             .mobile-menu-wrapper {
-                width: 80%;
-                max-width: 300px;
-                height: 100%;
-                background-color: var(--light-neutral);
-                overflow-y: auto;
-                padding: 15px;
+                margin-left: 0;
             }
-            .mobile-menu-close {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                cursor: pointer;
+            .header-right.d-none.d-lg-block,
+            .heading-right {
+                display: none !important;
             }
             .btn {
                 padding: 7px 12px;
@@ -198,10 +254,6 @@
             }
             .footer .col-sm-6 {
                 margin-bottom: 15px;
-            }
-            .header-right.d-none.d-lg-block,
-            .heading-right {
-                display: none !important;
             }
         }
         @media (min-width: 768px) and (max-width: 991px) {
@@ -270,31 +322,6 @@
         .login-btn:hover {
             background-color: var(--complementary-blue);
             color: white;
-        }
-        .mobile-menu li {
-            position: relative;
-        }
-        .mobile-menu li ul {
-            display: none;
-            position: static;
-            width: 100%;
-            padding-left: 20px;
-            background-color: var(--medium-neutral);
-        }
-        .mobile-menu li.active > ul {
-            display: block;
-        }
-        .mobile-menu-container .mobile-menu li a {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li a:hover {
-            color: var(--accent-color);
-        }
-        .mobile-menu-container .mobile-menu li ul li a {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li ul li a:hover {
-            color: var(--accent-color);
         }
     </style>
     <script>
