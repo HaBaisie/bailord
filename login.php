@@ -45,12 +45,29 @@
             min-height: 100vh;
             overflow: hidden;
             will-change: transform;
+            background-image: url('https://images.unsplash.com/photo-1584438784894-089d6a62b8f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better text readability */
+            z-index: 1;
         }
 
         .row {
             display: flex;
             flex-wrap: wrap;
             height: 100vh;
+            position: relative;
+            z-index: 2;
         }
 
         .col {
@@ -75,7 +92,7 @@
 
         .form {
             padding: 3rem;
-            background-color: var(--white);
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white for contrast */
             border-radius: 2.25rem;
             width: 100%;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px;
@@ -175,6 +192,7 @@
             margin: 4rem;
             color: var(--white);
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Better readability on bg */
         }
 
         .text h2 {
@@ -245,6 +263,7 @@
         @media only screen and (max-width: 425px) {
             .container {
                 padding: 0.5rem;
+                background-attachment: scroll; /* Prevent fixed bg issues on mobile */
             }
 
             .row {
@@ -276,7 +295,7 @@
                 border-radius: 1.5rem;
                 transition-delay: 0.2s;
                 box-shadow: none;
-                background-color: var(--white);
+                background-color: rgba(255, 255, 255, 0.95);
             }
 
             .input-group {
