@@ -53,7 +53,7 @@
         .phone-frame {
             position: relative;
             width: 375px;
-            height: 600px; /* Reduced by 20% from 750px */
+            height: 600px;
             background: #000;
             border-radius: 50px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
@@ -245,21 +245,30 @@
 
         @media only screen and (max-width: 425px) {
             .phone-frame {
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
-                border: none;
-                box-shadow: none;
-                padding: 10px;
+                width: 90vw;
+                height: 80vh;
+                border-radius: 30px;
+                border: 6px solid #1a1a1a;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                padding: 12px;
             }
 
-            .phone-frame::before,
+            .phone-frame::before {
+                width: 60px;
+                height: 15px;
+                border-radius: 8px;
+                top: 6px;
+            }
+
             .phone-frame::after {
-                display: none;
+                right: -5px;
+                top: 100px;
+                width: 2px;
+                height: 30px;
             }
 
             .phone-screen {
-                border-radius: 0;
+                border-radius: 20px;
             }
 
             .form-wrapper {
@@ -273,31 +282,11 @@
             }
 
             .input-group {
-                margin: 1rem 0;
+                margin: 0.8rem 0;
             }
 
             .input-group input {
-                padding: 1rem 1rem 1rem 2.8rem;
-                font-size: 1.1rem;
-            }
-
-            .input-group i {
-                font-size: 1.6rem;
-            }
-
-            .form button {
-                padding: 0.8rem;
-                font-size: 1.3rem;
-            }
-
-            .form p {
-                font-size: 0.9rem;
-            }
-        }
-
-        @media only screen and (max-width: 375px) {
-            .input-group input {
-                padding: 0.9rem 0.9rem 0.9rem 2.6rem;
+                padding: 0.9rem 0.9rem 0.9rem 2.8rem;
                 font-size: 1rem;
             }
 
@@ -312,6 +301,44 @@
 
             .form p {
                 font-size: 0.85rem;
+                margin: 0.6rem 0;
+            }
+
+            .callout {
+                padding: 0.8rem;
+                margin: 0.8rem 0;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media only screen and (max-width: 375px) {
+            .phone-frame {
+                width: 92vw;
+                height: 82vh;
+                border-radius: 25px;
+                padding: 10px;
+            }
+
+            .input-group input {
+                padding: 0.8rem 0.8rem 0.8rem 2.6rem;
+                font-size: 0.95rem;
+            }
+
+            .input-group i {
+                font-size: 1.4rem;
+            }
+
+            .form button {
+                padding: 0.6rem;
+                font-size: 1.1rem;
+            }
+
+            .form p {
+                font-size: 0.8rem;
+            }
+
+            .callout {
+                font-size: 0.8rem;
             }
         }
     </style>
