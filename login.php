@@ -6,487 +6,286 @@
 ?>
 <?php include 'includes/header.php'; ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login and Signup</title>
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #1E90FF; /* DodgerBlue */
-            --secondary-color: #4169E1; /* RoyalBlue */
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #efefef;
-            --gray-2: #757575;
-            --facebook-color: #4267B2;
-            --google-color: #DB4437;
-            --twitter-color: #1DA1F2;
-            --insta-color: #E1306C;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-
-        * {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100vh;
-            overflow: auto;
-        }
-
-        .container {
-            position: relative;
-            min-height: 100vh;
-            overflow: hidden;
-            will-change: transform;
+        body {
             background-image: url('https://images.unsplash.com/photo-1584438784894-089d6a62b8f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-        }
-
-        .container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better text readability */
-            z-index: 1;
-        }
-
-        .row {
+            min-height: 100vh;
             display: flex;
-            flex-wrap: wrap;
-            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .container {
             position: relative;
-            z-index: 2;
-        }
-
-        .col {
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .align-items-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .form-wrapper {
+            max-width: 28rem;
             width: 100%;
-            max-width: 54rem;
-            padding: 3rem;
+            margin: 1rem;
+            z-index: 10;
         }
 
-        .form {
-            padding: 3rem;
-            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white for contrast */
-            border-radius: 2.25rem;
-            width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px;
-            transform: scale(0);
-            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-            transition-delay: 0.3s;
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .form-container.hidden {
+            transform: scale(0.8);
             opacity: 0;
+            position: absolute;
+            pointer-events: none;
         }
 
-        .container.sign-in .form.sign-in,
-        .container.sign-up .form.sign-up {
+        .form-container.visible {
             transform: scale(1);
             opacity: 1;
+            position: relative;
         }
 
         .input-group {
             position: relative;
-            width: 100%;
-            margin: 2.25rem 0;
+            margin-bottom: 1.5rem;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.8rem;
+            left: 1rem;
             transform: translateY(-50%);
-            font-size: 2.4rem;
-            color: var(--gray-2);
-            transition: color 0.3s ease;
+            color: #6b7280;
+            font-size: 1.25rem;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.8rem 5.25rem;
-            font-size: 1.65rem;
-            background-color: var(--gray);
-            border-radius: .75rem;
-            border: 0.1875rem solid var(--white);
-            outline: none;
-            transition: border 0.3s ease;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.1875rem solid var(--primary-color);
-        }
-
-        .form button {
-            cursor: pointer;
-            width: 100%;
-            padding: 1.5rem;
-            border-radius: .75rem;
-            border: none;
-            background-color: var(--primary-color);
-            color: var(--white);
-            font-size: 1.95rem;
+            border-color: #3b82f6;
             outline: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .form button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
-        }
-
-        .form p {
-            margin: 1.8rem 0;
-            font-size: 1.5rem;
-            color: var(--gray-2);
-        }
-
-        .form a {
-            color: var(--primary-color);
-            text-decoration: none;
+        .btn-primary {
+            background: linear-gradient(to right, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
-        .form a:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(to right, #1d4ed8, #1e40af);
         }
 
-        .pointer {
-            cursor: pointer;
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #374151;
+            transition: border-color 0.3s ease;
         }
 
-        .content-row {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 6;
-            width: 100%;
-        }
-
-        .text {
-            margin: 4rem;
-            color: var(--white);
-            text-align: center;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Better readability on bg */
-        }
-
-        .text h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            transform: translateX(-250%);
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-            opacity: 0;
-        }
-
-        .container.sign-up .text.sign-up h2,
-        .container.sign-in .text.sign-in h2 {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            clip-path: circle(0% at 100% 0%);
-            transition: clip-path 1.2s ease-in-out;
-            z-index: 0;
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        }
-
-        .container.sign-in::before {
-            clip-path: circle(150% at 0% 100%);
-        }
-
-        .container.sign-up::before {
-            clip-path: circle(150% at 100% 0%);
+        .social-btn:hover {
+            border-color: #3b82f6;
         }
 
         .callout {
-            padding: 1.8rem;
-            margin: 1.8rem 0;
-            border-radius: .75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
             text-align: center;
-            font-size: 1.5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transition-delay: 0.5s;
-        }
-
-        .container.sign-in .form.sign-in .callout,
-        .container.sign-up .form.sign-up .callout {
-            opacity: 1;
-            transform: translateY(0);
+            font-size: 0.875rem;
         }
 
         .callout-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fee2e2;
+            color: #dc2626;
         }
 
         .callout-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: #d1fae5;
+            color: #065f46;
         }
 
-        @media only screen and (max-width: 425px) {
+        @media (max-width: 640px) {
             .container {
-                padding: 0.5rem;
-                background-attachment: scroll; /* Prevent fixed bg issues on mobile */
+                margin: 0.5rem;
             }
 
-            .row {
-                align-items: flex-start;
-                justify-content: center;
-            }
-
-            .col {
-                width: 100%;
-                position: relative;
-                padding: 1rem;
-                background-color: transparent;
-                transform: translateY(0);
-                transition: none;
-            }
-
-            .container.sign-in .col.sign-in,
-            .container.sign-up .col.sign-up {
-                transform: translateY(0);
-            }
-
-            .form-wrapper {
-                padding: 2.25rem;
-                max-width: 100%;
-            }
-
-            .form {
-                padding: 2.25rem;
-                border-radius: 1.5rem;
-                transition-delay: 0.2s;
-                box-shadow: none;
-                background-color: rgba(255, 255, 255, 0.95);
-            }
-
-            .input-group {
-                margin: 1.5rem 0;
+            .form-container {
+                padding: 1.5rem;
+                border-radius: 1rem;
             }
 
             .input-group input {
-                padding: 1.5rem 4.5rem;
-                font-size: 1.5rem;
+                padding: 0.625rem 0.625rem 0.625rem 2.25rem;
+                font-size: 0.875rem;
             }
 
-            .input-group i {
-                font-size: 2.1rem;
+            .btn-primary {
+                padding: 0.625rem;
+                font-size: 1rem;
             }
 
-            .form button {
-                padding: 1.2rem;
-                font-size: 1.8rem;
-            }
-
-            .form p {
-                font-size: 1.35rem;
-                margin: 1.2rem 0;
-            }
-
-            .text {
-                margin: 1rem 0;
-            }
-
-            .text h2 {
-                font-size: 1.8rem;
-                margin: 0.5rem 0;
-            }
-
-            .container::before {
-                clip-path: circle(0% at 50% 0%);
-            }
-
-            .container.sign-in::before,
-            .container.sign-up::before {
-                clip-path: circle(150% at 50% 0%);
-            }
-
-            .callout {
-                font-size: 1.35rem;
-            }
-        }
-
-        @media only screen and (max-width: 375px) {
-            .input-group input {
-                padding: 1.35rem 4.2rem;
-                font-size: 1.425rem;
-            }
-
-            .form button {
-                padding: 1.05rem;
-                font-size: 1.65rem;
-            }
-
-            .form p {
-                font-size: 1.275rem;
-            }
-
-            .text h2 {
-                font-size: 1.6rem;
+            .social-btn {
+                padding: 0.625rem;
+                font-size: 0.875rem;
             }
         }
     </style>
 </head>
 <body>
-<div id="container" class="container">
-    <!-- FORM SECTION -->
-    <div class="row">
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="verify.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" name="login">Sign in</button>
-                        <p>
-                            <b><a href="password_forgot.php">Forgot password?</a></b>
-                        </p>
-                        <p>
-                            <span>Don't have an account?</span>
-                            <b><a href="signup.php">Sign up here</a></b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
-                </div>
+<div class="container">
+    <!-- SIGN IN FORM -->
+    <div id="sign-in-form" class="form-container visible">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Welcome Back</h2>
+        <?php
+        if(isset($_SESSION['error'])){
+            echo "<div class='callout callout-danger'>".$_SESSION['error']."</div>";
+            unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['success'])){
+            echo "<div class='callout callout-success'>".$_SESSION['success']."</div>";
+            unset($_SESSION['success']);
+        }
+        ?>
+        <form action="verify.php" method="POST" aria-label="Sign In Form">
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email" required aria-label="Email">
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required aria-label="Password">
+            </div>
+            <button type="submit" name="login" class="btn-primary w-full mt-4">Sign In</button>
+        </form>
+        <div class="mt-6">
+            <p class="text-center text-gray-600 text-sm mb-4">Or sign in with</p>
+            <div class="space-y-2">
+                <button class="social-btn w-full">
+                    <i class="fa-brands fa-google"></i> Google
+                </button>
+                <button class="social-btn w-full">
+                    <i class="fa-brands fa-facebook-f"></i> Facebook
+                </button>
             </div>
         </div>
-        <!-- END SIGN IN -->
-        <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-up">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="register.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="repassword" placeholder="Retype password" required>
-                        </div>
-                        <button type="submit" name="signup">Sign up</button>
-                        <p>
-                            <span>Already have an account?</span>
-                            <b onclick="toggle()" class="pointer">Sign in here</b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- END SIGN UP -->
+        <p class="text-center text-gray-600 text-sm mt-6">
+            <a href="password_forgot.php" class="text-blue-600 hover:underline">Forgot password?</a>
+        </p>
+        <p class="text-center text-gray-600 text-sm mt-2">
+            Don't have an account? <button onclick="toggleForm()" class="text-blue-600 hover:underline font-medium">Sign up</button>
+        </p>
+        <p class="text-center text-gray-600 text-sm mt-2">
+            <a href="index.php" class="text-blue-600 hover:underline"><i class="fa-solid fa-home"></i> Home</a>
+        </p>
     </div>
-    <!-- END FORM SECTION -->
-    <!-- CONTENT SECTION -->
-    <div class="row content-row">
-        <!-- SIGN UP CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-up">
-                <h2>Join with us</h2>
+
+    <!-- SIGN UP FORM -->
+    <div id="sign-up-form" class="form-container hidden">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Join Us</h2>
+        <?php
+        if(isset($_SESSION['error'])){
+            echo "<div class='callout callout-danger'>".$_SESSION['error']."</div>";
+            unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['success'])){
+            echo "<div class='callout callout-success'>".$_SESSION['success']."</div>";
+            unset($_SESSION['success']);
+        }
+        ?>
+        <form action="register.php" method="POST" aria-label="Sign Up Form">
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="firstname" placeholder="First Name" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required aria-label="First Name">
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="lastname" placeholder="Last Name" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required aria-label="Last Name">
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required aria-label="Email">
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required aria-label="Password">
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="repassword" placeholder="Confirm Password" required aria-label="Confirm Password">
+            </div>
+            <button type="submit" name="signup" class="btn-primary w-full mt-4">Sign Up</button>
+        </form>
+        <div class="mt-6">
+            <p class="text-center text-gray-600 text-sm mb-4">Or sign up with</p>
+            <div class="space-y-2">
+                <button class="social-btn w-full">
+                    <i class="fa-brands fa-google"></i> Google
+                </button>
+                <button class="social-btn w-full">
+                    <i class="fa-brands fa-facebook-f"></i> Facebook
+                </button>
             </div>
         </div>
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h1>Welcome Back</h1>
-            </div>
-        </div>
-        <!-- END SIGN IN CONTENT -->
+        <p class="text-center text-gray-600 text-sm mt-6">
+            Already have an account? <button onclick="toggleForm()" class="text-blue-600 hover:underline font-medium">Sign in</button>
+        </p>
+        <p class="text-center text-gray-600 text-sm mt-2">
+            <a href="index.php" class="text-blue-600 hover:underline"><i class="fa-solid fa-home"></i> Home</a>
+        </p>
     </div>
-    <!-- END CONTENT SECTION -->
 </div>
 
 <script>
-    let container = document.getElementById('container');
-
-    function toggle() {
-        container.classList.toggle('sign-in');
-        container.classList.toggle('sign-up');
+    function toggleForm() {
+        const signInForm = document.getElementById('sign-in-form');
+        const signUpForm = document.getElementById('sign-up-form');
+        
+        if (signInForm.classList.contains('visible')) {
+            signInForm.classList.remove('visible');
+            signInForm.classList.add('hidden');
+            signUpForm.classList.remove('hidden');
+            signUpForm.classList.add('visible');
+        } else {
+            signUpForm.classList.remove('visible');
+            signUpForm.classList.add('hidden');
+            signInForm.classList.remove('hidden');
+            signInForm.classList.add('visible');
+        }
     }
 
+    // Initialize sign-in form as visible
     setTimeout(() => {
-        container.classList.add('sign-in');
+        document.getElementById('sign-in-form').classList.add('visible');
     }, 200);
 </script>
 
