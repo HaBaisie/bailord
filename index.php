@@ -1,4 +1,4 @@
-what have you done i only ask you to make the navigation drop down in mobile device to show in the center of the index.php page rather than showing in the left side of the index.php "<?php include 'includes/session.php'; ?>
+<?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
