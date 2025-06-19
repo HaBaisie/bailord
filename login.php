@@ -53,7 +53,7 @@
         .phone-frame {
             position: relative;
             width: 375px;
-            height: 750px;
+            height: 600px; /* Reduced by 20% from 750px */
             background: #000;
             border-radius: 50px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
@@ -67,22 +67,22 @@
         .phone-frame::before {
             content: '';
             position: absolute;
-            top: 10px;
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 25px;
+            width: 80px;
+            height: 20px;
             background: #1a1a1a;
-            border-radius: 12px;
+            border-radius: 10px;
         }
 
         .phone-frame::after {
             content: '';
             position: absolute;
             right: -6px;
-            top: 150px;
+            top: 120px;
             width: 3px;
-            height: 50px;
+            height: 40px;
             background: #333;
         }
 
@@ -110,24 +110,24 @@
             align-items: center;
             justify-content: center;
             flex: 1 1 auto;
-            padding: 1rem;
+            padding: 0.5rem;
         }
 
         .form-wrapper {
             width: 100%;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .form {
-            padding: 2rem;
+            padding: 1.5rem;
             background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 1.5rem;
+            border-radius: 1rem;
             width: 100%;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             opacity: 0;
-            min-height: 85%;
+            min-height: 80%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -142,55 +142,55 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.8rem 0;
+            margin: 1.2rem 0;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.2rem;
+            left: 1rem;
             transform: translateY(-50%);
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.4rem 1.4rem 1.4rem 3.5rem;
-            font-size: 1.3rem;
+            padding: 1.2rem 1.2rem 1.2rem 3.2rem;
+            font-size: 1.2rem;
             background-color: var(--gray);
-            border-radius: 0.6rem;
-            border: 0.15rem solid var(--white);
+            border-radius: 0.5rem;
+            border: 0.125rem solid var(--white);
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.15rem solid var(--primary-color);
+            border: 0.125rem solid var(--primary-color);
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1.2rem;
-            border-radius: 0.6rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .form p {
-            margin: 1.2rem 0;
-            font-size: 1.1rem;
+            margin: 0.8rem 0;
+            font-size: 0.95rem;
             color: var(--gray-2);
             text-align: center;
         }
@@ -216,13 +216,13 @@
         }
 
         .callout {
-            padding: 1.2rem;
-            margin: 1.2rem 0;
-            border-radius: 0.6rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(15px);
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -263,41 +263,21 @@
             }
 
             .form-wrapper {
-                padding: 1.5rem;
+                padding: 1rem;
             }
 
             .form {
-                padding: 1.5rem;
-                border-radius: 1rem;
+                padding: 1rem;
+                border-radius: 0.75rem;
                 min-height: auto;
             }
 
             .input-group {
-                margin: 1.5rem 0;
+                margin: 1rem 0;
             }
 
             .input-group input {
-                padding: 1.2rem 1.2rem 1.2rem 3rem;
-                font-size: 1.2rem;
-            }
-
-            .input-group i {
-                font-size: 1.8rem;
-            }
-
-            .form button {
-                padding: 1rem;
-                font-size: 1.5rem;
-            }
-
-            .form p {
-                font-size: 1rem;
-            }
-        }
-
-        @media only screen and (max-width: 375px) {
-            .input-group input {
-                padding: 1.1rem 1.1rem 1.1rem 2.8rem;
+                padding: 1rem 1rem 1rem 2.8rem;
                 font-size: 1.1rem;
             }
 
@@ -306,12 +286,32 @@
             }
 
             .form button {
-                padding: 0.9rem;
-                font-size: 1.4rem;
+                padding: 0.8rem;
+                font-size: 1.3rem;
             }
 
             .form p {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media only screen and (max-width: 375px) {
+            .input-group input {
+                padding: 0.9rem 0.9rem 0.9rem 2.6rem;
+                font-size: 1rem;
+            }
+
+            .input-group i {
+                font-size: 1.5rem;
+            }
+
+            .form button {
+                padding: 0.7rem;
+                font-size: 1.2rem;
+            }
+
+            .form p {
+                font-size: 0.85rem;
             }
         }
     </style>
