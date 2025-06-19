@@ -62,14 +62,6 @@ html {
   -ms-text-size-adjust: 100%;
   font-size-adjust: 100%; }
 
-body {
-  font: normal 300 1.4rem/1.86 "Poppins", sans-serif;
-  color: #666666;
-  background-color: #fff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; }
-
 ::-moz-selection {
   color: #fff;
   background-color: #cc9966; }
