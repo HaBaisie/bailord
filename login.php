@@ -386,7 +386,7 @@
                                 </p>
                                 <p>
                                     <span>Don't have an account?</span>
-                                    <b onclick="toggle()" class="pointer">Sign up here</b>
+                                    <b><a href="signup.php"><i class='bx bx-home'></i> Signup here</a></b>
                                 </p>
                                 <p>
                                     <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
