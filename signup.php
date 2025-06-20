@@ -10,20 +10,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
             --primary-color: #1E90FF; /* DodgerBlue */
             --secondary-color: #4169E1; /* RoyalBlue */
+            --accent-blue: #87CEEB; /* SkyBlue */
+            --dark-blue: #191970; /* MidnightBlue */
             --black: #000000;
             --white: #ffffff;
-            --gray: #efefef;
-            --gray-2: #757575;
+            --gray: #e6f0fa; /* Light blue-gray */
+            --gray-2: #4682B4; /* SteelBlue for icons */
             --facebook-color: #4267B2;
             --google-color: #DB4437;
             --twitter-color: #1DA1F2;
             --insta-color: #E1306C;
+            --success-bg: #E0F7FA; /* Cyan for success */
+            --success-text: #0288D1; /* LightBlue */
+            --error-bg: #E3F2FD; /* Blue100 */
+            --error-text: #1565C0; /* Blue800 */
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
@@ -37,52 +43,100 @@
 
         html, body {
             height: 100vh;
-            overflow: auto;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--accent-blue), var(--secondary-color));
         }
 
         .container {
             position: relative;
             min-height: 100vh;
-            overflow: hidden;
-            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .phone-frame {
+            position: relative;
+            width: 375px;
+            height: 600px;
+            background: #000;
+            border-radius: 50px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid var(--dark-blue);
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+            background: var(--dark-blue);
+            border-radius: 10px;
+        }
+
+        .phone-frame::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 120px;
+            width: 3px;
+            height: 40px;
+            background: var(--dark-blue);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            border-radius: 35px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
         }
 
         .row {
             display: flex;
-            flex-wrap: wrap;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .col {
-            width: 50%;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .align-items-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            flex: 1 1 auto;
+            padding: 0.5rem;
         }
 
         .form-wrapper {
             width: 100%;
-            max-width: 42rem; /* Increased from 28rem (50% increase) */
-            padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
+            padding: 1.5rem;
         }
 
         .form {
-            padding: 2.25rem; /* Increased from 1.5rem (50% increase) */
-            background-color: var(--white);
-            border-radius: 2.25rem; /* Increased from 1.5rem (50% increase) */
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 22.5px; /* Increased from 5px 15px (50% increase) */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-            transition-delay: 0.3s;
             opacity: 0;
+            min-height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .container.sign-in .form.sign-in,
@@ -94,56 +148,57 @@
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.8rem 0; /* Increased from 1.2rem (50% increase) */
+            margin: 1.2rem 0;
         }
 
         .input-group i {
             position: absolute;
             top: 50%;
-            left: 1.5rem; /* Increased from 1rem (50% increase) */
+            left: 1rem;
             transform: translateY(-50%);
-            font-size: 2.1rem; /* Increased from 1.4rem (50% increase) */
+            font-size: 1.8rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.5rem 4.5rem; /* Increased from 1rem 3rem (50% increase) */
-            font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+            padding: 1.2rem 1.2rem 1.2rem 3.2rem;
+            font-size: 1.2rem;
             background-color: var(--gray);
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
-            border: 0.1875rem solid var(--white); /* Increased from 0.125rem (50% increase) */
+            border-radius: 0.5rem;
+            border: 0.125rem solid var(--white);
             outline: none;
             transition: border 0.3s ease;
         }
 
         .input-group input:focus {
-            border: 0.1875rem solid var(--primary-color); /* Adjusted to match increased border */
+            border: 0.125rem solid var(--primary-color);
         }
 
         .form button {
             cursor: pointer;
             width: 100%;
-            padding: 1.2rem; /* Increased from 0.8rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 1rem;
+            border-radius: 0.5rem;
             border: none;
             background-color: var(--primary-color);
             color: var(--white);
-            font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
+            font-size: 1.4rem;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .form button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-3px); /* Increased from -2px for proportionality */
+            transform: translateY(-2px);
         }
 
         .form p {
-            margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
-            font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+            margin: 0.8rem 0;
+            font-size: 0.95rem;
             color: var(--gray-2);
+            text-align: center;
         }
 
         .form a {
@@ -163,65 +218,17 @@
         }
 
         .content-row {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 6;
-            width: 100%;
-        }
-
-        .text {
-            margin: 4rem;
-            color: var(--white);
-            text-align: center;
-        }
-
-        .text h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            transform: translateX(250%);
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-            opacity: 0;
-        }
-
-        .container.sign-up .text.sign-up h2,
-        .container.sign-in .text.sign-in h2 {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            clip-path: circle(0% at 0% 0%);
-            transition: clip-path 1.2s ease-in-out;
-            z-index: 0;
-            background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        }
-
-        .container.sign-in::before {
-            clip-path: circle(150% at 100% 100%);
-        }
-
-        .container.sign-up::before {
-            clip-path: circle(150% at 0% 0%);
+            display: none;
         }
 
         .callout {
-            padding: 1.5rem; /* Increased from 1rem (50% increase) */
-            margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
-            border-radius: .75rem; /* Increased from .5rem (50% increase) */
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
             text-align: center;
-            font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+            font-size: 0.95rem;
             opacity: 0;
-            transform: translateY(30px); /* Increased from 20px (50% increase) */
+            transform: translateY(15px);
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
         }
@@ -233,251 +240,231 @@
         }
 
         .callout-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: var(--error-bg);
+            color: var(--error-text);
         }
 
         .callout-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: var(--success-bg);
+            color: var(--success-text);
         }
 
         @media only screen and (max-width: 425px) {
-            .container {
-                padding: 0.5rem;
+            .phone-frame {
+                width: 90vw;
+                height: 80vh;
+                border-radius: 30px;
+                border: 6px solid var(--dark-blue);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                padding: 12px;
             }
 
-            .row {
-                align-items: flex-start;
-                justify-content: center;
+            .phone-frame::before {
+                width: 60px;
+                height: 15px;
+                border-radius: 8px;
+                top: 6px;
+                background: var(--dark-blue);
             }
 
-            .col {
-                width: 100%;
-                position: relative;
-                padding: 1rem;
-                background-color: transparent;
-                transform: translateY(0);
-                transition: none;
+            .phone-frame::after {
+                right: -5px;
+                top: 100px;
+                width: 2px;
+                height: 30px;
+                background: var(--dark-blue);
             }
 
-            .container.sign-in .col.sign-in,
-            .container.sign-up .col.sign-up {
-                transform: translateY(0);
+            .phone-screen {
+                border-radius: 20px;
             }
 
             .form-wrapper {
-                padding: 1.5rem; /* Increased from 1rem (50% increase) */
+                padding: 1rem;
             }
 
             .form {
-                padding: 1.5rem; /* Increased from 1rem (50% increase) */
-                border-radius: 1.5rem; /* Increased from 1rem (50% increase) */
-                transition-delay: 0.2s;
-                box-shadow: none;
-                background-color: var(--white);
+                padding: 1rem;
+                border-radius: 0.75rem;
+                min-height: auto;
             }
 
             .input-group {
-                margin: 1.2rem 0; /* Increased from 0.8rem (50% increase) */
+                margin: 0.8rem 0;
             }
 
             .input-group input {
-                padding: 1.35rem 3.75rem; /* Increased from 0.9rem 2.5rem (50% increase) */
-                font-size: 1.425rem; /* Increased from 0.95rem (50% increase) */
+                padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+                font-size: 1rem;
             }
 
             .input-group i {
-                font-size: 1.8rem; /* Increased from 1.2rem (50% increase) */
+                font-size: 1.5rem;
             }
 
             .form button {
-                padding: 1.05rem; /* Increased from 0.7rem (50% increase) */
-                font-size: 1.65rem; /* Increased from 1.1rem (50% increase) */
+                padding: 0.7rem;
+                font-size: 1.2rem;
             }
 
             .form p {
-                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
-                margin: 0.75rem 0; /* Increased from 0.5rem (50% increase) */
-            }
-
-            .text {
-                margin: 1rem 0;
-            }
-
-            .text h2 {
-                font-size: 1.8rem;
-                margin: 0.5rem 0;
-            }
-
-            .container::before {
-                clip-path: circle(0% at 50% 0%);
-            }
-
-            .container.sign-in::before,
-            .container.sign-up::before {
-                clip-path: circle(150% at 50% 0%);
+                font-size: 0.85rem;
+                margin: 0.6rem 0;
             }
 
             .callout {
-                font-size: 1.275rem; /* Increased from 0.85rem (50% increase) */
+                padding: 0.8rem;
+                margin: 0.8rem 0;
+                font-size: 0.85rem;
             }
         }
 
         @media only screen and (max-width: 375px) {
+            .phone-frame {
+                width: 92vw;
+                height: 82vh;
+                border-radius: 25px;
+                padding: 10px;
+            }
+
             .input-group input {
-                padding: 1.2rem 3.3rem; /* Increased from 0.8rem 2.2rem (50% increase) */
-                font-size: 1.35rem; /* Increased from 0.9rem (50% increase) */
+                padding: 0.8rem 0.8rem 0.8rem 2.6rem;
+                font-size: 0.95rem;
+            }
+
+            .input-group i {
+                font-size: 1.4rem;
             }
 
             .form button {
-                padding: 0.9rem; /* Increased from 0.6rem (50% increase) */
-                font-size: 1.5rem; /* Increased from 1rem (50% increase) */
+                padding: 0.6rem;
+                font-size: 1.1rem;
             }
 
             .form p {
-                font-size: 1.2rem; /* Increased from 0.8rem (50% increase) */
+                font-size: 0.8rem;
             }
 
-            .text h2 {
-                font-size: 1.6rem;
-            }
-
-            .text.sign-up h1 {
-                font-size: 6rem; /* Increased from 4rem (50% increase) */
-                font-weight: 700;
-                margin: 1.5rem 0; /* Increased from 1rem (50% increase) */
-                transform: translateX(250%);
-                transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-                opacity: 0;
-            }
-
-            @media only screen and (max-width: 425px) {
-                .text.sign-up h1 {
-                    font-size: 3.6rem; /* Increased from 2.4rem (50% increase) */
-                    margin: 0.75rem 0; /* Increased from 0.5rem (50% increase) */
-                }
-            }
-
-            @media only screen and (max-width: 375px) {
-                .text.sign-up h1 {
-                    font-size: 3.3rem; /* Increased from 2.2rem (50% increase) */
-                }
+            .callout {
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
 <div id="container" class="container">
-    <!-- FORM SECTION -->
-    <div class="row">
-        <!-- SIGN UP -->
-        <div class="col align-items-center flex-col sign-up">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-up">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="register.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+    <div class="phone-frame">
+        <div class="phone-screen">
+            <!-- FORM SECTION -->
+            <div class="row">
+                <!-- SIGN UP -->
+                <div class="col sign-up">
+                    <div class="form-wrapper">
+                        <div class="form sign-up">
+                            <?php
+                            if(isset($_SESSION['error'])){
+                                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                                unset($_SESSION['error']);
+                            }
+                            if(isset($_SESSION['success'])){
+                                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                                unset($_SESSION['success']);
+                            }
+                            ?>
+                            <form action="register.php" method="POST">
+                                <div class="input-group">
+                                    <i class='bx bxs-user'></i>
+                                    <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class='bx bxs-user'></i>
+                                    <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class='bx bx-mail-send'></i>
+                                    <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class='bx bxs-lock-alt'></i>
+                                    <input type="password" name="password" placeholder="Password" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class='bx bxs-lock-alt'></i>
+                                    <input type="password" name="repassword" placeholder="Retype password" required>
+                                </div>
+                                <button type="submit" name="signup">Sign up</button>
+                                <p>
+                                    <span>Already have an account?</span>
+                                    <b onclick="toggle()" class="pointer">Sign in here</b>
+                                </p>
+                                <p>
+                                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                                </p>
+                            </form>
                         </div>
-                        <div class="input-group">
-                            <i class='bx bxs-user'></i>
-                            <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="repassword" placeholder="Retype password" required>
-                        </div>
-                        <button type="submit" name="signup">Sign up</button>
-                        <p>
-                            <span>Already have an account?</span>
-                            <b onclick="toggle()" class="pointer">Sign in here</b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <!-- END SIGN UP -->
-        <!-- SIGN IN -->
-        <div class="col align-items-center flex-col sign-in">
-            <div class="form-wrapper align-items-center">
-                <div class="form sign-in">
-                    <?php
-                    if(isset($_SESSION['error'])){
-                        echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
-                        unset($_SESSION['error']);
-                    }
-                    if(isset($_SESSION['success'])){
-                        echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
-                        unset($_SESSION['success']);
-                    }
-                    ?>
-                    <form action="verify.php" method="POST">
-                        <div class="input-group">
-                            <i class='bx bx-mail-send'></i>
-                            <input type="email" name="email" placeholder="Email" required>
+                <!-- END SIGN UP -->
+                <!-- SIGN IN -->
+                <div class="col sign-in">
+                    <div class="form-wrapper">
+                        <div class="form sign-in">
+                            <?php
+                            if(isset($_SESSION['error'])){
+                                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                                unset($_SESSION['error']);
+                            }
+                            if(isset($_SESSION['success'])){
+                                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                                unset($_SESSION['success']);
+                            }
+                            ?>
+                            <form action="verify.php" method="POST">
+                                <div class="input-group">
+                                    <i class='bx bx-mail-send'></i>
+                                    <input type="email" name="email" placeholder="Email" required>
+                                </div>
+                                <div class="input-group">
+                                    <i class='bx bxs-lock-alt'></i>
+                                    <input type="password" name="password" placeholder="Password" required>
+                                </div>
+                                <button type="submit" name="login">Sign in</button>
+                                <p>
+                                    <b><a href="password_forgot.php">Forgot password?</a></b>
+                                </p>
+                                <p>
+                                    <span>Don't have an account?</span>
+                                    <b onclick="toggle()" class="pointer">Sign up here</b>
+                                </p>
+                                <p>
+                                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
+                                </p>
+                            </form>
                         </div>
-                        <div class="input-group">
-                            <i class='bx bxs-lock-alt'></i>
-                            <input type="password" name="password" placeholder="Password" required>
-                        </div>
-                        <button type="submit" name="login">Sign in</button>
-                        <p>
-                            <b><a href="password_forgot.php">Forgot password?</a></b>
-                        </p>
-                        <p>
-                            <span>Don't have an account?</span>
-                            <b onclick="toggle()" class="pointer">Sign up here</b>
-                        </p>
-                        <p>
-                            <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                        </p>
-                    </form>
+                    </div>
                 </div>
+                <!-- END SIGN IN -->
             </div>
+            <!-- END FORM SECTION -->
+            <!-- CONTENT SECTION -->
+            <div class="row content-row">
+                <!-- SIGN UP CONTENT -->
+                <div class="col">
+                    <div class="text sign-up">
+                        <h2>Become a Member</h2>
+                    </div>
+                </div>
+                <!-- SIGN IN CONTENT -->
+                <div class="col">
+                    <div class="text sign-in">
+                        <h2>Welcome Back</h2>
+                    </div>
+                </div>
+                <!-- END SIGN IN CONTENT -->
+            </div>
+            <!-- END CONTENT SECTION -->
         </div>
-        <!-- END SIGN IN -->
     </div>
-    <!-- END FORM SECTION -->
-    <!-- CONTENT SECTION -->
-    <div class="row content-row">
-        <!-- SIGN IN CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-in">
-                <h2>Welcome Back</h2>
-            </div>
-        </div>
-        <!-- END SIGN IN CONTENT -->
-        <!-- SIGN UP CONTENT -->
-        <div class="col align-items-center flex-col">
-            <div class="text sign-up">
-                <h1>Become a Member</h1>
-            </div>
-        </div>
-        <!-- END SIGN UP CONTENT -->
-    </div>
-    <!-- END CONTENT SECTION -->
 </div>
 
 <script>
