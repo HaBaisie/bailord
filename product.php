@@ -131,7 +131,7 @@ if ($product['date_view'] == $now) {
             display: flex;
             align-items: center;
         }
-        .header-middle .header-right {
+        .header-middle .header .header-right {
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -212,10 +212,10 @@ if ($product['date_view'] == $now) {
             padding: 15px;
         }
         .header-bottom {
-            background-color: var(--complementary-blue);
+            background-color: var(--light-neutral);
         }
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: var(--text-dark);
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
