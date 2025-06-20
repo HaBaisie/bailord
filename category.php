@@ -182,10 +182,10 @@
             padding: 15px;
         }
         .header-bottom {
-            background-color: var(--complementary-blue);
+            background-color: var(--light-neutral);
         }
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: var(--text-dark);
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -207,7 +207,8 @@
             transition: transform 0.3s ease-in-out;
         }
         .mobile-menu-container.visible {
-            transform: translateX(0);
+            transform: none;
+            }
         }
         .mobile-menu-wrapper {
             width: 80%;
@@ -234,7 +235,7 @@
         .mobile-menu li a:hover {
             color: var(--accent-color);
         }
-        .mobile-menu li ul {
+        .mobile-menu li {
             display: none;
             padding-left: 20px;
             background-color: var(--medium-neutral);
@@ -264,25 +265,26 @@
             margin: 0 -10px;
         }
         .col-sm-9, .col-sm-3, .col-sm-4 {
-            padding: 10px;
+            padding: .10px;
             box-sizing: border-box;
         }
         .box {
             border: 1px solid #ddd;
             border-radius: 4px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, , box-shadow 0.3s ease;
             background-color: white;
         }
         .box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0, 0,0, 0.1);
+            }
         }
         .prod-body {
-            padding: 15px;
+            padding: .15px;
         }
         .box-footer {
             background-color: var(--light-neutral);
-            padding: 10px 15px;
+            padding: .10px 15px;
             border-top: 1px solid #eee;
             font-weight: bold;
             color: var(--dominant-color);
@@ -290,15 +292,15 @@
         .thumbnail {
             object-fit: cover;
             border-radius: 3px;
-            margin-bottom: 10px;
-            width: 100%;
-            height: 230px;
+            margin-bottom: .10px;
+            width: .100%;
+            height: .230px;
         }
         .alert {
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: .15px;
+            margin-bottom: .20px;
             border: 1px solid transparent;
-            border-radius: 4px;
+            border-radius: .4px;
         }
         .alert-info {
             color: #31708f;
@@ -308,7 +310,8 @@
         .alert-danger {
             color: #a94442;
             background-color: #f2dede;
-            border-color: #ebccd1;
+            border-color: #ebcccd1;
+            }
         }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
@@ -326,17 +329,17 @@
             }
             .col-sm-9, .col-sm-3 {
                 flex: 0 0 100%;
-                max-width: 100%;
+                max-width: .100%;
             }
             .col-sm-4 {
-                flex: 0 0 50%;
-                max-width: 50%;
+                flex: .0 0 .50%;
+                max-width: .50%;
             }
             .page-header {
                 font-size: 20px;
             }
             .thumbnail {
-                height: 180px;
+                height: .180px;
             }
         }
         @media (max-width: 767px) {
@@ -348,14 +351,15 @@
                 display: none;
             }
             .col-sm-4 {
-                flex: 0 0 100%;
-                max-width: 100%;
+                flex: .0 0 100px;
+                max-width: .100%;
             }
             .thumbnail {
-                height: 150px;
+                height: .150px;
             }
             .mobile-search {
                 display: block;
+            }
             }
         }
         @media (min-width: 992px) {
@@ -366,20 +370,22 @@
                 display: block !important;
             }
             .col-sm-9 {
-                flex: 0 0 75%;
-                max-width: 75%;
+                .flex: 0 0 75%;
+                .max-width: 75%;
             }
             .col-sm-3 {
-                flex: 0 0 25%;
-                max-width: 25%;
+                .flex: 0 0 25%;
+                .max-width: 25%;
             }
             .col-sm-4 {
-                flex: 0 0 33.333%;
-                max-width: 33.333%;
+                .flex: 0 0 33.333%;
+                .max-width: 33.333%;
+            }
             }
         }
     </style>
     <script>
+        <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
@@ -393,7 +399,7 @@
                     document.body.classList.toggle('menu-open');
                 });
             }
-            if (mobileMenuClose && mobileMenuContainer) {
+            if (mobileMenuClose && && mobileMenuContainer) {
                 mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
@@ -414,15 +420,15 @@
                     mobileSearchForm.classList.toggle('visible');
                 });
             }
-            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu .mobile-menu > li > a > a');
             mobileMenuItems.forEach(item => {
-                if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
+                if (item.nextElementSibling && item.tagName.tagName === 'UL') {
                     item.addEventListener('click', function(e) {
                         e.preventDefault();
                         const parentLi = this.parentElement;
                         const subMenu = this.nextElementSibling;
-                        parentLi.classList.toggle('active');
-                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+                        parentLi.classList.add('active');
+                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'none';
                         mobileMenuItems.forEach(otherItem => {
                             if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
                                 otherItem.parentElement.classList.remove('active');
