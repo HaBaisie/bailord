@@ -185,7 +185,7 @@
             background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: var(--text-dark);
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
