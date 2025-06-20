@@ -395,7 +395,7 @@
                                 <button type="submit" name="signup">Sign up</button>
                                 <p>
                                     <span>Already have an account?</span>
-                                    <b onclick="toggle()" class="pointer">Sign in here</b>
+                                    <b><a href="login.php"><i class='bx bx-home'></i> login here</a></b>
                                 </p>
                                 <p>
                                     <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
