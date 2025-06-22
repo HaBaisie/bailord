@@ -196,16 +196,12 @@
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.7);
                 z-index: 1000;
-                display: flex;
+                display: none;
                 justify-content: center;
                 align-items: center;
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-                visibility: hidden;
             }
             .mobile-menu-container.visible {
-                opacity: 1;
-                visibility: visible;
+                display: flex;
             }
             .mobile-menu-wrapper {
                 width: 90%;
@@ -372,11 +368,22 @@
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
             const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            
             if (mobileMenuToggle && mobileMenuContainer) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileMenuContainer.classList.toggle('visible');
-                    document.body.classList.toggle('menu-open');
+                    const isVisible = mobileMenuContainer.classList.contains('visible');
+                    if (!isVisible) {
+                        mobileMenuContainer.classList.add('visible');
+                        // Force reflow to ensure immediate rendering
+                        mobileMenuContainer.offsetHeight;
+                        setTimeout(() => {
+                            document.body.classList.add('menu-open');
+                        }, 10);
+                    } else {
+                        mobileMenuContainer.classList.remove('visible');
+                        document.body.classList.remove('menu-open');
+                    }
                 });
             }
             if (mobileMenuClose && mobileMenuContainer) {
