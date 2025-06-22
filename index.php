@@ -175,10 +175,10 @@
                 padding: 8px;
             }
             .deal h2 {
-                font-size: 14px;
+                font-size: 15px;
             }
             .deal h3 {
-                font-size: 12px;
+                font-size: 13px;
             }
             .footer .col-sm-6 {
                 margin-bottom: 15px;
@@ -187,16 +187,16 @@
             .heading-right {
                 display: none !important;
             }
-            /* Mobile Navigation Dropdown Styles */
-            .header .mobile-menu-container {
+            /* Bailord Mobile Navigation Dropdown Styles */
+            .header .bailord-mobile-nav-overlay {
                 position: fixed !important;
                 top: 0 !important;
                 left: auto !important;
                 right: auto !important;
                 width: 100% !important;
-                height: 100% !important;
+                height: 100vh !important;
                 background-color: rgba(0, 0, 0, 0.7) !important;
-                z-index: 1000 !important;
+                z-index: 10000 !important;
                 display: none !important;
                 justify-content: center !important;
                 align-items: center !important;
@@ -206,14 +206,14 @@
                 opacity: 0 !important;
                 border: 2px solid red !important; /* Debug: Confirm styles applied */
             }
-            .header .mobile-menu-container.visible {
+            .header .bailord-mobile-nav-overlay.active {
                 display: flex !important;
                 visibility: visible !important;
                 opacity: 1 !important;
                 transform: none !important;
                 transition: none !important;
             }
-            .header .mobile-menu-container .mobile-menu-wrapper {
+            .header .bailord-mobile-nav-overlay .bailord-mobile-nav-content {
                 width: 90% !important;
                 max-width: 320px !important;
                 max-height: 80vh !important;
@@ -232,83 +232,92 @@
                 opacity: 1 !important;
                 border: 2px solid green !important; /* Debug: Confirm styles applied */
             }
-            .header .mobile-menu-container.visible .mobile-menu-wrapper {
+            .header .bailord-mobile-nav-overlay.active .bailord-mobile-nav-content {
                 transform: none !important;
                 transition: none !important;
                 visibility: visible !important;
                 opacity: 1 !important;
             }
-            .mobile-menu-close {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                cursor: pointer;
-                font-size: 20px;
-                color: var(--text-dark, #212529);
-                z-index: 1001;
-                background: none;
-                border: none;
-                padding: 5px;
-            }
-            .mobile-nav .mobile-menu {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .mobile-nav .mobile-menu > li {
-                position: relative;
-                border-bottom: 1px solid var(--medium-neutral, #e9ecef);
-            }
-            .mobile-nav .mobile-menu > li > a {
-                display: block;
-                padding: 15px 10px;
+            .bailord-mobile-nav-close {
+                position: absolute !important;
+                top: 15px !important;
+                right: 15px !important;
+                cursor: pointer !important;
+                font-size: 20px !important;
                 color: var(--text-dark, #212529) !important;
-                font-size: 16px;
-                font-weight: 500;
-                text-decoration: none;
-                position: relative;
+                z-index: 10001 !important;
+                background: none !important;
+                border: none !important;
+                padding: 5px !important;
             }
-            .mobile-nav .mobile-menu > li > a:hover,
-            .mobile-nav .mobile-menu > li.active > a {
-                color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef);
+            .bailord-mobile-nav .bailord-mobile-menu {
+                list-style: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
-            .mobile-nav .mobile-menu > li > ul {
-                display: none;
-                list-style: none;
-                padding: 0 0 0 20px;
-                margin: 0;
-                background-color: var(--light-neutral, #f8f9fa);
+            .bailord-mobile-nav .bailord-mobile-menu > li {
+                position: relative !important;
+                border-bottom: 1px solid var(--medium-neutral, #e9ecef) !important;
             }
-            .mobile-nav .mobile-menu > li.active > ul {
-                display: block;
-            }
-            .mobile-nav .mobile-menu > li > ul > li > a {
-                display: block;
-                padding: 10px 15px;
+            .bailord-mobile-nav .bailord-mobile-menu > li > a {
+                display: block !important;
+                padding: 15px 10px !important;
                 color: var(--text-dark, #212529) !important;
-                font-size: 14px;
-                text-decoration: none;
+                font-size: 16px !important;
+                font-weight: 500 !important;
+                text-decoration: none !important;
+                position: relative !important;
             }
-            .mobile-nav .mobile-menu > li > ul > li > a:hover {
+            .bailord-mobile-nav .bailord-mobile-menu > li > a:hover,
+            .bailord-mobile-nav .bailord-mobile-menu > li.active > a {
                 color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef);
+                background-color: var(--medium-neutral, #e9ecef) !important;
             }
-            .mobile-nav .mobile-menu > li.has-submenu > a::after {
-                content: '\f107';
-                font-family: 'FontAwesome';
-                position: absolute;
-                right: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 14px;
-                color: var(--text-dark, #212529);
+            .bailord-mobile-nav .bailord-mobile-menu > li > ul {
+                display: none !important;
+                list-style: none !important;
+                padding: 0 0 0 20px !important;
+                margin: 0 !important;
+                background-color: var(--light-neutral, #f8f9fa) !important;
             }
-            .mobile-nav .mobile-menu > li.active > a::after {
-                content: '\f106';
+            .bailord-mobile-nav .bailord-mobile-menu > li.active > ul {
+                display: block !important;
+            }
+            .bailord-mobile-nav .bailord-mobile-menu > li > ul > li > a {
+                display: block !important;
+                padding: 10px 15px !important;
+                color: var(--text-dark, #212529) !important;
+                font-size: 14px !important;
+                text-decoration: none !important;
+            }
+            .bailord-mobile-nav .bailord-mobile-menu > li > ul > li > a:hover {
+                color: var(--accent-color, #fd7e14) !important;
+                background-color: var(--medium-neutral, #e9ecef) !important;
+            }
+            .bailord-mobile-nav .bailord-mobile-menu > li.has-submenu > a::after {
+                content: '\f107' !important;
+                font-family: 'FontAwesome' !important;
+                position: absolute !important;
+                right: 15px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+                font-size: 14px !important;
+                color: var(--text-dark, #212529) !important;
+            }
+            .bailord-mobile-nav .bailord-mobile-menu > li.active > a::after {
+                content: '\f106' !important;
             }
             .main-nav {
                 display: none !important;
+            }
+            /* Override any potential external styles */
+            .header .bailord-mobile-nav-overlay,
+            .header .bailord-mobile-nav-overlay * {
+                animation: none !important;
+                transform: none !important;
+                transition: none !important;
+                left: auto !important;
+                right: auto !important;
             }
         }
         @media (min-width: 768px) and (max-width: 991px) {
@@ -321,7 +330,7 @@
             .cat-block-title {
                 font-size: 13px;
             }
-            .mobile-menu-container {
+            .bailord-mobile-nav-overlay {
                 display: none !important;
             }
         }
@@ -385,58 +394,62 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
-            const mobileMenuClose = document.querySelector('.mobile-menu-close');
-            
-            if (mobileMenuToggle && mobileMenuContainer) {
+            const mobileNavOverlay = document.querySelector('.bailord-mobile-nav-overlay');
+            const mobileNavClose = document.querySelector('.bailord-mobile-nav-close');
+
+            if (mobileMenuToggle && mobileNavOverlay) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const isVisible = mobileMenuContainer.classList.contains('visible');
-                    if (!isVisible) {
-                        // Reset any inline styles or classes that might cause sliding
-                        mobileMenuContainer.style.transform = 'none';
-                        mobileMenuContainer.style.left = 'auto';
-                        mobileMenuContainer.style.right = 'auto';
-                        mobileMenuContainer.style.transition = 'none';
-                        mobileMenuContainer.classList.remove('mobile-menu-active'); // Remove any external classes
-                        mobileMenuContainer.classList.add('visible');
+                    const isActive = mobileNavOverlay.classList.contains('active');
+                    if (!isActive) {
+                        // Reset inline styles to prevent sliding
+                        mobileNavOverlay.style.transform = 'none';
+                        mobileNavOverlay.style.left = 'auto';
+                        mobileNavOverlay.style.right = 'auto';
+                        mobileNavOverlay.style.transition = 'none';
+                        mobileNavOverlay.style.animation = 'none';
+                        // Remove any external classes
+                        mobileNavOverlay.classList.remove('mobile-menu-active', 'show', 'open');
+                        mobileNavOverlay.classList.add('active');
                         document.body.classList.add('menu-open');
                     } else {
-                        mobileMenuContainer.classList.remove('visible');
+                        mobileNavOverlay.classList.remove('active');
                         document.body.classList.remove('menu-open');
                     }
                 });
             }
-            if (mobileMenuClose && mobileMenuContainer) {
-                mobileMenuClose.addEventListener('click', function(e) {
+            if (mobileNavClose && mobileNavOverlay) {
+                mobileNavClose.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileMenuContainer.classList.remove('visible');
-                    mobileMenuContainer.style.transform = 'none';
-                    mobileMenuContainer.style.left = 'auto';
-                    mobileMenuContainer.style.right = 'auto';
-                    mobileMenuContainer.style.transition = 'none';
+                    mobileNavOverlay.classList.remove('active');
+                    mobileNavOverlay.style.transform = 'none';
+                    mobileNavOverlay.style.left = 'auto';
+                    mobileNavOverlay.style.right = 'auto';
+                    mobileNavOverlay.style.transition = 'none';
+                    mobileNavOverlay.style.animation = 'none';
                     document.body.classList.remove('menu-open');
                 });
             }
-            if (mobileMenuContainer) {
-                mobileMenuContainer.addEventListener('click', function(e) {
-                    if (e.target === mobileMenuContainer) {
-                        mobileMenuContainer.classList.remove('visible');
-                        mobileMenuContainer.style.transform = 'none';
-                        mobileMenuContainer.style.left = 'auto';
-                        mobileMenuContainer.style.right = 'auto';
-                        mobileMenuContainer.style.transition = 'none';
+            if (mobileNavOverlay) {
+                mobileNavOverlay.addEventListener('click', function(e) {
+                    if (e.target === mobileNavOverlay) {
+                        mobileNavOverlay.classList.remove('active');
+                        mobileNavOverlay.style.transform = 'none';
+                        mobileNavOverlay.style.left = 'auto';
+                        mobileNavOverlay.style.right = 'auto';
+                        mobileNavOverlay.style.transition = 'none';
+                        mobileNavOverlay.style.animation = 'none';
                         document.body.classList.remove('menu-open');
                     }
                 });
             }
-            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
+            const mobileMenuItems = document.querySelectorAll('.bailord-mobile-nav .bailord-mobile-menu > li.has-submenu > a');
             mobileMenuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     const parentLi = this.parentElement;
                     const isActive = parentLi.classList.contains('active');
-                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
+                    document.querySelectorAll('.bailord-mobile-nav .bailord-mobile-menu > li.has-submenu').forEach(li => {
                         if (li !== parentLi) {
                             li.classList.remove('active');
                         }
@@ -454,7 +467,7 @@
                     }
                 });
             }
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.mobile-menu .dropdown-toggle)');
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle:not(.bailord-mobile-menu .dropdown-toggle)');
             dropdownToggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     if (window.innerWidth < 992) {
@@ -486,22 +499,29 @@
                 }
                 lastTouchEnd = now;
             }, false);
-            // Override any external scripts adding sliding classes
+            // Monitor for external class or style changes
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                        if (mobileMenuContainer.classList.contains('mobile-menu-active')) {
-                            mobileMenuContainer.classList.remove('mobile-menu-active');
-                            mobileMenuContainer.style.transform = 'none';
-                            mobileMenuContainer.style.left = 'auto';
-                            mobileMenuContainer.style.right = 'auto';
-                            mobileMenuContainer.style.transition = 'none';
+                    if (mutation.type === 'attributes') {
+                        if (mutation.attributeName === 'class') {
+                            // Remove unwanted classes
+                            mobileNavOverlay.classList.remove('mobile-menu-active', 'show', 'open');
+                            if (!mobileNavOverlay.classList.contains('active')) {
+                                mobileNavOverlay.classList.remove('active');
+                            }
+                        } else if (mutation.attributeName === 'style') {
+                            // Reset inline styles
+                            mobileNavOverlay.style.transform = 'none';
+                            mobileNavOverlay.style.left = 'auto';
+                            mobileNavOverlay.style.right = 'auto';
+                            mobileNavOverlay.style.transition = 'none';
+                            mobileNavOverlay.style.animation = 'none';
                         }
                     }
                 });
             });
-            if (mobileMenuContainer) {
-                observer.observe(mobileMenuContainer, { attributes: true });
+            if (mobileNavOverlay) {
+                observer.observe(mobileNavOverlay, { attributes: true });
             }
         });
     </script>
@@ -602,16 +622,16 @@
                     </nav>
                 </div>
             </div>
-            <div class="mobile-menu-container">
-                <div class="mobile-menu-wrapper">
-                    <button class="mobile-menu-close"><i class="icon-close"></i></button>
-                    <form action="#" method="get" class="mobile-search">
-                        <label for="mobile-search" class="sr-only">Search</label>
-                        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
+            <div class="bailord-mobile-nav-overlay">
+                <div class="bailord-mobile-nav-content">
+                    <button class="bailord-mobile-nav-close"><i class="icon-close"></i></button>
+                    <form action="#" method="get" class="bailord-mobile-search">
+                        <label for="bailord-mobile-search" class="sr-only">Search</label>
+                        <input type="search" class="form-control" name="bailord-mobile-search" id="bailord-mobile-search" placeholder="Search..." required>
                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
-                    <nav class="mobile-nav">
-                        <ul class="mobile-menu">
+                    <nav class="bailord-mobile-nav">
+                        <ul class="bailord-mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
