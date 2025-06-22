@@ -27,59 +27,10 @@
     object-position: center;
     display: block;
     margin: 0 auto;
-    filter: brightness(1.1);
+    filter: brightness(1.1); /* Increase brightness for better visibility */
 }
 
 /* Responsive adjustments */
-@media (max-width: 767px) {
-    .intro-slider-container {
-        height: 150px;
-        padding: 0 10px;
-    }
-    .intro-slide部分
-
-System: I notice you want to reintroduce dropdowns in the mobile navigation, which were previously removed, and ensure the mobile menu displays as a full-screen overlay without white space on the left or content shifting to the right. Below, I’ll provide updated versions of `styles.css` and `index.php` to address these issues. The changes will:
-1. Ensure the `.mobile-menu-container` spans the full viewport (`100vw`, `100vh`) to eliminate white space and prevent content shifting.
-2. Reintroduce dropdowns for "Browse Categories" and add a "Pages" submenu in the mobile menu, with JavaScript to toggle them.
-3. Refine `body.menu-open` styles to lock the page without shifting content.
-
-### Updated `styles.css`
-This update consolidates mobile menu styles, ensures full viewport coverage, and supports dropdowns. The artifact ID remains the same as we’re updating the existing file.
-
-<xaiArtifact artifact_id="019dd0db-3d38-4d92-af04-f10e1c8725f8" artifact_version_id="d81e10d4-2b49-444c-b5ee-5efd4883e747" title="styles.css" contentType="text/css">
-/* Slider container styles */
-.intro-slider-container {
-    margin-bottom: 5rem;
-    width: 100%;
-    overflow: hidden;
-}
-
-/* Slider styles */
-.intro-slider {
-    width: 100%;
-}
-
-/* Slide styles */
-.intro-slide {
-    width: 100%;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.intro-slide img {
-    width: 500px;
-    height: 150px;
-    object-fit: contain;
-    object-position: center;
-    display: block;
-    margin: 0 auto;
-    filter: brightness(1.1);
-}
-
-/* Mobile menu styles */
 @media (max-width: 767px) {
     .intro-slider-container {
         height: 150px;
@@ -92,172 +43,7 @@ This update consolidates mobile menu styles, ensures full viewport coverage, and
         width: 100%;
         max-width: 500px;
         height: 150px;
-        filter: brightness(1.1);
-    }
-    .mobile-menu-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    }
-    .mobile-menu-container.visible {
-        opacity: 1;
-        visibility: visible;
-    }
-    .mobile-menu-wrapper {
-        width: 100%;
-        max-width: 320px;
-        max-height: 80vh;
-        background-color: var(--light-neutral, #f8f9fa);
-        overflow-y: auto;
-        padding: 20px;
-        position: relative;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        transform: translateY(-20px);
-        transition: transform 0.3s ease-in-out;
-    }
-    .mobile-menu-container.visible .mobile-menu-wrapper {
-        transform: translateY(0);
-    }
-    .mobile-menu-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        cursor: pointer;
-        font-size: 20px;
-        color: var(--text-dark, #212529);
-        background: none;
-        border: none;
-        padding: 5px;
-        z-index: 1001;
-    }
-    .mobile-nav .mobile-menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: block;
-    }
-    .mobile-nav .mobile-menu > li {
-        position: relative;
-        border-bottom: 1px solid var(--medium-neutral, #e9ecef);
-    }
-    .mobile-nav .mobile-menu > li > a {
-        display: block;
-        padding: 15px 10px;
-        color: var(--text-dark, #212529);
-        font-size: 16px;
-        font-weight: 500;
-        text-decoration: none;
-        position: relative;
-    }
-    .mobile-nav .mobile-menu > li > a:hover,
-    .mobile-nav .mobile-menu > li.active > a {
-        color: var(--accent-color, #fd7e14);
-        background-color: var(--medium-neutral, #e9ecef);
-    }
-    .mobile-nav .mobile-menu > li.has-submenu > a::after {
-        content: '\f107';
-        font-family: 'FontAwesome';
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 14px;
-        color: var(--text-dark, #212529);
-    }
-    .mobile-nav .mobile-menu > li.has-submenu.active > a::after {
-        content: '\f106';
-    }
-    .mobile-nav .mobile-menu > li > ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: none;
-        background-color: #fff;
-        border-top: 1px solid var(--medium-neutral, #e9ecef);
-    }
-    .mobile-nav .mobile-menu > li.active > ul {
-        display: block;
-    }
-    .mobile-nav .mobile-menu > li > ul > li > a {
-        display: block;
-        padding: 10px 20px;
-        color: var(--text-dark, #212529);
-        font-size: 14px;
-        text-decoration: none;
-    }
-    .mobile-nav .mobile-menu > li > ul > li > a:hover {
-        color: var(--accent-color, #fd7e14);
-        background-color: var(--medium-neutral, #e9ecef);
-    }
-    .main-nav {
-        display: none;
-    }
-    .header-top {
-        padding: 5px 0;
-    }
-    .header-contact, .top-menu li a {
-        font-size: 12px;
-        padding: 5px;
-    }
-    .logo img {
-        width: 80px;
-        height: auto;
-    }
-    .cat-blocks-container .col-6 {
-        padding: 5px;
-    }
-    .cat-block-title {
-        font-size: 12px;
-    }
-    .product {
-        margin-bottom: 10px;
-    }
-    .product-media img {
-        max-width: 100%;
-    }
-    .product-title {
-        font-size: 13px;
-        line-height: 1.3;
-    }
-    .product-price {
-        font-size: 14px;
-    }
-    .ratings-container {
-        font-size: 12px;
-    }
-    .btn {
-        padding: 7px 12px;
-        font-size: 13px;
-    }
-    .deal {
-        min-height: 180px;
-    }
-    .deal-content {
-        padding: 8px;
-    }
-    .deal h2 {
-        font-size: 14px;
-    }
-    .deal h3 {
-        font-size: 12px;
-    }
-    .footer .col-sm-6 {
-        margin-bottom: 15px;
-    }
-    .header-right.d-none.d-lg-block,
-    .heading-right {
-        display: none;
+        filter: brightness(1.1); /* Maintain brightness on mobile */
     }
 }
 
@@ -272,35 +58,23 @@ This update consolidates mobile menu styles, ensures full viewport coverage, and
     .intro-slide img {
         width: 500px;
         height: 150px;
-        filter: brightness(1.1);
-    }
-    .product {
-        margin-bottom: 15px;
-    }
-    .product-media img {
-        max-height: 150px;
-    }
-    .cat-block-title {
-        font-size: 13px;
-    }
-    .mobile-menu-container {
-        display: none;
+        filter: brightness(1.1); /* Maintain brightness on tablet */
     }
 }
 
 @media (min-width: 992px) {
     .intro-slider-container {
-        height: 250px;
+        height: 250px; /* Increased height for desktop */
     }
     .intro-slide {
-        height: 250px;
+        height: 250px; /* Increased height for desktop */
     }
     .intro-slide img {
-        width: 700px;
-        height: 250px;
-        object-fit: cover;
-        filter: brightness(1.1);
-        image-rendering: -webkit-optimize-contrast;
+        width: 700px; /* Increased width for better display on desktop */
+        height: 250px; /* Increased height to match */
+        object-fit: cover; /* Use cover to ensure no stretching, maintaining clarity */
+        filter: brightness(1.1); /* Increase brightness for better visibility */
+        image-rendering: -webkit-optimize-contrast; /* Enhance sharpness */
     }
 }
 
@@ -320,23 +94,20 @@ This update consolidates mobile menu styles, ensures full viewport coverage, and
 }
 
 html {
-    overflow-y: scroll;
+    overflow-y: scroll; /* Prevent content shift due to scrollbar */
 }
 
 body {
     background-color: var(--light-neutral);
     color: var(--text-dark);
     font-family: 'Segoe UI', Roboto, sans-serif;
-    margin: 0;
+    margin: 0; /* Ensure no default margins */
 }
 
 body.menu-open {
     overflow: hidden;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
+    position: fixed; /* Lock body in place */
+    width: 100%; /* Maintain full width */
 }
 
 .page-wrapper {
@@ -410,6 +181,111 @@ body.menu-open {
     gap: 10px;
 }
 
+@media (max-width: 767px) {
+    .header-top {
+        padding: 5px 0;
+    }
+    .header-contact, .top-menu li a {
+        font-size: 12px;
+        padding: 5px;
+    }
+    .logo img {
+        width: 80px;
+        height: auto;
+    }
+    .cat-blocks-container .col-6 {
+        padding: 5px;
+    }
+    .cat-block-title {
+        font-size: 12px;
+    }
+    .product {
+        margin-bottom: 10px;
+    }
+    .product-media img {
+        max-width: 100%;
+    }
+    .product-title {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    .product-price {
+        font-size: 14px;
+    }
+    .ratings-container {
+        font-size: 12px;
+    }
+    .mobile-menu-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: 1000;
+        display: flex;
+        justify-content: center; /* Center the menu horizontally */
+        align-items: flex-start; /* Align to top */
+        transform: translateX(-100%); /* Start off-screen */
+        transition: transform 0.3s ease-in-out;
+    }
+    .mobile-menu-container.visible {
+        transform: translateX(0); /* Slide in when visible */
+    }
+    .mobile-menu-wrapper {
+        width: 100%; /* Full width of the screen */
+        max-width: 100%; /* Remove max-width restriction */
+        height: 100%; /* Full height */
+        background-color: var(--light-neutral);
+        overflow-y: auto;
+        padding: 15px;
+        position: relative;
+        transform: none; /* No transform needed for wrapper */
+    }
+    .mobile-menu-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        z-index: 1001; /* Ensure close button is above content */
+    }
+    .btn {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+    .deal {
+        min-height: 180px;
+    }
+    .deal-content {
+        padding: 8px;
+    }
+    .deal h2 {
+        font-size: 14px;
+    }
+    .deal h3 {
+        font-size: 12px;
+    }
+    .footer .col-sm-6 {
+        margin-bottom: 15px;
+    }
+    .header-right.d-none.d-lg-block,
+    .heading-right {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .product {
+        margin-bottom: 15px;
+    }
+    .product-media img {
+        max-height: 150px;
+    }
+    .cat-block-title {
+        font-size: 13px;
+    }
+}
+
 .btn, .dropdown-toggle, .mobile-menu-toggler, 
 .mobile-search-toggle, .product-media a {
     min-height: 44px;
@@ -473,4 +349,36 @@ a, button {
 .login-btn:hover {
     background-color: var(--complementary-blue);
     color: white;
+}
+
+.mobile-menu li {
+    position: relative;
+}
+
+.mobile-menu li ul {
+    display: none;
+    position: static;
+    width: 100%;
+    padding-left: 20px;
+    background-color: var(--medium-neutral);
+}
+
+.mobile-menu li.active > ul {
+    display: block;
+}
+
+.mobile-menu-container .mobile-menu li a {
+    color: var(--text-dark);
+}
+
+.mobile-menu-container .mobile-menu li a:hover {
+    color: var(--accent-color);
+}
+
+.mobile-menu-container .mobile-menu li ul li a {
+    color: var(--text-dark);
+}
+
+.mobile-menu-container .mobile-menu li ul li a:hover {
+    color: var(--accent-color);
 }
