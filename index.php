@@ -23,8 +23,6 @@
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-    <!-- Include FontAwesome for mobile menu dropdown indicators -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
@@ -187,7 +185,7 @@
             .heading-right {
                 display: none !important;
             }
-            /* Mobile Navigation Dropdown Styles */
+            /* Mobile Navigation Styles */
             .mobile-menu-container {
                 position: fixed !important;
                 top: 0;
@@ -257,40 +255,6 @@
             .mobile-nav .mobile-menu > li.active > a {
                 color: var(--accent-color, #fd7e14) !important;
                 background-color: var(--medium-neutral, #e9ecef);
-            }
-            .mobile-nav .mobile-menu > li > ul {
-                display: none;
-                list-style: none;
-                padding: 0 0 0 20px;
-                margin: 0;
-                background-color: var(--light-neutral, #f8f9fa);
-            }
-            .mobile-nav .mobile-menu > li.active > ul {
-                display: block;
-            }
-            .mobile-nav .mobile-menu > li > ul > li > a {
-                display: block;
-                padding: 10px 15px;
-                color: var(--text-dark, #212529) !important;
-                font-size: 14px;
-                text-decoration: none;
-            }
-            .mobile-nav .mobile-menu > li > ul > li > a:hover {
-                color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef);
-            }
-            .mobile-nav .mobile-menu > li.has-submenu > a::after {
-                content: '\f107';
-                font-family: 'FontAwesome';
-                position: absolute;
-                right: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 14px;
-                color: var(--text-dark, #212529);
-            }
-            .mobile-nav .mobile-menu > li.active > a::after {
-                content: '\f106';
             }
             .main-nav {
                 display: none !important;
@@ -402,20 +366,6 @@
                     }
                 });
             }
-            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
-            mobileMenuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const parentLi = this.parentElement;
-                    const isActive = parentLi.classList.contains('active');
-                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
-                        if (li !== parentLi) {
-                            li.classList.remove('active');
-                        }
-                    });
-                    parentLi.classList.toggle('active');
-                });
-            });
             const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
             if (categoryToggle) {
                 categoryToggle.addEventListener('click', function(e) {
@@ -570,35 +520,13 @@
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
-                            <li class="has-submenu">
-                                <a href="#">Browse Categories</a>
-                                <ul>
-                                    <?php
-                                    try {
-                                        $stmt = $conn->prepare("SELECT * FROM category");
-                                        $stmt->execute();
-                                        $categories = $stmt->fetchAll();
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
-                                        }
-                                    } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
-                                    }
-                                    ?>
-                                </ul>
-                            </li>
-                            <li class="has-submenu">
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="faq.html">FAQs</a></li>
-                                    <li><a href="404.html">Error 404</a></li>
-                                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="#">Browse Categories</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="faq.html">FAQs</a></li>
+                            <li><a href="404.html">Error 404</a></li>
+                            <li><a href="coming-soon.html">Coming Soon</a></li>
                             <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
@@ -999,4 +927,4 @@
         </main>
     </div>
 </body>
-</html>"
+</html>
