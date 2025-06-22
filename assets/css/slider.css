@@ -36,6 +36,55 @@
         height: 150px;
         padding: 0 10px;
     }
+    .intro-slide部分
+
+System: I notice you want to reintroduce dropdowns in the mobile navigation, which were previously removed, and ensure the mobile menu displays as a full-screen overlay without white space on the left or content shifting to the right. Below, I’ll provide updated versions of `styles.css` and `index.php` to address these issues. The changes will:
+1. Ensure the `.mobile-menu-container` spans the full viewport (`100vw`, `100vh`) to eliminate white space and prevent content shifting.
+2. Reintroduce dropdowns for "Browse Categories" and add a "Pages" submenu in the mobile menu, with JavaScript to toggle them.
+3. Refine `body.menu-open` styles to lock the page without shifting content.
+
+### Updated `styles.css`
+This update consolidates mobile menu styles, ensures full viewport coverage, and supports dropdowns. The artifact ID remains the same as we’re updating the existing file.
+
+<xaiArtifact artifact_id="019dd0db-3d38-4d92-af04-f10e1c8725f8" artifact_version_id="d81e10d4-2b49-444c-b5ee-5efd4883e747" title="styles.css" contentType="text/css">
+/* Slider container styles */
+.intro-slider-container {
+    margin-bottom: 5rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Slider styles */
+.intro-slider {
+    width: 100%;
+}
+
+/* Slide styles */
+.intro-slide {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.intro-slide img {
+    width: 500px;
+    height: 150px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    margin: 0 auto;
+    filter: brightness(1.1);
+}
+
+/* Mobile menu styles */
+@media (max-width: 767px) {
+    .intro-slider-container {
+        height: 150px;
+        padding: 0 10px;
+    }
     .intro-slide {
         height: 150px;
     }
@@ -45,7 +94,6 @@
         height: 150px;
         filter: brightness(1.1);
     }
-    /* Mobile menu styles */
     .mobile-menu-container {
         position: fixed;
         top: 0;
@@ -66,7 +114,7 @@
         visibility: visible;
     }
     .mobile-menu-wrapper {
-        width: 90%;
+        width: 100%;
         max-width: 320px;
         max-height: 80vh;
         background-color: var(--light-neutral, #f8f9fa);
@@ -117,15 +165,40 @@
         color: var(--accent-color, #fd7e14);
         background-color: var(--medium-neutral, #e9ecef);
     }
-    /* Disable any potential dropdowns */
+    .mobile-nav .mobile-menu > li.has-submenu > a::after {
+        content: '\f107';
+        font-family: 'FontAwesome';
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: var(--text-dark, #212529);
+    }
+    .mobile-nav .mobile-menu > li.has-submenu.active > a::after {
+        content: '\f106';
+    }
     .mobile-nav .mobile-menu > li > ul {
-        display: none !important;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: none;
+        background-color: #fff;
+        border-top: 1px solid var(--medium-neutral, #e9ecef);
     }
     .mobile-nav .mobile-menu > li.active > ul {
-        display: none !important;
+        display: block;
     }
-    .mobile-nav .mobile-menu > li.has-submenu > a::after {
-        display: none !important;
+    .mobile-nav .mobile-menu > li > ul > li > a {
+        display: block;
+        padding: 10px 20px;
+        color: var(--text-dark, #212529);
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .mobile-nav .mobile-menu > li > ul > li > a:hover {
+        color: var(--accent-color, #fd7e14);
+        background-color: var(--medium-neutral, #e9ecef);
     }
     .main-nav {
         display: none;
@@ -260,8 +333,10 @@ body {
 body.menu-open {
     overflow: hidden;
     position: fixed;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
 }
 
 .page-wrapper {
