@@ -188,38 +188,55 @@
                 display: none !important;
             }
             /* Mobile Navigation Dropdown Styles */
-            .mobile-menu-container {
+            .header .mobile-menu-container {
                 position: fixed !important;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.7);
-                z-index: 1000;
-                display: none;
-                justify-content: center;
-                align-items: center;
-                transform: none !important; /* Override any sliding transform */
-                transition: none !important; /* Remove all transitions */
+                top: 0 !important;
+                left: auto !important;
+                right: auto !important;
+                width: 100% !important;
+                height: 100% !important;
+                background-color: rgba(0, 0, 0, 0.7) !important;
+                z-index: 1000 !important;
+                display: none !important;
+                justify-content: center !important;
+                align-items: center !important;
+                transform: none !important;
+                transition: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                border: 2px solid red !important; /* Debug: Confirm styles applied */
             }
-            .mobile-menu-container.visible {
-                display: flex;
+            .header .mobile-menu-container.visible {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
             }
-            .mobile-menu-wrapper {
-                width: 90%;
-                max-width: 320px;
-                max-height: 80vh;
-                background-color: var(--light-neutral, #f8f9fa);
-                overflow-y: auto;
-                padding: 20px;
-                position: relative;
-                border-radius: 8px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                transform: none !important; /* Remove scale or slide effects */
-                transition: none !important; /* Remove all transitions */
+            .header .mobile-menu-container .mobile-menu-wrapper {
+                width: 90% !important;
+                max-width: 320px !important;
+                max-height: 80vh !important;
+                background-color: var(--light-neutral, #f8f9fa) !important;
+                overflow-y: auto !important;
+                padding: 20px !important;
+                position: relative !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+                transform: none !important;
+                transition: none !important;
+                left: auto !important;
+                right: auto !important;
+                margin: 0 auto !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                border: 2px solid green !important; /* Debug: Confirm styles applied */
             }
-            .mobile-menu-container.visible .mobile-menu-wrapper {
-                transform: none !important; /* Ensure no transform on open */
+            .header .mobile-menu-container.visible .mobile-menu-wrapper {
+                transform: none !important;
+                transition: none !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
             .mobile-menu-close {
                 position: absolute;
@@ -376,6 +393,12 @@
                     e.preventDefault();
                     const isVisible = mobileMenuContainer.classList.contains('visible');
                     if (!isVisible) {
+                        // Reset any inline styles or classes that might cause sliding
+                        mobileMenuContainer.style.transform = 'none';
+                        mobileMenuContainer.style.left = 'auto';
+                        mobileMenuContainer.style.right = 'auto';
+                        mobileMenuContainer.style.transition = 'none';
+                        mobileMenuContainer.classList.remove('mobile-menu-active'); // Remove any external classes
                         mobileMenuContainer.classList.add('visible');
                         document.body.classList.add('menu-open');
                     } else {
@@ -388,6 +411,10 @@
                 mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
+                    mobileMenuContainer.style.transform = 'none';
+                    mobileMenuContainer.style.left = 'auto';
+                    mobileMenuContainer.style.right = 'auto';
+                    mobileMenuContainer.style.transition = 'none';
                     document.body.classList.remove('menu-open');
                 });
             }
@@ -395,6 +422,10 @@
                 mobileMenuContainer.addEventListener('click', function(e) {
                     if (e.target === mobileMenuContainer) {
                         mobileMenuContainer.classList.remove('visible');
+                        mobileMenuContainer.style.transform = 'none';
+                        mobileMenuContainer.style.left = 'auto';
+                        mobileMenuContainer.style.right = 'auto';
+                        mobileMenuContainer.style.transition = 'none';
                         document.body.classList.remove('menu-open');
                     }
                 });
@@ -455,6 +486,23 @@
                 }
                 lastTouchEnd = now;
             }, false);
+            // Override any external scripts adding sliding classes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (mobileMenuContainer.classList.contains('mobile-menu-active')) {
+                            mobileMenuContainer.classList.remove('mobile-menu-active');
+                            mobileMenuContainer.style.transform = 'none';
+                            mobileMenuContainer.style.left = 'auto';
+                            mobileMenuContainer.style.right = 'auto';
+                            mobileMenuContainer.style.transition = 'none';
+                        }
+                    }
+                });
+            });
+            if (mobileMenuContainer) {
+                observer.observe(mobileMenuContainer, { attributes: true });
+            }
         });
     </script>
 </head>
@@ -933,7 +981,7 @@
                                 $image_url = !empty($product['photo']) 
                                     ? htmlspecialchars($product['photo']) 
                                     : $default_image;
-                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2>
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="product.php?product='.htmlspecialchars($product['slug']).'">
