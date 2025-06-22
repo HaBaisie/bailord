@@ -187,145 +187,113 @@
             .heading-right {
                 display: none !important;
             }
-            /* Bailord Mobile Navigation Dropdown Styles */
-            .header .bailord-mobile-nav-overlay {
+            /* Mobile Navigation Dropdown Styles */
+            .mobile-menu-container {
                 position: fixed !important;
-                top: 0 !important;
-                left: auto !important;
-                right: auto !important;
-                width: 100% !important;
-                height: 100vh !important;
-                background-color: rgba(0, 0, 0, 0.7) !important;
-                z-index: 10000 !important;
-                display: none !important;
-                justify-content: center !important;
-                align-items: center !important;
-                transform: none !important;
-                transition: opacity 0.3s ease !important;
-                visibility: hidden !important;
-                opacity: 0 !important;
-                border: 2px solid red !important; /* Debug: Confirm styles applied */
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 1000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                visibility: hidden;
             }
-            .header .bailord-mobile-nav-overlay.active {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                transform: none !important;
-                transition: opacity 0.3s ease !important;
+            .mobile-menu-container.visible {
+                opacity: 1;
+                visibility: visible;
             }
-            .header .bailord-mobile-nav-overlay .bailord-mobile-nav-content {
-                width: 90% !important;
-                max-width: 320px !important;
-                max-height: 80vh !important;
-                background-color: var(--light-neutral, #f8f9fa) !important;
-                overflow-y: auto !important;
-                padding: 20px !important;
-                position: relative !important;
-                border-radius: 8px !important;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-                transform: none !important;
-                transition: none !important;
-                left: auto !important;
-                right: auto !important;
-                margin: 0 auto !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                border: 2px solid green !important; /* Debug: Confirm styles applied */
+            .mobile-menu-wrapper {
+                width: 90%;
+                max-width: 320px;
+                max-height: 80vh;
+                background-color: var(--light-neutral, #f8f9fa);
+                overflow-y: auto;
+                padding: 20px;
+                position: relative;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                transform: scale(0.8);
+                transition: transform 0.3s ease-in-out;
             }
-            .header .bailord-mobile-nav-overlay.active .bailord-mobile-nav-content {
-                transform: none !important;
-                transition: none !important;
-                visibility: visible !important;
-                opacity: 1 !important;
+            .mobile-menu-container.visible .mobile-menu-wrapper {
+                transform: scale(1);
             }
-            .bailord-mobile-nav-close {
-                position: absolute !important;
-                top: 15px !important;
-                right: 15px !important;
-                cursor: pointer !important;
-                font-size: 20px !important;
+            .mobile-menu-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                cursor: pointer;
+                font-size: 20px;
+                color: var(--text-dark, #212529);
+                z-index: 1001;
+                background: none;
+                border: none;
+                padding: 5px;
+            }
+            .mobile-nav .mobile-menu {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .mobile-nav .mobile-menu > li {
+                position: relative;
+                border-bottom: 1px solid var(--medium-neutral, #e9ecef);
+            }
+            .mobile-nav .mobile-menu > li > a {
+                display: block;
+                padding: 15px 10px;
                 color: var(--text-dark, #212529) !important;
-                z-index: 10001 !important;
-                background: none !important;
-                border: none !important;
-                padding: 5px !important;
+                font-size: 16px;
+                font-weight: 500;
+                text-decoration: none;
+                position: relative;
             }
-            .bailord-mobile-nav .bailord-mobile-menu {
-                list-style: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .bailord-mobile-nav .bailord-mobile-menu > li {
-                position: relative !important;
-                border-bottom: 1px solid var(--medium-neutral, #e9ecef) !important;
-            }
-            .bailord-mobile-nav .bailord-mobile-menu > li > a {
-                display: block !important;
-                padding: 15px 10px !important;
-                color: var(--text-dark, #212529) !important;
-                font-size: 16px !important;
-                font-weight: 500 !important;
-                text-decoration: none !important;
-                position: relative !important;
-            }
-            .bailord-mobile-nav .bailord-mobile-menu > li > a:hover,
-            .bailord-mobile-nav .bailord-mobile-menu > li.active > a {
+            .mobile-nav .mobile-menu > li > a:hover,
+            .mobile-nav .mobile-menu > li.active > a {
                 color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef) !important;
+                background-color: var(--medium-neutral, #e9ecef);
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li > ul {
-                display: none !important;
-                list-style: none !important;
-                padding: 0 0 0 20px !important;
-                margin: 0 !important;
-                background-color: var(--light-neutral, #f8f9fa) !important;
+            .mobile-nav .mobile-menu > li > ul {
+                display: none;
+                list-style: none;
+                padding: 0 0 0 20px;
+                margin: 0;
+                background-color: var(--light-neutral, #f8f9fa);
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li.active > ul {
-                display: block !important;
+            .mobile-nav .mobile-menu > li.active > ul {
+                display: block;
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li > ul > li > a {
-                display: block !important;
-                padding: 10px 15px !important;
+            .mobile-nav .mobile-menu > li > ul > li > a {
+                display: block;
+                padding: 10px 15px;
                 color: var(--text-dark, #212529) !important;
-                font-size: 14px !important;
-                text-decoration: none !important;
+                font-size: 14px;
+                text-decoration: none;
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li > ul > li > a:hover {
+            .mobile-nav .mobile-menu > li > ul > li > a:hover {
                 color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef) !important;
+                background-color: var(--medium-neutral, #e9ecef);
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li.has-submenu > a::after {
-                content: '\f107' !important;
-                font-family: 'FontAwesome' !important;
-                position: absolute !important;
-                right: 15px !important;
-                top: 50% !important;
-                transform: translateY(-50%) !important;
-                font-size: 14px !important;
-                color: var(--text-dark, #212529) !important;
+            .mobile-nav .mobile-menu > li.has-submenu > a::after {
+                content: '\f107';
+                font-family: 'FontAwesome';
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                color: var(--text-dark, #212529);
             }
-            .bailord-mobile-nav .bailord-mobile-menu > li.active > a::after {
-                content: '\f106' !important;
+            .mobile-nav .mobile-menu > li.active > a::after {
+                content: '\f106';
             }
             .main-nav {
                 display: none !important;
-            }
-            /* Override any potential external styles */
-            .header .bailord-mobile-nav-overlay,
-            .header .bailord-mobile-nav-overlay * {
-                animation: none !important;
-                transform: none !important;
-                transition: none !important;
-                left: auto !important;
-                right: auto !important;
-            }
-            /* Remove conflicting mobile-menu-container styles */
-            .mobile-menu-container,
-            .mobile-menu-container.visible,
-            .mobile-menu-wrapper {
-                display: none !important;
-                transform: none !important;
-                transition: none !important;
             }
         }
         @media (min-width: 768px) and (max-width: 991px) {
@@ -338,8 +306,7 @@
             .cat-block-title {
                 font-size: 13px;
             }
-            .mobile-menu-container,
-            .bailord-mobile-nav-overlay {
+            .mobile-menu-container {
                 display: none !important;
             }
         }
@@ -403,68 +370,45 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-            const mobileNavOverlay = document.querySelector('.bailord-mobile-nav-overlay');
-            const mobileNavClose = document.querySelector('.bailord-mobile-nav-close');
-            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-            const mobileSearchForm = document.querySelector('.bailord-mobile-search');
-
-            if (mobileMenuToggle && mobileNavOverlay) {
+            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            if (mobileMenuToggle && mobileMenuContainer) {
                 mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const isActive = mobileNavOverlay.classList.contains('active');
-                    if (!isActive) {
-                        mobileNavOverlay.style.transform = 'none';
-                        mobileNavOverlay.style.left = 'auto';
-                        mobileNavOverlay.style.right = 'auto';
-                        mobileNavOverlay.style.transition = 'opacity 0.3s ease';
-                        mobileNavOverlay.style.animation = 'none';
-                        mobileNavOverlay.classList.remove('mobile-menu-active', 'show', 'open', 'visible');
-                        mobileNavOverlay.classList.add('active');
-                        document.body.classList.add('menu-open');
-                    } else {
-                        mobileNavOverlay.classList.remove('active');
-                        document.body.classList.remove('menu-open');
-                    }
+                    mobileMenuContainer.classList.toggle('visible');
+                    document.body.classList.toggle('menu-open');
                 });
             }
-            if (mobileNavClose && mobileNavOverlay) {
-                mobileNavClose.addEventListener('click', function(e) {
+            if (mobileMenuClose && mobileMenuContainer) {
+                mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileNavOverlay.classList.remove('active');
-                    mobileNavOverlay.style.transform = 'none';
-                    mobileNavOverlay.style.left = 'auto';
-                    mobileNavOverlay.style.right = 'auto';
-                    mobileNavOverlay.style.transition = 'opacity 0.3s ease';
-                    mobileNavOverlay.style.animation = 'none';
+                    mobileMenuContainer.classList.remove('visible');
                     document.body.classList.remove('menu-open');
                 });
             }
-            if (mobileNavOverlay) {
-                mobileNavOverlay.addEventListener('click', function(e) {
-                    if (e.target === mobileNavOverlay) {
-                        mobileNavOverlay.classList.remove('active');
-                        mobileNavOverlay.style.transform = 'none';
-                        mobileNavOverlay.style.left = 'auto';
-                        mobileNavOverlay.style.right = 'auto';
-                        mobileNavOverlay.style.transition = 'opacity 0.3s ease';
-                        mobileNavOverlay.style.animation = 'none';
-                        document.body.classList.remove('menu-open');
-                    }
-                });
-            }
+            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+            const mobileSearchForm = document.querySelector('.mobile-search');
             if (mobileSearchToggle && mobileSearchForm) {
                 mobileSearchToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileSearchForm.classList.toggle('visible');
                 });
             }
-            const mobileMenuItems = document.querySelectorAll('.bailord-mobile-nav .bailord-mobile-menu > li.has-submenu > a');
+            if (mobileMenuContainer) {
+                mobileMenuContainer.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuContainer) {
+                        mobileMenuContainer.classList.remove('visible');
+                        document.body.classList.remove('menu-open');
+                    }
+                });
+            }
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
             mobileMenuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     const parentLi = this.parentElement;
                     const isActive = parentLi.classList.contains('active');
-                    document.querySelectorAll('.bailord-mobile-nav .bailord-mobile-menu > li.has-submenu').forEach(li => {
+                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
                         if (li !== parentLi) {
                             li.classList.remove('active');
                         }
@@ -514,27 +458,6 @@
                 }
                 lastTouchEnd = now;
             }, false);
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes') {
-                        if (mutation.attributeName === 'class') {
-                            mobileNavOverlay.classList.remove('mobile-menu-active', 'show', 'open', 'visible');
-                            if (!mobileNavOverlay.classList.contains('active')) {
-                                mobileNavOverlay.classList.remove('active');
-                            }
-                        } else if (mutation.attributeName === 'style') {
-                            mobileNavOverlay.style.transform = 'none';
-                            mobileNavOverlay.style.left = 'auto';
-                            mobileNavOverlay.style.right = 'auto';
-                            mobileNavOverlay.style.transition = 'opacity 0.3s ease';
-                            mobileNavOverlay.style.animation = 'none';
-                        }
-                    }
-                });
-            });
-            if (mobileNavOverlay) {
-                observer.observe(mobileNavOverlay, { attributes: true });
-            }
         });
     </script>
 </head>
@@ -634,16 +557,16 @@
                     </nav>
                 </div>
             </div>
-            <div class="bailord-mobile-nav-overlay">
-                <div class="bailord-mobile-nav-content">
-                    <button class="bailord-mobile-nav-close"><i class="icon-close"></i></button>
-                    <form action="#" method="get" class="bailord-mobile-search">
-                        <label for="bailord-mobile-search" class="sr-only">Search</label>
-                        <input type="search" class="form-control" name="bailord-mobile-search" id="bailord-mobile-search" placeholder="Search..." required>
+            <div class="mobile-menu-container">
+                <div class="mobile-menu-wrapper">
+                    <button class="mobile-menu-close"><i class="icon-close"></i></button>
+                    <form action="#" method="get" class="mobile-search">
+                        <label for="mobile-search" class="sr-only">Search</label>
+                        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
-                    <nav class="bailord-mobile-nav">
-                        <ul class="bailord-mobile-menu">
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
@@ -1076,4 +999,4 @@
         </main>
     </div>
 </body>
-</html>
+</html>"
