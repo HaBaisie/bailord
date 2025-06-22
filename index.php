@@ -199,6 +199,8 @@
                 display: none;
                 justify-content: center;
                 align-items: center;
+                transform: none !important; /* Override any sliding transform */
+                transition: none !important; /* Remove all transitions */
             }
             .mobile-menu-container.visible {
                 display: flex;
@@ -213,11 +215,11 @@
                 position: relative;
                 border-radius: 8px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                transform: scale(0.8);
-                transition: transform 0.3s ease-in-out;
+                transform: none !important; /* Remove scale or slide effects */
+                transition: none !important; /* Remove all transitions */
             }
             .mobile-menu-container.visible .mobile-menu-wrapper {
-                transform: scale(1);
+                transform: none !important; /* Ensure no transform on open */
             }
             .mobile-menu-close {
                 position: absolute;
@@ -375,11 +377,7 @@
                     const isVisible = mobileMenuContainer.classList.contains('visible');
                     if (!isVisible) {
                         mobileMenuContainer.classList.add('visible');
-                        // Force reflow to ensure immediate rendering
-                        mobileMenuContainer.offsetHeight;
-                        setTimeout(() => {
-                            document.body.classList.add('menu-open');
-                        }, 10);
+                        document.body.classList.add('menu-open');
                     } else {
                         mobileMenuContainer.classList.remove('visible');
                         document.body.classList.remove('menu-open');
@@ -391,14 +389,6 @@
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
                     document.body.classList.remove('menu-open');
-                });
-            }
-            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-            const mobileSearchForm = document.querySelector('.mobile-search');
-            if (mobileSearchToggle && mobileSearchForm) {
-                mobileSearchToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    mobileSearchForm.classList.toggle('visible');
                 });
             }
             if (mobileMenuContainer) {
