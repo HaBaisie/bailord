@@ -23,6 +23,7 @@
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
@@ -197,6 +198,9 @@
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
                     document.body.classList.remove('menu-open');
+                    document.querySelectorAll('.mobile-menu > li.has-submenu').forEach(item => {
+                        item.classList.remove('active');
+                    });
                 });
             }
             const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
@@ -212,9 +216,26 @@
                     if (e.target === mobileMenuContainer) {
                         mobileMenuContainer.classList.remove('visible');
                         document.body.classList.remove('menu-open');
+                        document.querySelectorAll('.mobile-menu > li.has-submenu').forEach(item => {
+                            item.classList.remove('active');
+                        });
                     }
                 });
             }
+            const mobileMenuItems = document.querySelectorAll('.mobile-menu > li.has-submenu > a');
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    const isActive = parentLi.classList.contains('active');
+                    document.querySelectorAll('.mobile-menu > li.has-submenu').forEach(li => {
+                        li.classList.remove('active');
+                    });
+                    if (!isActive) {
+                        parentLi.classList.add('active');
+                    }
+                });
+            });
             const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
             if (categoryToggle) {
                 categoryToggle.addEventListener('click', function(e) {
@@ -371,14 +392,36 @@
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
-                            <li><a href="#">Browse Categories</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="faq.html">FAQs</a></li>
-                            <li><a href="404.html">Error 404</a></li>
-                            <li><a href="coming-soon.html">Coming Soon</a></li>
-                            <li><a href="blog.html">Blog</a></li>
+                            <li class="has-submenu">
+                                <a href="#">Browse Categories</a>
+                                <ul>
+                                    <?php
+                                    try {
+                                        $stmt = $conn->prepare("SELECT * FROM category");
+                                        $stmt->execute();
+                                        $categories = $stmt->fetchAll();
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                        }
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="faq.html">FAQs</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                                    <li><a href="blog.html">Blog</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -588,7 +631,7 @@
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
                                 <a href="category.php">
-                                    <img src="assets/images/Banner.jpg" alt="Banner">
+                                    <img src="images/Banner.jpg" alt="Banner">
                                 </a>
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
