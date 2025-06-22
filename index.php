@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bailord</title>
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Bailord eCommerce Template">
@@ -33,10 +33,10 @@
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
     <!-- New Slider CSS File -->
-    <link rel="stylesheet" href="assets/css/slider.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href="assets/css/styles.css" as="style">
     <link rel="preload" href="assets/js/jquery.min.js" as="script">
     <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
@@ -64,11 +64,6 @@
             color: var(--text-dark);
             font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-        }
-        body.menu-open {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
         }
         .page-wrapper {
             position: relative;
@@ -127,152 +122,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-        @media (max-width: 767px) {
-            .header-top {
-                padding: 5px 0;
-            }
-            .header-contact, .top-menu li a {
-                font-size: 12px;
-                padding: 5px;
-            }
-            .logo img {
-                width: 80px;
-                height: auto;
-            }
-            .cat-blocks-container .col-6 {
-                padding: 5px;
-            }
-            .cat-block-title {
-                font-size: 12px;
-            }
-            .product {
-                margin-bottom: 10px;
-            }
-            .product-media img {
-                max-width: 100%;
-            }
-            .product-title {
-                font-size: 13px;
-                line-height: 1.3;
-            }
-            .product-price {
-                font-size: 14px;
-            }
-            .ratings-container {
-                font-size: 12px;
-            }
-            .btn {
-                padding: 7px 12px;
-                font-size: 13px;
-            }
-            .deal {
-                min-height: 180px;
-            }
-            .deal-content {
-                padding: 8px;
-            }
-            .deal h2 {
-                font-size: 14px;
-            }
-            .deal h3 {
-                font-size: 12px;
-            }
-            .footer .col-sm-6 {
-                margin-bottom: 15px;
-            }
-            .header-right.d-none.d-lg-block,
-            .heading-right {
-                display: none !important;
-            }
-            /* Mobile Navigation Styles */
-            .mobile-menu-container {
-                position: fixed !important;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.7);
-                z-index: 1000;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-                visibility: hidden;
-            }
-            .mobile-menu-container.visible {
-                opacity: 1;
-                visibility: visible;
-            }
-            .mobile-menu-wrapper {
-                width: 90%;
-                max-width: 320px;
-                max-height: 80vh;
-                background-color: var(--light-neutral, #f8f9fa);
-                overflow-y: auto;
-                padding: 20px;
-                position: relative;
-                border-radius: 8px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                transform: scale(0.8);
-                transition: transform 0.3s ease-in-out;
-            }
-            .mobile-menu-container.visible .mobile-menu-wrapper {
-                transform: scale(1);
-            }
-            .mobile-menu-close {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                cursor: pointer;
-                font-size: 20px;
-                color: var(--text-dark, #212529);
-                z-index: 1001;
-                background: none;
-                border: none;
-                padding: 5px;
-            }
-            .mobile-nav .mobile-menu {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .mobile-nav .mobile-menu > li {
-                position: relative;
-                border-bottom: 1px solid var(--medium-neutral, #e9ecef);
-            }
-            .mobile-nav .mobile-menu > li > a {
-                display: block;
-                padding: 15px 10px;
-                color: var(--text-dark, #212529) !important;
-                font-size: 16px;
-                font-weight: 500;
-                text-decoration: none;
-                position: relative;
-            }
-            .mobile-nav .mobile-menu > li > a:hover,
-            .mobile-nav .mobile-menu > li.active > a {
-                color: var(--accent-color, #fd7e14) !important;
-                background-color: var(--medium-neutral, #e9ecef);
-            }
-            .main-nav {
-                display: none !important;
-            }
-        }
-        @media (min-width: 768px) and (max-width: 991px) {
-            .product {
-                margin-bottom: 15px;
-            }
-            .product-media img {
-                max-height: 150px;
-            }
-            .cat-block-title {
-                font-size: 13px;
-            }
-            .mobile-menu-container {
-                display: none !important;
-            }
         }
         .btn, .dropdown-toggle, .mobile-menu-toggler, 
         .mobile-search-toggle, .product-media a {
@@ -372,7 +221,7 @@
                     if (window.innerWidth < 992) {
                         e.preventDefault();
                         const menu = this.nextElementSibling;
-                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
                     }
                 });
             }
@@ -385,7 +234,9 @@
                         if (menu && menu.classList.contains('dropdown-menu')) {
                             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
                             document.querySelectorAll('.dropdown-menu').forEach(m => {
-                                if (m !== menu) m.style.display = 'none';
+                                if (m !== menu) {
+                                    m.style.display = 'none';
+                                }
                             });
                         }
                     }
@@ -737,7 +588,7 @@
                         <div class="col-xl-5col d-none d-xl-block">
                             <div class="banner banner-overlay banner-overlay-light">
                                 <a href="category.php">
-                                    <img src="images/Banner.jpg" alt="Banner">
+                                    <img src="assets/images/Banner.jpg" alt="Banner">
                                 </a>
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
@@ -888,7 +739,7 @@
                             <div class="row no-gutters bg-white newsletter-popup-content">
                                 <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
                                     <div class="banner-content text-center">
-                                        <img src="images/logoh.png" class="logo" alt="logo" width="60" height="15">
+                                        <img src="assets/images/logoh.png" class="logo" alt="logo" width="60" height="15">
                                         <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
                                         <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
                                         <form action="#">
@@ -906,7 +757,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-2-5col col-lg-5">
-                                    <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                    <img src="assets/images/img-1.jpg" class="newsletter-img" alt="newsletter">
                                 </div>
                             </div>
                         </div>
@@ -924,7 +775,7 @@
                 <script src="assets/js/jquery.countdown.min.js"></script>
                 <script src="assets/js/main.js"></script>
                 <script src="assets/js/demos/demo-4.js"></script>
-        </main>
-    </div>
-</body>
+            </main>
+        </div>
+    </body>
 </html>
