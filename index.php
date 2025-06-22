@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x16" href="assets/images/icons/favicon-32x32.png">
-    <link rel="apple-touch-icon" href="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
     <link rel="manifest" href="assets/images/icons/site.webmanifest">
     <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
@@ -23,6 +23,8 @@
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Include FontAwesome for mobile menu dropdown indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
@@ -57,18 +59,18 @@
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
         html {
-            overflow-y: scroll; /* Prevent content shift due to scrollbar */
+            overflow-y: scroll;
         }
         body {
             background-color: var(--light-neutral);
             color: var(--text-dark);
             font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0; /* Ensure no default margins */
+            margin: 0;
         }
         body.menu-open {
             overflow: hidden;
-            position: fixed; /* Lock body in place */
-            width: 100%; /* Maintain full width */
+            position: fixed;
+            width: 100%;
         }
         .page-wrapper {
             position: relative;
@@ -162,40 +164,6 @@
             .ratings-container {
                 font-size: 12px;
             }
-            .mobile-menu-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-                z-index: 1000;
-                display: flex;
-                justify-content: center; /* Center the menu horizontally */
-                align-items: flex-start; /* Align to top */
-                transform: translateX(-100%); /* Start off-screen */
-                transition: transform 0.3s ease-in-out;
-            }
-            .mobile-menu-container.visible {
-                transform: translateX(0); /* Slide in when visible */
-            }
-            .mobile-menu-wrapper {
-                width: 100%; /* Full width of the screen */
-                max-width: 100%; /* Remove max-width restriction */
-                height: 100%; /* Full height */
-                background-color: var(--light-neutral);
-                overflow-y: auto;
-                padding: 15px;
-                position: relative;
-                transform: none; /* No transform needed for wrapper */
-            }
-            .mobile-menu-close {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                cursor: pointer;
-                z-index: 1001; /* Ensure close button is above content */
-            }
             .btn {
                 padding: 7px 12px;
                 font-size: 13px;
@@ -219,6 +187,110 @@
             .heading-right {
                 display: none !important;
             }
+            /* Mobile Navigation Dropdown Styles */
+            .mobile-menu-container {
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 1000;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                visibility: hidden;
+            }
+            .mobile-menu-container.visible {
+                transform: translateX(0);
+                visibility: visible;
+            }
+            .mobile-menu-wrapper {
+                width: 80%;
+                max-width: 300px;
+                height: 100%;
+                background-color: var(--light-neutral, #f8f9fa);
+                overflow-y: auto;
+                padding: 20px;
+                position: relative;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            }
+            .mobile-menu-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                cursor: pointer;
+                font-size: 20px;
+                color: var(--text-dark, #212529);
+                z-index: 1001;
+                background: none;
+                border: none;
+                padding: 5px;
+            }
+            .mobile-nav .mobile-menu {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .mobile-nav .mobile-menu > li {
+                position: relative;
+                border-bottom: 1px solid var(--medium-neutral, #e9ecef);
+            }
+            .mobile-nav .mobile-menu > li > a {
+                display: block;
+                padding: 15px 10px;
+                color: var(--text-dark, #212529) !important;
+                font-size: 16px;
+                font-weight: 500;
+                text-decoration: none;
+                position: relative;
+            }
+            .mobile-nav .mobile-menu > li > a:hover,
+            .mobile-nav .mobile-menu > li.active > a {
+                color: var(--accent-color, #fd7e14) !important;
+                background-color: var(--medium-neutral, #e9ecef);
+            }
+            .mobile-nav .mobile-menu > li > ul {
+                display: none;
+                list-style: none;
+                padding: 0 0 0 20px;
+                margin: 0;
+                background-color: var(--light-neutral, #f8f9fa);
+            }
+            .mobile-nav .mobile-menu > li.active > ul {
+                display: block;
+            }
+            .mobile-nav .mobile-menu > li > ul > li > a {
+                display: block;
+                padding: 10px 15px;
+                color: var(--text-dark, #212529) !important;
+                font-size: 14px;
+                text-decoration: none;
+            }
+            .mobile-nav .mobile-menu > li > ul > li > a:hover {
+                color
+
+: var(--accent-color, #fd7e14) !important;
+                background-color: var(--medium-neutral, #e9ecef);
+            }
+            .mobile-nav .mobile-menu > li.has-submenu > a::after {
+                content: '\f107';
+                font-family: 'FontAwesome';
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                color: var(--text-dark, #212529);
+            }
+            .mobile-nav .mobile-menu > li.active > a::after {
+                content: '\f106';
+            }
+            .main-nav {
+                display: none !important;
+            }
         }
         @media (min-width: 768px) and (max-width: 991px) {
             .product {
@@ -229,6 +301,9 @@
             }
             .cat-block-title {
                 font-size: 13px;
+            }
+            .mobile-menu-container {
+                display: none !important;
             }
         }
         .btn, .dropdown-toggle, .mobile-menu-toggler, 
@@ -287,31 +362,6 @@
             background-color: var(--complementary-blue);
             color: white;
         }
-        .mobile-menu li {
-            position: relative;
-        }
-        .mobile-menu li ul {
-            display: none;
-            position: static;
-            width: 100%;
-            padding-left: 20px;
-            background-color: var(--medium-neutral);
-        }
-        .mobile-menu li.active > ul {
-            display: block;
-        }
-        .mobile-menu-container .mobile-menu li a {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li a:hover {
-            color: var(--accent-color);
-        }
-        .mobile-menu-container .mobile-menu li ul li a {
-            color: var(--text-dark);
-        }
-        .mobile-menu-container .mobile-menu li ul li a:hover {
-            color: var(--accent-color);
-        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -348,23 +398,19 @@
                     }
                 });
             }
-            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
             mobileMenuItems.forEach(item => {
-                if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const parentLi = this.parentElement;
-                        const subMenu = this.nextElementSibling;
-                        parentLi.classList.toggle('active');
-                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
-                        mobileMenuItems.forEach(otherItem => {
-                            if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
-                                otherItem.parentElement.classList.remove('active');
-                                otherItem.nextElementSibling.style.display = 'none';
-                            }
-                        });
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    const isActive = parentLi.classList.contains('active');
+                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
+                        if (li !== parentLi) {
+                            li.classList.remove('active');
+                        }
                     });
-                }
+                    parentLi.classList.toggle('active');
+                });
             });
             const categoryToggle = document.querySelector('.category-dropdown .dropdown-toggle');
             if (categoryToggle) {
@@ -509,7 +555,7 @@
             </div>
             <div class="mobile-menu-container">
                 <div class="mobile-menu-wrapper">
-                    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+                    <button class="mobile-menu-close"><i class="icon-close"></i></button>
                     <form action="#" method="get" class="mobile-search">
                         <label for="mobile-search" class="sr-only">Search</label>
                         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
@@ -520,7 +566,7 @@
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
                             <li><a href="profile.php">Orders</a></li>
-                            <li>
+                            <li class="has-submenu">
                                 <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
@@ -538,7 +584,7 @@
                                     ?>
                                 </ul>
                             </li>
-                            <li>
+                            <li class="has-submenu">
                                 <a href="#">Pages</a>
                                 <ul>
                                     <li><a href="about.html">About</a></li>
