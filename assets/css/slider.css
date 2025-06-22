@@ -64,14 +64,14 @@
 
 @media (min-width: 992px) {
     .intro-slider-container {
-        height: 300px; /* Increased height for desktop */
+        height: 250px; /* Increased height for desktop */
     }
     .intro-slide {
-        height: 300px; /* Increased height for desktop */
+        height: 250px; /* Increased height for desktop */
     }
     .intro-slide img {
-        width: 800px; /* Increased width for better display on desktop */
-        height: 300px; /* Increased height to match */
+        width: 700px; /* Increased width for better display on desktop */
+        height: 250px; /* Increased height to match */
         object-fit: cover; /* Use cover to ensure no stretching, maintaining clarity */
         filter: brightness(1.1); /* Increase brightness for better visibility */
         image-rendering: -webkit-optimize-contrast; /* Enhance sharpness */
