@@ -25,13 +25,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" as="style">
     <link rel="preload" href="assets/css/style.css" as="style">
     <style>
         :root {
@@ -191,13 +191,20 @@
         }
     </style>
     <script>
+        // CDN fallbacks for critical scripts
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
         document.addEventListener('DOMContentLoaded', () => {
             // Check for jQuery and Owl Carousel
-            if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
-                console.error('jQuery or Owl Carousel not loaded. Product carousels may not function.');
+            if (typeof jQuery === 'undefined') {
+                console.error('jQuery not loaded. Critical functionality may be affected.');
+            }
+            if (typeof jQuery.fn.owlCarousel === 'undefined') {
+                console.error('Owl Carousel not loaded. Sliders and carousels will not function.');
                 document.querySelectorAll('.owl-carousel').forEach(carousel => {
                     carousel.innerHTML = '<p class="error-message">Carousel failed to load. Please try again later.</p>';
                 });
+            } else {
+                console.log('Owl Carousel loaded successfully.');
             }
             // Mobile Menu
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
@@ -253,15 +260,17 @@
                     currentPromo = (currentPromo + 1) % promos.length;
                     renderPromo();
                 }, 5000);
+            } else {
+                console.error('Promo banners container not found.');
             }
             // Cart Update
             const cartCount = document.querySelector('.cart-count');
             const cartTotal = document.querySelector('.cart-total-price');
             const updateCart = () => {
                 const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                cartCount.textContent = cart.length;
+                if (cartCount) cartCount.textContent = cart.length;
                 const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
-                cartTotal.textContent = `₦${total.toFixed(2)}`;
+                if (cartTotal) cartTotal.textContent = `₦${total.toFixed(2)}`;
             };
             updateCart();
             document.querySelectorAll('.btn-cart').forEach(btn => {
@@ -377,9 +386,9 @@
                                 <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
-                                    $pdo = new Database();
-                                    $conn = $pdo->open();
                                     try {
+                                        $pdo = new Database();
+                                        $conn = $pdo->open();
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         $categories = $stmt->fetchAll();
@@ -388,7 +397,7 @@
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                                echo '<li><a href="category.php?category='.htmlspecialchars($slug).'">'.htmlspecialchars($category['name']).'</a></li>';
                                             }
                                         }
                                     } catch (PDOException $e) {
@@ -427,7 +436,7 @@
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                                echo '<li><a href="category.php?category='.htmlspecialchars($slug).'">'.htmlspecialchars($category['name']).'</a></li>';
                                             }
                                         }
                                     } catch (PDOException $e) {
@@ -442,6 +451,24 @@
             </div>
         </header>
         <main class="main">
+            <div class="container">
+                <h2 class="title text-center mb-4">Debug Information</h2>
+                <div class="row">
+                    <div class="col-12">
+                        <?php
+                        try {
+                            $pdo = new Database();
+                            $conn = $pdo->open();
+                            $stmt = $conn->prepare("SELECT 1");
+                            $stmt->execute();
+                            echo '<p class="text-success">Database connection successful.</p>';
+                        } catch (PDOException $e) {
+                            echo '<p class="error-message">Database connection failed: '.htmlspecialchars($e->getMessage()).'</p>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
             <div class="intro-slider-container mb-5">
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{
                     "dots": true,
@@ -577,10 +604,9 @@
                     </div>
                 </div>
             </div>
-            <!-- Retain the rest of your original main content -->
         </main>
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/owl.carousel.min.js"></script>
         <script src="assets/js/main.js"></script>
     </div>
