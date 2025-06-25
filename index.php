@@ -1,4 +1,9 @@
-<?php include 'includes/session.php'; ?>
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+include 'includes/session.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,6 +161,12 @@
             padding: 20px;
             font-size: 16px;
         }
+        .debug-message {
+            text-align: center;
+            color: #007bff;
+            padding: 10px;
+            font-size: 14px;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -191,12 +202,12 @@
         }
     </style>
     <script>
-        // CDN fallbacks for critical scripts
-        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
         document.addEventListener('DOMContentLoaded', () => {
             // Check for jQuery and Owl Carousel
             if (typeof jQuery === 'undefined') {
                 console.error('jQuery not loaded. Critical functionality may be affected.');
+            } else {
+                console.log('jQuery loaded successfully.');
             }
             if (typeof jQuery.fn.owlCarousel === 'undefined') {
                 console.error('Owl Carousel not loaded. Sliders and carousels will not function.');
@@ -205,6 +216,9 @@
                 });
             } else {
                 console.log('Owl Carousel loaded successfully.');
+                // Initialize carousels
+                jQuery('.intro-slider').owlCarousel();
+                jQuery('.owl-carousel').owlCarousel();
             }
             // Mobile Menu
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
@@ -394,6 +408,7 @@
                                         $categories = $stmt->fetchAll();
                                         if (empty($categories)) {
                                             echo '<li><a href="#">No categories available</a></li>';
+                                            echo '<li class="debug-message">Debug: Category table is empty</li>';
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
@@ -433,6 +448,7 @@
                                         $categories = $stmt->fetchAll();
                                         if (empty($categories)) {
                                             echo '<li><a href="#">No categories available</a></li>';
+                                            echo '<li class="debug-message">Debug: Category table is empty</li>';
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
@@ -462,6 +478,16 @@
                             $stmt = $conn->prepare("SELECT 1");
                             $stmt->execute();
                             echo '<p class="text-success">Database connection successful.</p>';
+                            // Check category table
+                            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM category");
+                            $stmt->execute();
+                            $categoryCount = $stmt->fetchColumn();
+                            echo '<p class="debug-message">Category table has '.$categoryCount.' rows.</p>';
+                            // Check products table
+                            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM products");
+                            $stmt->execute();
+                            $productCount = $stmt->fetchColumn();
+                            echo '<p class="debug-message">Products table has '.$productCount.' rows.</p>';
                         } catch (PDOException $e) {
                             echo '<p class="error-message">Database connection failed: '.htmlspecialchars($e->getMessage()).'</p>';
                         }
@@ -485,17 +511,9 @@
                     <div class="intro-slide">
                         <img data-src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
                     </div>
+                    <!-- Static fallback if JavaScript fails -->
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
-                    </div>
-                    <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
-                    </div>
-                    <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
-                    </div>
-                    <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                        <img src="https://via.placeholder.com/1200x400?text=Slider+Fallback" alt="Fallback Slide">
                     </div>
                 </div>
                 <span class="slider-loader"></span>
@@ -509,8 +527,9 @@
                             $categoryBlocks = render_category_blocks($conn);
                             if (empty($categoryBlocks)) {
                                 echo '<p class="error-message">No categories found. Please check the database.</p>';
+                                echo '<p class="debug-message">Debug: render_category_blocks returned empty output.</p>';
                             } else {
-                                echo htmlspecialchars($categoryBlocks);
+                                echo $categoryBlocks; // Avoid htmlspecialchars to allow HTML
                             }
                         } catch (Exception $e) {
                             echo '<p class="error-message">Error loading categories: '.htmlspecialchars($e->getMessage()).'</p>';
@@ -521,7 +540,21 @@
             </div>
             <div class="mb-4"></div>
             <div class="container">
-                <div class="row justify-content-center promo-banners"></div>
+                <div class="row justify-content-center promo-banners">
+                    <!-- Static fallback if JavaScript fails -->
+                    <div class="col-12">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="category.php?category=all">
+                                <img src="https://via.placeholder.com/1200x400?text=Promo+Fallback" alt="Promo Fallback">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="category.php?category=all">Fallback Offer</a></h4>
+                                <h3 class="banner-title"><a href="category.php?category=all">Shop Now</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
@@ -561,6 +594,7 @@
                                 $products = $stmt->fetchAll();
                                 if (empty($products)) {
                                     echo '<p class="error-message">No products found in the database.</p>';
+                                    echo '<p class="debug-message">Debug: Products table is empty.</p>';
                                 } else {
                                     $productGroups = array_chunk($products, 5);
                                     foreach ($productGroups as $group) {
@@ -600,6 +634,18 @@
                                 echo '<p class="error-message">Error fetching products: '.htmlspecialchars($e->getMessage()).'</p>';
                             }
                             ?>
+                            <!-- Static fallback if JavaScript fails -->
+                            <div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                <figure class="product-media">
+                                    <a href="category.php?category=all">
+                                        <img src="https://via.placeholder.com/200x200?text=Product+Fallback" alt="Fallback Product" class="product-image">
+                                    </a>
+                                </figure>
+                                <div class="product-body">
+                                    <h3 class="product-title"><a href="category.php?category=all">Fallback Product</a></h3>
+                                    <div class="product-price">₦0.00</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
