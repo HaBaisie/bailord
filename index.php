@@ -3,6 +3,26 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include 'includes/session.php';
+
+// Define render_category_blocks function
+function render_category_blocks($conn) {
+    try {
+        $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
+        $stmt->execute();
+        $categories = $stmt->fetchAll();
+        if (empty($categories)) {
+            return '<p class="error-message">No categories found in render_category_blocks.</p>';
+        }
+        $output = '';
+        foreach ($categories as $category) {
+            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+            $output .= '<div class="col-6 col-md-4"><a href="category.php?category='.htmlspecialchars($slug).'"><p>'.htmlspecialchars($category['name']).'</p></a></div>';
+        }
+        return $output;
+    } catch (PDOException $e) {
+        return '<p class="error-message">Error in render_category_blocks: '.htmlspecialchars($e->getMessage()).'</p>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -408,7 +428,7 @@ include 'includes/session.php';
                                         $categories = $stmt->fetchAll();
                                         if (empty($categories)) {
                                             echo '<li><a href="#">No categories available</a></li>';
-                                            echo '<li class="debug-message">Debug: Category table is empty</li>';
+                                            echo '<li class="debug-message">Debug: Category table is empty in nav</li>';
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
@@ -448,7 +468,7 @@ include 'includes/session.php';
                                         $categories = $stmt->fetchAll();
                                         if (empty($categories)) {
                                             echo '<li><a href="#">No categories available</a></li>';
-                                            echo '<li class="debug-message">Debug: Category table is empty</li>';
+                                            echo '<li class="debug-message">Debug: Category table is empty in mobile nav</li>';
                                         } else {
                                             foreach ($categories as $category) {
                                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
@@ -496,7 +516,7 @@ include 'includes/session.php';
                 </div>
             </div>
             <div class="intro-slider-container mb-5">
-                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{
+                <div class="intro-slider owl-carousel owl-theme owl-nav-light" data-toggle="owl" data-owl-options='{
                     "dots": true,
                     "nav": false,
                     "center": true,
@@ -511,7 +531,19 @@ include 'includes/session.php';
                     <div class="intro-slide">
                         <img data-src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
                     </div>
-                    <!-- Static fallback if JavaScript fails -->
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <!-- Static fallback -->
                     <div class="intro-slide">
                         <img src="https://via.placeholder.com/1200x400?text=Slider+Fallback" alt="Fallback Slide">
                     </div>
@@ -525,12 +557,7 @@ include 'includes/session.php';
                         <?php
                         try {
                             $categoryBlocks = render_category_blocks($conn);
-                            if (empty($categoryBlocks)) {
-                                echo '<p class="error-message">No categories found. Please check the database.</p>';
-                                echo '<p class="debug-message">Debug: render_category_blocks returned empty output.</p>';
-                            } else {
-                                echo $categoryBlocks; // Avoid htmlspecialchars to allow HTML
-                            }
+                            echo $categoryBlocks;
                         } catch (Exception $e) {
                             echo '<p class="error-message">Error loading categories: '.htmlspecialchars($e->getMessage()).'</p>';
                         }
@@ -541,7 +568,7 @@ include 'includes/session.php';
             <div class="mb-4"></div>
             <div class="container">
                 <div class="row justify-content-center promo-banners">
-                    <!-- Static fallback if JavaScript fails -->
+                    <!-- Static fallback -->
                     <div class="col-12">
                         <div class="banner banner-overlay banner-overlay-light">
                             <a href="category.php?category=all">
@@ -634,7 +661,7 @@ include 'includes/session.php';
                                 echo '<p class="error-message">Error fetching products: '.htmlspecialchars($e->getMessage()).'</p>';
                             }
                             ?>
-                            <!-- Static fallback if JavaScript fails -->
+                            <!-- Static fallback -->
                             <div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
                                 <figure class="product-media">
                                     <a href="category.php?category=all">
@@ -642,8 +669,8 @@ include 'includes/session.php';
                                     </a>
                                 </figure>
                                 <div class="product-body">
-                                    <h3 class="product-title"><a href="category.php?category=all">Fallback Product</a></h3>
-                                    <div class="product-price">₦0.00</div>
+                                    <h3 class="product-title"><a href="category.php?category=all">Product</a></h3>
+                                    <div class="product-amount">₦0.00</div>
                                 </div>
                             </div>
                         </div>
