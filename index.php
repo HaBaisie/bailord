@@ -35,7 +35,7 @@
     <link rel="preload" href="assets/css/style.css" as="style">
     <style>
         :root {
-            --dominant-color: #ff6200; /* Bright orange like Jumia */
+            --dominant-color: #ff6200;
             --secondary-color: #28a745;
             --accent-color: #ffffff;
             --complementary-orange: #e65100;
@@ -106,6 +106,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.5s ease;
+            width: 100%;
+            height: auto;
         }
         .intro-slider .owl-item.active img {
             transform: scale(1.05);
@@ -163,6 +165,21 @@
                 height: 150px;
             }
         }
+        /* Forced Colors Support */
+        @media (forced-colors: active) {
+            body {
+                background: Window;
+                color: WindowText;
+            }
+            .header, .btn-primary, .user-btn, .login-btn {
+                background: ButtonFace;
+                color: ButtonText;
+                border-color: ButtonText;
+            }
+            .intro-slider img, .product-image {
+                border: 1px solid ButtonText;
+            }
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -206,7 +223,7 @@
                     promoContainer.innerHTML = `
                         <div class="banner banner-overlay banner-overlay-light fade-in">
                             <a href="${promos[currentPromo].link}">
-                                <img src="${promos[currentPromo].img}" alt="Promo Banner" loading="lazy">
+                                <img src="${promos[currentPromo].img}" alt="Promo Banner" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Promo+Image+Not+Found';">
                             </a>
                             <div class="banner-content">
                                 <h4 class="banner-subtitle"><a href="${promos[currentPromo].link}">${promos[currentPromo].title}</a></h4>
@@ -236,8 +253,8 @@
                     e.preventDefault();
                     const product = {
                         id: Date.now(),
-                        name: btn.closest('.product').querySelector('.product-title').textContent,
-                        price: parseFloat(btn.closest('.product').querySelector('.product-price').textContent.replace('₦', ''))
+                        name: btn.closest('.product')?.querySelector('.product-title')?.textContent || 'Unknown Product',
+                        price: parseFloat(btn.closest('.product')?.querySelector('.product-price')?.textContent.replace('₦', '') || 0)
                     };
                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                     cart.push(product);
@@ -253,6 +270,9 @@
                         const img = entry.target;
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
+                        img.onerror = () => {
+                            img.src = 'https://via.placeholder.com/1200x400?text=Image+Not+Found';
+                        };
                         observer.unobserve(img);
                     }
                 });
@@ -272,7 +292,7 @@
                             <i class="icon-bars"></i>
                         </button>
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25" onerror="this.src='https://via.placeholder.com/105x25?text=Logo';">
                         </a>
                     </div>
                     <div class="header-center">
@@ -394,12 +414,33 @@
         </header>
         <main class="main">
             <div class="intro-slider-container mb-5">
-                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl">
-                    <div class="intro-slide"><img src="assets/images/demos/demo-4/slider1.png" alt="ITEL P70" data-src="assets/images/demos/demo-4/slide1.png"></div>
-                    <div class="intro-slide"><img src="assets/images/demos/demo-4/slider2.png" alt="TECNO POP 10C" data-src="assets/images/demos/demo-4/slide2.png"></div>
-                    <div class="intro-slide"><img src="assets/images/demos/demo-4/slider3.png" alt="TECNO POP 10" data-src="assets/images/demos/demo-4/slide3.png"></div>
-                    <div class="intro-slide"><img src="assets/images/demos/demo-4/slider4.png" alt="VIVO Y04" data-src="assets/images/demos/demo-4/slide4.png"></div>
-                    <div class="intro-slide"><img src="assets/images/demos/demo-4/slider5.png" alt="ZTE BLADE A35" data-src="assets/images/demos/demo-4/slide5.png"></div>
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{
+                    "dots": true,
+                    "nav": false,
+                    "center": true,
+                    "items": 1,
+                    "margin": 10,
+                    "responsive": {
+                        "0": {"stagePadding": 40},
+                        "768": {"stagePadding": 60},
+                        "1200": {"nav": true, "dots": false, "stagePadding": 80}
+                    }
+                }'>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
+                    <div class="intro-slide">
+                        <img data-src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                    </div>
                 </div>
                 <span class="slider-loader"></span>
             </div>
