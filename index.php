@@ -1,34 +1,42 @@
+<?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bailord</title>
-    <meta name="keywords" content="HTML5 Template, eCommerce">
-    <meta name="description" content="Bailord eCommerce Template - Modern and Vibrant Shopping Experience">
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Bailord eCommerce Template">
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x16" href="assets/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
     <link rel="manifest" href="assets/images/icons/site.webmanifest">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#ff6200">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="Bailord">
     <meta name="application-name" content="Bailord">
-    <meta name="msapplication-TileColor" content="#ff6200">
+    <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Include FontAwesome for mobile menu dropdown indicators -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Plugins CSS -->
+    <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href="assets/js/jquery.min.js" as="script">
+    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
         :root {
             --primary-color: #ff6200; /* Vibrant orange inspired by Jumia */
@@ -729,18 +737,19 @@
         });
     </script>
 </head>
+
 <body>
     <div class="page-wrapper">
-        <header class="header header-4">
+        <header class="header header-intro-clearance header-4">
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
                         <button class="mobile-menu-toggler">
                             <span class="sr-only">Toggle mobile menu</span>
-                            <i class="fas fa-bars"></i>
+                            <i class="icon-bars"></i>
                         </button>
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="120" height="30">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
                         </a>
                     </div>
                     <div class="header-center">
@@ -748,32 +757,32 @@
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search products..." required>
-                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div>
                             </form>
                         </div>
-                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none">
-                            <i class="fas fa-search"></i>
+                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
+                            <i class="icon-search"></i>
                         </a>
                     </div>
                     <div class="header-right">
                         <?php if (isset($_SESSION['user'])): ?>
                             <a href="profile.php" class="user-btn" title="User Profile">
-                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                                <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
                             </a>
                             <a href="logout.php" class="user-btn" title="Logout">
-                                <i class="fas fa-sign-out-alt"></i> Logout
+                                <i class="las la-sign-out-alt"></i> Logout
                             </a>
                         <?php else: ?>
                             <a href="login.php" class="login-btn">
-                                <i class="fas fa-user"></i> Login/Signup
+                                <i class="icon-user"></i> Login/Signup
                             </a>
                         <?php endif; ?>
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="icon">
-                                    <i class="fas fa-shopping-cart"></i>
+                                    <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">0</span>
                                 </div>
                                 <p>Cart</p>
@@ -782,11 +791,11 @@
                                 <div class="dropdown-cart-products"></div>
                                 <div class="dropdown-cart-total">
                                     <span>Total</span>
-                                    <span class="cart-total-price">₦0.00</span>
+                                    <span class="cart-total-price">$0.00</span>
                                 </div>
                                 <div class="dropdown-cart-action">
                                     <a href="cart_view.php" class="btn btn-primary">View Cart</a>
-                                    <a href="cart_view.php" class="btn btn-outline-primary">Checkout</a>
+                                    <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
                                 </div>
                             </div>
                         </div>
@@ -826,11 +835,11 @@
             </div>
             <div class="mobile-menu-container">
                 <div class="mobile-menu-wrapper">
-                    <button class="mobile-menu-close"><i class="fas fa-times"></i></button>
+                    <button class="mobile-menu-close"><i class="icon-close"></i></button>
                     <form action="#" method="get" class="mobile-search">
                         <label for="mobile-search" class="sr-only">Search</label>
                         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
@@ -882,9 +891,9 @@
                         "items": 1,
                         "margin": 10,
                         "responsive": {
-                            "0": {"stagePadding": 20},
-                            "768": {"stagePadding": 40},
-                            "1200": {"nav": true, "dots": false, "stagePadding": 60}
+                            "0": {"stagePadding": 40},
+                            "768": {"stagePadding": 60},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 80}
                         }
                     }'>
                     <div class="intro-slide">
@@ -915,9 +924,51 @@
             </div>
             <div class="mb-4"></div>
             <div class="container">
-                <div class="row justify-content-center" data-promo-container></div>
+                <div class="row justify-content-center">
+                    <!-- Promo banners will be dynamically loaded here -->
+                </div>
             </div>
             <div class="mb-3"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
+                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="#">
+                                <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
@@ -937,7 +988,7 @@
                             data-owl-options='{
                                 "nav": true, 
                                 "dots": true,
-                                "margin": 10,
+                                "margin": 5,
                                 "loop": false,
                                 "responsive": {
                                     "0": {"items": 2},
@@ -966,7 +1017,7 @@
                                                 <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                             </a>
                                             <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
                                             </div>
                                             <div class="product-action">
                                                 <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
@@ -994,20 +1045,21 @@
             <div class="mb-6"></div>
             <div class="container">
                 <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                    <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <div class="cta-content">
                                 <div class="cta-text text-right text-white">
                                     <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div>
-                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="fas fa-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="more-container text-center mt-1 mb-5">
-                <a href="category.php?category=all" class="btn btn-outline-primary btn-round btn-more"><span>Shop more Outlet deals</span><i class="fas fa-arrow-right"></i></a>
+                <a href="category.php?category=all" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
             </div>
             <div class="bg-light pt-5 pb-6">
                 <div class="container trending-products">
@@ -1038,7 +1090,7 @@
                                 <div class="banner-content">
                                     <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
                                     <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
-                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -1049,7 +1101,7 @@
                                         data-owl-options='{
                                             "nav": true, 
                                             "dots": true,
-                                            "margin": 10,
+                                            "margin": 5,
                                             "loop": false,
                                             "responsive": {
                                                 "0": {"items": 2},
@@ -1095,7 +1147,7 @@
                                         data-owl-options='{
                                             "nav": true, 
                                             "dots": true,
-                                            "margin": 10,
+                                            "margin": 5,
                                             "loop": false,
                                             "responsive": {
                                                 "0": {"items": 2},
@@ -1146,7 +1198,7 @@
                             <h2 class="title">Recommendation For You</h2>
                         </div>
                         <div class="heading-right">
-                            <a href="category.php" class="title-link">View All Recommendation <i class="fas fa-arrow-right"></i></a>
+                            <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="products">
@@ -1178,20 +1230,49 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row no-gutters bg-white newsletter-popup-content">
+                                <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                                    <div class="banner-content text-center">
+                                        <img src="images/logoh.png" class="logo" alt="logo" width="60" height="15">
+                                        <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                                        <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
+                                        <form action="#">
+                                            <div class="input-group input-group-round">
+                                                <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
+                                                <div class="input-group-append">
+                                                    <button class="btn" type="submit"><span>go</span></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="custom-control custom-checkbox" style="text-align: left;">
+                                            <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                            <label class="custom-control-label" for="register-policy-2">Do not show this again</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2-5col col-lg-5">
+                                    <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/js/bootstrap.bundle.min.js"></script>
+                <script src="assets/js/jquery.hoverIntent.min.js"></script>
+                <script src="assets/js/jquery.waypoints.min.js"></script>
+                <script src="assets/js/superfish.min.js"></script>
+                <script src="assets/js/owl.carousel.min.js"></script>
+                <script src="assets/js/bootstrap-input-spinner.js"></script>
+                <script src="assets/js/jquery.plugin.min.js"></script>
+                <script src="assets/js/jquery.magnific-popup.min.js"></script>
+                <script src="assets/js/jquery.countdown.min.js"></script>
+                <script src="assets/js/main.js"></script>
+                <script src="assets/js/demos/demo-4.js"></script>
         </main>
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/jquery.hoverIntent.min.js"></script>
-        <script src="assets/js/jquery.waypoints.min.js"></script>
-        <script src="assets/js/superfish.min.js"></script>
-        <script src="assets/js/owl.carousel.min.js"></script>
-        <script src="assets/js/bootstrap-input-spinner.js"></script>
-        <script src="assets/js/jquery.plugin.min.js"></script>
-        <script src="assets/js/jquery.magnific-popup.min.js"></script>
-        <script src="assets/js/jquery.countdown.min.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/demos/demo-4.js"></script>
     </div>
 </body>
-</html>
+</html>"
