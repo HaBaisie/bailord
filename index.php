@@ -150,6 +150,12 @@
             border-radius: 0;
             transform: none !important;
         }
+        .error-message {
+            text-align: center;
+            color: #dc3545;
+            padding: 20px;
+            font-size: 16px;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -179,10 +185,20 @@
             .intro-slider img, .product-image {
                 border: 1px solid ButtonText;
             }
+            .banner, .product {
+                border: 1px solid ButtonText;
+            }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Check for jQuery and Owl Carousel
+            if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
+                console.error('jQuery or Owl Carousel not loaded. Product carousels may not function.');
+                document.querySelectorAll('.owl-carousel').forEach(carousel => {
+                    carousel.innerHTML = '<p class="error-message">Carousel failed to load. Please try again later.</p>';
+                });
+            }
             // Mobile Menu
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
@@ -244,17 +260,22 @@
             const updateCart = () => {
                 const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                 cartCount.textContent = cart.length;
-                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
                 cartTotal.textContent = `₦${total.toFixed(2)}`;
             };
             updateCart();
             document.querySelectorAll('.btn-cart').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    const productElement = btn.closest('.product');
+                    if (!productElement) {
+                        console.error('Product element not found for cart button');
+                        return;
+                    }
                     const product = {
                         id: Date.now(),
-                        name: btn.closest('.product')?.querySelector('.product-title')?.textContent || 'Unknown Product',
-                        price: parseFloat(btn.closest('.product')?.querySelector('.product-price')?.textContent.replace('₦', '') || 0)
+                        name: productElement.querySelector('.product-title')?.textContent || 'Unknown Product',
+                        price: parseFloat(productElement.querySelector('.product-price')?.textContent.replace('₦', '') || 0)
                     };
                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                     cart.push(product);
@@ -362,12 +383,16 @@
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         $categories = $stmt->fetchAll();
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                        if (empty($categories)) {
+                                            echo '<li><a href="#">No categories available</a></li>';
+                                        } else {
+                                            foreach ($categories as $category) {
+                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                                echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                            }
                                         }
-                                    } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    } catch (PDOException $e) {
+                                        echo '<li><a href="#">Error loading categories: '.htmlspecialchars($e->getMessage()).'</a></li>';
                                     }
                                     ?>
                                 </ul>
@@ -397,12 +422,16 @@
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         $categories = $stmt->fetchAll();
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                        if (empty($categories)) {
+                                            echo '<li><a href="#">No categories available</a></li>';
+                                        } else {
+                                            foreach ($categories as $category) {
+                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                                echo '<li><a href="category.php?category='.$slug.'">'.htmlspecialchars($category['name']).'</a></li>';
+                                            }
                                         }
-                                    } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                    } catch (PDOException $e) {
+                                        echo '<li><a href="#">Error loading categories: '.htmlspecialchars($e->getMessage()).'</a></li>';
                                     }
                                     ?>
                                 </ul>
@@ -448,13 +477,105 @@
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php echo htmlspecialchars(render_category_blocks($conn)); ?>
+                        <?php
+                        try {
+                            $categoryBlocks = render_category_blocks($conn);
+                            if (empty($categoryBlocks)) {
+                                echo '<p class="error-message">No categories found. Please check the database.</p>';
+                            } else {
+                                echo htmlspecialchars($categoryBlocks);
+                            }
+                        } catch (Exception $e) {
+                            echo '<p class="error-message">Error loading categories: '.htmlspecialchars($e->getMessage()).'</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="mb-4"></div>
             <div class="container">
                 <div class="row justify-content-center promo-banners"></div>
+            </div>
+            <div class="container new-arrivals">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">New Arrivals</h2>
+                    </div>
+                    <div class="heading-right">
+                        <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content tab-content-carousel just-action-icons-sm">
+                    <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
+                        <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                            data-owl-options='{
+                                "nav": true, 
+                                "dots": true,
+                                "margin": 5,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {"items": 2},
+                                    "400": {"items": 2},
+                                    "576": {"items": 3},
+                                    "768": {"items": 4},
+                                    "992": {"items": 5},
+                                    "1200": {"items": 6}
+                                }
+                            }'>
+                            <?php
+                            $default_image = 'https://via.placeholder.com/200x200?text=No+Image';
+                            try {
+                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                                $stmt->execute();
+                                $products = $stmt->fetchAll();
+                                if (empty($products)) {
+                                    echo '<p class="error-message">No products found in the database.</p>';
+                                } else {
+                                    $productGroups = array_chunk($products, 5);
+                                    foreach ($productGroups as $group) {
+                                        echo '<div class="products-slide d-flex">';
+                                        foreach ($group as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image" loading="lazy" onerror="this.src=\''.$default_image.'\';">
+                                                    </a>
+                                                    <div class="product-action-vertical">
+                                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: 100%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( 5 Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        echo '</div>';
+                                    }
+                                }
+                            } catch (PDOException $e) {
+                                echo '<p class="error-message">Error fetching products: '.htmlspecialchars($e->getMessage()).'</p>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Retain the rest of your original main content -->
         </main>
