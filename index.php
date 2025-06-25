@@ -1,29 +1,3 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-include 'includes/session.php';
-
-// Define render_category_blocks function
-function render_category_blocks($conn) {
-    try {
-        $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
-        $stmt->execute();
-        $categories = $stmt->fetchAll();
-        if (empty($categories)) {
-            return '<p class="error-message">No categories found in render_category_blocks.</p>';
-        }
-        $output = '';
-        foreach ($categories as $category) {
-            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-            $output .= '<div class="col-6 col-md-4"><a href="category.php?category='.htmlspecialchars($slug).'"><p>'.htmlspecialchars($category['name']).'</p></a></div>';
-        }
-        return $output;
-    } catch (PDOException $e) {
-        return '<p class="error-message">Error in render_category_blocks: '.htmlspecialchars($e->getMessage()).'</p>';
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,8 +5,8 @@ function render_category_blocks($conn) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bailord</title>
-    <meta name="keywords" content="eCommerce, Bailord, Shopping">
-    <meta name="description" content="Bailord - Your one-stop eCommerce platform">
+    <meta name="keywords" content="HTML5 Template, eCommerce">
+    <meta name="description" content="Bailord eCommerce Template - Modern and Vibrant Shopping Experience">
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
@@ -46,317 +20,727 @@ function render_category_blocks($conn) {
     <meta name="msapplication-TileColor" content="#ff6200">
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- CSS -->
+    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
-    <link rel="stylesheet" href="assets/css/demos/demo-4.css">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/css/style.css" as="style">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
         :root {
-            --dominant-color: #ff6200;
-            --secondary-color: #28a745;
-            --accent-color: #ffffff;
-            --complementary-orange: #e65100;
-            --light-neutral: #ffffff;
-            --medium-neutral: #f1f3f5;
-            --dark-neutral: #343a40;
-            --text-dark: #212529;
-            --text-light: #ffffff;
-            --orange-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-orange) 100%);
+            --primary-color: #ff6200; /* Vibrant orange inspired by Jumia */
+            --secondary-color: #1a1a1a; /* Dark for contrast */
+            --accent-color: #ffffff; /* White for text/buttons */
+            --highlight-color: #ffd700; /* Bright yellow for highlights */
+            --neutral-light: #f5f5f5; /* Light background */
+            --neutral-medium: #e0e0e0; /* Medium gray for borders */
+            --text-dark: #1a1a1a; /* Dark text */
+            --text-light: #ffffff; /* Light text */
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, #e64a19 100%);
         }
-        body {
-            background-color: var(--light-neutral);
-            color: var(--text-dark);
-            font-family: 'Poppins', sans-serif;
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--neutral-light);
+            color: var(--text-dark);
+            line-height: 1.6;
             overflow-x: hidden;
         }
-        .header {
-            background: var(--orange-gradient);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
         }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--gradient);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
         .header-middle .container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 15px;
+            padding: 15px 0;
+            flex-wrap: wrap;
         }
+
+        .header-left, .header-center, .header-right {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .logo img {
-            max-height: 40px;
+            width: 120px;
+            height: auto;
         }
+
+        .header-center {
+            flex-grow: 2;
+            padding: 0 20px;
+        }
+
         .header-search-wrapper {
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
         }
-        .header-search input {
+
+        .header-search-wrapper input {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            border: 1px solid var(--neutral-medium);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .header-search-wrapper input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .header-search-wrapper button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
             border: none;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .user-btn, .login-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .user-btn:hover, .login-btn:hover {
+            background-color: #e64a19;
+        }
+
+        .cart-dropdown {
+            position: relative;
+        }
+
+        .cart-dropdown .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .cart-count {
+            background: var(--highlight-color);
+            color: var(--text-dark);
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+
+        .dropdown-menu {
+            background: var(--accent-color);
+            border: 1px solid var(--neutral-medium);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-width: 250px;
+            padding: 15px;
+        }
+
+        .dropdown-cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .dropdown-cart-action .btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 25px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #e64a19;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        /* Navigation */
+        .main-nav .menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        .main-nav .menu > li {
+            position: relative;
+        }
+
+        .main-nav .menu > li > a {
+            color: var(--text-light);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+
+        .main-nav .menu > li:hover > a {
+            color: var(--highlight-color);
+        }
+
+        .main-nav .menu > li > ul {
+            display: none;
+            position: absolute;
+            background: var(--accent-color);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 200px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-nav .menu > li:hover > ul {
+            display: block;
+        }
+
+        .main-nav .menu > li > ul > li > a {
+            color: var(--text-dark);
+            padding: 8px 15px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .main-nav .menu > li > ul > li > a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .mobile-menu-container.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .mobile-menu-wrapper {
+            width: 90%;
+            max-width: 320px;
+            background: var(--accent-color);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu-container.visible .mobile-menu-wrapper {
+            transform: scale(1);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .mobile-nav .mobile-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-nav .mobile-menu > li > a {
+            display: block;
+            padding: 15px;
+            color: var(--text-dark);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .mobile-nav .mobile-menu > li > a:hover,
+        .mobile-nav .mobile-menu > li.active > a {
+            color: var(--primary-color);
+            background: var(--neutral-light);
+        }
+
+        .mobile-nav .mobile-menu > li.has-submenu > a::after {
+            content: '\f107';
+            font-family: 'FontAwesome';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .mobile-nav .mobile-menu > li.active > a::after {
+            content: '\f106';
+        }
+
+        .mobile-nav .mobile-menu > li > ul {
+            display: none;
+            list-style: none;
+            padding: 0 0 0 20px;
+        }
+
+        .mobile-nav .mobile-menu > li.active > ul {
+            display: block;
+        }
+
+        .mobile-nav .mobile-menu > li > ul > li > a {
             padding: 10px 15px;
+            color: var(--text-dark);
             font-size: 14px;
         }
-        .btn-primary {
-            background: var(--dominant-color);
-            border-color: var(--dominant-color);
-            border-radius: 20px;
-            padding: 8px 20px;
-            transition: all 0.3s ease;
+
+        /* Slider */
+        .intro-slider-container {
+            margin-bottom: 40px;
         }
-        .btn-primary:hover {
-            background: var(--complementary-orange);
-            border-color: var(--complementary-orange);
-            transform: translateY(-2px);
-        }
-        .user-btn, .login-btn {
-            background: var(--dominant-color);
-            color: var(--text-light);
-            border-radius: 20px;
-            padding: 8px 15px;
-            transition: all 0.3s ease;
-        }
-        .user-btn:hover, .login-btn:hover {
-            background: var(--complementary-orange);
-            transform: translateY(-2px);
-        }
-        .cart-dropdown .dropdown-toggle {
-            color: var(--text-light);
-        }
-        .intro-slider img {
+
+        .intro-slider .intro-slide img {
+            width: 100%;
+            height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.5s ease;
+        }
+
+        .owl-carousel .owl-nav button {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        .owl-carousel .owl-nav button:hover {
+            background: #e64a19;
+        }
+
+        /* Categories */
+        .cat-blocks-container .col-6 {
+            padding: 10px;
+        }
+
+        .cat-block {
+            background: var(--accent-color);
+            border-radius: 8px;
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .cat-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cat-block img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .cat-block-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        /* Products */
+        .product {
+            background: var(--accent-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-media img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-body {
+            padding: 15px;
+        }
+
+        .product-title a {
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .product-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .ratings-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .ratings-val {
+            background: var(--highlight-color);
+            height: 10px;
+        }
+
+        /* Banners */
+        .banner {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .banner img {
             width: 100%;
             height: auto;
         }
-        .intro-slider .owl-item.active img {
-            transform: scale(1.05);
-        }
-        .banner {
-            border-radius: 10px;
-            overflow: hidden;
-            animation: fadeIn 1s ease-in;
-        }
+
         .banner-content {
-            background: rgba(0,0,0,0.5);
-            padding: 20px;
-            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            color: var(--text-light);
         }
-        .product {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+
+        .banner-title {
+            font-size: 24px;
+            font-weight: 700;
         }
-        .product:hover {
-            transform: translateY(-5px);
-        }
-        .product-image {
-            border-radius: 10px 10px 0 0;
-            object-fit: cover;
-            height: 200px;
-            width: 100%;
-        }
-        .mobile-menu-container {
-            background: rgba(0,0,0,0.8);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-        .mobile-menu-container.visible {
-            transform: translateX(0);
-        }
-        .mobile-menu-wrapper {
-            background: var(--light-neutral);
-            border-radius: 0;
-            transform: none !important;
-        }
-        .error-message {
-            text-align: center;
-            color: #dc3545;
-            padding: 20px;
+
+        .banner-subtitle {
             font-size: 16px;
+            font-weight: 500;
         }
-        .debug-message {
+
+        .banner-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .banner-link:hover {
+            color: var(--highlight-color);
+        }
+
+        /* CTA */
+        .cta {
+            background-size: cover;
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
-            color: #007bff;
-            padding: 10px;
-            font-size: 14px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .cta-content {
+            color: var(--text-light);
         }
-        @media (max-width: 767px) {
-            .header-search.d-none.d-lg-block {
+
+        .cta-text p {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .main-nav {
                 display: none !important;
             }
-            .mobile-search-toggle {
-                display: block !important;
+
+            .mobile-menu-toggler {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: var(--text-light);
             }
-            .product-image {
-                height: 150px;
+
+            .header-search-wrapper {
+                max-width: 100%;
+            }
+
+            .header-right {
+                gap: 10px;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .mobile-search {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .mobile-search input {
+                width: 100%;
+                padding: 10px 40px 10px 15px;
+                border-radius: 25px;
+            }
+
+            .mobile-search button {
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
             }
         }
-        /* Forced Colors Support */
-        @media (forced-colors: active) {
-            body {
-                background: Window;
-                color: WindowText;
+
+        @media (max-width: 767px) {
+            .logo img {
+                width: 100px;
             }
-            .header, .btn-primary, .user-btn, .login-btn {
-                background: ButtonFace;
-                color: ButtonText;
-                border-color: ButtonText;
+
+            .product-media img {
+                height: 150px;
             }
-            .intro-slider img, .product-image {
-                border: 1px solid ButtonText;
+
+            .product-title {
+                font-size: 14px;
             }
-            .banner, .product {
-                border: 1px solid ButtonText;
+
+            .product-price {
+                font-size: 16px;
+            }
+
+            .banner-title {
+                font-size: 18px;
+            }
+
+            .banner-subtitle {
+                font-size: 14px;
             }
         }
     </style>
+    <!-- Custom JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check for jQuery and Owl Carousel
-            if (typeof jQuery === 'undefined') {
-                console.error('jQuery not loaded. Critical functionality may be affected.');
-            } else {
-                console.log('jQuery loaded successfully.');
-            }
-            if (typeof jQuery.fn.owlCarousel === 'undefined') {
-                console.error('Owl Carousel not loaded. Sliders and carousels will not function.');
-                document.querySelectorAll('.owl-carousel').forEach(carousel => {
-                    carousel.innerHTML = '<p class="error-message">Carousel failed to load. Please try again later.</p>';
-                });
-            } else {
-                console.log('Owl Carousel loaded successfully.');
-                // Initialize carousels
-                jQuery('.intro-slider').owlCarousel();
-                jQuery('.owl-carousel').owlCarousel();
-            }
-            // Mobile Menu
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
             const mobileMenuContainer = document.querySelector('.mobile-menu-container');
             const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
             if (mobileMenuToggle && mobileMenuContainer) {
-                mobileMenuToggle.addEventListener('click', (e) => {
+                mobileMenuToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.toggle('visible');
                     document.body.classList.toggle('menu-open');
                 });
             }
+
             if (mobileMenuClose && mobileMenuContainer) {
-                mobileMenuClose.addEventListener('click', (e) => {
+                mobileMenuClose.addEventListener('click', function(e) {
                     e.preventDefault();
                     mobileMenuContainer.classList.remove('visible');
                     document.body.classList.remove('menu-open');
                 });
             }
-            // Search Toggle
-            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-            const mobileSearchForm = document.querySelector('.mobile-search');
-            if (mobileSearchToggle && mobileSearchForm) {
-                mobileSearchToggle.addEventListener('click', (e) => {
+
+            // Mobile Submenu Toggle
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
                     e.preventDefault();
-                    mobileSearchForm.classList.toggle('visible');
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle('active');
+                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
+                        if (li !== parentLi) li.classList.remove('active');
+                    });
                 });
-            }
-            // Promo Banner Rotator
+            });
+
+            // Dynamic Promo Banners
+            const promoContainer = document.querySelector('.row.justify-content-center[data-promo-container]');
             const promos = [
-                { img: 'assets/images/demos/demo-4/banners/banner-1.png', title: 'Smart Offer', subtitle: 'Save ₦150 on Samsung Galaxy Note9', link: 'category.php?category=all' },
-                { img: 'assets/images/demos/demo-4/banners/banner-2.jpg', title: 'Time Deals', subtitle: 'Bose SoundSport -30%', link: 'category.php?category=all' },
-                { img: 'assets/images/demos/demo-4/banners/banner-3.png', title: 'Clearance', subtitle: 'GoPro Fusion 360 - Save ₦70', link: 'category.php?category=all' }
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-1.png',
+                    subtitle: 'Smart Offer',
+                    title: 'Save ₦150 on Samsung Galaxy Note9',
+                    link: 'category.php?category=all'
+                },
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-2.jpg',
+                    subtitle: 'Time Deals',
+                    title: 'Bose SoundSport - 30% Off',
+                    link: 'category.php?category=all'
+                },
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-3.png',
+                    subtitle: 'Clearance',
+                    title: 'GoPro Fusion 360 - Save ₦70',
+                    link: 'category.php?category=all'
+                }
             ];
-            let currentPromo = 0;
-            const promoContainer = document.querySelector('.promo-banners');
+
             if (promoContainer) {
-                const renderPromo = () => {
-                    promoContainer.innerHTML = `
-                        <div class="banner banner-overlay banner-overlay-light fade-in">
-                            <a href="${promos[currentPromo].link}">
-                                <img src="${promos[currentPromo].img}" alt="Promo Banner" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Promo+Image+Not+Found';">
+                promoContainer.innerHTML = promos.map(promo => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="${promo.link}">
+                                <img src="${promo.image}" alt="Banner">
                             </a>
                             <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="${promos[currentPromo].link}">${promos[currentPromo].title}</a></h4>
-                                <h3 class="banner-title"><a href="${promos[currentPromo].link}">${promos[currentPromo].subtitle}</a></h3>
-                                <a href="${promos[currentPromo].link}" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                <h4 class="banner-subtitle"><a href="${promo.link}">${promo.subtitle}</a></h4>
+                                <h3 class="banner-title"><a href="${promo.link}">${promo.title}</a></h3>
+                                <a href="${promo.link}" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
                             </div>
-                        </div>`;
-                };
-                renderPromo();
-                setInterval(() => {
-                    currentPromo = (currentPromo + 1) % promos.length;
-                    renderPromo();
-                }, 5000);
-            } else {
-                console.error('Promo banners container not found.');
+                        </div>
+                    </div>
+                `).join('');
             }
+
             // Cart Update
             const cartCount = document.querySelector('.cart-count');
-            const cartTotal = document.querySelector('.cart-total-price');
-            const updateCart = () => {
-                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                if (cartCount) cartCount.textContent = cart.length;
-                const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
-                if (cartTotal) cartTotal.textContent = `₦${total.toFixed(2)}`;
-            };
-            updateCart();
-            document.querySelectorAll('.btn-cart').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+            const cartTotalPrice = document.querySelector('.cart-total-price');
+            const cartProducts = document.querySelector('.dropdown-cart-products');
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            function updateCart() {
+                cartCount.textContent = cartItems.length;
+                const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                cartTotalPrice.textContent = `₦${total.toFixed(2)}`;
+                cartProducts.innerHTML = cartItems.map(item => `
+                    <div class="product">
+                        <div class="product-cart-details">
+                            <h4 class="product-title"><a href="product.php?product=${item.slug}">${item.name}</a></h4>
+                            <span class="cart-product-info">
+                                <span class="cart-product-qty">${item.quantity}</span> x ₦${item.price.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.querySelectorAll('.btn-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const productElement = btn.closest('.product');
-                    if (!productElement) {
-                        console.error('Product element not found for cart button');
-                        return;
-                    }
-                    const product = {
-                        id: Date.now(),
-                        name: productElement.querySelector('.product-title')?.textContent || 'Unknown Product',
-                        price: parseFloat(productElement.querySelector('.product-price')?.textContent.replace('₦', '') || 0)
-                    };
-                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                    cart.push(product);
-                    localStorage.setItem('cart', JSON.stringify(cart));
+                    const product = this.closest('.product');
+                    const name = product.querySelector('.product-title a').textContent;
+                    const price = parseFloat(product.querySelector('.product-price').textContent.replace('₦', ''));
+                    const slug = product.querySelector('.product-title a').getAttribute('href').split('=')[1];
+                    cartItems.push({ name, price, slug, quantity: 1 });
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
                     updateCart();
                 });
             });
-            // Lazy Load Images
-            const images = document.querySelectorAll('img[data-src]');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        img.onerror = () => {
-                            img.src = 'https://via.placeholder.com/1200x400?text=Image+Not+Found';
-                        };
-                        observer.unobserve(img);
-                    }
-                });
-            });
-            images.forEach(img => observer.observe(img));
+
+            updateCart();
+
+            // Prevent Double Tap on Touch Devices
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = new Date().getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
         });
     </script>
 </head>
 <body>
     <div class="page-wrapper">
-        <header class="header header-intro-clearance header-4">
+        <header class="header header-4">
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
                         <button class="mobile-menu-toggler">
                             <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
+                            <i class="fas fa-bars"></i>
                         </button>
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25" onerror="this.src='https://via.placeholder.com/105x25?text=Logo';">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="120" height="30">
                         </a>
                     </div>
                     <div class="header-center">
@@ -364,32 +748,32 @@ function render_category_blocks($conn) {
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search for products..." required>
-                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search products..." required>
+                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
                                 </div>
                             </form>
                         </div>
-                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
-                            <i class="icon-search"></i>
+                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none">
+                            <i class="fas fa-search"></i>
                         </a>
                     </div>
                     <div class="header-right">
                         <?php if (isset($_SESSION['user'])): ?>
                             <a href="profile.php" class="user-btn" title="User Profile">
-                                <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
                             </a>
                             <a href="logout.php" class="user-btn" title="Logout">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         <?php else: ?>
                             <a href="login.php" class="login-btn">
-                                <i class="icon-user"></i> Login/Signup
+                                <i class="fas fa-user"></i> Login/Signup
                             </a>
                         <?php endif; ?>
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <div class="icon">
-                                    <i class="icon-shopping-cart"></i>
+                                    <i class="fas fa-shopping-cart"></i>
                                     <span class="cart-count">0</span>
                                 </div>
                                 <p>Cart</p>
@@ -402,7 +786,7 @@ function render_category_blocks($conn) {
                                 </div>
                                 <div class="dropdown-cart-action">
                                     <a href="cart_view.php" class="btn btn-primary">View Cart</a>
-                                    <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
+                                    <a href="cart_view.php" class="btn btn-outline-primary">Checkout</a>
                                 </div>
                             </div>
                         </div>
@@ -420,23 +804,18 @@ function render_category_blocks($conn) {
                                 <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
+                                    $pdo = new Database();
+                                    $conn = $pdo->open();
                                     try {
-                                        $pdo = new Database();
-                                        $conn = $pdo->open();
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         $categories = $stmt->fetchAll();
-                                        if (empty($categories)) {
-                                            echo '<li><a href="#">No categories available</a></li>';
-                                            echo '<li class="debug-message">Debug: Category table is empty in nav</li>';
-                                        } else {
-                                            foreach ($categories as $category) {
-                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category='.htmlspecialchars($slug).'">'.htmlspecialchars($category['name']).'</a></li>';
-                                            }
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
-                                    } catch (PDOException $e) {
-                                        echo '<li><a href="#">Error loading categories: '.htmlspecialchars($e->getMessage()).'</a></li>';
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
                                     ?>
                                 </ul>
@@ -447,11 +826,11 @@ function render_category_blocks($conn) {
             </div>
             <div class="mobile-menu-container">
                 <div class="mobile-menu-wrapper">
-                    <button class="mobile-menu-close"><i class="icon-close"></i></button>
+                    <button class="mobile-menu-close"><i class="fas fa-times"></i></button>
                     <form action="#" method="get" class="mobile-search">
                         <label for="mobile-search" class="sr-only">Search</label>
                         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
@@ -466,86 +845,62 @@ function render_category_blocks($conn) {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
                                         $categories = $stmt->fetchAll();
-                                        if (empty($categories)) {
-                                            echo '<li><a href="#">No categories available</a></li>';
-                                            echo '<li class="debug-message">Debug: Category table is empty in mobile nav</li>';
-                                        } else {
-                                            foreach ($categories as $category) {
-                                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                                echo '<li><a href="category.php?category='.htmlspecialchars($slug).'">'.htmlspecialchars($category['name']).'</a></li>';
-                                            }
+                                        foreach ($categories as $category) {
+                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
-                                    } catch (PDOException $e) {
-                                        echo '<li><a href="#">Error loading categories: '.htmlspecialchars($e->getMessage()).'</a></li>';
+                                    } catch(PDOException $e) {
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
                                     ?>
                                 </ul>
                             </li>
+                            <li class="has-submenu">
+                                <a href="#">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="faq.html">FAQs</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </header>
         <main class="main">
-            <div class="container">
-                <h2 class="title text-center mb-4">Debug Information</h2>
-                <div class="row">
-                    <div class="col-12">
-                        <?php
-                        try {
-                            $pdo = new Database();
-                            $conn = $pdo->open();
-                            $stmt = $conn->prepare("SELECT 1");
-                            $stmt->execute();
-                            echo '<p class="text-success">Database connection successful.</p>';
-                            // Check category table
-                            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM category");
-                            $stmt->execute();
-                            $categoryCount = $stmt->fetchColumn();
-                            echo '<p class="debug-message">Category table has '.$categoryCount.' rows.</p>';
-                            // Check products table
-                            $stmt = $conn->prepare("SELECT COUNT(*) as count FROM products");
-                            $stmt->execute();
-                            $productCount = $stmt->fetchColumn();
-                            echo '<p class="debug-message">Products table has '.$productCount.' rows.</p>';
-                        } catch (PDOException $e) {
-                            echo '<p class="error-message">Database connection failed: '.htmlspecialchars($e->getMessage()).'</p>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
             <div class="intro-slider-container mb-5">
-                <div class="intro-slider owl-carousel owl-theme owl-nav-light" data-toggle="owl" data-owl-options='{
-                    "dots": true,
-                    "nav": false,
-                    "center": true,
-                    "items": 1,
-                    "margin": 10,
-                    "responsive": {
-                        "0": {"stagePadding": 40},
-                        "768": {"stagePadding": 60},
-                        "1200": {"nav": true, "dots": false, "stagePadding": 80}
-                    }
-                }'>
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
+                    data-owl-options='{
+                        "dots": true,
+                        "nav": false,
+                        "center": true,
+                        "items": 1,
+                        "margin": 10,
+                        "responsive": {
+                            "0": {"stagePadding": 20},
+                            "768": {"stagePadding": 40},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 60}
+                        }
+                    }'>
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
                     </div>
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                        <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
                     </div>
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                        <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
                     </div>
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
+                        <img src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04">
                     </div>
                     <div class="intro-slide">
-                        <img data-src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35" loading="lazy" onerror="this.src='https://via.placeholder.com/1200x400?text=Slider+Image+Not+Found';">
-                    </div>
-                    <!-- Static fallback -->
-                    <div class="intro-slide">
-                        <img src="https://via.placeholder.com/1200x400?text=Slider+Fallback" alt="Fallback Slide">
+                        <img src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35">
                     </div>
                 </div>
                 <span class="slider-loader"></span>
@@ -554,35 +909,15 @@ function render_category_blocks($conn) {
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php
-                        try {
-                            $categoryBlocks = render_category_blocks($conn);
-                            echo $categoryBlocks;
-                        } catch (Exception $e) {
-                            echo '<p class="error-message">Error loading categories: '.htmlspecialchars($e->getMessage()).'</p>';
-                        }
-                        ?>
+                        <?php echo renderCategoryBlocks($conn); ?>
                     </div>
                 </div>
             </div>
             <div class="mb-4"></div>
             <div class="container">
-                <div class="row justify-content-center promo-banners">
-                    <!-- Static fallback -->
-                    <div class="col-12">
-                        <div class="banner banner-overlay banner-overlay-light">
-                            <a href="category.php?category=all">
-                                <img src="https://via.placeholder.com/1200x400?text=Promo+Fallback" alt="Promo Fallback">
-                            </a>
-                            <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="category.php?category=all">Fallback Offer</a></h4>
-                                <h3 class="banner-title"><a href="category.php?category=all">Shop Now</a></h3>
-                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="row justify-content-center" data-promo-container></div>
             </div>
+            <div class="mb-3"></div>
             <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
                     <div class="heading-left">
@@ -602,7 +937,7 @@ function render_category_blocks($conn) {
                             data-owl-options='{
                                 "nav": true, 
                                 "dots": true,
-                                "margin": 5,
+                                "margin": 10,
                                 "loop": false,
                                 "responsive": {
                                     "0": {"items": 2},
@@ -614,74 +949,249 @@ function render_category_blocks($conn) {
                                 }
                             }'>
                             <?php
-                            $default_image = 'https://via.placeholder.com/200x200?text=No+Image';
-                            try {
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
-                                $stmt->execute();
-                                $products = $stmt->fetchAll();
-                                if (empty($products)) {
-                                    echo '<p class="error-message">No products found in the database.</p>';
-                                    echo '<p class="debug-message">Debug: Products table is empty.</p>';
-                                } else {
-                                    $productGroups = array_chunk($products, 5);
-                                    foreach ($productGroups as $group) {
-                                        echo '<div class="products-slide d-flex">';
-                                        foreach ($group as $product) {
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                            $productGroups = array_chunk($products, 5);
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';
+                                foreach ($group as $product) {
+                                    $image_url = !empty($product['photo']) 
+                                        ? htmlspecialchars($product['photo']) 
+                                        : $default_image;
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
+                                            </div>
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                }
+                                echo '</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6"></div>
+            <div class="container">
+                <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="cta-content">
+                                <div class="cta-text text-right text-white">
+                                    <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
+                                </div>
+                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="more-container text-center mt-1 mb-5">
+                <a href="category.php?category=all" class="btn btn-outline-primary btn-round btn-more"><span>Shop more Outlet deals</span><i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="bg-light pt-5 pb-6">
+                <div class="container trending-products">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Trending Products</h2>
+                        </div>
+                        <div class="heading-right">
+                            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab">Best Selling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab">On Sale</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5col d-none d-xl-block">
+                            <div class="banner banner-overlay banner-overlay-light">
+                                <a href="category.php">
+                                    <img src="images/Banner.jpg" alt="Banner">
+                                </a>
+                                <div class="banner-content">
+                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
+                                    <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4-5col">
+                            <div class="tab-content tab-content-carousel just-action-icons-sm">
+                                <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 10,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        foreach ($trending as $product) {
                                             $image_url = !empty($product['photo']) 
                                                 ? htmlspecialchars($product['photo']) 
                                                 : $default_image;
-                                            echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                            echo '<div class="product">
                                                 <figure class="product-media">
                                                     <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image" loading="lazy" onerror="this.src=\''.$default_image.'\';">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
                                                     </a>
-                                                    <div class="product-action-vertical">
-                                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
-                                                    </div>
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                    </div>
                                                 </figure>
                                                 <div class="product-body">
                                                     <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
                                                     <div class="product-price">₦'.number_format($product['price'], 2).'</div>
                                                     <div class="ratings-container">
                                                         <div class="ratings">
-                                                            <div class="ratings-val" style="width: 100%;"></div>
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
                                                         </div>
-                                                        <span class="ratings-text">( 5 Reviews )</span>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
                                                     </div>
                                                 </div>
                                             </div>';
                                         }
-                                        echo '</div>';
-                                    }
-                                }
-                            } catch (PDOException $e) {
-                                echo '<p class="error-message">Error fetching products: '.htmlspecialchars($e->getMessage()).'</p>';
-                            }
-                            ?>
-                            <!-- Static fallback -->
-                            <div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
-                                <figure class="product-media">
-                                    <a href="category.php?category=all">
-                                        <img src="https://via.placeholder.com/200x200?text=Product+Fallback" alt="Fallback Product" class="product-image">
-                                    </a>
-                                </figure>
-                                <div class="product-body">
-                                    <h3 class="product-title"><a href="category.php?category=all">Product</a></h3>
-                                    <div class="product-amount">₦0.00</div>
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 10,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        foreach ($bestSelling as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="container for-you">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Recommendation For You</h2>
+                        </div>
+                        <div class="heading-right">
+                            <a href="category.php" class="title-link">View All Recommendation <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="products">
+                        <div class="row justify-content-center">
+                            <?php
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                            $stmt->execute();
+                            $recommended = $stmt->fetchAll();
+                            foreach ($recommended as $product) {
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/jquery.hoverIntent.min.js"></script>
+        <script src="assets/js/jquery.waypoints.min.js"></script>
+        <script src="assets/js/superfish.min.js"></script>
         <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/bootstrap-input-spinner.js"></script>
+        <script src="assets/js/jquery.plugin.min.js"></script>
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="assets/js/jquery.countdown.min.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/demos/demo-4.js"></script>
     </div>
 </body>
 </html>
