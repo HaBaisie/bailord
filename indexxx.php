@@ -292,6 +292,8 @@
         }
 
         /* Slider */
+       
+
         .intro-slider-container {
             margin-bottom: 50px;
             max-width: 1000px;
@@ -1226,17 +1228,18 @@
                 <div class="cat-blocks-container">
                     <div class="row">
                         <?php
-                        $default_category_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                        $default_image = 'images/category-default.jpg';
                         try {
                             $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
                             $stmt->execute();
                             $categories = $stmt->fetchAll();
                             foreach ($categories as $category) {
                                 $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                $image_url = !empty($category['image']) ? htmlspecialchars($category['image']) : $default_category_image;
+                                $image_name = $slug . '.jpg';
+                                $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/' . $default_image;
                                 echo '<div class="cat-block">
                                     <a href="category.php?category='.$slug.'">
-                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($category['name']).'" loading="lazy">
+                                        <img src="'.htmlspecialchars($image_path).'" alt="'.htmlspecialchars($category['name']).'" loading="lazy">
                                         <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
                                         <span class="cat-block-link">Shop Now</span>
                                     </a>
