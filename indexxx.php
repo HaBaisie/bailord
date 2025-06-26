@@ -1,9 +1,9 @@
 <?php include 'includes/session.php'; ?>
 
 <?php
-// Render category blocks function
+// Render category blocks function from the first file
 function renderCategoryBlocks($conn) {
-    $default_category_image = 'images/noimage.jpg'; // Local fallback image
+    $default_category_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
     $output = '';
     try {
         $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
@@ -11,11 +11,7 @@ function renderCategoryBlocks($conn) {
         $categories = $stmt->fetchAll();
         foreach ($categories as $category) {
             $slug = !empty($category['cat_slug']) ? htmlspecialchars($category['cat_slug']) : strtolower(str_replace(' ', '-', $category['name']));
-            // Construct image path using category name
-            $image_url = 'images/' . strtolower(str_replace(' ', '_', $category['name'])) . '.jpg';
-            // Check if the image exists, otherwise use default
-            $image_path = __DIR__ . '/' . $image_url;
-            $image_url = file_exists($image_path) ? $image_url : $default_category_image;
+            $image_url = !empty($category['image']) ? htmlspecialchars($category['image']) : $default_category_image;
             $output .= '
                 <div class="cat-block">
                     <a href="category.php?category=' . $slug . '">
