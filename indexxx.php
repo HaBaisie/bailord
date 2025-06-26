@@ -1,4 +1,32 @@
 <?php include 'includes/session.php'; ?>
+
+<?php
+// Render category blocks function from the first file
+function renderCategoryBlocks($conn) {
+    $default_category_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+    $output = '';
+    try {
+        $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
+        $stmt->execute();
+        $categories = $stmt->fetchAll();
+        foreach ($categories as $category) {
+            $slug = !empty($category['cat_slug']) ? htmlspecialchars($category['cat_slug']) : strtolower(str_replace(' ', '-', $category['name']));
+            $image_url = !empty($category['image']) ? htmlspecialchars($category['image']) : $default_category_image;
+            $output .= '
+                <div class="cat-block">
+                    <a href="category.php?category=' . $slug . '">
+                        <img src="' . $image_url . '" alt="' . htmlspecialchars($category['name']) . '" loading="lazy">
+                        <h3 class="cat-block-title">' . htmlspecialchars($category['name']) . '</h3>
+                    </a>
+                </div>';
+        }
+    } catch(PDOException $e) {
+        $output .= '<div class="cat-block"><a href="#">Error loading categories</a></div>';
+    }
+    return $output;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,36 +459,35 @@
 
         .cat-blocks-container .row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             justify-items: center;
         }
 
         .cat-block {
             background: var(--accent-color);
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
             padding: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--neutral-medium);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 240px;
+            min-height: 260px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 260px;
         }
 
         .cat-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .cat-block img {
             width: 100%;
-            max-height: 140px;
-            height: auto;
-            object-fit: contain;
+            height: 160px;
+            object-fit: cover;
             border-radius: 8px;
             margin-bottom: 15px;
             transition: transform 0.3s ease;
@@ -477,23 +504,26 @@
             text-transform: capitalize;
             margin: 0;
             padding: 0 10px;
-            line-height: 1.4;
-            word-wrap: break-word;
+        }
+
+        .cat-block a {
+            text-decoration: none;
+            color: inherit;
         }
 
         /* Responsive Adjustments for Categories */
         @media (max-width: 991px) {
             .cat-blocks-container .row {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             }
 
             .cat-block {
-                max-width: 200px;
-                min-height: 220px;
+                max-width: 220px;
+                min-height: 240px;
             }
 
             .cat-block img {
-                max-height: 120px;
+                height: 140px;
             }
 
             .cat-block-title {
@@ -503,16 +533,16 @@
 
         @media (max-width: 575px) {
             .cat-blocks-container .row {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             }
 
             .cat-block {
-                max-width: 160px;
-                min-height: 200px;
+                max-width: 180px;
+                min-height: 220px;
             }
 
             .cat-block img {
-                max-height: 100px;
+                height: 120px;
             }
 
             .cat-block-title {
@@ -1207,7 +1237,12 @@
                 <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php echo renderCategoryBlocks($conn); ?>
+                        <?php
+                        $pdo = new Database();
+                        $conn = $pdo->open();
+                        echo renderCategoryBlocks($conn);
+                        $conn = null;
+                        ?>
                     </div>
                 </div>
             </div>
