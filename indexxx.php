@@ -1,210 +1,22 @@
-<?php include 'includes/session.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bailord</title>
-    <meta name="keywords" content="eCommerce, Bailord, Online Shopping">
-    <meta name="description" content="Shop the latest electronics and accessories at Bailord with exclusive deals and discounts.">
-    <meta name="author" content="Bailord Team">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x16" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.webmanifest">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#007BFF">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Bailord">
-    <meta name="application-name" content="Bailord">
-    <meta name="msapplication-TileColor" content="#007BFF">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#007BFF">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/js/jquery.min.js" as="script">
-    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <style>
-        :root {
-            --primary-color: #007BFF;
-            --secondary-color: #1a1a1a;
-            --accent-color: #ffffff;
-            --highlight-color: #ffd700;
-            --neutral-light: #f5f5f5;
-            --neutral-medium: #e0e0e0;
-            --text-dark: #1a1a1a;
-            --text-light: #ffffff;
-            --gradient: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
-        }
+<?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+// Log errors to a file
+ini_set('log_errors', 1);
+ini_set('error_log', 'logs/php_errors.log');
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--neutral-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .page-wrapper {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Header Styles */
-        .header {
-            background: var(--gradient);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-middle .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            flex-wrap: wrap;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo img {
-            width: 120px;
-            height: auto;
-        }
-
-        .header-center {
-            flex-grow: 1;
-            padding: 10px 10px;
-            width: 100%;
-            order: 3;
-        }
-
-        .header-search-wrapper {
-            position: relative;
-            max-width: 100%;
-        }
-
-        .header-search-wrapper input {
-            width: 100%;
-            padding: 12px 45px 12px 15px;
-            border: 1px solid var(--neutral-medium);
-            border-radius: 25px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .header-search-wrapper input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
-
-        .header-search-wrapper button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: var(--primary-color);
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .header-search-wrapper button:hover {
-            color: #0056b3;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .user-btn, .login-btn {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s, transform 0.2s;
-            white-space: nowrap;
-        }
-
-        .user-btn:hover, .login-btn:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .cart-dropdown {
-            position: relative;
-        }
-
-        .cart-dropdown .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .cart-count {
-            background: var(--highlight-color);
-            color: var(--text-dark);
-            border-radius: 50%;
-            padding: 3px 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .dropdown-menu {
-            background: var(--accent-color);
-            border: 1px solid var(--neutral-medium);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            min-width: 280px;
-            padding: 15px;
-            margin-top: 8px;
-        }
-
-        .dropdown-cart-products .product {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .dropdown-cart-total {
-            display: flex;
-            justify-content: space-between;
-            margin: 12 hết
-
-System: I'm sorry, but it looks like the artifact content was cut off. I'll complete the updated `index.php` file, ensuring it is mobile-friendly and incorporates a bright blue color scheme (`#007BFF` as the primary color). The changes will include responsive adjustments for better mobile usability (e.g., hamburger menu for navigation, optimized layouts, and touch-friendly interactions) and a full replacement of the orange color with a vibrant blue. Below is the complete artifact with all sections updated.
-
-<xaiArtifact artifact_id="f2cffd7f-5417-4876-b15d-e9f43de40b04" artifact_version_id="10f50c50-c219-4b7e-ad56-398ba75973af" title="index.php" contentType="text/html">
-<?php include 'includes/session.php'; ?>
+// Include session file with error handling
+if (file_exists('includes/session.php')) {
+    include 'includes/session.php';
+} else {
+    error_log("session.php not found in includes directory");
+    // Start a basic session as fallback
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1243,6 +1055,16 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                 font-size: 18px;
             }
         }
+
+        /* Error Message Styling */
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1270,7 +1092,7 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
             if (newsletterClose) {
                 newsletterClose.addEventListener('click', () => {
                     newsletterPopup.classList.remove('show');
-                    if (dontShowAgain.checked) {
+                    if (dontShowAgain && dontShowAgain.checked) {
                         localStorage.setItem('newsletterPopupSeen', 'true');
                     }
                 });
@@ -1341,36 +1163,41 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
             let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
             function updateCart() {
-                cartCount.textContent = cartItems.length;
-                const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-                cartTotalPrice.textContent = `₦${total.toFixed(2)}`;
-                cartProducts.innerHTML = cartItems.map(item => `
-                    <div class="product">
-                        <div class="product-cart-details">
-                            <h4 class="product-title"><a href="product.php?product=${item.slug}">${item.name}</a></h4>
-                            <span class="cart-product-info">
-                                <span class="cart-product-qty">${item.quantity}</span> x ₦${item.price.toFixed(2)}
-                            </span>
+                if (cartCount && cartTotalPrice && cartProducts) {
+                    cartCount.textContent = cartItems.length;
+                    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                    cartTotalPrice.textContent = `₦${total.toFixed(2)}`;
+                    cartProducts.innerHTML = cartItems.map(item => `
+                        <div class="product">
+                            <div class="product-cart-details">
+                                <h4 class="product-title"><a href="product.php?product=${item.slug}">${item.name}</a></h4>
+                                <span class="cart-product-info">
+                                    <span class="cart-product-qty">${item.quantity}</span> x ₦${item.price.toFixed(2)}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
             }
 
             document.querySelectorAll('.btn-cart').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const product = this.closest('.product');
-                    const name = product.querySelector('.product-title a').textContent;
-                    const price = parseFloat(product.querySelector('.product-price').textContent.replace('₦', ''));
-                    const slug = product.querySelector('.product-title a').getAttribute('href').split('=')[1];
-                    const existingItem = cartItems.find(item => item.slug === slug);
-                    if (existingItem) {
-                        existingItem.quantity += 1;
-                    } else {
-                        cartItems.push({ name, price, slug, quantity: 1 });
+                    if (product) {
+                        const name = product.querySelector('.product-title a')?.textContent || 'Unknown Product';
+                        const priceText = product.querySelector('.product-price')?.textContent || '₦0.00';
+                        const price = parseFloat(priceText.replace('₦', '')) || 0;
+                        const slug = product.querySelector('.product-title a')?.getAttribute('href')?.split('=')[1] || 'unknown';
+                        const existingItem = cartItems.find(item => item.slug === slug);
+                        if (existingItem) {
+                            existingItem.quantity += 1;
+                        } else {
+                            cartItems.push({ name, price, slug, quantity: 1 });
+                        }
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                        updateCart();
                     }
-                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-                    updateCart();
                 });
             });
 
@@ -1408,7 +1235,11 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                     <div class="header-left">
                         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="120" height="25">
+                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
+                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="120" height="25">
+                            <?php else: ?>
+                                <span class="error-message">Logo image not found</span>
+                            <?php endif; ?>
                         </a>
                     </div>
                     <div class="header-center">
@@ -1423,9 +1254,9 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                         </div>
                     </div>
                     <div class="header-right">
-                        <?php if (isset($_SESSION['user'])): ?>
+                        <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['firstname'])): ?>
                             <a href="profile.php" class="user-btn" title="User Profile">
-                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['user']['firstname']); ?>
                             </a>
                             <a href="logout.php" class="user-btn" title="Logout">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -1468,18 +1299,28 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                                 <a href="#">Categories</a>
                                 <ul>
                                     <?php
-                                    $pdo = new Database();
-                                    $conn = $pdo->open();
                                     try {
-                                        $stmt = $conn->prepare("SELECT * FROM category");
-                                        $stmt->execute();
-                                        $categories = $stmt->fetchAll();
-                                        foreach ($categories as $category) {
-                                            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                            echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
+                                        $pdo = new Database();
+                                        $conn = $pdo->open();
+                                        if ($conn) {
+                                            $stmt = $conn->prepare("SELECT * FROM category");
+                                            $stmt->execute();
+                                            $categories = $stmt->fetchAll();
+                                            if ($categories) {
+                                                foreach ($categories as $category) {
+                                                    $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                                    echo '<li><a href="category.php?category='.htmlspecialchars($slug).'">'.htmlspecialchars($category['name']).'</a></li>';
+                                                }
+                                            } else {
+                                                echo '<li><a href="#">No categories found</a></li>';
+                                            }
+                                        } else {
+                                            echo '<li><a href="#">Database connection failed</a></li>';
+                                            error_log("Database connection failed in category fetch");
                                         }
                                     } catch(PDOException $e) {
-                                        echo "<li><a href='#'>Error loading categories</a></li>";
+                                        error_log("Category fetch error: " . $e->getMessage());
+                                        echo '<li><a href="#">Error loading categories</a></li>';
                                     }
                                     ?>
                                 </ul>
@@ -1496,7 +1337,11 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                 <div class="side-promo side-promo-left">
                     <div class="banner">
                         <a href="category.php?category=smartphones">
-                            <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Smartphone Offer" loading="lazy">
+                            <?php if (file_exists('assets/images/demos/demo-4/banners/banner-1.png')): ?>
+                                <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Smartphone Offer" loading="lazy">
+                            <?php else: ?>
+                                <span class="error-message">Banner image not found</span>
+                            <?php endif; ?>
                         </a>
                         <h3 class="banner-title">Smartphone Deals</h3>
                         <a href="category.php?category=smartphones" class="banner-link">Shop Now</a>
@@ -1505,7 +1350,11 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                 <div class="side-promo side-promo-right">
                     <div class="banner">
                         <a href="category.php?category=audio">
-                            <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Audio Offer" loading="lazy">
+                            <?php if (file_exists('assets/images/demos/demo-4/banners/banner-2.jpg')): ?>
+                                <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Audio Offer" loading="lazy">
+                            <?php else: ?>
+                                <span class="error-message">Banner image not found</span>
+                            <?php endif; ?>
                         </a>
                         <h3 class="banner-title">Audio Savings</h3>
                         <a href="category.php?category=audio" class="banner-link">Shop Now</a>
@@ -1520,15 +1369,20 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                         "autoplay": true,
                         "autoplayTimeout": 5000
                     }'>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
-                    </div>
-                    <div class="intro-slide">
-                        <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
-                    </div>
+                    <?php
+                    $slides = [
+                        ['src' => 'assets/images/demos/demo-4/slider/slider1.png', 'alt' => 'ITEL P70'],
+                        ['src' => 'assets/images/demos/demo-4/slider/slider2.png', 'alt' => 'TECNO POP 10C'],
+                        ['src' => 'assets/images/demos/demo-4/slider/slider3.png', 'alt' => 'TECNO POP 10']
+                    ];
+                    foreach ($slides as $slide) {
+                        if (file_exists($slide['src'])) {
+                            echo '<div class="intro-slide"><img src="'.htmlspecialchars($slide['src']).'" alt="'.htmlspecialchars($slide['alt']).'"></div>';
+                        } else {
+                            echo '<div class="intro-slide"><span class="error-message">Slider image not found: '.htmlspecialchars($slide['alt']).'</span></div>';
+                        }
+                    }
+                    ?>
                 </div>
             </div>
             <div class="container">
@@ -1538,23 +1392,36 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                         <?php
                         $default_image = 'images/category-default.jpg';
                         try {
-                            $stmt = $conn->prepare("SELECT * FROM category");
-                            $stmt->execute();
-                            $categories = $stmt->fetchAll();
-                            foreach ($categories as $category) {
-                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                $image_name = $slug . '.jpg';
-                                $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/' . $default_image;
-                                echo '<div class="cat-block">
-                                    <a href="category.php?category='.$slug.'">
-                                        <img src="'.htmlspecialchars($image_path).'" alt="'.htmlspecialchars($category['name']).'" loading="lazy">
-                                        <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
-                                        <span class="cat-block-link">Shop Now</span>
-                                    </a>
-                                </div>';
+                            if ($conn) {
+                                $stmt = $conn->prepare("SELECT * FROM category");
+                                $stmt->execute();
+                                $categories = $stmt->fetchAll();
+                                if ($categories) {
+                                    foreach ($categories as $category) {
+                                        $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+                                        $image_name = $slug . '.jpg';
+                                        $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/' . $default_image;
+                                        if (!file_exists($image_path)) {
+                                            $image_path = $default_image;
+                                            error_log("Category image not found: images/$image_name");
+                                        }
+                                        echo '<div class="cat-block">
+                                            <a href="category.php?category='.htmlspecialchars($slug).'">
+                                                <img src="'.htmlspecialchars($image_path).'" alt="'.htmlspecialchars($category['name']).'" loading="lazy">
+                                                <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
+                                                <span class="cat-block-link">Shop Now</span>
+                                            </a>
+                                        </div>';
+                                    }
+                                } else {
+                                    echo '<div class="cat-block"><a href="#">No categories found</a></div>';
+                                }
+                            } else {
+                                echo '<div class="error-message">Unable to connect to database for categories</div>';
                             }
                         } catch(PDOException $e) {
-                            echo '<div class="cat-block"><a href="#">Error loading categories</a></div>';
+                            error_log("Category fetch error: " . $e->getMessage());
+                            echo '<div class="error-message">Error loading categories: ' . htmlspecialchars($e->getMessage()) . '</div>';
                         }
                         ?>
                     </div>
@@ -1576,40 +1443,53 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                     <div class="row">
                         <?php
                         $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 10");
-                        $stmt->execute();
-                        $products = $stmt->fetchAll();
-                        foreach ($products as $product) {
-                            $image_url = !empty($product['photo']) 
-                                ? htmlspecialchars($product['photo']) 
-                                : $default_image;
-                            echo '<div>
-                                <div class="product">
-                                    <figure class="product-media">
-                                        <span class="product-label">New</span>
-                                        <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                            <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                        </a>
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
-                                            <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
-                                        </div>
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                        <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                        try {
+                            if ($conn) {
+                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 10");
+                                $stmt->execute();
+                                $products = $stmt->fetchAll();
+                                if ($products) {
+                                    foreach ($products as $product) {
+                                        $image_url = !empty($product['photo']) 
+                                            ? htmlspecialchars($product['photo']) 
+                                            : $default_image;
+                                        echo '<div>
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <span class="product-label">New</span>
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                    <div class="product-action-vertical">
+                                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
+                                                        <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
+                                                    </div>
+                                                    <div class="product-action">
+                                                        <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>';
+                                        </div>';
+                                    }
+                                } else {
+                                    echo '<div class="error-message">No new products found</div>';
+                                }
+                            } else {
+                                echo '<div class="error-message">Unable to connect to database for products</div>';
+                            }
+                        } catch(PDOException $e) {
+                            error_log("Product fetch error: " . $e->getMessage());
+                            echo '<div class="error-message">Error loading products: ' . htmlspecialchars($e->getMessage()) . '</div>';
                         }
                         ?>
                     </div>
@@ -1646,41 +1526,53 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                         <div class="products">
                             <div class="row">
                                 <?php
-                                $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 10");
-                                $stmt->execute();
-                                $trending = $stmt->fetchAll();
-                                foreach ($trending as $product) {
-                                    $image_url = !empty($product['photo']) 
-                                        ? htmlspecialchars($product['photo']) 
-                                        : $default_image;
-                                    echo '<div>
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <span class="product-label">Top</span>
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
-                                                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
-                                                </div>
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                try {
+                                    if ($conn) {
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 10");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        if ($trending) {
+                                            foreach ($trending as $product) {
+                                                $image_url = !empty($product['photo']) 
+                                                    ? htmlspecialchars($product['photo']) 
+                                                    : $default_image;
+                                                echo '<div>
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <span class="product-label">Top</span>
+                                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                            </a>
+                                                            <div class="product-action-vertical">
+                                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
+                                                                <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
+                                                            </div>
+                                                            <div class="product-action">
+                                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                                            </div>
+                                                        </figure>
+                                                        <div class="product-body">
+                                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                            <div class="ratings-container">
+                                                                <div class="ratings">
+                                                                    <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                                </div>
+                                                                <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>';
+                                                </div>';
+                                            }
+                                        } else {
+                                            echo '<div class="error-message">No trending products found</div>';
+                                        }
+                                    } else {
+                                        echo '<div class="error-message">Unable to connect to database for trending products</div>';
+                                    }
+                                } catch(PDOException $e) {
+                                    error_log("Trending products fetch error: " . $e->getMessage());
+                                    echo '<div class="error-message">Error loading trending products: ' . htmlspecialchars($e->getMessage()) . '</div>';
                                 }
                                 ?>
                             </div>
@@ -1690,41 +1582,53 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                         <div class="products">
                             <div class="row">
                                 <?php
-                                $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                                $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 10");
-                                $stmt->execute();
-                                $bestSelling = $stmt->fetchAll();
-                                foreach ($bestSelling as $product) {
-                                    $image_url = !empty($product['photo']) 
-                                        ? htmlspecialchars($product['photo']) 
-                                        : $default_image;
-                                    echo '<div>
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <span class="product-label">Best Seller</span>
-                                                <a href="product.php?product='.htmlspecialchars($product['slug']).'">
-                                                    <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
-                                                </a>
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
-                                                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
-                                                </div>
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-body">
-                                                <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                                <div class="product-price">₦'.number_format($product['price'], 2).'</div>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                try {
+                                    if ($conn) {
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 10");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        if ($bestSelling) {
+                                            foreach ($bestSelling as $product) {
+                                                $image_url = !empty($product['photo']) 
+                                                    ? htmlspecialchars($product['photo']) 
+                                                    : $default_image;
+                                                echo '<div>
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <span class="product-label">Best Seller</span>
+                                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                            </a>
+                                                            <div class="product-action-vertical">
+                                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i class="fas fa-heart"></i></a>
+                                                                <a href="#" class="btn-product-icon btn-compare" title="Compare"><i class="fas fa-balance-scale"></i></a>
+                                                            </div>
+                                                            <div class="product-action">
+                                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                                            </div>
+                                                        </figure>
+                                                        <div class="product-body">
+                                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                            <div class="ratings-container">
+                                                                <div class="ratings">
+                                                                    <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                                </div>
+                                                                <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>';
+                                                </div>';
+                                            }
+                                        } else {
+                                            echo '<div class="error-message">No best-selling products found</div>';
+                                        }
+                                    } else {
+                                        echo '<div class="error-message">Unable to connect to database for best-selling products</div>';
+                                    }
+                                } catch(PDOException $e) {
+                                    error_log("Best-selling products fetch error: " . $e->getMessage());
+                                    echo '<div class="error-message">Error loading best-selling products: ' . htmlspecialchars($e->getMessage()) . '</div>';
                                 }
                                 ?>
                             </div>
@@ -1736,7 +1640,11 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                 <div class="newsletter-popup-container mfp-hide" id="newsletter-popup-form">
                     <div class="newsletter-popup-content">
                         <button class="newsletter-popup-close"><i class="fas fa-times"></i></button>
-                        <img src="assets/images/demos/demo-4/logo.png" class="logo" alt="Bailord Logo" width="80" height="20">
+                        <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
+                            <img src="assets/images/demos/demo-4/logo.png" class="logo" alt="Bailord Logo" width="80" height="20">
+                        <?php else: ?>
+                            <span class="error-message">Newsletter logo not found</span>
+                        <?php endif; ?>
                         <h2 class="banner-title">Get <span>25%</span> Off</h2>
                         <p>Subscribe to Bailord newsletter for exclusive deals and updates!</p>
                         <form action="#">
@@ -1756,7 +1664,11 @@ System: I'm sorry, but it looks like the artifact content was cut off. I'll comp
                 <div class="promo-popup-container mfp-hide" id="promo-popup">
                     <div class="promo-popup-content">
                         <button class="promo-popup-close"><i class="fas fa-times"></i></button>
-                        <img src="assets/images/demos/demo-4/banners/promo-banner.jpg" alt="Promo Banner">
+                        <?php if (file_exists('assets/images/demos/demo-4/banners/promo-banner.jpg')): ?>
+                            <img src="assets/images/demos/demo-4/banners/promo-banner.jpg" alt="Promo Banner">
+                        <?php else: ?>
+                            <span class="error-message">Promo banner image not found</span>
+                        <?php endif; ?>
                         <h2 class="banner-title">Flash Sale!</h2>
                         <p>Up to 50% off on selected electronics. Limited time only!</p>
                         <a href="category.php?category=sale" class="btn">Shop Now</a>
