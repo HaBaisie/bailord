@@ -921,12 +921,12 @@ if (file_exists('includes/session.php')) {
             }
 
             .slider-wrapper {
-                max-width: 810px;
+                max-width: 1000px;
                 margin: 0 auto;
             }
 
             .intro-slider .intro-slide img {
-                max-height: 120px;
+                max-height: 200px;
             }
 
             .cat-blocks-container .row {
