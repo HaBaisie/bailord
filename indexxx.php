@@ -294,10 +294,11 @@
         /* Slider */
         .intro-slider-container {
             margin-bottom: 50px;
-            max-width: 1400px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
             padding: 0 20px;
+            position: relative;
         }
 
         .intro-slider .intro-slide {
@@ -314,43 +315,6 @@
             border-radius: 12px;
             image-rendering: -webkit-optimize-contrast;
             filter: brightness(0.95);
-        }
-
-        .intro-slide .slide-content {
-            position: absolute;
-            top: 50%;
-            left: 5%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            text-align: left;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-        }
-
-        .intro-slide .slide-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .intro-slide .slide-subtitle {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .intro-slide .slide-btn {
-            padding: 12px 25px;
-            background: var(--primary-color);
-            color: var(--text-light);
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-
-        .intro-slide .slide-btn:hover {
-            background: #e64a19;
         }
 
         .owl-carousel .owl-nav button {
@@ -399,6 +363,66 @@
             background: var(--primary-color);
         }
 
+        /* Side Promo Banners */
+        .side-promo {
+            position: fixed;
+            top: 20%;
+            width: 200px;
+            z-index: 999;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .side-promo-left {
+            left: 20px;
+        }
+
+        .side-promo-right {
+            right: 20px;
+        }
+
+        .side-promo:hover {
+            transform: scale(1.05);
+        }
+
+        .side-promo .banner {
+            background: var(--accent-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .side-promo .banner img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-promo .banner-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .side-promo .banner-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .side-promo .banner-link:hover {
+            background: #e64a19;
+        }
+
         /* Categories */
         .cat-blocks-container {
             margin-bottom: 50px;
@@ -407,35 +431,44 @@
         .cat-blocks-container .row {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
+            gap: 15px;
         }
 
         .cat-block {
-            background: var(--accent-color);
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #f8f8f8 100%);
+            border-radius: 12px;
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--neutral-medium);
+            border: 2px solid var(--gradient);
+            position: relative;
+            overflow: hidden;
         }
 
         .cat-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px) rotate(2deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .cat-block img {
             width: 100%;
-            height: 140px;
-            object-fit: cover;
+            height: 180px;
+            object-fit: contain;
             border-radius: 8px;
             margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .cat-block:hover img {
+            transform: scale(1.1);
         }
 
         .cat-block-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Products */
@@ -705,7 +738,7 @@
 
         .newsletter-popup-content p {
             font-size: 16px;
-            color: Var(--text-dark);
+            color: var(--text-dark);
             margin-bottom: 20px;
         }
 
@@ -1083,6 +1116,24 @@
         </header>
         <main class="main">
             <div class="intro-slider-container">
+                <div class="side-promo side-promo-left">
+                    <div class="banner">
+                        <a href="category.php?category=smartphones">
+                            <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Smartphone Offer" loading="lazy">
+                        </a>
+                        <h3 class="banner-title">Smartphone Deals</h3>
+                        <a href="category.php?category=smartphones" class="banner-link">Shop Now</a>
+                    </div>
+                </div>
+                <div class="side-promo side-promo-right">
+                    <div class="banner">
+                        <a href="category.php?category=audio">
+                            <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Audio Offer" loading="lazy">
+                        </a>
+                        <h3 class="banner-title">Audio Savings</h3>
+                        <a href="category.php?category=audio" class="banner-link">Shop Now</a>
+                    </div>
+                </div>
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside" data-toggle="owl" 
                     data-owl-options='{
                         "dots": true,
@@ -1094,27 +1145,12 @@
                     }'>
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
-                        <div class="slide-content">
-                            <h3 class="slide-title">ITEL P70</h3>
-                            <p class="slide-subtitle">Latest Smartphone Technology</p>
-                            <a href="category.php?category=smartphones" class="slide-btn">Shop Now</a>
-                        </div>
                     </div>
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
-                        <div class="slide-content">
-                            <h3 class="slide-title">TECNO POP 10C</h3>
-                            <p class="slide-subtitle">Affordable & Powerful</p>
-                            <a href="category.php?category=smartphones" class="slide-btn">Shop Now</a>
-                        </div>
                     </div>
                     <div class="intro-slide">
                         <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
-                        <div class="slide-content">
-                            <h3 class="slide-title">TECNO POP 10</h3>
-                            <p class="slide-subtitle">Sleek Design, Great Price</p>
-                            <a href="category.php?category=smartphones" class="slide-btn">Shop Now</a>
-                        </div>
                     </div>
                 </div>
             </div>
