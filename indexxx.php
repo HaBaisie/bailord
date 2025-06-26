@@ -921,20 +921,20 @@ if (file_exists('includes/session.php')) {
             }
 
             .slider-wrapper {
-                max-width: 1000px;
+                max-width: 810px;
                 margin: 0 auto;
             }
 
             .intro-slider .intro-slide img {
-                max-height: 200px;
+                max-height: 120px;
             }
 
             .cat-blocks-container .row {
-                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                grid-template-columns: repeat(6, 1fr);
             }
 
             .cat-block {
-                max-width: 220px;
+                max-width: 200px;
                 min-height: 240px;
             }
 
@@ -1281,12 +1281,6 @@ if (file_exists('includes/session.php')) {
                             </a>
                         <?php endif; ?>
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="icon">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <span class="cart-count">0</span>
-                                </div>
-                            </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products"></div>
                                 <div class="dropdown-cart-total">
