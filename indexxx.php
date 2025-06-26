@@ -1,138 +1,137 @@
 <?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bailord</title>
-    <meta name="keywords" content="eCommerce, Shopping, Online Store">
-    <meta name="description" content="Bailord - Your one-stop eCommerce platform for electronics and more">
-    <meta name="author" content="Bailord Team">
-    
-    <!-- Favicon and Manifest -->
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Bailord eCommerce Template">
+    <meta name="author" content="Your Name">
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x16" href="assets/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
     <link rel="manifest" href="assets/images/icons/site.webmanifest">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Bailord">
+    <meta name="application-name" content="Bailord">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/js/jquery.min.js" as="script">
-    
-    <!-- CSS Files -->
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Include FontAwesome for mobile menu dropdown indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href="assets/js/jquery.min.js" as="script">
+    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
         :root {
-            --dominant-color: #2a5bd7; /* Primary blue */
-            --secondary-color: #28a745; /* Green */
-            --accent-color: #fd7e14; /* Orange */
-            --complementary-blue: #1e429f; /* Darker blue */
-            --light-neutral: #f8f9fa;
-            --medium-neutral: #e9ecef;
-            --dark-neutral: #343a40;
-            --text-dark: #212529;
-            --text-light: #ffffff;
-            --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
+            --primary-color: #ff6200; /* Vibrant orange inspired by Jumia */
+            --secondary-color: #1a1a1a; /* Dark for contrast */
+            --accent-color: #ffffff; /* White for text/buttons */
+            --highlight-color: #ffd700; /* Bright yellow for highlights */
+            --neutral-light: #f5f5f5; /* Light background */
+            --neutral-medium: #e0e0e0; /* Medium gray for borders */
+            --text-dark: #1a1a1a; /* Dark text */
+            --text-light: #ffffff; /* Light text */
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, #e64a19 100%);
         }
 
-        /* Reset and Base Styles */
-        *, *::before, *::after {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--light-neutral);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--neutral-light);
             color: var(--text-dark);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Header */
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Styles */
         .header {
-            background: var(--blue-gradient);
+            background: var(--gradient);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-middle {
-            padding: 10px 0;
         }
 
         .header-middle .container {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
             flex-wrap: wrap;
-            gap: 10px;
         }
 
         .header-left, .header-center, .header-right {
             flex: 1;
-            display: flex;
-            align-items: center;
+            min-width: 0;
         }
 
         .header-left {
-            justify-content: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            width: 120px;
+            height: auto;
         }
 
         .header-center {
             flex-grow: 2;
-            justify-content: center;
-        }
-
-        .header-right {
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .logo img {
-            width: 90px;
-            height: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .mobile-menu-toggler {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--text-light);
-            padding: 8px;
-            min-width: 44px;
-            min-height: 44px;
-        }
-
-        .search-toggle {
-            font-size: 20px;
-            color: var(--text-light);
-            padding: 8px;
-            min-width: 44px;
-            min-height: 44px;
+            padding: 0 20px;
         }
 
         .header-search-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 300px;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .header-search-wrapper input {
-            border-radius: 20px;
-            padding: 8px 40px 8px 15px;
-            border: 1px solid var(--medium-neutral);
             width: 100%;
-            font-size: 14px;
+            padding: 12px 50px 12px 20px;
+            border: 1px solid var(--neutral-medium);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .header-search-wrapper input:focus {
+            border-color: var(--primary-color);
         }
 
         .header-search-wrapper button {
@@ -140,27 +139,37 @@
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
+            background: transparent;
             border: none;
-            color: var(--dominant-color);
-            font-size: 16px;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
         }
 
-        .login-btn {
+        .header-right {
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 8px 12px;
-            background-color: var(--dominant-color);
-            color: var(--text-light);
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
+            gap: 15px;
+            justify-content: flex-end;
         }
 
-        .login-btn:hover {
-            background-color: var(--complementary-blue);
+        .user-btn, .login-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .user-btn:hover, .login-btn:hover {
+            background-color: #e64a19;
+        }
+
+        .cart-dropdown {
+            position: relative;
         }
 
         .cart-dropdown .dropdown-toggle {
@@ -172,182 +181,319 @@
         }
 
         .cart-count {
-            background: var(--accent-color);
-            color: var(--text-light);
+            background: var(--highlight-color);
+            color: var(--text-dark);
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            padding: 2px 8px;
             font-size: 12px;
         }
 
         .dropdown-menu {
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            background: var(--accent-color);
+            border: 1px solid var(--neutral-medium);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-width: 250px;
+            padding: 15px;
+        }
+
+        .dropdown-cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .dropdown-cart-action .btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 25px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #e64a19;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        /* Navigation */
+        .main-nav .menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        .main-nav .menu > li {
+            position: relative;
+        }
+
+        .main-nav .menu > li > a {
+            color: var(--text-light);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+
+        .main-nav .menu > li:hover > a {
+            color: var(--highlight-color);
+        }
+
+        .main-nav .menu > li > ul {
+            display: none;
+            position: absolute;
+            background: var(--accent-color);
+            border-radius: 8px;
+            padding: 10px;
             min-width: 200px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-nav .menu > li:hover > ul {
+            display: block;
+        }
+
+        .main-nav .menu > li > ul > li > a {
+            color: var(--text-dark);
+            padding: 8px 15px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .main-nav .menu > li > ul > li > a:hover {
+            color: var(--primary-color);
         }
 
         /* Mobile Menu */
         .mobile-menu-container {
             position: fixed;
             top: 0;
-            left: -100%;
-            width: 80%;
-            max-width: 300px;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: var(--text-light);
-            transition: left 0.3s ease;
-            z-index: 1001;
-            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .mobile-menu-container.visible {
-            left: 0;
+            display: flex;
+            opacity: 1;
+        }
+
+        .mobile-menu-wrapper {
+            width: 90%;
+            max-width: 320px;
+            background: var(--accent-color);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu-container.visible .mobile-menu-wrapper {
+            transform: scale(1);
         }
 
         .mobile-menu-close {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            color: var(--text-dark);
+            top: 15px;
+            right: 15px;
             background: none;
             border: none;
-        }
-
-        .mobile-search {
-            padding: 10px;
-            border-bottom: 1px solid var(--medium-neutral);
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
         }
 
         .mobile-nav .mobile-menu {
             list-style: none;
+            padding: 0;
+        }
+
+        .mobile-nav .mobile-menu > li > a {
+            display: block;
+            padding: 15px;
+            color: var(--text-dark);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .mobile-nav .mobile-menu > li > a:hover,
+        .mobile-nav .mobile-menu > li.active > a {
+            color: var(--primary-color);
+            background: var(--neutral-light);
+        }
+
+        .mobile-nav .mobile-menu > li.has-submenu > a::after {
+            content: '\f107';
+            font-family: 'FontAwesome';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .mobile-nav .mobile-menu > li.active > a::after {
+            content: '\f106';
+        }
+
+        .mobile-nav .mobile-menu > li > ul {
+            display: none;
+            list-style: none;
+            padding: 0 0 0 20px;
+        }
+
+        .mobile-nav .mobile-menu > li.active > ul {
+            display: block;
+        }
+
+        .mobile-nav .mobile-menu > li > ul > li > a {
+            padding: 10px 15px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        /* Slider */
+        .intro-slider-container {
+            margin-bottom: 40px;
+        }
+
+        .intro-slider .intro-slide img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .owl-carousel .owl-nav button {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        .owl-carousel .owl-nav button:hover {
+            background: #e64a19;
+        }
+
+        /* Categories */
+        .cat-blocks-container .col-6 {
             padding: 10px;
         }
 
-        .mobile-nav .mobile-menu li {
-            margin-bottom: 10px;
-        }
-
-        .mobile-nav .mobile-menu a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 16px;
-            display: block;
-            padding: 8px 0;
-        }
-
-        .mobile-nav .mobile-menu ul {
-            padding-left: 20px;
-            display: none;
-        }
-
-        .mobile-nav .mobile-menu li.active > ul {
-            display: block;
-        }
-
-        /* Main Content */
-        .intro-slider-container {
-            margin-bottom: 20px;
-        }
-
-        .intro-slide {
-            background-size: cover;
-            background-position: center;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-        }
-
-        .intro-content {
-            padding: 20px;
-            text-align: left;
-        }
-
-        .intro-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .intro-subtitle {
-            font-size: 16px;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .intro-price {
-            font-size: 18px;
-            color: var(--text-light);
-        }
-
-        .intro-price .text-third {
-            color: var(--accent-color);
-        }
-
-        .btn-primary {
-            background-color: var(--dominant-color);
-            border-color: var(--dominant-color);
-            color: var(--text-light);
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--complementary-blue);
-            border-color: var(--complementary-blue);
-        }
-
-        /* Category Blocks */
-        .cat-blocks-container .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
         .cat-block {
-            display: block;
+            background: var(--accent-color);
+            border-radius: 8px;
             text-align: center;
-            text-decoration: none;
-            color: var(--text-dark);
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .cat-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .cat-block img {
-            width: 100%;
-            height: auto;
+            max-width: 100%;
             border-radius: 8px;
-            margin-bottom: 5px;
         }
 
         .cat-block-title {
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        /* Products */
+        .product {
+            background: var(--accent-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-media img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-body {
+            padding: 15px;
+        }
+
+        .product-title a {
+            color: var(--text-dark);
+            font-size: 16px;
             font-weight: 500;
+            text-decoration: none;
+        }
+
+        .product-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .ratings-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .ratings-val {
+            background: var(--highlight-color);
+            height: 10px;
         }
 
         /* Banners */
         .banner {
             position: relative;
-            overflow: hidden;
             border-radius: 8px;
+            overflow: hidden;
         }
 
         .banner img {
             width: 100%;
             height: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .banner:hover img {
-            transform: scale(1.05);
         }
 
         .banner-content {
@@ -359,161 +505,242 @@
         }
 
         .banner-title {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 700;
         }
 
         .banner-subtitle {
-            font-size: 14px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 500;
         }
 
-        /* Products */
-        .product {
-            background: var(--text-light);
+        .banner-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .banner-link:hover {
+            color: var(--highlight-color);
+        }
+
+        /* CTA */
+        .cta {
+            background-size: cover;
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-        }
-
-        .product-media img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
-        .product-body {
-            padding: 10px;
+            padding: 20px;
             text-align: center;
         }
 
-        .product-title {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 5px;
+        .cta-content {
+            color: var(--text-light);
         }
 
-        .product-price {
-            font-size: 16px;
-            color: var(--dominant-color);
+        .cta-text p {
+            font-size: 18px;
             font-weight: 600;
         }
 
-        /* Deals */
-        .deal {
-            background-size: cover;
-            background-position: center;
-            border-radius: 8px;
-            padding: 20px;
-            color: var(--text-light);
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .deal-top h2 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .deal-content .product-title {
-            font-size: 18px;
-            color: var(--text-light);
-        }
-
-        .deal-bottom .deal-countdown {
-            font-size: 14px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 575px) {
-            .header-middle .container {
-                flex-direction: column;
-                align-items: flex-start;
+        /* Responsive */
+        @media (max-width: 991px) {
+            .main-nav {
+                display: none !important;
             }
 
-            .header-center {
-                width: 100%;
-                margin: 10px 0;
+            .mobile-menu-toggler {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: var(--text-light);
             }
 
             .header-search-wrapper {
                 max-width: 100%;
             }
 
-            .intro-title {
-                font-size: 20px;
+            .header-right {
+                gap: 10px;
             }
 
-            .intro-subtitle {
-                font-size: 14px;
+            .header-center {
+                display: none;
             }
 
-            .intro-price {
-                font-size: 16px;
+            .mobile-search {
+                display: block;
+                margin: 10px 0;
             }
 
-            .cat-block-title {
-                font-size: 12px;
+            .mobile-search input {
+                width: 100%;
+                padding: 10px 40px 10px 15px;
+                border-radius: 25px;
             }
 
-            .product {
-                margin-bottom: 10px;
-            }
-
-            .deal {
-                min-height: 250px;
-            }
-
-            .deal-top h2 {
-                font-size: 16px;
-            }
-
-            .deal-content .product-title {
-                font-size: 16px;
+            .mobile-search button {
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
             }
         }
 
-        @media (min-width: 576px) and (max-width: 767px) {
-            .cat-block-title {
-                font-size: 13px;
+        @media (max-width: 767px) {
+            .logo img {
+                width: 100px;
+            }
+
+            .product-media img {
+                height: 150px;
             }
 
             .product-title {
-                font-size: 13px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .header-search.d-none.d-lg-block {
-                display: block !important;
+                font-size: 14px;
             }
 
-            .mobile-search-toggle {
-                display: none;
+            .product-price {
+                font-size: 16px;
             }
-        }
 
-        /* Touch Optimizations */
-        .btn, .dropdown-toggle, .mobile-menu-toggler, .product-media a {
-            min-height: 44px;
-            min-width: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+            .banner-title {
+                font-size: 18px;
+            }
 
-        a, button {
-            -webkit-touch-callout: none;
-            user-select: none;
+            .banner-subtitle {
+                font-size: 14px;
+            }
         }
     </style>
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
+            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+            if (mobileMenuToggle && mobileMenuContainer) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.toggle('visible');
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+
+            if (mobileMenuClose && mobileMenuContainer) {
+                mobileMenuClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.remove('visible');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+
+            // Mobile Submenu Toggle
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu > a');
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    parentLi.classList.toggle('active');
+                    document.querySelectorAll('.mobile-nav .mobile-menu > li.has-submenu').forEach(li => {
+                        if (li !== parentLi) li.classList.remove('active');
+                    });
+                });
+            });
+
+            // Dynamic Promo Banners
+            const promoContainer = document.querySelector('.row.justify-content-center[data-promo-container]');
+            const promos = [
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-1.png',
+                    subtitle: 'Smart Offer',
+                    title: 'Save ₦150 on Samsung Galaxy Note9',
+                    link: 'category.php?category=all'
+                },
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-2.jpg',
+                    subtitle: 'Time Deals',
+                    title: 'Bose SoundSport - 30% Off',
+                    link: 'category.php?category=all'
+                },
+                {
+                    image: 'assets/images/demos/demo-4/banners/banner-3.png',
+                    subtitle: 'Clearance',
+                    title: 'GoPro Fusion 360 - Save ₦70',
+                    link: 'category.php?category=all'
+                }
+            ];
+
+            if (promoContainer) {
+                promoContainer.innerHTML = promos.map(promo => `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="banner banner-overlay banner-overlay-light">
+                            <a href="${promo.link}">
+                                <img src="${promo.image}" alt="Banner">
+                            </a>
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="${promo.link}">${promo.subtitle}</a></h4>
+                                <h3 class="banner-title"><a href="${promo.link}">${promo.title}</a></h3>
+                                <a href="${promo.link}" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Cart Update
+            const cartCount = document.querySelector('.cart-count');
+            const cartTotalPrice = document.querySelector('.cart-total-price');
+            const cartProducts = document.querySelector('.dropdown-cart-products');
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            function updateCart() {
+                cartCount.textContent = cartItems.length;
+                const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                cartTotalPrice.textContent = `₦${total.toFixed(2)}`;
+                cartProducts.innerHTML = cartItems.map(item => `
+                    <div class="product">
+                        <div class="product-cart-details">
+                            <h4 class="product-title"><a href="product.php?product=${item.slug}">${item.name}</a></h4>
+                            <span class="cart-product-info">
+                                <span class="cart-product-qty">${item.quantity}</span> x ₦${item.price.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.querySelectorAll('.btn-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const product = this.closest('.product');
+                    const name = product.querySelector('.product-title a').textContent;
+                    const price = parseFloat(product.querySelector('.product-price').textContent.replace('₦', ''));
+                    const slug = product.querySelector('.product-title a').getAttribute('href').split('=')[1];
+                    cartItems.push({ name, price, slug, quantity: 1 });
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    updateCart();
+                });
+            });
+
+            updateCart();
+
+            // Prevent Double Tap on Touch Devices
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = new Date().getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+    </script>
 </head>
+
 <body>
     <div class="page-wrapper">
-        <header class="header">
+        <header class="header header-intro-clearance header-4">
             <div class="header-middle">
                 <div class="container">
                     <div class="header-left">
@@ -522,7 +749,7 @@
                             <i class="icon-bars"></i>
                         </button>
                         <a href="index.php" class="logo">
-                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="90" height="20">
+                            <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" width="105" height="25">
                         </a>
                     </div>
                     <div class="header-center">
@@ -530,23 +757,35 @@
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search products..." required>
-                                    <button class="btn" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div>
                             </form>
                         </div>
-                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none">
+                        <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
                             <i class="icon-search"></i>
                         </a>
                     </div>
                     <div class="header-right">
-                        <a href="login.html" class="login-btn">
-                            <i class="icon-user"></i> Login
-                        </a>
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <a href="profile.php" class="user-btn" title="User Profile">
+                                <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                            </a>
+                            <a href="logout.php" class="user-btn" title="Logout">
+                                <i class="las la-sign-out-alt"></i> Logout
+                            </a>
+                        <?php else: ?>
+                            <a href="login.php" class="login-btn">
+                                <i class="icon-user"></i> Login/Signup
+                            </a>
+                        <?php endif; ?>
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">0</span>
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                    <span class="cart-count">0</span>
+                                </div>
+                                <p>Cart</p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products"></div>
@@ -555,50 +794,41 @@
                                     <span class="cart-total-price">$0.00</span>
                                 </div>
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary">Checkout</a>
+                                    <a href="cart_view.php" class="btn btn-primary">View Cart</a>
+                                    <a href="cart_view.php" class="btn btn-outline-primary-2">Checkout</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="header-bottom sticky-header d-none d-lg-block">
+            <div class="header-bottom sticky-header">
                 <div class="container">
-                    <nav class="main-nav">
+                    <nav class="main-nav d-none d-lg-block">
                         <ul class="menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle">Categories</a>
-                                <ul class="dropdown-menu">
+                            <li><a href="profile.php">Orders</a></li>
+                            <li>
+                                <a href="#">Browse Categories</a>
+                                <ul>
                                     <?php
                                     $pdo = new Database();
                                     $conn = $pdo->open();
                                     try {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
-                                        foreach ($stmt as $category) {
+                                        $categories = $stmt->fetchAll();
+                                        foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
                                             echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
-                                        echo '<li><a href="#">Error loading categories</a></li>';
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
-                                    $pdo->close();
                                     ?>
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle">Pages</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="faq.html">FAQs</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -609,39 +839,40 @@
                     <form action="#" method="get" class="mobile-search">
                         <label for="mobile-search" class="sr-only">Search</label>
                         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search..." required>
-                        <button class="btn" type="submit"><i class="icon-search"></i></button>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                     </form>
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
                             <li class="active"><a href="index.php">Home</a></li>
                             <li><a href="category.php?category=all">Shop</a></li>
-                            <li>
-                                <a href="#">Categories</a>
+                            <li><a href="profile.php">Orders</a></li>
+                            <li class="has-submenu">
+                                <a href="#">Browse Categories</a>
                                 <ul>
                                     <?php
-                                    $pdo = new Database();
-                                    $conn = $pdo->open();
                                     try {
                                         $stmt = $conn->prepare("SELECT * FROM category");
                                         $stmt->execute();
-                                        foreach ($stmt as $category) {
+                                        $categories = $stmt->fetchAll();
+                                        foreach ($categories as $category) {
                                             $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
                                             echo '<li><a href="category.php?category='.$slug.'">'.$category['name'].'</a></li>';
                                         }
                                     } catch(PDOException $e) {
-                                        echo '<li><a href="#">Error loading categories</a></li>';
+                                        echo "<li><a href='#'>Error loading categories</a></li>";
                                     }
-                                    $pdo->close();
                                     ?>
                                 </ul>
                             </li>
-                            <li>
+                            <li class="has-submenu">
                                 <a href="#">Pages</a>
                                 <ul>
                                     <li><a href="about.html">About</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                     <li><a href="login.html">Login</a></li>
                                     <li><a href="faq.html">FAQs</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                    <li><a href="coming-soon.html">Coming Soon</a></li>
                                 </ul>
                             </li>
                             <li><a href="blog.html">Blog</a></li>
@@ -651,108 +882,88 @@
             </div>
         </header>
         <main class="main">
-            <div class="intro-slider-container">
-                <div class="intro-slider owl-carousel owl-theme owl-nav-inside" data-toggle="owl" 
+            <div class="intro-slider-container mb-5">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
                     data-owl-options='{
                         "dots": true,
                         "nav": false,
-                        "responsive": {"1200": {"nav": true, "dots": false}}
+                        "center": true,
+                        "items": 1,
+                        "margin": 10,
+                        "responsive": {
+                            "0": {"stagePadding": 40},
+                            "768": {"stagePadding": 60},
+                            "1200": {"nav": true, "dots": false, "stagePadding": 80}
+                        }
                     }'>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/bailord.png);">
-                        <div class="container intro-content">
-                            <h3 class="intro-subtitle text-third">Deals and Promotions</h3>
-                            <h1 class="intro-title">VIVO Y03t</h1>
-                            <div class="intro-price">
-                                <sup class="intro-old-price">$349.95</sup>
-                                <span class="text-third">$279<sup>.99</sup></span>
-                            </div>
-                            <a href="category.html" class="btn btn-primary">
-                                <span>Shop Now</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div>
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider1.png" alt="ITEL P70">
                     </div>
-                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-4/slider/slide-2.png);">
-                        <div class="container intro-content">
-                            <h3 class="intro-subtitle text-primary">New Arrival</h3>
-                            <h1 class="intro-title">VIVO V19</h1>
-                            <div class="intro-price">
-                                <span class="text-primary">$999<sup>.99</sup></span>
-                            </div>
-                            <a href="category.html" class="btn btn-primary">
-                                <span>Shop Now</span>
-                                <i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div>
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider2.png" alt="TECNO POP 10C">
+                    </div>
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider3.png" alt="TECNO POP 10">
+                    </div>
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider4.png" alt="VIVO Y04">
+                    </div>
+                    <div class="intro-slide">
+                        <img src="assets/images/demos/demo-4/slider/slider5.png" alt="ZTE BLADE A35">
                     </div>
                 </div>
+                <span class="slider-loader"></span>
             </div>
             <div class="container">
-                <h2 class="title text-center mb-3">Explore Popular Categories</h2>
+                <h2 class="title text-center mb-4">Explore Popular Categories</h2>
                 <div class="cat-blocks-container">
                     <div class="row">
-                        <?php
-                        $pdo = new Database();
-                        $conn = $pdo->open();
-                        try {
-                            $stmt = $conn->prepare("SELECT * FROM category");
-                            $stmt->execute();
-                            foreach ($stmt as $category) {
-                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                $image_name = $slug . '.jpg';
-                                $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/category-default.jpg';
-                                echo '<div class="col-6 col-sm-4 col-lg-2">
-                                    <a href="category.php?slug='.$slug.'" class="cat-block">
-                                        <figure>
-                                            <img src="'.$image_path.'" alt="'.$category['name'].'">
-                                        </figure>
-                                        <h3 class="cat-block-title">'.$category['name'].'</h3>
-                                    </a>
-                                </div>';
-                            }
-                        } catch(PDOException $e) {
-                            echo '<div class="col-12">Error loading categories</div>';
-                        }
-                        $pdo->close();
-                        ?>
+                        <?php echo renderCategoryBlocks($conn); ?>
                     </div>
                 </div>
             </div>
+            <div class="mb-4"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Promo banners will be dynamically loaded here -->
+                </div>
+            </div>
+            <div class="mb-3"></div>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">
-                        <div class="banner banner-overlay">
+                        <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
                                 <img src="assets/images/demos/demo-4/banners/banner-1.png" alt="Banner">
                             </a>
                             <div class="banner-content">
-                                <h4 class="banner-subtitle">Smart Offer</h4>
-                                <h3 class="banner-title">Save $150 <br><strong>on Samsung Galaxy Note9</strong></h3>
-                                <a href="#" class="btn btn-primary">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                <h4 class="banner-subtitle"><a href="#">Smart Offer</a></h4>
+                                <h3 class="banner-title"><a href="#">Save ₦150 <strong>on Samsung <br>Galaxy Note9</strong></a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="banner banner-overlay">
+                        <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
                                 <img src="assets/images/demos/demo-4/banners/banner-2.jpg" alt="Banner">
                             </a>
                             <div class="banner-content">
-                                <h4 class="banner-subtitle">Time Deals</h4>
-                                <h3 class="banner-title"><strong>Bose SoundSport</strong> <br>Time Deal -30%</h3>
-                                <a href="#" class="btn btn-primary">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                <h4 class="banner-subtitle"><a href="#">Time Deals</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>Bose SoundSport</strong> <br>Time Deal -30%</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4">
-                        <div class="banner banner-overlay">
+                        <div class="banner banner-overlay banner-overlay-light">
                             <a href="#">
                                 <img src="assets/images/demos/demo-4/banners/banner-3.png" alt="Banner">
                             </a>
                             <div class="banner-content">
-                                <h4 class="banner-subtitle">Clearance</h4>
-                                <h3 class="banner-title"><strong>GoPro - Fusion 360</strong> <br>Save $70</h3>
-                                <a href="#" class="btn btn-primary">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                <h4 class="banner-subtitle"><a href="#">Clearance</a></h4>
+                                <h3 class="banner-title"><a href="#"><strong>GoPro - Fusion 360</strong> <br>Save ₦70</a></h3>
+                                <a href="category.php?category=all" class="banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -760,172 +971,308 @@
             </div>
             <div class="container new-arrivals">
                 <div class="heading heading-flex mb-3">
-                    <h2 class="title">New Arrivals</h2>
+                    <div class="heading-left">
+                        <h2 class="title">New Arrivals</h2>
+                    </div>
+                    <div class="heading-right">
+                        <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="new-all-link" data-toggle="tab" href="#new-all-tab" role="tab" aria-controls="new-all-tab" aria-selected="true">All</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="new-all-tab">
-                        <div class="owl-carousel owl-theme carousel-with-shadow" data-toggle="owl" 
+                <div class="tab-content tab-content-carousel just-action-icons-sm">
+                    <div class="tab-pane p-0 fade show active" id="new-all-tab" role="tabpanel" aria-labelledby="new-all-link">
+                        <div class="owl-carousel owl-theme owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
                             data-owl-options='{
-                                "nav": true,
+                                "nav": true, 
                                 "dots": true,
-                                "margin": 10,
+                                "margin": 5,
                                 "loop": false,
-                                "responsive": {"0": {"items": 1}, "576": {"items": 2}, "768": {"items": 3}, "992": {"items": 4}}
+                                "responsive": {
+                                    "0": {"items": 2},
+                                    "400": {"items": 2},
+                                    "576": {"items": 3},
+                                    "768": {"items": 4},
+                                    "992": {"items": 5},
+                                    "1200": {"items": 6}
+                                }
                             }'>
                             <?php
-                            $pdo = new Database();
-                            $conn = $pdo->open();
-                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 12");
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 15");
                             $stmt->execute();
-                            foreach ($stmt as $product) {
-                                echo '<div class="product">
-                                    <figure class="product-media">
-                                        <a href="product.php?slug='.htmlspecialchars($product['slug']).'">
-                                            <img src="images/'.htmlspecialchars($product['photo']).'" alt="'.htmlspecialchars($product['name']).'">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart">Add to Cart</a>
+                            $products = $stmt->fetchAll();
+                            $productGroups = array_chunk($products, 5);
+                            foreach ($productGroups as $group) {
+                                echo '<div class="products-slide d-flex">';
+                                foreach ($group as $product) {
+                                    $image_url = !empty($product['photo']) 
+                                        ? htmlspecialchars($product['photo']) 
+                                        : $default_image;
+                                    echo '<div class="product" style="width: 20%; flex: 0 0 20%; padding: 0 10px;">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"></a>
+                                            </div>
+                                            <div class="product-action">
+                                                <a href="#" class="btn-product btn-cart" title="Add to cart">Add to Cart</a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="ratings-text">( 5 Reviews )</span>
+                                            </div>
                                         </div>
-                                    </figure>
-                                    <div class="product-body">
-                                        <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                        <div class="product-price">$'.number_format($product['price'], 2).'</div>
-                                    </div>
-                                </div>';
+                                    </div>';
+                                }
+                                echo '</div>';
                             }
-                            $pdo->close();
                             ?>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="mb-6"></div>
             <div class="container">
-                <div class="cta cta-border" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                <div class="cta cta-border mb-5" style="background-image: url(assets/images/demos/demo-4/bg-1.jpg);">
+                    <img src="assets/images/demos/demo-4/camera.png" alt="camera" class="cta-img">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <div class="cta-content">
                                 <div class="cta-text text-right text-white">
                                     <p>Shop Today's Deals <br><strong>Awesome Made Easy. HERO7 Black</strong></p>
                                 </div>
-                                <a href="#" class="btn btn-primary"><span>Shop Now - $429.99</span><i class="icon-long-arrow-right"></i></a>
+                                <a href="category.php?category=all" class="btn btn-primary btn-round"><span>Shop Now - ₦429.99</span><i class="icon-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <div class="heading text-center mb-3">
-                    <h2 class="title">Deals & Outlet</h2>
-                    <p class="title-desc">Today's deal and more</p>
-                </div>
-                <div class="row">
-                    <?php
-                    $pdo = new Database();
-                    $conn = $pdo->open();
-                    $stmt = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 2");
-                    $stmt->execute();
-                    $deals = $stmt->fetchAll();
-                    if (isset($deals[0])) {
-                        $product = $deals[0];
-                        echo '<div class="col-lg-6 deal-col">
-                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product['photo']).'\');">
-                                <div class="deal-top">
-                                    <h2>Deal of the Day</h2>
-                                    <h4>Limited quantities</h4>
-                                </div>
-                                <div class="deal-content">
-                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                    <div class="product-price">
-                                        <span class="new-price">$'.number_format($product['price'] * 0.9, 2).'</span>
-                                        <span class="old-price">Was $'.number_format($product['price'], 2).'</span>
-                                    </div>
-                                    <a href="product.php?slug='.htmlspecialchars($product['slug']).'" class="btn btn-primary">Shop Now <i class="icon-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>';
-                    }
-                    if (isset($deals[1])) {
-                        $product = $deals[1];
-                        echo '<div class="col-lg-6 deal-col">
-                            <div class="deal" style="background-image: url(\'images/'.htmlspecialchars($product['photo']).'\');">
-                                <div class="deal-top">
-                                    <h2>Exclusive Offer</h2>
-                                    <h4>Sign in to save</h4>
-                                </div>
-                                <div class="deal-content">
-                                    <h3 class="product-title"><a href="product.php?slug='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
-                                    <div class="product-price">
-                                        <span class="new-price">$'.number_format($product['price'] * 0.85, 2).'</span>
-                                    </div>
-                                    <a href="login.html" class="btn btn-primary">Sign In <i class="icon-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>';
-                    }
-                    $pdo->close();
-                    ?>
-                </div>
-                <div class="more-container text-center mt-3">
-                    <a href="category.php?deal=1" class="btn btn-primary">Shop More Deals <i class="icon-long-arrow-right"></i></a>
-                </div>
+            <div class="more-container text-center mt-1 mb-5">
+                <a href="category.php?category=all" class="btn btn-outline-dark-2 btn-round btn-more"><span>Shop more Outlet deals</span><i class="icon-long-arrow-right"></i></a>
             </div>
+            <div class="bg-light pt-5 pb-6">
+                <div class="container trending-products">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Trending Products</h2>
+                        </div>
+                        <div class="heading-right">
+                            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="trending-top-link" data-toggle="tab" href="#trending-top-tab" role="tab" aria-controls="trending-top-tab" aria-selected="true">Top Rated</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-best-link" data-toggle="tab" href="#trending-best-tab" role="tab">Best Selling</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="trending-sale-link" data-toggle="tab" href="#trending-sale-tab" role="tab">On Sale</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5col d-none d-xl-block">
+                            <div class="banner banner-overlay banner-overlay-light">
+                                <a href="category.php">
+                                    <img src="images/Banner.jpg" alt="Banner">
+                                </a>
+                                <div class="banner-content">
+                                    <h3 class="banner-title text-white"><a href="category.php">New Collection</a></h3>
+                                    <h4 class="banner-subtitle text-white">Up to 30% Off</h4>
+                                    <a href="category.php?category=all" class="banner-link">Shop Now <i class="icon-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4-5col">
+                            <div class="tab-content tab-content-carousel just-action-icons-sm">
+                                <div class="tab-pane p-0 fade show active" id="trending-top-tab" role="tabpanel" aria-labelledby="trending-top-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 5,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT * FROM products ORDER BY counter DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $trending = $stmt->fetchAll();
+                                        foreach ($trending as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="tab-pane p-0 fade" id="trending-best-tab" role="tabpanel" aria-labelledby="trending-best-link">
+                                    <div class="owl-carousel owl-full carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                        data-owl-options='{
+                                            "nav": true, 
+                                            "dots": true,
+                                            "margin": 5,
+                                            "loop": false,
+                                            "responsive": {
+                                                "0": {"items": 2},
+                                                "400": {"items": 2},
+                                                "576": {"items": 3},
+                                                "768": {"items": 4},
+                                                "992": {"items": 5},
+                                                "1200": {"items": 6}
+                                            }
+                                        }'>
+                                        <?php
+                                        $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                                        $stmt = $conn->prepare("SELECT p.* FROM products p JOIN details d ON p.id = d.product_id GROUP BY p.id ORDER BY SUM(d.quantity) DESC LIMIT 8");
+                                        $stmt->execute();
+                                        $bestSelling = $stmt->fetchAll();
+                                        foreach ($bestSelling as $product) {
+                                            $image_url = !empty($product['photo']) 
+                                                ? htmlspecialchars($product['photo']) 
+                                                : $default_image;
+                                            echo '<div class="product">
+                                                <figure class="product-media">
+                                                    <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                                    <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                                    <div class="ratings-container">
+                                                        <div class="ratings">
+                                                            <div class="ratings-val" style="width: '.rand(80,100).'%;"></div>
+                                                        </div>
+                                                        <span class="ratings-text">( '.rand(5,50).' Reviews )</span>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container for-you">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Recommendation For You</h2>
+                        </div>
+                        <div class="heading-right">
+                            <a href="category.php" class="title-link">View All Recommendation <i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="products">
+                        <div class="row justify-content-center">
+                            <?php
+                            $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                            $stmt = $conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT 6");
+                            $stmt->execute();
+                            $recommended = $stmt->fetchAll();
+                            foreach ($recommended as $product) {
+                                $image_url = !empty($product['photo']) 
+                                    ? htmlspecialchars($product['photo']) 
+                                    : $default_image;
+                                echo '<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="product.php?product='.htmlspecialchars($product['slug']).'">
+                                                <img src="'.$image_url.'" alt="'.htmlspecialchars($product['name']).'" class="product-image">
+                                            </a>
+                                        </figure>
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.php?product='.htmlspecialchars($product['slug']).'">'.htmlspecialchars($product['name']).'</a></h3>
+                                            <div class="product-price">₦'.number_format($product['price'], 2).'</div>
+                                        </div>
+                                    </div>
+                                </div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row no-gutters bg-white newsletter-popup-content">
+                                <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                                    <div class="banner-content text-center">
+                                        <img src="images/logoh.png" class="logo" alt="logo" width="60" height="15">
+                                        <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                                        <p>Subscribe to Bailord newsletter to receive timely updates from your favorite products.</p>
+                                        <form action="#">
+                                            <div class="input-group input-group-round">
+                                                <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
+                                                <div class="input-group-append">
+                                                    <button class="btn" type="submit"><span>go</span></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="custom-control custom-checkbox" style="text-align: left;">
+                                            <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                            <label class="custom-control-label" for="register-policy-2">Do not show this again</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2-5col col-lg-5">
+                                    <img src="images/img-1.jpg" class="newsletter-img" alt="newsletter">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/js/bootstrap.bundle.min.js"></script>
+                <script src="assets/js/jquery.hoverIntent.min.js"></script>
+                <script src="assets/js/jquery.waypoints.min.js"></script>
+                <script src="assets/js/superfish.min.js"></script>
+                <script src="assets/js/owl.carousel.min.js"></script>
+                <script src="assets/js/bootstrap-input-spinner.js"></script>
+                <script src="assets/js/jquery.plugin.min.js"></script>
+                <script src="assets/js/jquery.magnific-popup.min.js"></script>
+                <script src="assets/js/jquery.countdown.min.js"></script>
+                <script src="assets/js/main.js"></script>
+                <script src="assets/js/demos/demo-4.js"></script>
         </main>
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/owl.carousel.min.js"></script>
-        <script src="assets/js/jquery.magnific-popup.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Mobile menu toggle
-                const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-                const mobileMenuContainer = document.querySelector('.mobile-menu-container');
-                const mobileMenuClose = document.querySelector('.mobile-menu-close');
-                
-                mobileMenuToggle?.addEventListener('click', () => {
-                    mobileMenuContainer.classList.toggle('visible');
-                });
-                
-                mobileMenuClose?.addEventListener('click', () => {
-                    mobileMenuContainer.classList.remove('visible');
-                });
-                
-                // Mobile search toggle
-                const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-                const mobileSearchForm = document.querySelector('.mobile-search');
-                
-                mobileSearchToggle?.addEventListener('click', () => {
-                    mobileSearchForm.classList.toggle('visible');
-                });
-                
-                // Mobile menu sub-items
-                document.querySelectorAll('.mobile-nav .mobile-menu > li > a').forEach(item => {
-                    if (item.nextElementSibling?.tagName === 'UL') {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            item.parentElement.classList.toggle('active');
-                        });
-                    }
-                });
-                
-                // Close dropdowns on outside click
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
-                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                            menu.style.display = 'none';
-                        });
-                    }
-                });
-                
-                // Prevent double-tap zoom
-                let lastTouchEnd = 0;
-                document.addEventListener('touchend', (e) => {
-                    const now = new Date().getTime();
-                    if (now - lastTouchEnd <= 300) {
-                        e.preventDefault();
-                    }
-                    lastTouchEnd = now;
-                }, false);
-            });
-        </script>
-    </body>
-</html>
+    </div>
+</body>
+</html>"
