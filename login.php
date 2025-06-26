@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Login and Signup - Bailord</title>
+    <title>Login - Bailord</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
@@ -144,20 +144,14 @@
             border-radius: 1.2rem;
             width: 100%;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            transform: scale(0);
-            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-            opacity: 0;
+            transform: scale(1);
+            opacity: 1;
             min-height: 80%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .container.sign-in .form.sign-in,
-        .container.sign-up .form.sign-up {
-            transform: scale(1);
-            opacity: 1;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
         }
 
         .form .logo {
@@ -290,31 +284,15 @@
         .twitter-btn { background: var(--twitter-color); }
         .insta-btn { background: var(--insta-color); }
 
-        .pointer {
-            cursor: pointer;
-        }
-
-        .content-row {
-            display: none;
-        }
-
         .callout {
             padding: 1rem;
             margin: 1rem 0;
             border-radius: 0.5rem;
             text-align: center;
             font-size: 0.9rem;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transition-delay: 0.5s;
-            width: 100%;
-        }
-
-        .container.sign-in .form.sign-in .callout,
-        .container.sign-up .form.sign-up .callout {
             opacity: 1;
             transform: translateY(0);
+            width: 100%;
         }
 
         .callout-danger {
@@ -463,7 +441,7 @@
     </style>
 </head>
 <body>
-<div id="container" class="container sign-in">
+<div id="container" class="container">
     <div class="phone-frame">
         <div class="phone-screen">
             <!-- FORM SECTION -->
@@ -472,8 +450,8 @@
                 <div class="col sign-in">
                     <div class="form-wrapper">
                         <div class="form sign-in">
-                            <?php if (file_exists('images/logoh.png')): ?>
-                                <img src="images/logoh.png" alt="Bailord Logo" class="logo">
+                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
+                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
                             <?php else: ?>
                                 <span class="callout callout-danger">Logo image not found</span>
                             <?php endif; ?>
@@ -501,7 +479,7 @@
                                 <p><a href="password_forgot.php">Forgot password?</a></p>
                                 <p>
                                     <span>Don't have an account?</span>
-                                    <a href="#" onclick="toggle()" class="pointer">Sign up here</a>
+                                    <a href="signup.php">Sign up here</a>
                                 </p>
                                 <p><a href="index.php"><i class='bx bx-home'></i> Back to Home</a></p>
                                 <div class="social-login">
@@ -515,74 +493,10 @@
                     </div>
                 </div>
                 <!-- END SIGN IN -->
-                <!-- SIGN UP -->
-                <div class="col sign-up">
-                    <div class="form-wrapper">
-                        <div class="form sign-up">
-                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
-                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
-                            <?php else: ?>
-                                <span class="callout callout-danger">Logo image not found</span>
-                            <?php endif; ?>
-                            <h2>Join Bailord</h2>
-                            <?php
-                            if(isset($_SESSION['error'])){
-                                echo "<div class='callout callout-danger'><p>".$_SESSION['error']."</p></div>";
-                                unset($_SESSION['error']);
-                            }
-                            if(isset($_SESSION['success'])){
-                                echo "<div class='callout callout-success'><p>".$_SESSION['success']."</p></div>";
-                                unset($_SESSION['success']);
-                            }
-                            ?>
-                            <form action="register.php" method="POST">
-                                <div class="input-group">
-                                    <i class='bx bxs-user'></i>
-                                    <input type="text" name="firstname" placeholder="First Name" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <i class='bx bxs-user'></i>
-                                    <input type="text" name="lastname" placeholder="Last Name" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <i class='bx bx-mail-send'></i>
-                                    <input type="email" name="email" placeholder="Email" value="<?php echo (isset($_SESSION['email'])) ? $_SESSION['email'] : '' ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <i class='bx bxs-lock-alt'></i>
-                                    <input type="password" name="password" placeholder="Password" required>
-                                </div>
-                                <div class="input-group">
-                                    <i class='bx bxs-lock-alt'></i>
-                                    <input type="password" name="repassword" placeholder="Retype Password" required>
-                                </div>
-                                <button href="signup.php" >Sign Up</button>
-                                <p>
-                                    <span>Already have an account?</span>
-                                    <a href="#" onclick="toggle()" class="pointer">Sign in here</a>
-                                </p>
-                                <p><a href="index.php"><i class='bx bx-home'></i> Back to Home</a></p>
-                                <div class="social-login">
-                                    <button class="social-btn facebook-btn" title="Sign up with Facebook"><i class='bx bxl-facebook'></i></button>
-                                    <button class="social-btn google-btn" title="Sign up with Google"><i class='bx bxl-google'></i></button>
-                                    <button class="social-btn twitter-btn" title="Sign up with Twitter"><i class='bx bxl-twitter'></i></button>
-                                    <button class="social-btn insta-btn" title="Sign up with Instagram"><i class='bx bxl-instagram'></i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- END SIGN UP -->
             </div>
             <!-- END FORM SECTION -->
             <!-- CONTENT SECTION -->
             <div class="row content-row" style="display: none;">
-                <!-- SIGN UP CONTENT -->
-                <div class="col">
-                    <div class="text sign-up">
-                        <h2>Join with us</h2>
-                    </div>
-                </div>
                 <!-- SIGN IN CONTENT -->
                 <div class="col">
                     <div class="text sign-in">
@@ -597,16 +511,10 @@
 </div>
 
 <script>
-    let container = document.getElementById('container');
-
-    function toggle() {
-        container.classList.toggle('sign-in');
-        container.classList.toggle('sign-up');
-    }
-
-    setTimeout(() => {
+    document.addEventListener('DOMContentLoaded', () => {
+        let container = document.getElementById('container');
         container.classList.add('sign-in');
-    }, 200);
+    });
 
     // Note: Social login buttons are placeholders; implement actual functionality as needed
 </script>
