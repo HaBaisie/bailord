@@ -1,4 +1,31 @@
 <?php include 'includes/session.php'; ?>
+<?php
+// Define the renderCategoryBlocks function to ensure proper image and name rendering
+function renderCategoryBlocks($conn) {
+    $default_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+    $output = '';
+    try {
+        $stmt = $conn->prepare("SELECT * FROM category");
+        $stmt->execute();
+        $categories = $stmt->fetchAll();
+        foreach ($categories as $category) {
+            $slug = !empty($category['cat_slug']) ? htmlspecialchars($category['cat_slug']) : strtolower(str_replace(' ', '-', $category['name']));
+            $image = !empty($category['photo']) ? htmlspecialchars($category['photo']) : $default_image;
+            $name = htmlspecialchars($category['name']);
+            $output .= '
+                <div class="cat-block">
+                    <a href="category.php?category=' . $slug . '">
+                        <img src="' . $image . '" alt="' . $name . '" class="cat-block-img" loading="lazy">
+                    </a>
+                    <h3 class="cat-block-title">' . $name . '</h3>
+                </div>';
+        }
+    } catch(PDOException $e) {
+        $output .= '<div class="cat-block"><h3 class="cat-block-title">Error loading categories</h3></div>';
+    }
+    return $output;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,44 +458,87 @@
         .cat-blocks-container .row {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 15px;
+            gap: 20px;
+            justify-items: center;
         }
 
         .cat-block {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #f8f8f8 100%);
+            background: var(--accent-color);
             border-radius: 12px;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid var(--gradient);
-            position: relative;
+            border: 1px solid var(--neutral-medium);
+            min-height: 220px;
+            width: 100%;
+            max-width: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             overflow: hidden;
         }
 
         .cat-block:hover {
-            transform: translateY(-5px) rotate(2deg);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .cat-block img {
+        .cat-block a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .cat-block-img {
             width: 100%;
-            height: 180px;
+            max-height: 150px;
+            aspect-ratio: 1/1;
             object-fit: contain;
             border-radius: 8px;
-            margin-bottom: 15px;
-            transition: transform 0.3s;
+            margin-bottom: 10px;
+            background: url('https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg') center/contain no-repeat;
         }
 
-        .cat-block:hover img {
-            transform: scale(1.1);
+        .cat-block-img.error {
+            background: url('https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg') center/contain no-repeat;
+        }
+
+        .cat-block:hover .cat-block-img {
+            transform: scale(1.05);
         }
 
         .cat-block-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--text-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .cat-blocks-container .row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 575px) {
+            .cat-blocks-container .row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cat-block {
+                max-width: 150px;
+                min-height: 180px;
+            }
+            .cat-block-img {
+                max-height: 120px;
+            }
+            .cat-block-title {
+                font-size: 14px;
+            }
         }
 
         /* Products */
@@ -1002,6 +1072,14 @@
             // Lazy Load Images
             document.querySelectorAll('img').forEach(img => {
                 img.setAttribute('loading', 'lazy');
+            });
+
+            // Handle Broken Category Images
+            document.querySelectorAll('.cat-block-img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.classList.add('error');
+                    this.src = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
+                });
             });
 
             // Smooth Scroll for Anchor Links
