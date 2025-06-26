@@ -1,32 +1,31 @@
 <?php include 'includes/session.php'; ?>
 
 <?php
-// Render category blocks function from the first file
+// Render category blocks function
 function renderCategoryBlocks($conn) {
-    $default_image = 'category-default.jpg';
+    $default_category_image = 'images/noimage.jpg'; // Local fallback image
     $output = '';
     try {
-        $stmt = $conn->prepare("SELECT * FROM category");
+        $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
         $stmt->execute();
-        foreach ($stmt->fetchAll() as $category) {
-            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-            $image_name = $slug . '.jpg';
-            $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/' . $default_image;
+        $categories = $stmt->fetchAll();
+        foreach ($categories as $category) {
+            $slug = !empty($category['cat_slug']) ? htmlspecialchars($category['cat_slug']) : strtolower(str_replace(' ', '-', $category['name']));
+            // Construct image path using category name
+            $image_url = 'images/' . strtolower(str_replace(' ', '_', $category['name'])) . '.jpg';
+            // Check if the image exists, otherwise use default
+            $image_path = __DIR__ . '/' . $image_url;
+            $image_url = file_exists($image_path) ? $image_url : $default_category_image;
             $output .= '
-                <div class="col-6 col-sm-4 col-lg-2">
-                    <a href="category.php?category='.htmlspecialchars($slug).'" class="cat-block">
-                        <figure>
-                            <span>
-                                <img src="'.htmlspecialchars($image_path).'" alt="'.htmlspecialchars($category['name']).' Category" loading="lazy">
-                            </span>
-                        </figure>
-                        <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
+                <div class="cat-block">
+                    <a href="category.php?category=' . $slug . '">
+                        <img src="' . $image_url . '" alt="' . htmlspecialchars($category['name']) . '" loading="lazy">
+                        <h3 class="cat-block-title">' . htmlspecialchars($category['name']) . '</h3>
                     </a>
                 </div>';
         }
     } catch(PDOException $e) {
-        $output .= '<div class="col-12 text-center">Categories temporarily unavailable</div>';
-        error_log("Category blocks fetch failed: " . $e->getMessage());
+        $output .= '<div class="cat-block"><a href="#">Error loading categories</a></div>';
     }
     return $output;
 }
@@ -463,71 +462,91 @@ function renderCategoryBlocks($conn) {
         }
 
         .cat-blocks-container .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -15px;
-            margin-left: -15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            justify-items: center;
         }
 
         .cat-block {
+            background: var(--accent-color);
+            border-radius: 10px;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 240px;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .cat-block:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .cat-block figure {
-            margin: 0;
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .cat-block img {
             width: 100%;
-            height: 140px;
+            height: 160px;
             object-fit: cover;
             border-radius: 8px;
+            margin-bottom: 15px;
             transition: transform 0.3s ease;
         }
 
         .cat-block:hover img {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .cat-block-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-dark);
             text-transform: capitalize;
-            margin: 10px 0 0;
-            line-height: 1.4;
+            margin: 0;
+            padding: 0 10px;
         }
 
         .cat-block a {
             text-decoration: none;
             color: inherit;
-            display: block;
         }
 
         /* Responsive Adjustments for Categories */
         @media (max-width: 991px) {
+            .cat-blocks-container .row {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+
+            .cat-block {
+                max-width: 220px;
+                min-height: 240px;
+            }
+
             .cat-block img {
-                height: 120px;
+                height: 140px;
             }
 
             .cat-block-title {
-                font-size: 15px;
+                font-size: 16px;
             }
         }
 
         @media (max-width: 575px) {
+            .cat-blocks-container .row {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+
+            .cat-block {
+                max-width: 180px;
+                min-height: 220px;
+            }
+
             .cat-block img {
-                height: 100px;
+                height: 120px;
             }
 
             .cat-block-title {
