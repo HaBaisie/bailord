@@ -6,11 +6,11 @@
 ?>
 <?php include 'includes/header.php'; ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login and Signup - Bailord</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <style>
         :root {
@@ -20,7 +20,7 @@
             --dark-blue: #191970; /* MidnightBlue */
             --black: #000000;
             --white: #ffffff;
-            --gray: #e6f0fa; /* Light blue-gray */
+            --gray: #F0F8FF; /* AliceBlue */
             --gray-2: #4682B4; /* SteelBlue for icons */
             --facebook-color: #4267B2;
             --google-color: #DB4437;
@@ -32,7 +32,7 @@
             --error-text: #1565C0; /* Blue800 */
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
         * {
             font-family: 'Poppins', sans-serif;
@@ -44,7 +44,15 @@
         html, body {
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--accent-blue), var(--secondary-color));
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-blue), var(--secondary-color));
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -58,16 +66,22 @@
 
         .phone-frame {
             position: relative;
-            width: 375px;
-            height: 600px;
-            background: #000;
+            width: 400px;
+            height: 640px;
+            background: linear-gradient(145deg, #2a2a2a, #000000);
             border-radius: 50px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.1);
             padding: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 8px solid var(--dark-blue);
+            animation: tilt 0.8s ease-out;
+        }
+
+        @keyframes tilt {
+            0% { transform: rotateY(10deg) rotateX(5deg); }
+            100% { transform: rotateY(0deg) rotateX(0deg); }
         }
 
         .phone-frame::before {
@@ -95,7 +109,7 @@
         .phone-screen {
             width: 100%;
             height: 100%;
-            background: var(--white);
+            background: var(--white) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="%23E0F0FF" stroke-width="1" stroke-opacity="0.2" d="M0 100L100 0M0 0L100 100"/></svg>') repeat;
             border-radius: 35px;
             overflow-y: auto;
             position: relative;
@@ -125,11 +139,11 @@
         }
 
         .form {
-            padding: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 1rem;
+            padding: 2rem;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
+            border-radius: 1.2rem;
             width: 100%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             transform: scale(0);
             transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
             opacity: 0;
@@ -137,6 +151,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
 
         .container.sign-in .form.sign-in,
@@ -145,10 +160,23 @@
             opacity: 1;
         }
 
+        .form .logo {
+            width: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
         .input-group {
             position: relative;
             width: 100%;
-            margin: 1.2rem 0;
+            margin: 1rem 0;
         }
 
         .input-group i {
@@ -156,24 +184,37 @@
             top: 50%;
             left: 1rem;
             transform: translateY(-50%);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--gray-2);
             transition: color 0.3s ease;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1.2rem 1.2rem 1.2rem 3.2rem;
-            font-size: 1.2rem;
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 1.1rem;
             background-color: var(--gray);
             border-radius: 0.5rem;
-            border: 0.125rem solid var(--white);
+            border: 1px solid transparent;
             outline: none;
-            transition: border 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-dark);
         }
 
-        .input-group input:focus {
-            border: 0.125rem solid var(--primary-color);
+        .input-group input:focus,
+        .input-group input:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+        }
+
+        .input-group input::placeholder {
+            color: var(--gray-2);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .input-group input:focus::placeholder {
+            transform: translateX(10px);
+            opacity: 0.5;
         }
 
         .form button {
@@ -182,21 +223,23 @@
             padding: 1rem;
             border-radius: 0.5rem;
             border: none;
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: var(--white);
-            font-size: 1.4rem;
+            font-size: 1.2rem;
+            font-weight: 600;
             outline: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
 
         .form button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .form p {
             margin: 0.8rem 0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--gray-2);
             text-align: center;
         }
@@ -204,7 +247,7 @@
         .form a {
             color: var(--primary-color);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.3s ease;
         }
 
@@ -212,6 +255,40 @@
             color: var(--secondary-color);
             text-decoration: underline;
         }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-btn i {
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .facebook-btn { background: var(--facebook-color); }
+        .google-btn { background: var(--google-color); }
+        .twitter-btn { background: var(--twitter-color); }
+        .insta-btn { background: var(--insta-color); }
 
         .pointer {
             cursor: pointer;
@@ -226,11 +303,12 @@
             margin: 1rem 0;
             border-radius: 0.5rem;
             text-align: center;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             opacity: 0;
             transform: translateY(15px);
             transition: opacity 0.5s ease, transform 0.5s ease;
             transition-delay: 0.5s;
+            width: 100%;
         }
 
         .container.sign-in .form.sign-in .callout,
@@ -264,7 +342,6 @@
                 height: 15px;
                 border-radius: 8px;
                 top: 6px;
-                background: var(--dark-blue);
             }
 
             .phone-frame::after {
@@ -272,7 +349,6 @@
                 top: 100px;
                 width: 2px;
                 height: 30px;
-                background: var(--dark-blue);
             }
 
             .phone-screen {
@@ -284,9 +360,18 @@
             }
 
             .form {
-                padding: 1rem;
+                padding: 1.2rem;
                 border-radius: 0.75rem;
                 min-height: auto;
+            }
+
+            .form .logo {
+                width: 80px;
+                margin-bottom: 1rem;
+            }
+
+            .form h2 {
+                font-size: 1.5rem;
             }
 
             .input-group {
@@ -299,17 +384,26 @@
             }
 
             .input-group i {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
 
             .form button {
-                padding: 0.7rem;
-                font-size: 1.2rem;
+                padding: 0.8rem;
+                font-size: 1.1rem;
             }
 
             .form p {
                 font-size: 0.85rem;
                 margin: 0.6rem 0;
+            }
+
+            .social-btn {
+                width: 35px;
+                height: 35px;
+            }
+
+            .social-btn i {
+                font-size: 1.3rem;
             }
 
             .callout {
@@ -327,22 +421,39 @@
                 padding: 10px;
             }
 
+            .form .logo {
+                width: 70px;
+            }
+
+            .form h2 {
+                font-size: 1.3rem;
+            }
+
             .input-group input {
                 padding: 0.8rem 0.8rem 0.8rem 2.6rem;
                 font-size: 0.95rem;
             }
 
             .input-group i {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
 
             .form button {
-                padding: 0.6rem;
-                font-size: 1.1rem;
+                padding: 0.7rem;
+                font-size: 1rem;
             }
 
             .form p {
                 font-size: 0.8rem;
+            }
+
+            .social-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .social-btn i {
+                font-size: 1.2rem;
             }
 
             .callout {
@@ -352,7 +463,7 @@
     </style>
 </head>
 <body>
-<div id="container" class="container">
+<div id="container" class="container sign-in">
     <div class="phone-frame">
         <div class="phone-screen">
             <!-- FORM SECTION -->
@@ -361,13 +472,19 @@
                 <div class="col sign-in">
                     <div class="form-wrapper">
                         <div class="form sign-in">
+                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
+                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
+                            <?php else: ?>
+                                <span class="callout callout-danger">Logo image not found</span>
+                            <?php endif; ?>
+                            <h2>Sign In</h2>
                             <?php
                             if(isset($_SESSION['error'])){
-                                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                                echo "<div class='callout callout-danger'><p>".$_SESSION['error']."</p></div>";
                                 unset($_SESSION['error']);
                             }
                             if(isset($_SESSION['success'])){
-                                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                                echo "<div class='callout callout-success'><p>".$_SESSION['success']."</p></div>";
                                 unset($_SESSION['success']);
                             }
                             ?>
@@ -380,17 +497,19 @@
                                     <i class='bx bxs-lock-alt'></i>
                                     <input type="password" name="password" placeholder="Password" required>
                                 </div>
-                                <button type="submit" name="login">Sign in</button>
-                                <p>
-                                    <b><a href="password_forgot.php">Forgot password?</a></b>
-                                </p>
+                                <button type="submit" name="login">Sign In</button>
+                                <p><a href="password_forgot.php">Forgot password?</a></p>
                                 <p>
                                     <span>Don't have an account?</span>
-                                    <b><a href="signup.php"><i class='bx bx-home'></i> Signup here</a></b>
+                                    <a href="#" onclick="toggle()" class="pointer">Sign up here</a>
                                 </p>
-                                <p>
-                                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                                </p>
+                                <p><a href="index.php"><i class='bx bx-home'></i> Back to Home</a></p>
+                                <div class="social-login">
+                                    <button class="social-btn facebook-btn" title="Sign in with Facebook"><i class='bx bxl-facebook'></i></button>
+                                    <button class="social-btn google-btn" title="Sign in with Google"><i class='bx bxl-google'></i></button>
+                                    <button class="social-btn twitter-btn" title="Sign in with Twitter"><i class='bx bxl-twitter'></i></button>
+                                    <button class="social-btn insta-btn" title="Sign in with Instagram"><i class='bx bxl-instagram'></i></button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -400,24 +519,30 @@
                 <div class="col sign-up">
                     <div class="form-wrapper">
                         <div class="form sign-up">
+                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
+                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
+                            <?php else: ?>
+                                <span class="callout callout-danger">Logo image not found</span>
+                            <?php endif; ?>
+                            <h2>Join Bailord</h2>
                             <?php
                             if(isset($_SESSION['error'])){
-                                echo "<div class='callout callout-danger text-center'><p>".$_SESSION['error']."</p></div>";
+                                echo "<div class='callout callout-danger'><p>".$_SESSION['error']."</p></div>";
                                 unset($_SESSION['error']);
                             }
                             if(isset($_SESSION['success'])){
-                                echo "<div class='callout callout-success text-center'><p>".$_SESSION['success']."</p></div>";
+                                echo "<div class='callout callout-success'><p>".$_SESSION['success']."</p></div>";
                                 unset($_SESSION['success']);
                             }
                             ?>
                             <form action="register.php" method="POST">
                                 <div class="input-group">
                                     <i class='bx bxs-user'></i>
-                                    <input type="text" name="firstname" placeholder="Firstname" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
+                                    <input type="text" name="firstname" placeholder="First Name" value="<?php echo (isset($_SESSION['firstname'])) ? $_SESSION['firstname'] : '' ?>" required>
                                 </div>
                                 <div class="input-group">
                                     <i class='bx bxs-user'></i>
-                                    <input type="text" name="lastname" placeholder="Lastname" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
+                                    <input type="text" name="lastname" placeholder="Last Name" value="<?php echo (isset($_SESSION['lastname'])) ? $_SESSION['lastname'] : '' ?>" required>
                                 </div>
                                 <div class="input-group">
                                     <i class='bx bx-mail-send'></i>
@@ -429,16 +554,20 @@
                                 </div>
                                 <div class="input-group">
                                     <i class='bx bxs-lock-alt'></i>
-                                    <input type="password" name="repassword" placeholder="Retype password" required>
+                                    <input type="password" name="repassword" placeholder="Retype Password" required>
                                 </div>
-                                <button type="submit" name="signup">Sign up</button>
+                                <button type="submit" name="signup">Sign Up</button>
                                 <p>
                                     <span>Already have an account?</span>
-                                    <b onclick="toggle()" class="pointer">Sign in here</b>
+                                    <a href="#" onclick="toggle()" class="pointer">Sign in here</a>
                                 </p>
-                                <p>
-                                    <b><a href="index.php"><i class='bx bx-home'></i> Home</a></b>
-                                </p>
+                                <p><a href="index.php"><i class='bx bx-home'></i> Back to Home</a></p>
+                                <div class="social-login">
+                                    <button class="social-btn facebook-btn" title="Sign up with Facebook"><i class='bx bxl-facebook'></i></button>
+                                    <button class="social-btn google-btn" title="Sign up with Google"><i class='bx bxl-google'></i></button>
+                                    <button class="social-btn twitter-btn" title="Sign up with Twitter"><i class='bx bxl-twitter'></i></button>
+                                    <button class="social-btn insta-btn" title="Sign up with Instagram"><i class='bx bxl-instagram'></i></button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -447,7 +576,7 @@
             </div>
             <!-- END FORM SECTION -->
             <!-- CONTENT SECTION -->
-            <div class="row content-row">
+            <div class="row content-row" style="display: none;">
                 <!-- SIGN UP CONTENT -->
                 <div class="col">
                     <div class="text sign-up">
@@ -478,6 +607,8 @@
     setTimeout(() => {
         container.classList.add('sign-in');
     }, 200);
+
+    // Note: Social login buttons are placeholders; implement actual functionality as needed
 </script>
 
 <?php include 'includes/scripts.php'; ?>
