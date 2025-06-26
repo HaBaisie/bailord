@@ -556,7 +556,7 @@
                                     <i class='bx bxs-lock-alt'></i>
                                     <input type="password" name="repassword" placeholder="Retype Password" required>
                                 </div>
-                                <button href="signup.php" name="signup">Sign Up</button>
+                                <button href="signup.php" >Sign Up</button>
                                 <p>
                                     <span>Already have an account?</span>
                                     <a href="#" onclick="toggle()" class="pointer">Sign in here</a>
