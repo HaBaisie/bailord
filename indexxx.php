@@ -1,4 +1,37 @@
 <?php include 'includes/session.php'; ?>
+
+<?php
+// Render category blocks function from the first file
+function renderCategoryBlocks($conn) {
+    $default_image = 'category-default.jpg';
+    $output = '';
+    try {
+        $stmt = $conn->prepare("SELECT * FROM category");
+        $stmt->execute();
+        foreach ($stmt->fetchAll() as $category) {
+            $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
+            $image_name = $slug . '.jpg';
+            $image_path = file_exists('images/' . $image_name) ? 'images/' . $image_name : 'images/' . $default_image;
+            $output .= '
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <a href="category.php?category='.htmlspecialchars($slug).'" class="cat-block">
+                        <figure>
+                            <span>
+                                <img src="'.htmlspecialchars($image_path).'" alt="'.htmlspecialchars($category['name']).' Category" loading="lazy">
+                            </span>
+                        </figure>
+                        <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
+                    </a>
+                </div>';
+        }
+    } catch(PDOException $e) {
+        $output .= '<div class="col-12 text-center">Categories temporarily unavailable</div>';
+        error_log("Category blocks fetch failed: " . $e->getMessage());
+    }
+    return $output;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -430,27 +463,16 @@
         }
 
         .cat-blocks-container .row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            justify-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
         }
 
         .cat-block {
-            background: var(--accent-color);
-            border-radius: 12px;
             text-align: center;
             padding: 15px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--neutral-medium);
-            width: 100%;
-            max-width: 220px;
-            min-height: 240px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
         }
 
         .cat-block:hover {
@@ -458,12 +480,18 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
+        .cat-block figure {
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
         .cat-block img {
             width: 100%;
-            max-height: 140px;
-            object-fit: contain;
+            height: 140px;
+            object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 10px;
             transition: transform 0.3s ease;
         }
 
@@ -476,42 +504,20 @@
             font-weight: 600;
             color: var(--text-dark);
             text-transform: capitalize;
-            margin: 0;
-            padding: 0 10px;
+            margin: 10px 0 0;
             line-height: 1.4;
-            word-wrap: break-word;
         }
 
-        .cat-block-link {
-            display: inline-block;
-            padding: 8px 15px;
-            background: var(--primary-color);
-            color: var(--text-light);
+        .cat-block a {
             text-decoration: none;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .cat-block-link:hover {
-            background: #e64a19;
+            color: inherit;
+            display: block;
         }
 
         /* Responsive Adjustments for Categories */
         @media (max-width: 991px) {
-            .cat-blocks-container .row {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            }
-
-            .cat-block {
-                max-width: 200px;
-                min-height: 220px;
-            }
-
             .cat-block img {
-                max-height: 120px;
+                height: 120px;
             }
 
             .cat-block-title {
@@ -520,17 +526,8 @@
         }
 
         @media (max-width: 575px) {
-            .cat-blocks-container .row {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            }
-
-            .cat-block {
-                max-width: 160px;
-                min-height: 200px;
-            }
-
             .cat-block img {
-                max-height: 100px;
+                height: 100px;
             }
 
             .cat-block-title {
@@ -1226,25 +1223,10 @@
                 <div class="cat-blocks-container">
                     <div class="row">
                         <?php
-                        $default_category_image = 'https://res.cloudinary.com/hipnfoaz7/image/upload/v1234567890/noimage.jpg';
-                        try {
-                            $stmt = $conn->prepare("SELECT * FROM category LIMIT 6");
-                            $stmt->execute();
-                            $categories = $stmt->fetchAll();
-                            foreach ($categories as $category) {
-                                $slug = !empty($category['cat_slug']) ? $category['cat_slug'] : strtolower(str_replace(' ', '-', $category['name']));
-                                $image_url = !empty($category['image']) ? htmlspecialchars($category['image']) : $default_category_image;
-                                echo '<div class="cat-block">
-                                    <a href="category.php?category='.$slug.'">
-                                        <img src="'.$image_url.'" alt="'.htmlspecialchars($category['name']).'" loading="lazy">
-                                        <h3 class="cat-block-title">'.htmlspecialchars($category['name']).'</h3>
-                                        <span class="cat-block-link">Shop Now</span>
-                                    </a>
-                                </div>';
-                            }
-                        } catch(PDOException $e) {
-                            echo '<div class="cat-block"><a href="#">Error loading categories</a></div>';
-                        }
+                        $pdo = new Database();
+                        $conn = $pdo->open();
+                        echo renderCategoryBlocks($conn);
+                        $conn = null;
                         ?>
                     </div>
                 </div>
