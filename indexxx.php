@@ -335,6 +335,11 @@ if (file_exists('includes/session.php')) {
             position: relative;
         }
 
+        .slider-wrapper {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
         .intro-slider .intro-slide {
             position: relative;
             display: flex;
@@ -344,7 +349,7 @@ if (file_exists('includes/session.php')) {
 
         .intro-slider .intro-slide img {
             width: 100%;
-            max-height: 400px;
+            max-height: 300px;
             object-fit: cover;
             border-radius: 8px;
             image-rendering: -webkit-optimize-contrast;
@@ -915,6 +920,15 @@ if (file_exists('includes/session.php')) {
                 width: 200px;
             }
 
+            .slider-wrapper {
+                max-width: 810px;
+                margin: 0 auto;
+            }
+
+            .intro-slider .intro-slide img {
+                max-height: 120px;
+            }
+
             .cat-blocks-container .row {
                 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             }
@@ -1360,29 +1374,31 @@ if (file_exists('includes/session.php')) {
                         <a href="category.php?category=audio" class="banner-link">Shop Now</a>
                     </div>
                 </div>
-                <div class="intro-slider owl-carousel owl-theme owl-nav-inside" data-toggle="owl" 
-                    data-owl-options='{
-                        "dots": true,
-                        "nav": true,
-                        "items": 1,
-                        "margin": 10,
-                        "autoplay": true,
-                        "autoplayTimeout": 5000
-                    }'>
-                    <?php
-                    $slides = [
-                        ['src' => 'assets/images/demos/demo-4/slider/slider1.png', 'alt' => 'ITEL P70'],
-                        ['src' => 'assets/images/demos/demo-4/slider/slider2.png', 'alt' => 'TECNO POP 10C'],
-                        ['src' => 'assets/images/demos/demo-4/slider/slider3.png', 'alt' => 'TECNO POP 10']
-                    ];
-                    foreach ($slides as $slide) {
-                        if (file_exists($slide['src'])) {
-                            echo '<div class="intro-slide"><img src="'.htmlspecialchars($slide['src']).'" alt="'.htmlspecialchars($slide['alt']).'"></div>';
-                        } else {
-                            echo '<div class="intro-slide"><span class="error-message">Slider image not found: '.htmlspecialchars($slide['alt']).'</span></div>';
+                <div class="slider-wrapper">
+                    <div class="intro-slider owl-carousel owl-theme owl-nav-inside" data-toggle="owl" 
+                        data-owl-options='{
+                            "dots": true,
+                            "nav": true,
+                            "items": 1,
+                            "margin": 10,
+                            "autoplay": true,
+                            "autoplayTimeout": 5000
+                        }'>
+                        <?php
+                        $slides = [
+                            ['src' => 'assets/images/demos/demo-4/slider/slider1.png', 'alt' => 'ITEL P70'],
+                            ['src' => 'assets/images/demos/demo-4/slider/slider2.png', 'alt' => 'TECNO POP 10C'],
+                            ['src' => 'assets/images/demos/demo-4/slider/slider3.png', 'alt' => 'TECNO POP 10']
+                        ];
+                        foreach ($slides as $slide) {
+                            if (file_exists($slide['src'])) {
+                                echo '<div class="intro-slide"><img src="'.htmlspecialchars($slide['src']).'" alt="'.htmlspecialchars($slide['alt']).'"></div>';
+                            } else {
+                                echo '<div class="intro-slide"><span class="error-message">Slider image not found: '.htmlspecialchars($slide['alt']).'</span></div>';
+                            }
                         }
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
             </div>
             <div class="container">
