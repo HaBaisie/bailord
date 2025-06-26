@@ -1,7 +1,7 @@
 <?php include 'includes/session.php'; ?>
 <?php
   if(isset($_SESSION['user'])){
-    header('location: cart_view.php');
+    header('location: index.php');
   }
 ?>
 <?php include 'includes/header.php'; ?>
@@ -472,8 +472,8 @@
                 <div class="col sign-in">
                     <div class="form-wrapper">
                         <div class="form sign-in">
-                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
-                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
+                            <?php if (file_exists('images/logoh.png')): ?>
+                                <img src="images/logoh.png" alt="Bailord Logo" class="logo">
                             <?php else: ?>
                                 <span class="callout callout-danger">Logo image not found</span>
                             <?php endif; ?>
