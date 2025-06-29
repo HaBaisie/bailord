@@ -1383,11 +1383,18 @@ if (file_exists('includes/session.php')) {
                     <div class="intro-slider owl-carousel owl-theme owl-nav-inside" data-toggle="owl" 
                         data-owl-options='{
                             "dots": true,
-                            "nav": true,
                             "items": 1,
                             "margin": 10,
                             "autoplay": true,
-                            "autoplayTimeout": 5000
+                            "autoplayTimeout": 5000,
+                            "responsive": {
+                                "0": {
+                                    "nav": false
+                                },
+                                "768": {
+                                    "nav": true
+                                }
+                            }
                         }'>
                         <?php
                         $slides = [
