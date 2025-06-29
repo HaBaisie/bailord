@@ -298,6 +298,7 @@
         .callout-danger {
             background-color: var(--error-bg);
             color: var(--error-text);
+            font-size: 1.2rem;
         }
 
         .callout-success {
