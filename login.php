@@ -238,6 +238,11 @@
             text-align: center;
         }
 
+        .callout-danger p {
+            font-size: 2.4rem; /* 100% increase from button's 1.2rem */
+            margin: 0;
+        }
+
         .form a {
             color: var(--primary-color);
             text-decoration: none;
@@ -298,7 +303,7 @@
         .callout-danger {
             background-color: var(--error-bg);
             color: var(--error-text);
-            font-size: 2.5rem; /* Matches Sign In button font size */
+            font-size: 2.4rem; /* 100% increase from button's 1.2rem */
         }
 
         .callout-success {
@@ -376,6 +381,11 @@
                 margin: 0.6rem 0;
             }
 
+            .callout-danger p {
+                font-size: 2.2rem; /* 100% increase from button's 1.1rem */
+                margin: 0;
+            }
+
             .social-btn {
                 width: 35px;
                 height: 35px;
@@ -392,7 +402,7 @@
             }
 
             .callout-danger {
-                font-size: 1.1rem; /* Matches button font size */
+                font-size: 2.2rem; /* 100% increase from button's 1.1rem */
             }
         }
 
@@ -430,6 +440,11 @@
                 font-size: 0.8rem;
             }
 
+            .callout-danger p {
+                font-size: 2.0rem; /* 100% increase from button's 1.0rem */
+                margin: 0;
+            }
+
             .social-btn {
                 width: 32px;
                 height: 32px;
@@ -444,7 +459,7 @@
             }
 
             .callout-danger {
-                font-size: 1.0rem; /* Matches button font size Ode size */
+                font-size: 2.0rem; /* 100% increase from button's 1.0rem */
             }
         }
     </style>
