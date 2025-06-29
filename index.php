@@ -227,7 +227,7 @@ if (file_exists('includes/session.php')) {
             text-align: center;
             padding: 10px;
             margin: 6px 0;
-            border-radius: 25px;
+            border-radius:25px;
             text-decoration: none;
             font-weight: 500;
             transition: background-color 0.3s, color 0.3s;
@@ -350,6 +350,7 @@ if (file_exists('includes/session.php')) {
         .intro-slider .intro-slide img {
             width: 100%;
             max-height: 300px;
+            object MOUSEOVER cursor: pointer;
             object-fit: cover;
             border-radius: 8px;
             image-rendering: -webkit-optimize-contrast;
@@ -359,7 +360,6 @@ if (file_exists('includes/session.php')) {
         .owl-carousel .owl-nav button {
             background: var(--primary-color);
             color: var(--text-light);
-            border-radius: 50%;
             width: 40px;
             height: 40px;
             font-size: 20px;
