@@ -219,7 +219,7 @@
             border: none;
             background: var(--primary-color);
             color: var(--white);
-            font-size: 1.2rem;
+            font-size: 2.0rem;
             font-weight: 600;
             outline: none;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
