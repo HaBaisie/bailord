@@ -298,7 +298,7 @@
         .callout-danger {
             background-color: var(--error-bg);
             color: var(--error-text);
-            font-size: 5.0rem;
+            font-size: 1.2rem; /* Matches Sign In button font size */
         }
 
         .callout-success {
@@ -390,6 +390,10 @@
                 margin: 0.8rem 0;
                 font-size: 0.85rem;
             }
+
+            .callout-danger {
+                font-size: 1.1rem; /* Matches button font size */
+            }
         }
 
         @media only screen and (max-width: 375px) {
@@ -419,7 +423,7 @@
 
             .form button {
                 padding: 0.7rem;
-                font-size: 1rem;
+                font-size: 1.0rem;
             }
 
             .form p {
@@ -437,6 +441,10 @@
 
             .callout {
                 font-size: 0.8rem;
+            }
+
+            .callout-danger {
+                font-size: 1.0rem; /* Matches button font size Ode size */
             }
         }
     </style>
