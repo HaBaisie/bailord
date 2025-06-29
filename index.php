@@ -1079,6 +1079,11 @@ if (file_exists('includes/session.php')) {
             border-radius: 8px;
             text-align: center;
         }
+        @media (max-width: 767px) {
+            .owl-carousel .owl-nav {
+                display: none;
+            }
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
