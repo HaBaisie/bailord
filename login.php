@@ -298,7 +298,7 @@
         .callout-danger {
             background-color: var(--error-bg);
             color: var(--error-text);
-            font-size: 1.2rem; /* Matches Sign In button font size */
+            font-size: 2.5rem; /* Matches Sign In button font size */
         }
 
         .callout-success {
