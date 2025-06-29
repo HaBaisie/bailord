@@ -402,13 +402,6 @@ if (file_exists('includes/session.php')) {
             background: var(--primary-color);
         }
 
-        /* Hide navigation arrows on mobile */
-        @media (max-width: 767px) {
-            .owl-carousel .owl-nav {
-                display: none;
-            }
-        }
-
         /* Side Promo Banners */
         .side-promo {
             display: none;
@@ -873,8 +866,7 @@ if (file_exists('includes/session.php')) {
         }
 
         .promo-popup-close {
-            position: abs
-olute;
+            position: absolute;
             top: 10px;
             right: 10px;
             background: none;
@@ -1076,10 +1068,6 @@ olute;
             .cta-text p {
                 font-size: 18px;
             }
-
-            .owl-carousel .owl-nav {
-                display: none;
-            }
         }
 
         /* Error Message Styling */
@@ -1090,6 +1078,11 @@ olute;
             margin: 15px;
             border-radius: 8px;
             text-align: center;
+        }
+        @media (max-width: 767px) {
+            .owl-carousel .owl-nav {
+                display: none;
+            }
         }
     </style>
     <script>
@@ -1585,7 +1578,7 @@ olute;
                                                         </div>
                                                     </div>
                                                 </div>';
-                                            privés
+                                            }
                                         } else {
                                             echo '<div class="error-message">No trending products found</div>';
                                         }
