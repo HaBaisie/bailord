@@ -392,7 +392,6 @@ if (file_exists('includes/session.php')) {
             background: var(--neutral-medium);
             width: 10px;
             height: 10px;
-            border-radius: 50%;
             margin: 0 4px;
             display: inline-block;
             transition: background-color 0.3s;
