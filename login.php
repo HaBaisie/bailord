@@ -289,7 +289,7 @@
             margin: 1rem 0;
             border-radius: 0.5rem;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 2.0rem;
             opacity: 1;
             transform: translateY(0);
             width: 100%;
