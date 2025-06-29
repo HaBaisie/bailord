@@ -402,6 +402,13 @@ if (file_exists('includes/session.php')) {
             background: var(--primary-color);
         }
 
+        /* Hide navigation arrows on mobile */
+        @media (max-width: 767px) {
+            .owl-carousel .owl-nav {
+                display: none;
+            }
+        }
+
         /* Side Promo Banners */
         .side-promo {
             display: none;
@@ -1068,6 +1075,10 @@ if (file_exists('includes/session.php')) {
             .cta-text p {
                 font-size: 18px;
             }
+
+            .owl-carousel .owl-nav {
+                display: none;
+            }
         }
 
         /* Error Message Styling */
@@ -1078,11 +1089,6 @@ if (file_exists('includes/session.php')) {
             margin: 15px;
             border-radius: 8px;
             text-align: center;
-        }
-        @media (max-width: 767px) {
-            .owl-carousel .owl-nav {
-                display: none;
-            }
         }
     </style>
     <script>
