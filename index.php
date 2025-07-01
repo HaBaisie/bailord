@@ -1399,7 +1399,9 @@ if (file_exists('includes/session.php')) {
                         $slides = [
                             ['src' => 'assets/images/demos/demo-4/slider/slider1.png', 'alt' => 'ITEL P70'],
                             ['src' => 'assets/images/demos/demo-4/slider/slider2.png', 'alt' => 'TECNO POP 10C'],
-                            ['src' => 'assets/images/demos/demo-4/slider/slider3.png', 'alt' => 'TECNO POP 10']
+                            ['src' => 'assets/images/demos/demo-4/slider/slider3.png', 'alt' => 'TECNO POP 10'],
+                            ['src' => 'assets/images/demos/demo-4/slider/slider4.png', 'alt' => 'TECNO POP 10'],
+                            ['src' => 'assets/images/demos/demo-4/slider/slider5.png', 'alt' => 'TECNO POP 10']
                         ];
                         foreach ($slides as $slide) {
                             if (file_exists($slide['src'])) {
