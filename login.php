@@ -474,8 +474,8 @@
                 <div class="col sign-in">
                     <div class="form-wrapper">
                         <div class="form sign-in">
-                            <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
-                                <img src="assets/images/demos/demo-4/logo.png" alt="Bailord Logo" class="logo">
+                            <?php if (file_exists('images/bailordd.jpg')): ?>
+                                <img src="images/bailordd.jpg" alt="Bailord Logo" class="logo">
                             <?php else: ?>
                                 <span class="callout callout-danger">Logo image not found</span>
                             <?php endif; ?>
