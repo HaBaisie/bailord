@@ -1669,11 +1669,6 @@ if (file_exists('includes/session.php')) {
                 <div class="newsletter-popup-container mfp-hide" id="newsletter-popup-form">
                     <div class="newsletter-popup-content">
                         <button class="newsletter-popup-close"><i class="fas fa-times"></i></button>
-                        <?php if (file_exists('images/bailordd.jpg')): ?>
-                            <img src="images/bailordd.jpg" class="logo" alt="Bailord Logo" width="80" height="20">
-                        <?php else: ?>
-                            <span class="error-message">Newsletter logo not found</span>
-                        <?php endif; ?>
                         <h2 class="banner-title">Get <span>25%</span> Off</h2>
                         <p>Subscribe to Bailord newsletter for exclusive deals and updates!</p>
                         <form action="#">
