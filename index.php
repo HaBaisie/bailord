@@ -1669,8 +1669,8 @@ if (file_exists('includes/session.php')) {
                 <div class="newsletter-popup-container mfp-hide" id="newsletter-popup-form">
                     <div class="newsletter-popup-content">
                         <button class="newsletter-popup-close"><i class="fas fa-times"></i></button>
-                        <?php if (file_exists('assets/images/demos/demo-4/logo.png')): ?>
-                            <img src="assets/images/demos/demo-4/logo.png" class="logo" alt="Bailord Logo" width="80" height="20">
+                        <?php if (file_exists('images/bailordd.jpg')): ?>
+                            <img src="images/bailordd.jpg" class="logo" alt="Bailord Logo" width="80" height="20">
                         <?php else: ?>
                             <span class="error-message">Newsletter logo not found</span>
                         <?php endif; ?>
