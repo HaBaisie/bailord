@@ -474,11 +474,7 @@
                 <div class="col sign-in">
                     <div class="form-wrapper">
                         <div class="form sign-in">
-                            <?php if (file_exists('images/bailordd.jpg')): ?>
-                                <img src="images/bailordd.jpg" alt="Bailord Logo" class="logo">
-                            <?php else: ?>
-                                <span class="callout callout-danger">Logo image not found</span>
-                            <?php endif; ?>
+                            
                             <h2>Sign In</h2>
                             <?php
                             if(isset($_SESSION['error'])){
