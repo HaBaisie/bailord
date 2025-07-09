@@ -21,25 +21,6 @@ $error_message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories'])) {
     $conn = $pdo->open();
     try {
-        // Create subcategory table
-        $sql_create = "
-            CREATE TABLE IF NOT EXISTS subcategory (
-                id INT NOT NULL AUTO_INCREMENT,
-                category_id INT NOT NULL,
-                name VARCHAR(100) NOT NULL,
-                subcat_slug VARCHAR(150) NOT NULL,
-                PRIMARY KEY (id),
-                FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
-            )";
-        $conn->exec($sql_create);
-
-        // Alter products table to add subcategory_id
-        $sql_alter = "
-            ALTER TABLE products
-            ADD COLUMN subcategory_id INT NULL,
-            ADD FOREIGN KEY (subcategory_id) REFERENCES subcategory(id) ON DELETE SET NULL";
-        $conn->exec($sql_alter);
-                // Alter products table to add subcategory_id
         $sql_alter = "
             ALTER TABLE category
             ADD COLUMN subcategory_id INT NULL,
