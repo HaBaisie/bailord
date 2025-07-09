@@ -4,7 +4,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title"><b><span class="name"></span></b></h4>
             </div>
             <div class="modal-body">
@@ -23,24 +24,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title"><b>Add New Product</b></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="POST" action="products_add.php" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="name" class="col-sm-1 control-label">Name</label>
-                        <does class="col-sm-5">
-                            <input type="text" class="form-control" id="name" name="name" required>
+                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control input-sm" id="name" name="name" required>
                         </div>
-                        <label for="category" class="col-sm-1 control-label">Category</label>
-                        <div class="col-sm-5">
-                            <select class="form-control" id="category" name="category_id" required>
+                        <label for="category" class="col-sm-2 control-label">Category</label>
+                        <div class="col-sm-4">
+                            <select class="form-control input-sm" id="category" name="category_id" required>
                                 <option value="" selected>- Select -</option>
                                 <?php
                                   $conn = $pdo->open();
                                   try {
-                                      $stmt = $conn->prepare("SELECT id, name FROM category ORDER BY name");
+                                    $stmt = $conn->prepare("SELECT id, name FROM category ORDER BY name");
                                     $stmt->execute();
                                     foreach ($stmt as $crow) {
                                         echo "<option value='" . $crow['id'] . "'>" . htmlspecialchars($crow['name']) . "</option>";
@@ -54,9 +56,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="subcategory" class="col-sm-1 control-label">Subcategory</label>
-                        <div class="col-sm-5">
-                            <select class="form-control" id="subcategory" name="subcategory_id">
+                        <label for="subcategory" class="col-sm-2 control-label">Subcategory</label>
+                        <div class="col-sm-4">
+                            <select class="form-control input-sm" id="subcategory" name="subcategory_id">
                                 <option value="" selected>- Select -</option>
                                 <?php
                                   $conn = $pdo->open();
@@ -73,21 +75,21 @@
                                 ?>
                             </select>
                         </div>
-                        <label for="price" class="col-sm-1 control-label">Price</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="price" name="price" required>
+                        <label for="price" class="col-sm-2 control-label">Price</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control input-sm" id="price" name="price" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="photo" class="col-sm-1 control-label">Photo</label>
-                        <div class="col-sm-5">
-                            <input type="file" id="photo" name="photo">
+                        <label for="photo" class="col-sm-2 control-label">Photo</label>
+                        <div class="col-sm-4">
+                            <input type="file" class="form-control input-sm" id="photo" name="photo">
                         </div>
                     </div>
-                    <p><b>Description</b></p>
                     <div class="form-group">
-                        <div class="col-sm-12">
-                            <textarea id="editor1" name="description" rows="10" cols="80" required></textarea>
+                        <label for="description" class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea id="editor1" name="description" rows="10" class="form-control" required></textarea>
                         </div>
                     </div>
             </div>
@@ -106,16 +108,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title"><b><span class="name"></span></b></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="POST" action="products_photo.php" enctype="multipart/form-data">
                     <input type="hidden" class="prodid" name="id">
                     <div class="form-group">
-                        <label for="photo" class="col-sm-3 control-label">Photo</label>
-                        <div class="col-sm-9">
-                            <input type="file" id="photo" name="photo" required>
+                        <label for="photo" class="col-sm-2 control-label">Photo</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control input-sm" id="photo" name="photo" required>
                         </div>
                     </div>
             </div>
