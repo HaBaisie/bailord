@@ -1,8 +1,8 @@
 <?php include 'includes/session.php'; ?>
 <?php
-	if (!isset($_SESSION['user'])) {
-		header('location: login.php');
-	}
+    if (!isset($_SESSION['user'])) {
+        header('location: login.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -346,6 +346,32 @@
             margin: 10px 0;
             font-size: 16px;
         }
+        .edit-form {
+            display: none;
+            background-color: var(--light-neutral);
+            border: 1px solid var(--medium-neutral);
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .edit-form h4 {
+            color: var(--dominant-color);
+            margin-bottom: 15px;
+        }
+        .edit-form .form-group {
+            margin-bottom: 15px;
+        }
+        .edit-form .form-control {
+            border-radius: 4px;
+        }
+        .edit-form .btn-default {
+            background-color: var(--medium-neutral);
+            border-color: var(--dark-neutral);
+            color: var(--text-dark);
+        }
+        .edit-form .btn-default:hover {
+            background-color: #d3d7db;
+        }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
             .header-middle .header-center .header-search-extended {
@@ -488,6 +514,22 @@
                     }
                 }
             });
+            // Toggle edit form visibility
+            const editButton = document.querySelector('.edit-profile-btn');
+            const editForm = document.querySelector('.edit-form');
+            const cancelButton = document.querySelector('.edit-form .btn-default');
+            if (editButton && editForm) {
+                editButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    editForm.style.display = editForm.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+            if (cancelButton && editForm) {
+                cancelButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    editForm.style.display = 'none';
+                });
+            }
         });
     </script>
 </head>
@@ -659,16 +701,76 @@
                                             <h4>Member Since:</h4>
                                         </div>
                                         <div class="col-sm-9">
-                                           <h4><?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
-					    	<span class="pull-right">
-					        	<a href="#edit" class="btn btn-success btn-flat btn-sm" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i> Edit</a>
-					    	</span>
-					    </h4>
+                                            <h4><?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
+                                                <span class="pull-right">
+                                                    <a href="#" class="btn btn-success btn-flat btn-sm edit-profile-btn"><i class="fa fa-edit"></i> Edit</a>
+                                                </span>
+                                            </h4>
                                             <h4><?php echo htmlspecialchars($user['email']); ?></h4>
                                             <h4><?php echo (!empty($user['contact_info'])) ? htmlspecialchars($user['contact_info']) : 'N/a'; ?></h4>
                                             <h4><?php echo (!empty($user['address'])) ? htmlspecialchars($user['address']) : 'N/a'; ?></h4>
                                             <h4><?php echo date('M d, Y', strtotime($user['created_on'])); ?></h4>
                                         </div>
+                                    </div>
+                                    <div class="edit-form">
+                                        <h4>Update Account</h4>
+                                        <form class="form-horizontal" method="POST" action="profile_edit.php" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="firstname" class="col-sm-3 control-label">Firstname</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo htmlspecialchars($user['firstname']); ?>" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastname" class="col-sm-3 control-label">Lastname</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo htmlspecialchars($user['lastname']); ?>" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" class="col-sm-3 control-label">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="col-sm-3 control-label">New Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="contact" class="col-sm-3 control-label">Contact Info</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="contact" name="contact" value="<?php echo htmlspecialchars($user['contact_info']); ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address" class="col-sm-3 control-label">Address</label>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" id="address" name="address"><?php echo htmlspecialchars($user['address']); ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="photo" class="col-sm-3 control-label">Photo</label>
+                                                <div class="col-sm-9">
+                                                    <input type="file" id="photo" name="photo" accept="image/*">
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group">
+                                                <label for="curr_password" class="col-sm-3 control-label">Current Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="curr_password" name="curr_password" placeholder="Input current password to save changes" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <button type="submit" class="btn btn-success btn-flat" name="edit"><i class="fa fa-check-square-o"></i> Update</button>
+                                                    <button type="button" class="btn btn-default btn-flat">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
