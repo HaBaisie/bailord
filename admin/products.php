@@ -3,7 +3,7 @@
 $where = '';
 if (isset($_GET['category']) && $_GET['category'] != 0) {
     $catid = $_GET['category'];
-    $where = 'WHERE category_id = :catid';
+    $where = 'WHERE p.category_id = :catid';
 }
 ?>
 <?php include 'includes/header.php'; ?>
@@ -76,6 +76,7 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Name</th>
+                  <th>Subcategory</th>
                   <th>Photo</th>
                   <th>Description</th>
                   <th>Price</th>
@@ -87,17 +88,24 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
                     $conn = $pdo->open();
                     try {
                       $now = date('Y-m-d');
-                      $stmt = $conn->prepare("SELECT * FROM products $where");
+                      $stmt = $conn->prepare("
+                        SELECT p.*, s.name AS subcat_name
+                        FROM products p
+                        LEFT JOIN subcategory s ON p.subcategory_id = s.id
+                        $where
+                      ");
                       if ($where) {
                         $stmt->bindParam(':catid', $catid, PDO::PARAM_INT);
                       }
                       $stmt->execute();
                       foreach ($stmt as $row) {
-                        $image = (!empty($row['photo'])) ? '../images/' . $row['photo'] : '../images/noimage.jpg';
+                        $image = (!empty($row['photo'])) ? $row['photo'] : '../images/noimage.jpg';
                         $counter = ($row['date_view'] == $now) ? $row['counter'] : 0;
+                        $subcat_name = !empty($row['subcat_name']) ? htmlspecialchars($row['subcat_name']) : '-';
                         echo "
                           <tr>
                             <td>" . htmlspecialchars($row['name']) . "</td>
+                            <td>" . $subcat_name . "</td>
                             <td>
                               <img src='" . htmlspecialchars($image) . "' height='30px' width='30px'>
                               <span class='pull-right'><a href='#edit_photo' class='photo' data-toggle='modal' data-id='" . $row['id'] . "'><i class='fa fa-edit'></i></a></span>
@@ -113,7 +121,7 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
                         ";
                       }
                     } catch (PDOException $e) {
-                      echo "<tr><td colspan='6'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                      echo "<tr><td colspan='7'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
                     }
                     $pdo->close();
                   ?>
@@ -355,33 +363,6 @@ function getRow(id) {
         responseText: xhr.responseText,
         statusCode: xhr.status
       });
-    }
-  });
-}
-
-function getCategory() {
-  console.log('Fetching categories via AJAX');
-  $.ajax({
-    type: 'POST',
-    url: 'category_fetch.php',
-    dataType: 'json',
-    beforeSend: function() {
-      console.log('Sending category AJAX request to category_fetch.php');
-    },
-    success: function(response) {
-      console.log('Category response:', response);
-      $('#category').html('<option value="" selected>- Select -</option>' + response);
-      $('#edit_category').html('<option value="" selected>- Select -</option>' + response);
-      filterSubcategories();
-    },
-    error: function(xhr, status, error) {
-      console.error('Category AJAX error:', {
-        status: status,
-        error: error,
-        responseText: xhr.responseText,
-        statusCode: xhr.status
-      });
-      $('#category, #edit_category').html('<option value="">Error loading categories</option>');
     }
   });
 }
