@@ -389,7 +389,7 @@
         }
         .table th {
             font-weight: 600;
-vi            padding: 12px 15px;
+            padding: 12px 15px;
             text-transform: uppercase;
             font-size: 14px;
             border: none;
@@ -434,6 +434,47 @@ vi            padding: 12px 15px;
         .table td:nth-child(4) {
             text-align: center;
         }
+        /* Pagination and Info Text Styles */
+        .dataTables_info {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: var(--text-dark);
+            text-align: left;
+        }
+        .dataTables_paginate {
+            padding: 10px 15px;
+            text-align: right;
+        }
+        .dataTables_paginate .paginate_button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 5px;
+            background-color: var(--dominant-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .dataTables_paginate .paginate_button:hover {
+            background-color: var(--complementary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .dataTables_paginate .paginate_button.disabled {
+            background-color: var(--medium-neutral);
+            color: var(--dark-neutral);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .dataTables_paginate .paginate_button.current {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            cursor: default;
+        }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
             .header-middle .header-center .header-search-extended {
@@ -464,6 +505,13 @@ vi            padding: 12px 15px;
             .table .btn-info {
                 padding: 6px 10px;
                 font-size: 12px;
+            }
+            .dataTables_info {
+                font-size: 13px;
+            }
+            .dataTables_paginate .paginate_button {
+                padding: 6px 10px;
+                font-size: 13px;
             }
         }
         @media (max-width: 767px) {
@@ -545,6 +593,17 @@ vi            padding: 12px 15px;
             }
             .table td:nth-child(1) {
                 display: none;
+            }
+            .dataTables_info {
+                text-align: center;
+                font-size: 12px;
+            }
+            .dataTables_paginate {
+                text-align: center;
+            }
+            .dataTables_paginate .paginate_button {
+                padding: 5px 8px;
+                font-size: 12px;
             }
         }
         @media (min-width: 992px) {
@@ -839,7 +898,6 @@ vi            padding: 12px 15px;
                                         </div>
                                     </div>
                                     <div class="edit-form">
-                                        <h4>Update Account</h4>
                                         <form class="form-horizontal" method="POST" action="profile_edit.php" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="firstname" class="col-sm-3 control-label">Firstname</label>
@@ -920,9 +978,15 @@ vi            padding: 12px 15px;
                                         <tbody>
                                         <?php
                                             $conn = $pdo->open();
+                                            $total_entries = 0;
                                             try {
+                                                $stmt = $conn->prepare("SELECT COUNT(*) as total FROM sales WHERE user_id=:user_id");
+                                                $stmt->execute(['user_id' => $user['id']]);
+                                                $total_entries = $stmt->fetch()['total'];
+                                                
                                                 $stmt = $conn->prepare("SELECT * FROM sales WHERE user_id=:user_id ORDER BY sales_date DESC");
                                                 $stmt->execute(['user_id' => $user['id']]);
+                                                $current_entries = $stmt->rowCount();
                                                 foreach ($stmt as $row) {
                                                     $stmt2 = $conn->prepare("SELECT * FROM details LEFT JOIN products ON products.id=details.product_id WHERE sales_id=:id");
                                                     $stmt2->execute(['id' => $row['id']]);
@@ -948,6 +1012,11 @@ vi            padding: 12px 15px;
                                         ?>
                                         </tbody>
                                     </table>
+                                    <div class="dataTables_info">Showing 1 to <?php echo $current_entries; ?> of <?php echo $total_entries; ?> entries</div>
+                                    <div class="dataTables_paginate">
+                                        <a class="paginate_button previous disabled" href="#">Previous</a>
+                                        <a class="paginate_button next" href="#">Next</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
