@@ -26,7 +26,7 @@
         if(isset($_SESSION['error'])){
           echo "
             <div class='alert alert-danger alert-dismissible'>
-              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
               <h4><i class='icon fa fa-warning'></i> Error!</h4>
               ".$_SESSION['error']."
             </div>
@@ -36,7 +36,7 @@
         if(isset($_SESSION['success'])){
           echo "
             <div class='alert alert-success alert-dismissible'>
-              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
               <h4><i class='icon fa fa-check'></i> Success!</h4>
               ".$_SESSION['success']."
             </div>
@@ -54,6 +54,7 @@
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Category Name</th>
+                  <th>Subcategories</th>
                   <th>Tools</th>
                 </thead>
                 <tbody>
@@ -61,12 +62,14 @@
                     $conn = $pdo->open();
 
                     try{
-                      $stmt = $conn->prepare("SELECT * FROM category");
+                      $stmt = $conn->prepare("SELECT c.id, c.name, GROUP_CONCAT(s.name ORDER BY s.name SEPARATOR ', ') AS subcat_names FROM category c LEFT JOIN subcategory s ON c.id = s.category_id GROUP BY c.id");
                       $stmt->execute();
                       foreach($stmt as $row){
+                        $subcat_names = $row['subcat_names'] ? htmlspecialchars($row['subcat_names']) : 'None';
                         echo "
                           <tr>
-                            <td>".$row['name']."</td>
+                            <td>".htmlspecialchars($row['name'])."</td>
+                            <td>".$subcat_names."</td>
                             <td>
                               <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
                               <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
@@ -76,7 +79,7 @@
                       }
                     }
                     catch(PDOException $e){
-                      echo $e->getMessage();
+                      echo "<tr><td colspan='3'>Error: ".htmlspecialchars($e->getMessage())."</td></tr>";
                     }
 
                     $pdo->close();
@@ -124,7 +127,11 @@ function getRow(id){
     success: function(response){
       $('.catid').val(response.id);
       $('#edit_name').val(response.name);
+      $('#edit_subcategories').val(response.subcat_names || '');
       $('.catname').html(response.name);
+    },
+    error: function(xhr, status, error){
+      console.error('AJAX error:', status, error);
     }
   });
 }
