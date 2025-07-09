@@ -1,3 +1,4 @@
+<?php include 'includes/session.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +49,7 @@
             --medium-neutral: #e9ecef;
             --dark-neutral: #495057;
             --text-dark: #212529;
-            --text-light: #f8f9fa;
+            --text-light: #000000; /* Black for nav text as per previous request */
             --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
@@ -130,14 +131,14 @@
         .header-search-wrapper .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for search button contrast */
             border: none;
         }
         .header-search-wrapper .btn:hover {
             background-color: var(--complementary-blue);
         }
         .search-toggle {
-            color: var(--text-light);
+            color: var(--text-light); /* Black for search toggle */
             font-size: 20px;
         }
         .user-btn, .login-btn {
@@ -145,7 +146,7 @@
             align-items: center;
             padding: 8px 15px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: var(--text-light); /* Black for buttons */
             border-radius: 4px;
             text-decoration: none;
             font-size: 14px;
@@ -156,11 +157,12 @@
         }
         .user-btn:hover, .login-btn:hover {
             background-color: var(--complementary-blue);
+            color: #ffffff; /* White on hover for contrast */
         }
         .cart-dropdown .dropdown-toggle {
             display: flex;
             align-items: center;
-            color: var(--text-light);
+            color: var(--text-light); /* Black for cart text */
             text-decoration: none;
         }
         .cart-dropdown .icon {
@@ -172,7 +174,7 @@
             top: -5px;
             right: -5px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for cart count contrast */
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
@@ -185,7 +187,7 @@
             background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for nav links */
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -223,10 +225,10 @@
             right: 10px;
             cursor: pointer;
             font-size: 20px;
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for close icon */
         }
         .mobile-menu li a {
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for mobile menu links */
             padding: 10px;
             display: block;
             font-size: 16px;
@@ -249,7 +251,7 @@
         .mobile-search .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for mobile search button */
         }
         .page-header {
             color: var(--dominant-color);
@@ -461,7 +463,6 @@
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="page-wrapper">
-    <?php include 'includes/session.php'; ?>
     <header class="header header-intro-clearance header-4">
         <div class="header-middle">
             <div class="container">
