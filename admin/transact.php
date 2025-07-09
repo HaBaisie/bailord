@@ -6,9 +6,9 @@ if (isset($_POST['id'])) {
     $conn = $pdo->open();
 
     try {
-        // Fetch sale details, including user address and contact info
+        // Fetch sale and user details
         $stmt = $conn->prepare("
-            SELECT s.pay_id, s.sales_date, u.address, u.contact_info
+            SELECT s.pay_id, s.sales_date, s.user_id, u.address, u.contact_info
             FROM sales s
             LEFT JOIN users u ON u.id = s.user_id
             WHERE s.id = :id
@@ -17,17 +17,21 @@ if (isset($_POST['id'])) {
         $sale = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$sale) {
+            error_log("Transact.php: Sale not found for ID $id");
             echo json_encode(['error' => 'Sale not found']);
             exit;
         }
 
-        $output = array(
+        // Log fetched data for debugging
+        error_log("Transact.php: Sale ID $id, User ID {$sale['user_id']}, Address: " . ($sale['address'] ?? 'NULL') . ", Contact: " . ($sale['contact_info'] ?? 'NULL'));
+
+        $output = [
             'transaction' => $sale['pay_id'],
             'date' => date('M d, Y', strtotime($sale['sales_date'])),
             'address' => !empty($sale['address']) ? htmlspecialchars($sale['address']) : 'No address provided',
             'contact_info' => !empty($sale['contact_info']) ? htmlspecialchars($sale['contact_info']) : 'No contact info provided',
             'list' => ''
-        );
+        ];
 
         // Fetch product details
         $stmt = $conn->prepare("
@@ -56,11 +60,13 @@ if (isset($_POST['id'])) {
 
         echo json_encode($output);
     } catch (PDOException $e) {
+        error_log("Transact.php: Database error for ID $id: " . $e->getMessage());
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
 
     $pdo->close();
 } else {
+    error_log("Transact.php: Invalid request, no ID provided");
     echo json_encode(['error' => 'Invalid request']);
 }
 ?>
