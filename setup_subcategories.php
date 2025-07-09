@@ -23,8 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories']
     try {
         $sql_alter = "
             ALTER TABLE category
-            ADD COLUMN subcategory_id INT NULL,
-            ADD FOREIGN KEY (subcategory_id) REFERENCES subcategory(id) ON DELETE SET NULL";
+            DROP FOREIGN KEY category_ibfk_1";
+        $conn->exec($sql_alter);
+        $sql_alter = "
+            ALTER TABLE category
+            DROP COLUMN subcategory_id";
         $conn->exec($sql_alter);
 
         $success_message = "Subcategory table created and products table updated successfully.";
