@@ -39,6 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories']
             ADD COLUMN subcategory_id INT NULL,
             ADD FOREIGN KEY (subcategory_id) REFERENCES subcategory(id) ON DELETE SET NULL";
         $conn->exec($sql_alter);
+                // Alter products table to add subcategory_id
+        $sql_alter = "
+            ALTER TABLE category
+            ADD COLUMN subcategory_id INT NULL,
+            ADD FOREIGN KEY (subcategory_id) REFERENCES subcategory(id) ON DELETE SET NULL";
+        $conn->exec($sql_alter);
 
         $success_message = "Subcategory table created and products table updated successfully.";
     } catch (PDOException $e) {
