@@ -47,48 +47,6 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
       ?>
       <div class="row">
         <div class="col-xs-12">
-          <!-- Categories and Subcategories Table -->
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Categories and Subcategories</h3>
-            </div>
-            <div class="box-body">
-              <table id="categories_table" class="table table-bordered">
-                <thead>
-                  <th>Category Name</th>
-                  <th>Subcategories</th>
-                </thead>
-                <tbody>
-                  <?php
-                    $conn = $pdo->open();
-                    try {
-                      $stmt = $conn->prepare("
-                        SELECT c.id AS cat_id, c.name AS cat_name, GROUP_CONCAT(s.name) AS subcat_names
-                        FROM category c
-                        LEFT JOIN subcategory s ON s.category_id = c.id
-                        GROUP BY c.id, c.name
-                        ORDER BY c.name
-                      ");
-                      $stmt->execute();
-                      foreach ($stmt as $row) {
-                        $subcat_names = $row['subcat_names'] ? htmlspecialchars($row['subcat_names']) : 'None';
-                        echo "
-                          <tr>
-                            <td>" . htmlspecialchars($row['cat_name']) . " (ID: " . $row['cat_id'] . ")</td>
-                            <td>" . $subcat_names . "</td>
-                          </tr>
-                        ";
-                      }
-                    } catch (PDOException $e) {
-                      echo "<tr><td colspan='2'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
-                    }
-                    $pdo->close();
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
           <!-- Product List Table -->
           <div class="box">
             <div class="box-header with-border">
@@ -185,13 +143,8 @@ $(function() {
     console.log('Bootstrap modal loaded');
   }
 
-  // Initialize DataTables
+  // Initialize DataTable
   $('#example1').DataTable();
-  $('#categories_table').DataTable({
-    "paging": false,
-    "info": false,
-    "searching": false
-  });
 
   // Initialize CKEditor
   if (typeof CKEDITOR !== 'undefined') {
@@ -253,22 +206,22 @@ $(function() {
 
   // Load categories when modal shown
   $('#addnew').on('shown.bs.modal', function() {
-    console.log('Addnew modal shown, loading categories via AJAX');
-    getCategory();
+    console.log('Addnew modal shown, filtering subcategories');
+    filterSubcategories();
   });
 
   // Clear dropdowns on modal close
   $("#addnew, #edit").on("hidden.bs.modal", function() {
-    console.log('Modal closed, clearing dropdowns');
-    $('.append_items').remove();
-    $('#subcategory, #edit_subcategory').html('<option value="" selected>- Select -</option>');
+    console.log('Modal closed, resetting dropdowns');
+    $('#subcategory').val('');
+    $('#edit_subcategory').html('<option value="" selected>- Select -</option>');
   });
 
-  // Load subcategories on category change
+  // Filter subcategories on category change
   $(document).on('change', '#category', function() {
     var category_id = $(this).val();
     console.log('Category changed, ID:', category_id);
-    $('#subcategory').html('<option value="" selected>Loading...</option>');
+    filterSubcategories();
     if (category_id) {
       $.ajax({
         type: 'POST',
@@ -277,6 +230,7 @@ $(function() {
         dataType: 'json',
         beforeSend: function() {
           console.log('Sending subcategory AJAX request for category_id:', category_id);
+          $('#subcategory').html('<option value="" selected>Loading...</option>');
         },
         success: function(response) {
           console.log('Subcategory response:', response);
@@ -297,7 +251,7 @@ $(function() {
     }
   });
 
-  // Load subcategories for edit modal
+  // Filter subcategories for edit modal
   $(document).on('change', '#edit_category', function() {
     var category_id = $(this).val();
     console.log('Edit category changed, ID:', category_id);
@@ -329,6 +283,22 @@ $(function() {
       $('#edit_subcategory').html('<option value="" selected>- Select -</option>');
     }
   });
+
+  // Function to filter subcategories based on selected category
+  function filterSubcategories() {
+    var category_id = $('#category').val();
+    console.log('Filtering subcategories for category_id:', category_id);
+    $('#subcategory option').each(function() {
+      var $option = $(this);
+      var optionCategoryId = $option.data('category-id');
+      if (category_id && optionCategoryId && optionCategoryId != category_id) {
+        $option.hide();
+      } else {
+        $option.show();
+      }
+    });
+    $('#subcategory').val(''); // Reset selection
+  }
 });
 
 function getRow(id) {
@@ -402,6 +372,7 @@ function getCategory() {
       console.log('Category response:', response);
       $('#category').html('<option value="" selected>- Select -</option>' + response);
       $('#edit_category').html('<option value="" selected>- Select -</option>' + response);
+      filterSubcategories();
     },
     error: function(xhr, status, error) {
       console.error('Category AJAX error:', {
