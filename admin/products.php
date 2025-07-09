@@ -47,7 +47,7 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
       ?>
       <div class="row">
         <div class="col-xs-12">
-          <!-- New Categories and Subcategories Table -->
+          <!-- Categories and Subcategories Table -->
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Categories and Subcategories</h3>
@@ -62,7 +62,6 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
                   <?php
                     $conn = $pdo->open();
                     try {
-                      // Query to get categories and their subcategories
                       $stmt = $conn->prepare("
                         SELECT c.id AS cat_id, c.name AS cat_name, GROUP_CONCAT(s.name) AS subcat_names
                         FROM category c
@@ -90,7 +89,7 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
             </div>
           </div>
 
-          <!-- Existing Product List Table -->
+          <!-- Product List Table -->
           <div class="box">
             <div class="box-header with-border">
               <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat" id="addproduct"><i class="fa fa-plus"></i> New</a>
@@ -254,7 +253,7 @@ $(function() {
 
   // Load categories when modal shown
   $('#addnew').on('shown.bs.modal', function() {
-    console.log('Addnew modal shown, loading categories');
+    console.log('Addnew modal shown, loading categories via AJAX');
     getCategory();
   });
 
@@ -276,6 +275,9 @@ $(function() {
         url: 'subcategory_fetch.php',
         data: {category_id: category_id},
         dataType: 'json',
+        beforeSend: function() {
+          console.log('Sending subcategory AJAX request for category_id:', category_id);
+        },
         success: function(response) {
           console.log('Subcategory response:', response);
           $('#subcategory').html('<option value="" selected>- Select -</option>' + response);
@@ -306,6 +308,9 @@ $(function() {
         url: 'subcategory_fetch.php',
         data: {category_id: category_id},
         dataType: 'json',
+        beforeSend: function() {
+          console.log('Sending edit subcategory AJAX request for category_id:', category_id);
+        },
         success: function(response) {
           console.log('Edit subcategory response:', response);
           $('#edit_subcategory').html('<option value="" selected>- Select -</option>' + response);
@@ -333,6 +338,9 @@ function getRow(id) {
     url: 'products_row.php',
     data: {id: id},
     dataType: 'json',
+    beforeSend: function() {
+      console.log('Sending product row AJAX request');
+    },
     success: function(response) {
       console.log('Product row response:', response);
       $('#desc').html(response.description);
@@ -351,6 +359,9 @@ function getRow(id) {
           url: 'subcategory_fetch.php',
           data: {category_id: response.category_id},
           dataType: 'json',
+          beforeSend: function() {
+            console.log('Sending edit subcategory AJAX request for category_id:', response.category_id);
+          },
           success: function(sub_response) {
             console.log('Edit subcategory response:', sub_response);
             $('#edit_subcategory').html('<option value="" selected>- Select -</option>' + sub_response);
@@ -379,13 +390,13 @@ function getRow(id) {
 }
 
 function getCategory() {
-  console.log('Fetching categories');
+  console.log('Fetching categories via AJAX');
   $.ajax({
     type: 'POST',
     url: 'category_fetch.php',
     dataType: 'json',
     beforeSend: function() {
-      console.log('Sending category AJAX request');
+      console.log('Sending category AJAX request to category_fetch.php');
     },
     success: function(response) {
       console.log('Category response:', response);
