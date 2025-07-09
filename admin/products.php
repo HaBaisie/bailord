@@ -47,6 +47,50 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
       ?>
       <div class="row">
         <div class="col-xs-12">
+          <!-- New Categories and Subcategories Table -->
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Categories and Subcategories</h3>
+            </div>
+            <div class="box-body">
+              <table id="categories_table" class="table table-bordered">
+                <thead>
+                  <th>Category Name</th>
+                  <th>Subcategories</th>
+                </thead>
+                <tbody>
+                  <?php
+                    $conn = $pdo->open();
+                    try {
+                      // Query to get categories and their subcategories
+                      $stmt = $conn->prepare("
+                        SELECT c.id AS cat_id, c.name AS cat_name, GROUP_CONCAT(s.name) AS subcat_names
+                        FROM category c
+                        LEFT JOIN subcategory s ON s.category_id = c.id
+                        GROUP BY c.id, c.name
+                        ORDER BY c.name
+                      ");
+                      $stmt->execute();
+                      foreach ($stmt as $row) {
+                        $subcat_names = $row['subcat_names'] ? htmlspecialchars($row['subcat_names']) : 'None';
+                        echo "
+                          <tr>
+                            <td>" . htmlspecialchars($row['cat_name']) . " (ID: " . $row['cat_id'] . ")</td>
+                            <td>" . $subcat_names . "</td>
+                          </tr>
+                        ";
+                      }
+                    } catch (PDOException $e) {
+                      echo "<tr><td colspan='2'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                    }
+                    $pdo->close();
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Existing Product List Table -->
           <div class="box">
             <div class="box-header with-border">
               <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat" id="addproduct"><i class="fa fa-plus"></i> New</a>
@@ -112,7 +156,7 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
                         ";
                       }
                     } catch (PDOException $e) {
-                      echo "<tr><td colspan='6'>" . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                      echo "<tr><td colspan='6'>Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
                     }
                     $pdo->close();
                   ?>
@@ -134,11 +178,21 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function() {
-  // Log jQuery status
+  // Log jQuery and Bootstrap status
   console.log('jQuery loaded, version:', $.fn.jquery);
+  if (typeof $.fn.modal === 'undefined') {
+    console.error('Bootstrap modal not loaded');
+  } else {
+    console.log('Bootstrap modal loaded');
+  }
 
-  // Initialize DataTable
+  // Initialize DataTables
   $('#example1').DataTable();
+  $('#categories_table').DataTable({
+    "paging": false,
+    "info": false,
+    "searching": false
+  });
 
   // Initialize CKEditor
   if (typeof CKEDITOR !== 'undefined') {
@@ -227,7 +281,12 @@ $(function() {
           $('#subcategory').html('<option value="" selected>- Select -</option>' + response);
         },
         error: function(xhr, status, error) {
-          console.error('Subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
+          console.error('Subcategory AJAX error:', {
+            status: status,
+            error: error,
+            responseText: xhr.responseText,
+            statusCode: xhr.status
+          });
           $('#subcategory').html('<option value="" disabled>Error loading subcategories</option>');
         }
       });
@@ -252,7 +311,12 @@ $(function() {
           $('#edit_subcategory').html('<option value="" selected>- Select -</option>' + response);
         },
         error: function(xhr, status, error) {
-          console.error('Edit subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
+          console.error('Edit subcategory AJAX error:', {
+            status: status,
+            error: error,
+            responseText: xhr.responseText,
+            statusCode: xhr.status
+          });
           $('#edit_subcategory').html('<option value="" disabled>Error loading subcategories</option>');
         }
       });
@@ -293,13 +357,23 @@ function getRow(id) {
             $('#edit_subcategory').val(response.subcategory_id || '');
           },
           error: function(xhr, status, error) {
-            console.error('Edit subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
+            console.error('Edit subcategory AJAX error:', {
+              status: status,
+              error: error,
+              responseText: xhr.responseText,
+              statusCode: xhr.status
+            });
           }
         });
       }
     },
     error: function(xhr, status, error) {
-      console.error('Product row AJAX error:', status, error, 'Response:', xhr.responseText);
+      console.error('Product row AJAX error:', {
+        status: status,
+        error: error,
+        responseText: xhr.responseText,
+        statusCode: xhr.status
+      });
     }
   });
 }
@@ -310,13 +384,21 @@ function getCategory() {
     type: 'POST',
     url: 'category_fetch.php',
     dataType: 'json',
+    beforeSend: function() {
+      console.log('Sending category AJAX request');
+    },
     success: function(response) {
       console.log('Category response:', response);
       $('#category').html('<option value="" selected>- Select -</option>' + response);
       $('#edit_category').html('<option value="" selected>- Select -</option>' + response);
     },
     error: function(xhr, status, error) {
-      console.error('Category AJAX error:', status, error, 'Response:', xhr.responseText);
+      console.error('Category AJAX error:', {
+        status: status,
+        error: error,
+        responseText: xhr.responseText,
+        statusCode: xhr.status
+      });
       $('#category, #edit_category').html('<option value="">Error loading categories</option>');
     }
   });
