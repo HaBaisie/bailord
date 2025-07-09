@@ -68,7 +68,7 @@
                             <td>".date('M d, Y', strtotime($row['sales_date']))."</td>
                             <td>".$row['firstname'].' '.$row['lastname']."</td>
                             <td>".$row['pay_id']."</td>
-                            <td>&#36; ".number_format($total, 2)."</td>
+                            <td>$ ".number_format($total, 2)."</td>
                             <td><button type='button' class='btn btn-info btn-sm btn-flat transact' data-id='".$row['salesid']."'><i class='fa fa-search'></i> View</button></td>
                           </tr>
                         ";
@@ -89,8 +89,47 @@
     </section>
      
   </div>
-  	<?php include 'includes/footer.php'; ?>
-    <?php include '../includes/profile_modal.php'; ?>
+  <?php include 'includes/footer.php'; ?>
+  <?php include '../includes/profile_modal.php'; ?>
+
+  <!-- Transaction Modal -->
+  <div class="modal fade" id="transaction">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"><b>Transaction Details</b></h4>
+        </div>
+        <div class="modal-body">
+          <p>Date: <span id="date"></span></p>
+          <p>Transaction#: <span id="transid"></span></p>
+          <p>Customer Address: <span id="address"></span></p>
+          <p>Contact Info: <span id="contact_info"></span></p>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="detail">
+              <tr>
+                <td colspan="4" align="center">No Items</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Total: <span id="total"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 <!-- ./wrapper -->
@@ -136,7 +175,6 @@ $(function(){
       $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
     }
   )
-  
 });
 </script>
 <script>
@@ -150,17 +188,31 @@ $(function(){
       url: 'transact.php',
       data: {id:id},
       dataType: 'json',
-      success:function(response){
-        $('#date').html(response.date);
-        $('#transid').html(response.transaction);
-        $('#detail').prepend(response.list);
-        $('#total').html(response.total);
+      success: function(response){
+        if (response.error) {
+          $('#detail').html('<tr><td colspan="4" align="center">' + response.error + '</td></tr>');
+          $('#date, #transid, #address, #contact_info, #total').html('');
+        } else {
+          $('#date').html(response.date);
+          $('#transid').html(response.transaction);
+          $('#address').html(response.address);
+          $('#contact_info').html(response.contact_info);
+          $('#detail').html(response.list);
+          $('#total').html(response.total);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('AJAX error:', status, error, xhr.responseText);
+        $('#detail').html('<tr><td colspan="4" align="center">Error loading transaction</td></tr>');
+        $('#date, #transid, #address, #contact_info, #total').html('');
       }
     });
   });
 
   $("#transaction").on("hidden.bs.modal", function () {
-      $('.prepend_items').remove();
+    $('.prepend_items').remove();
+    $('#detail').html('<tr><td colspan="4" align="center">No Items</td></tr>');
+    $('#date, #transid, #address, #contact_info, #total').html('');
   });
 });
 </script>
