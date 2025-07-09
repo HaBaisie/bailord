@@ -37,6 +37,19 @@
                         <div class="col-sm-5">
                             <select class="form-control" id="category" name="category_id" required>
                                 <option value="" selected>- Select -</option>
+                                <?php
+                                  $conn = $pdo->open();
+                                  try {
+                                    $stmt = $conn->prepare("SELECT id, name FROM category ORDER BY name");
+                                    $stmt->execute();
+                                    foreach ($stmt as $crow) {
+                                      echo "<option value='" . $crow['id'] . "'>" . htmlspecialchars($crow['name']) . "</option>";
+                                    }
+                                  } catch (PDOException $e) {
+                                    echo "<option value=''>Error: " . htmlspecialchars($e->getMessage()) . "</option>";
+                                  }
+                                  $pdo->close();
+                                ?>
                             </select>
                         </div>
                     </div>
