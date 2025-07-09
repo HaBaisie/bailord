@@ -54,7 +54,7 @@
             --medium-neutral: #e9ecef;
             --dark-neutral: #495057;
             --text-dark: #212529;
-            --text-light: #f8f9fa;
+            --text-light: #000000;
             --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
