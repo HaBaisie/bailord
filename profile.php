@@ -372,6 +372,68 @@
         .edit-form .btn-default:hover {
             background-color: #d3d7db;
         }
+        /* Transaction History Table Styles */
+        .table-responsive {
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .table {
+            margin-bottom: 0;
+            background-color: var(--light-neutral);
+        }
+        .table thead {
+            background: var(--blue-gradient);
+            color: var(--text-light);
+        }
+        .table th {
+            font-weight: 600;
+vi            padding: 12px 15px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: none;
+            border-bottom: 2px solid var(--medium-neutral);
+        }
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            font-size: 14px;
+            color: var(--text-dark);
+            border: none;
+            border-bottom: 1px solid var(--medium-neutral);
+        }
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .table tbody tr:hover {
+            background-color: #e6f0fa;
+        }
+        .table .btn-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .table .btn-info:hover {
+            background-color: var(--complementary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .table .btn-info i {
+            font-size: 16px;
+        }
+        .table td:nth-child(2),
+        .table td:nth-child(3),
+        .table td:nth-child(4) {
+            text-align: center;
+        }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
             .header-middle .header-center .header-search-extended {
@@ -396,8 +458,12 @@
                 -webkit-overflow-scrolling: touch;
             }
             .table th, .table td {
-                padding: 8px;
-                font-size: 14px;
+                padding: 10px;
+                font-size: 13px;
+            }
+            .table .btn-info {
+                padding: 6px 10px;
+                font-size: 12px;
             }
         }
         @media (max-width: 767px) {
@@ -418,6 +484,67 @@
                 float: none;
                 display: block;
                 margin-top: 10px;
+            }
+            .table-responsive {
+                border: none;
+                box-shadow: none;
+            }
+            .table th, .table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+            .table th {
+                font-size: 12px;
+            }
+            .table .btn-info {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tbody tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid var(--medium-neutral);
+                border-radius: 4px;
+                background-color: white;
+            }
+            .table tbody tr:nth-child(even) {
+                background-color: white;
+            }
+            .table tbody tr:hover {
+                background-color: #f8f9fa;
+            }
+            .table td {
+                display: block;
+                text-align: right;
+                padding: 8px 12px;
+                border-bottom: none;
+                position: relative;
+            }
+            .table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 12px;
+                font-weight: 600;
+                color: var(--dominant-color);
+                text-transform: uppercase;
+            }
+            .table td:nth-child(2):before {
+                content: "Date";
+            }
+            .table td:nth-child(3):before {
+                content: "Transaction#";
+            }
+            .table td:nth-child(4):before {
+                content: "Amount";
+            }
+            .table td:nth-child(5):before {
+                content: "Details";
+            }
+            .table td:nth-child(1) {
+                display: none;
             }
         }
         @media (min-width: 992px) {
@@ -514,7 +641,6 @@
                     }
                 }
             });
-            // Toggle edit form visibility
             const editButton = document.querySelector('.edit-profile-btn');
             const editForm = document.querySelector('.edit-form');
             const cancelButton = document.querySelector('.edit-form .btn-default');
@@ -783,11 +909,13 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="example1">
                                         <thead>
-                                            <th class="hidden"></th>
-                                            <th>Date</th>
-                                            <th>Transaction#</th>
-                                            <th>Amount</th>
-                                            <th>Full Details</th>
+                                            <tr>
+                                                <th class="hidden"></th>
+                                                <th>Date</th>
+                                                <th>Transaction#</th>
+                                                <th>Amount</th>
+                                                <th>Full Details</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         <?php
@@ -806,10 +934,10 @@
                                                     echo "
                                                         <tr>
                                                             <td class='hidden'></td>
-                                                            <td>".date('M d, Y', strtotime($row['sales_date']))."</td>
-                                                            <td>".htmlspecialchars($row['pay_id'])."</td>
-                                                            <td>$ ".number_format($total, 2)."</td>
-                                                            <td><button class='btn btn-sm btn-flat btn-info transact' data-id='".htmlspecialchars($row['id'])."'><i class='fa fa-search'></i> View</button></td>
+                                                            <td data-label='Date'>".date('M d, Y', strtotime($row['sales_date']))."</td>
+                                                            <td data-label='Transaction#'>".htmlspecialchars($row['pay_id'])."</td>
+                                                            <td data-label='Amount'>$ ".number_format($total, 2)."</td>
+                                                            <td data-label='Details'><button class='btn btn-sm btn-flat btn-info transact' data-id='".htmlspecialchars($row['id'])."'><i class='fa fa-search'></i> View</button></td>
                                                         </tr>
                                                     ";
                                                 }
