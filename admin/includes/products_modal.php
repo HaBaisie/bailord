@@ -30,7 +30,7 @@
                 <form class="form-horizontal" method="POST" action="products_add.php" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name" class="col-sm-1 control-label">Name</label>
-                        <div class="col-sm-5">
+                        <does class="col-sm-5">
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <label for="category" class="col-sm-1 control-label">Category</label>
@@ -40,10 +40,10 @@
                                 <?php
                                   $conn = $pdo->open();
                                   try {
-                                    $stmt = $conn->prepare("SELECT id, name FROM category ORDER BY name");
+                                      $stmt = $conn->prepare("SELECT id, name FROM category ORDER BY name");
                                     $stmt->execute();
                                     foreach ($stmt as $crow) {
-                                      echo "<option value='" . $crow['id'] . "'>" . htmlspecialchars($crow['name']) . "</option>";
+                                        echo "<option value='" . $crow['id'] . "'>" . htmlspecialchars($crow['name']) . "</option>";
                                     }
                                   } catch (PDOException $e) {
                                     echo "<option value=''>Error: " . htmlspecialchars($e->getMessage()) . "</option>";
@@ -58,6 +58,19 @@
                         <div class="col-sm-5">
                             <select class="form-control" id="subcategory" name="subcategory_id">
                                 <option value="" selected>- Select -</option>
+                                <?php
+                                  $conn = $pdo->open();
+                                  try {
+                                    $stmt = $conn->prepare("SELECT id, name, category_id FROM subcategory ORDER BY name");
+                                    $stmt->execute();
+                                    foreach ($stmt as $srow) {
+                                        echo "<option value='" . $srow['id'] . "' data-category-id='" . $srow['category_id'] . "'>" . htmlspecialchars($srow['name']) . "</option>";
+                                    }
+                                  } catch (PDOException $e) {
+                                    echo "<option value=''>Error: " . htmlspecialchars($e->getMessage()) . "</option>";
+                                  }
+                                  $pdo->close();
+                                ?>
                             </select>
                         </div>
                         <label for="price" class="col-sm-1 control-label">Price</label>
