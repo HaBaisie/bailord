@@ -134,17 +134,24 @@ if (isset($_GET['category']) && $_GET['category'] != 0) {
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function() {
+  // Log jQuery status
+  console.log('jQuery loaded, version:', $.fn.jquery);
+
   // Initialize DataTable
   $('#example1').DataTable();
 
-  // Initialize CKEditor for add modal
+  // Initialize CKEditor
   if (typeof CKEDITOR !== 'undefined') {
+    console.log('CKEditor loaded');
     CKEDITOR.replace('editor1');
+  } else {
+    console.warn('CKEditor not loaded');
   }
 
   // Handle edit modal
   $(document).on('click', '.edit', function(e) {
     e.preventDefault();
+    console.log('Edit clicked, ID:', $(this).data('id'));
     $('#edit').modal('show');
     var id = $(this).data('id');
     getRow(id);
@@ -153,6 +160,7 @@ $(function() {
   // Handle delete modal
   $(document).on('click', '.delete', function(e) {
     e.preventDefault();
+    console.log('Delete clicked, ID:', $(this).data('id'));
     $('#delete').modal('show');
     var id = $(this).data('id');
     getRow(id);
@@ -161,6 +169,7 @@ $(function() {
   // Handle photo modal
   $(document).on('click', '.photo', function(e) {
     e.preventDefault();
+    console.log('Photo clicked, ID:', $(this).data('id'));
     $('#edit_photo').modal('show');
     var id = $(this).data('id');
     getRow(id);
@@ -169,6 +178,7 @@ $(function() {
   // Handle description modal
   $(document).on('click', '.desc', function(e) {
     e.preventDefault();
+    console.log('Description clicked, ID:', $(this).data('id'));
     $('#description').modal('show');
     var id = $(this).data('id');
     getRow(id);
@@ -177,30 +187,34 @@ $(function() {
   // Handle category filter
   $('#select_category').change(function() {
     var val = $(this).val();
+    console.log('Category filter changed:', val);
     window.location = val == 0 ? 'products.php' : 'products.php?category=' + val;
   });
 
   // Handle add product button
   $('#addproduct').click(function(e) {
     e.preventDefault();
+    console.log('Add product clicked');
     $('#addnew').modal('show');
   });
 
-  // Load categories when add modal is shown
+  // Load categories when modal shown
   $('#addnew').on('shown.bs.modal', function() {
+    console.log('Addnew modal shown, loading categories');
     getCategory();
   });
 
-  // Clear appended items when modals close
+  // Clear dropdowns on modal close
   $("#addnew, #edit").on("hidden.bs.modal", function() {
+    console.log('Modal closed, clearing dropdowns');
     $('.append_items').remove();
     $('#subcategory, #edit_subcategory').html('<option value="" selected>- Select -</option>');
   });
 
-  // Load subcategories when category changes in add modal
+  // Load subcategories on category change
   $(document).on('change', '#category', function() {
     var category_id = $(this).val();
-    console.log('Category selected:', category_id); // Debug
+    console.log('Category changed, ID:', category_id);
     $('#subcategory').html('<option value="" selected>Loading...</option>');
     if (category_id) {
       $.ajax({
@@ -209,11 +223,11 @@ $(function() {
         data: {category_id: category_id},
         dataType: 'json',
         success: function(response) {
-          console.log('Subcategory response:', response); // Debug
+          console.log('Subcategory response:', response);
           $('#subcategory').html('<option value="" selected>- Select -</option>' + response);
         },
         error: function(xhr, status, error) {
-          console.error('Error loading subcategories:', status, error, xhr.responseText); // Debug
+          console.error('Subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
           $('#subcategory').html('<option value="" disabled>Error loading subcategories</option>');
         }
       });
@@ -225,7 +239,7 @@ $(function() {
   // Load subcategories for edit modal
   $(document).on('change', '#edit_category', function() {
     var category_id = $(this).val();
-    console.log('Edit category selected:', category_id); // Debug
+    console.log('Edit category changed, ID:', category_id);
     $('#edit_subcategory').html('<option value="" selected>Loading...</option>');
     if (category_id) {
       $.ajax({
@@ -234,11 +248,11 @@ $(function() {
         data: {category_id: category_id},
         dataType: 'json',
         success: function(response) {
-          console.log('Edit subcategory response:', response); // Debug
+          console.log('Edit subcategory response:', response);
           $('#edit_subcategory').html('<option value="" selected>- Select -</option>' + response);
         },
         error: function(xhr, status, error) {
-          console.error('Error loading subcategories:', status, error, xhr.responseText); // Debug
+          console.error('Edit subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
           $('#edit_subcategory').html('<option value="" disabled>Error loading subcategories</option>');
         }
       });
@@ -249,13 +263,14 @@ $(function() {
 });
 
 function getRow(id) {
+  console.log('Fetching product row, ID:', id);
   $.ajax({
     type: 'POST',
     url: 'products_row.php',
     data: {id: id},
     dataType: 'json',
     success: function(response) {
-      console.log('Product row response:', response); // Debug
+      console.log('Product row response:', response);
       $('#desc').html(response.description);
       $('.name').html(response.prodname);
       $('.prodid').val(response.prodid);
@@ -266,7 +281,6 @@ function getRow(id) {
       if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.instances["editor2"].setData(response.description);
       }
-      // Load subcategories for selected category in edit modal
       if (response.category_id) {
         $.ajax({
           type: 'POST',
@@ -274,34 +288,35 @@ function getRow(id) {
           data: {category_id: response.category_id},
           dataType: 'json',
           success: function(sub_response) {
-            console.log('Edit subcategory response:', sub_response); // Debug
+            console.log('Edit subcategory response:', sub_response);
             $('#edit_subcategory').html('<option value="" selected>- Select -</option>' + sub_response);
             $('#edit_subcategory').val(response.subcategory_id || '');
           },
           error: function(xhr, status, error) {
-            console.error('Error loading subcategories for edit:', status, error, xhr.responseText); // Debug
+            console.error('Edit subcategory AJAX error:', status, error, 'Response:', xhr.responseText);
           }
         });
       }
     },
     error: function(xhr, status, error) {
-      console.error('Error fetching product:', status, error, xhr.responseText); // Debug
+      console.error('Product row AJAX error:', status, error, 'Response:', xhr.responseText);
     }
   });
 }
 
 function getCategory() {
+  console.log('Fetching categories');
   $.ajax({
     type: 'POST',
     url: 'category_fetch.php',
     dataType: 'json',
     success: function(response) {
-      console.log('Category response:', response); // Debug
+      console.log('Category response:', response);
       $('#category').html('<option value="" selected>- Select -</option>' + response);
       $('#edit_category').html('<option value="" selected>- Select -</option>' + response);
     },
     error: function(xhr, status, error) {
-      console.error('Error loading categories:', status, error, xhr.responseText); // Debug
+      console.error('Category AJAX error:', status, error, 'Response:', xhr.responseText);
       $('#category, #edit_category').html('<option value="">Error loading categories</option>');
     }
   });
