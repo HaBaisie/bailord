@@ -660,10 +660,10 @@
                                         </div>
                                         <div class="col-sm-9">
                                             <h4><?php echo htmlspecialchars($user['firstname'].' '.$user['lastname']); ?>
-                                                <span class="pull-right">
-                                                    <a href="profile_edit.php" class="btn btn-success btn-flat btn-sm" data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
-                                                </span>
-                                            </h4>
+					      <span class="pull-right">
+					          <a href="#editProfileModal" class="btn btn-success btn-flat btn-sm" data-toggle="modal"><i class="fa fa-edit"></i> Edit</a>
+					      </span>
+					    </h4>
                                             <h4><?php echo htmlspecialchars($user['email']); ?></h4>
                                             <h4><?php echo (!empty($user['contact_info'])) ? htmlspecialchars($user['contact_info']) : 'N/a'; ?></h4>
                                             <h4><?php echo (!empty($user['address'])) ? htmlspecialchars($user['address']) : 'N/a'; ?></h4>
