@@ -241,6 +241,7 @@
         .callout-danger p {
             font-size: 2.0rem; /* 100% increase from button's 1.2rem */
             margin: 0;
+            color: var(--white);
         }
 
         .form a {
@@ -384,6 +385,7 @@
             .callout-danger p {
                 font-size: 2.0rem; /* 100% increase from button's 1.1rem */
                 margin: 0;
+                color: var(--white);
             }
 
             .social-btn {
@@ -403,6 +405,7 @@
 
             .callout-danger {
                 font-size: 2.2rem; /* 100% increase from button's 1.1rem */
+                color: var(--white);
             }
         }
 
@@ -443,6 +446,7 @@
             .callout-danger p {
                 font-size: 2.0rem; /* 100% increase from button's 1.0rem */
                 margin: 0;
+                color: var(--white);
             }
 
             .social-btn {
