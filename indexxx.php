@@ -638,6 +638,45 @@ if(isset($_SESSION['user'])){
                                         $pdo->close();
                                     ?>
                                 </div>
+                                <div class="table-responsive">
+                                    <h4>Category Table Data</h4>
+                                    <?php
+                                        $conn = $pdo->open();
+                                        try {
+                                            $stmt = $conn->prepare("SELECT * FROM category");
+                                            $stmt->execute();
+                                            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if (empty($categories)) {
+                                                echo "<p>No data found in the category table.</p>";
+                                            } else {
+                                                echo "<table class='table table-bordered'>";
+                                                echo "<thead>";
+                                                echo "<tr>";
+                                                // Dynamically generate headers based on column names
+                                                $columns = array_keys($categories[0]);
+                                                foreach ($columns as $column) {
+                                                    echo "<th>" . htmlspecialchars($column) . "</th>";
+                                                }
+                                                echo "</tr>";
+                                                echo "</thead>";
+                                                echo "<tbody>";
+                                                foreach ($categories as $category) {
+                                                    echo "<tr>";
+                                                    foreach ($category as $value) {
+                                                        echo "<td>" . (is_null($value) ? '-' : htmlspecialchars($value)) . "</td>";
+                                                    }
+                                                    echo "</tr>";
+                                                }
+                                                echo "</tbody>";
+                                                echo "</table>";
+                                            }
+                                        } catch(PDOException $e) {
+                                            echo "<div class='callout callout-danger'>Error fetching category data: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                            error_log("Category data fetch failed: " . $e->getMessage());
+                                        }
+                                        $pdo->close();
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
