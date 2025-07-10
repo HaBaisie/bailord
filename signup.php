@@ -223,10 +223,11 @@
 
         .callout {
             padding: 1rem;
+            color: var(--white);
+            font-size: 2.0rem;
             margin: 1rem 0;
             border-radius: 0.5rem;
             text-align: center;
-            font-size: 0.95rem;
             opacity: 0;
             transform: translateY(15px);
             transition: opacity 0.5s ease, transform 0.5s ease;
