@@ -805,10 +805,20 @@ if (file_exists('includes/session.php')) {
             color: var(--text-dark);
             cursor: pointer;
             transition: color 0.3s;
+            z-index: 2001;
         }
 
         .newsletter-popup-close:hover {
             color: var(--primary-color);
+        }
+
+        /* Hide Magnific Popup's default close button and tooltip */
+        .mfp-close {
+            display: none !important;
+        }
+
+        .mfp-close-btn-in .mfp-close {
+            display: none !important;
         }
 
         /* Promo Popup */
@@ -884,6 +894,7 @@ if (file_exists('includes/session.php')) {
             color: var(--text-dark);
             cursor: pointer;
             transition: color 0.3s;
+            z-index: 2001;
         }
 
         .promo-popup-close:hover {
