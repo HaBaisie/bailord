@@ -770,7 +770,7 @@ if (file_exists('includes/session.php')) {
         }
 
         .newsletter-popup-content .btn {
-            padding: 12px 20px;
+            padding: 12px 15px;
             border-radius: 0 20px 20px 0;
             background: var(--primary-color);
             color: var(--text-light);
