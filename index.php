@@ -227,7 +227,7 @@ if (file_exists('includes/session.php')) {
             text-align: center;
             padding: 10px;
             margin: 6px 0;
-            border-radius:25px;
+            border-radius: 25px;
             text-decoration: none;
             font-weight: 500;
             transition: background-color 0.3s, color 0.3s;
@@ -350,7 +350,6 @@ if (file_exists('includes/session.php')) {
         .intro-slider .intro-slide img {
             width: 100%;
             max-height: 300px;
-            object MOUSEOVER cursor: pointer;
             object-fit: cover;
             border-radius: 8px;
             image-rendering: -webkit-optimize-contrast;
@@ -756,8 +755,10 @@ if (file_exists('includes/session.php')) {
 
         .newsletter-popup-content .input-group {
             display: flex;
+            flex-wrap: nowrap;
             width: 100%;
             margin: 0 auto 15px;
+            align-items: center;
         }
 
         .newsletter-popup-content input {
@@ -767,10 +768,11 @@ if (file_exists('includes/session.php')) {
             border-radius: 20px 0 0 20px;
             font-size: 14px;
             outline: none;
+            min-width: 0;
         }
 
         .newsletter-popup-content .btn {
-            padding: 12px 15px;
+            padding: 12px 20px;
             border-radius: 0 20px 20px 0;
             background: var(--primary-color);
             color: var(--text-light);
@@ -778,6 +780,7 @@ if (file_exists('includes/session.php')) {
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex-shrink: 0;
         }
 
         .newsletter-popup-content .btn:hover {
@@ -1077,6 +1080,25 @@ if (file_exists('includes/session.php')) {
 
             .owl-carousel .owl-nav {
                 display: none;
+            }
+
+            .newsletter-popup-content .input-group {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .newsletter-popup-content input {
+                flex: 1;
+                min-width: 0;
+                border-radius: 20px 0 0 20px;
+                margin-right: 0;
+            }
+
+            .newsletter-popup-content .btn {
+                border-radius: 0 20px 20px 0;
+                padding: 12px 15px;
+                flex-shrink: 0;
             }
         }
 
