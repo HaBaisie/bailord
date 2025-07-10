@@ -245,7 +245,7 @@
 
         .callout-success p {
             background-color: var(--success-bg);
-            color: var(--white);
+            color: var(--dark-blue);
             font-size: 2.0rem;
             margin: 0;
         }
