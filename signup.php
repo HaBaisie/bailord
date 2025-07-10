@@ -223,8 +223,6 @@
 
         .callout {
             padding: 1rem;
-            color: var(--white);
-            font-size: 2.0rem;
             margin: 1rem 0;
             border-radius: 0.5rem;
             text-align: center;
@@ -238,19 +236,18 @@
         .container.sign-up .form.sign-up .callout {
             opacity: 1;
             transform: translateY(0);
-            color: var(--white);
-            font-size: 2.0rem;
         }
 
         .callout-danger {
             background-color: var(--error-bg);
-            color: var(--white);
+            color: var(--error-text);
         }
 
-        .callout-success {
+        .callout-success p {
             background-color: var(--success-bg);
             color: var(--white);
             font-size: 2.0rem;
+            margin: 0;
         }
 
         @media only screen and (max-width: 425px) {
@@ -319,6 +316,9 @@
             .callout {
                 padding: 0.8rem;
                 margin: 0.8rem 0;
+            }
+
+            .callout-success p {
                 font-size: 2.0rem;
                 color: var(--white);
             }
@@ -351,6 +351,10 @@
             }
 
             .callout {
+                padding: 0.8rem;
+            }
+
+            .callout-success p {
                 font-size: 2.0rem;
                 color: var(--white);
             }
