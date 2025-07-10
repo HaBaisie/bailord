@@ -320,7 +320,7 @@
 
             .callout-success p {
                 font-size: 2.0rem;
-                color: var(--white);
+                color: var(--dark-blue);
             }
         }
 
