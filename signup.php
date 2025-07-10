@@ -238,11 +238,13 @@
         .container.sign-up .form.sign-up .callout {
             opacity: 1;
             transform: translateY(0);
+            color: var(--white);
+            font-size: 2.0rem;
         }
 
         .callout-danger {
             background-color: var(--error-bg);
-            color: var(--error-text);
+            color: var(--white);
         }
 
         .callout-success {
@@ -317,7 +319,8 @@
             .callout {
                 padding: 0.8rem;
                 margin: 0.8rem 0;
-                font-size: 0.85rem;
+                font-size: 2.0rem;
+                color: var(--white);
             }
         }
 
@@ -348,7 +351,8 @@
             }
 
             .callout {
-                font-size: 0.8rem;
+                font-size: 2.0rem;
+                color: var(--white);
             }
         }
     </style>
