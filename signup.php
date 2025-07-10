@@ -246,8 +246,8 @@
 
         .callout-success {
             background-color: var(--success-bg);
-            font-size: 2.0rem;
             color: var(--white);
+            font-size: 2.0rem;
         }
 
         @media only screen and (max-width: 425px) {
