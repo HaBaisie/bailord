@@ -13,7 +13,7 @@ if (!$user_id) {
 
 try {
     // Authenticate with Kwik API
-    $ch = curl_init(KWIK_BASE_URL . '/admin/login');
+    $ch = curl_init(KWIK_BASE_URL . 'vendor_login');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
