@@ -73,7 +73,7 @@ try {
         ],
         'is_loader_required' => 0,
         'delivery_instruction' => 'Leave package at front desk',
-        'is_cod_job' => 1,
+        'is_cod_job' => 0,
         'parcel_amount' => $cart_total, // Use cart total
         'vehicle_id' => 0 // Default to small vehicle; fetch from /getVehicle if needed
     ];
