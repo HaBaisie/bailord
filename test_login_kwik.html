@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Kwik Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2a5bd7;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #2a5bd7;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1e429f;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        #response.success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        #response.error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Kwik Login API</h1>
+        <form id="test-kwik-form">
+            <div class="form-group">
+                <label for="user_id">User ID</label>
+                <input type="number" id="user_id" name="user_id" class="form-control" value="13" required>
+            </div>
+            <button type="submit" class="btn">Test Login</button>
+        </form>
+        <div id="response"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#test-kwik-form').on('submit', function(e) {
+                e.preventDefault();
+                var user_id = $('#user_id').val().trim();
+                if (!user_id) {
+                    $('#response')
+                        .removeClass('success error')
+                        .addClass('error')
+                        .html('Please enter a valid User ID.')
+                        .show();
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://bailord-0b4b2667ca4f.herokuapp.com/login_kwik.php',
+                    data: { user_id: user_id },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('login_kwik.php response:', response);
+                        $('#response')
+                            .removeClass('success error')
+                            .addClass(response.success ? 'success' : 'error')
+                            .html('<strong>Response:</strong><br><pre>' + JSON.stringify(response, null, 2) + '</pre>')
+                            .show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('login_kwik.php error:', xhr.responseText);
+                        $('#response')
+                            .removeClass('success error')
+                            .addClass('error')
+                            .html('<strong>Error:</strong> Failed to connect to login_kwik.php: ' + error + '<br><pre>' + xhr.responseText + '</pre>')
+                            .show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
