@@ -1,3 +1,4 @@
+```php
 <?php
 include 'includes/session.php';
 $conn = $pdo->open();
@@ -54,7 +55,6 @@ if ($user_id) {
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
     <link rel="preload" href="assets/css/style.css" as="style">
-    <!-- Updated preload paths -->
     <link rel="preload" href="https://bailord-0b4b2667ca4f.herokuapp.com/assets/js/jquery.min.js" as="script">
     <link rel="preload" href="https://bailord-0b4b2667ca4f.herokuapp.com/assets/js/bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
@@ -64,13 +64,15 @@ if ($user_id) {
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ... (DOMContentLoaded script remains unchanged) ...
+            // ... (DOMContentLoaded script remains unchanged) ... 
         });
     </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="page-wrapper">
     <!-- ... (HTML structure remains unchanged up to the <script> section) ... -->
+    <script src="https://bailord-0b4b2667ca4f.herokuapp.com/assets/js/jquery.min.js"></script>
+    <script src="https://bailord-0b4b2667ca4f.herokuapp.com/assets/js/bootstrap.bundle.min.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
@@ -537,3 +539,4 @@ if ($user_id) {
 </div>
 </body>
 </html>
+```
