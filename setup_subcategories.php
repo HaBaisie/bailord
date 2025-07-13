@@ -13,27 +13,30 @@ if (isset($_SESSION['user'])) {
         error_log("User fetch failed: " . $e->getMessage());
     }
     $pdo->close();
+} else {
+    header('Location: login.php');
+    exit;
 }
 
 // Handle form submission to execute SQL
 $success_message = '';
 $error_message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) {
     $conn = $pdo->open();
     try {
-        $sql_alter = "
-            ALTER TABLE category
-            DROP FOREIGN KEY category_ibfk_1";
-        $conn->exec($sql_alter);
-        $sql_alter = "
-            ALTER TABLE category
-            DROP COLUMN subcategory_id";
-        $conn->exec($sql_alter);
-
-        $success_message = "Subcategory table created and products table updated successfully.";
+        $sql = "CREATE TABLE kwik_jobs (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            sales_id INT NOT NULL,
+            job_id VARCHAR(50) NOT NULL,
+            pickup_tracking_link VARCHAR(255) DEFAULT NULL,
+            delivery_tracking_link VARCHAR(255) DEFAULT NULL,
+            FOREIGN KEY (sales_id) REFERENCES sales(id)
+        )";
+        $conn->exec($sql);
+        $success_message = "Table `kwik_jobs` created successfully.";
     } catch (PDOException $e) {
-        $error_message = "Error executing database changes: " . htmlspecialchars($e->getMessage());
-        error_log("Database setup failed: " . $e->getMessage());
+        $error_message = "Error creating table: " . htmlspecialchars($e->getMessage());
+        error_log("Table creation failed: " . $e->getMessage());
     }
     $pdo->close();
 }
@@ -44,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories']
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Subcategories - Bailord</title>
+    <title>Create Kwik Jobs Table - Bailord</title>
     <meta name="keywords" content="Bailord Database Setup">
-    <meta name="description" content="Setup subcategories for Bailord eCommerce">
+    <meta name="description" content="Create kwik_jobs table for Bailord eCommerce">
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
@@ -623,12 +626,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_subcategories']
                         ?>
                         <div class="box box-solid">
                             <div class="box-header with-border">
-                                <h4 class="box-title"><i class="fa fa-database"></i> <b>Setup Subcategories</b></h4>
+                                <h4 class="box-title"><i class="fa fa-database"></i> <b>Create Kwik Jobs Table</b></h4>
                             </div>
                             <div class="box-body">
-                                <p>This action will create the <code>subcategory</code> table and add a <code>subcategory_id</code> column to the <code>products</code> table.</p>
+                                <p>This action will create the <code>kwik_jobs</code> table to store delivery job information.</p>
                                 <form method="POST" action="">
-                                    <button type="submit" name="setup_subcategories" class="btn btn-primary">Execute Database Changes</button>
+                                    <button type="submit" name="create_kwik_jobs" class="btn btn-primary">Create Kwik Jobs Table</button>
                                 </form>
                             </div>
                         </div>
