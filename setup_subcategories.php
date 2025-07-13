@@ -13,21 +13,29 @@ try {
         exit;
     }
 
-    // Authenticate with Kwik API using /vendor_login
-    $endpoint = KWIK_BASE_URL . '/vendor_login';
+    // Authenticate with Kwik API using /vendor_login with all required parameters
+    $endpoint = 'https://staging-api-test.kwik.delivery/vendor_login';
+    $payload = [
+        'domain_name' => 'staging-client-panel.kwik.delivery',
+        'email' => 'lawalhabeeb3191@gmail.com', // Consider moving to config.php
+        'password' => 'Kwik2025$', // Consider moving to config.php
+        'api_login' => 1
+    ];
+
     $ch = curl_init($endpoint);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        'email' => KWIK_EMAIL,
-        'password' => KWIK_PASSWORD
-    ]));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip'); // Handle gzip response
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Temporary for testing
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // Temporary for testing
+    
+    // Debugging setup
     curl_setopt($ch, CURLOPT_VERBOSE, true);
     $verbose = fopen('php://temp', 'w+');
     curl_setopt($ch, CURLOPT_STDERR, $verbose);
+    
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
@@ -36,38 +44,49 @@ try {
     // Log debugging info
     rewind($verbose);
     $verbose_log = stream_get_contents($verbose);
-    error_log("Kwik API Request URL: " . $endpoint, 3, 'kwik_debug.log');
-    error_log("Kwik API Response: " . $response, 3, 'kwik_debug.log');
-    error_log("Kwik API HTTP Code: " . $http_code, 3, 'kwik_debug.log');
-    error_log("Kwik API cURL Error: " . $curl_error, 3, 'kwik_debug.log');
-    error_log("Kwik API Verbose Log: " . $verbose_log, 3, 'kwik_debug.log');
+    file_put_contents('kwik_debug.log', 
+        "Request to: $endpoint\n" .
+        "Payload: " . json_encode($payload) . "\n" .
+        "Response: $response\n" .
+        "HTTP Code: $http_code\n" .
+        "cURL Error: $curl_error\n" .
+        "Verbose Log: $verbose_log\n\n",
+        FILE_APPEND
+    );
 
     if ($http_code !== 200) {
         $response_data = json_decode($response, true);
-        $error_message = isset($response_data['message']) ? $response_data['message'] : 'Unknown error';
+        $error_message = $response_data['message'] ?? 'Unknown error';
         echo json_encode([
             'success' => false,
             'message' => 'Kwik API authentication failed: ' . $error_message,
             'http_code' => $http_code,
-            'curl_error' => $curl_error
+            'curl_error' => $curl_error,
+            'response' => $response_data
         ]);
         exit;
     }
 
     $data = json_decode($response, true);
-    if (!isset($data['body']['data']['access_token'])) {
+    
+    // Debug: Output full response to check structure
+    // file_put_contents('kwik_response.log', print_r($data, true));
+    
+    // Adjust these field names based on actual API response structure
+    if (!isset($data['access_token'])) {
         echo json_encode([
             'success' => false,
             'message' => 'No access token received from Kwik API',
-            'response' => $response
+            'response' => $data
         ]);
         exit;
     }
 
-    $access_token = $data['body']['data']['access_token'];
-    $vendor_id = $data['body']['data']['vendor_details']['vendor_id'];
-    $kwik_user_id = $data['body']['data']['vendor_details']['user_id'];
-    $card_id = $data['body']['data']['vendor_details']['card_id'];
+    // Extract token and vendor details - adjust field names as needed
+    $access_token = $data['access_token'];
+    $vendor_id = $data['vendor_id'] ?? '';
+    $kwik_user_id = $data['user_id'] ?? '';
+    $card_id = $data['card_id'] ?? '';
 
     // Drop existing tables
     $conn->exec("DROP TABLE IF EXISTS kwik_jobs");
@@ -98,7 +117,13 @@ try {
 
     // Insert access token and details into kwik_tokens
     $stmt = $conn->prepare("INSERT INTO kwik_tokens (user_id, access_token, vendor_id, kwik_user_id, card_id, created_at) 
-                            VALUES (:user_id, :access_token, :vendor_id, :kwik_user_id, :card_id, NOW())");
+                            VALUES (:user_id, :access_token, :vendor_id, :kwik_user_id, :card_id, NOW())
+                            ON DUPLICATE KEY UPDATE 
+                            access_token = VALUES(access_token),
+                            vendor_id = VALUES(vendor_id),
+                            kwik_user_id = VALUES(kwik_user_id),
+                            card_id = VALUES(card_id),
+                            created_at = NOW()");
     $stmt->execute([
         'user_id' => $user_id,
         'access_token' => $access_token,
@@ -110,7 +135,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Kwik tables created and tokens initialized',
-        'endpoint_used' => $endpoint
+        'token_received' => !empty($access_token)
     ]);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
@@ -119,4 +144,3 @@ try {
 } finally {
     $pdo->close();
 }
-?>
