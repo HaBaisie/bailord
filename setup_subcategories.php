@@ -17,8 +17,8 @@ try {
     $endpoint = 'https://staging-api-test.kwik.delivery/vendor_login';
     $payload = [
         'domain_name' => 'staging-client-panel.kwik.delivery',
-        'email' => 'lawalhabeeb3191@gmail.com', // Consider moving to config.php
-        'password' => 'Kwik2025$', // Consider moving to config.php
+        'email' => 'lawalhabeeb3191@gmail.com',
+        'password' => 'Kwik2025$',
         'api_login' => 1
     ];
 
@@ -27,32 +27,13 @@ try {
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_ENCODING, 'gzip'); // Handle gzip response
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Temporary for testing
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // Temporary for testing
     
-    // Debugging setup
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
-    $verbose = fopen('php://temp', 'w+');
-    curl_setopt($ch, CURLOPT_STDERR, $verbose);
-    
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curl_error = curl_error($ch);
     curl_close($ch);
-
-    // Log debugging info
-    rewind($verbose);
-    $verbose_log = stream_get_contents($verbose);
-    file_put_contents('kwik_debug.log', 
-        "Request to: $endpoint\n" .
-        "Payload: " . json_encode($payload) . "\n" .
-        "Response: $response\n" .
-        "HTTP Code: $http_code\n" .
-        "cURL Error: $curl_error\n" .
-        "Verbose Log: $verbose_log\n\n",
-        FILE_APPEND
-    );
 
     if ($http_code !== 200) {
         $response_data = json_decode($response, true);
@@ -60,19 +41,13 @@ try {
         echo json_encode([
             'success' => false,
             'message' => 'Kwik API authentication failed: ' . $error_message,
-            'http_code' => $http_code,
-            'curl_error' => $curl_error,
-            'response' => $response_data
+            'http_code' => $http_code
         ]);
         exit;
     }
 
     $data = json_decode($response, true);
     
-    // Debug: Output full response to check structure
-    // file_put_contents('kwik_response.log', print_r($data, true));
-    
-    // Adjust these field names based on actual API response structure
     if (!isset($data['access_token'])) {
         echo json_encode([
             'success' => false,
@@ -82,11 +57,12 @@ try {
         exit;
     }
 
-    // Extract token and vendor details - adjust field names as needed
+    // Extract token and vendor details from the correct response structure
     $access_token = $data['access_token'];
-    $vendor_id = $data['vendor_id'] ?? '';
-    $kwik_user_id = $data['user_id'] ?? '';
-    $card_id = $data['card_id'] ?? '';
+    $vendor_details = $data['data']['vendor_details'];
+    $vendor_id = $vendor_details['vendor_id'];
+    $kwik_user_id = $vendor_details['user_id'];
+    $card_id = $vendor_details['card_id'] ?? '';
 
     // Drop existing tables
     $conn->exec("DROP TABLE IF EXISTS kwik_jobs");
