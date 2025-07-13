@@ -19,7 +19,9 @@ try {
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
         'email' => KWIK_EMAIL,
-        'password' => KWIK_PASSWORD
+        'password' => KWIK_PASSWORD,
+        'api_login' => api_login,
+        'domain_name' => domain_name
     ]));
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
