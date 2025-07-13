@@ -13,8 +13,8 @@ try {
     }
 
     // Vendor credentials (replace with actual values from Kwik)
-    $vendor_email = 'your_vendor_email@example.com'; // Provided by Kwik
-    $vendor_password = 'your_vendor_password'; // Provided by Kwik
+    $vendor_email = 'lawalhabeeb3191@gmail.com'; // Provided by Kwik
+    $vendor_password = 'Kwik2025$'; // Provided by Kwik
     $domain_name = 'staging-client-panel.kwik.delivery';
 
     // Call Kwik login API
