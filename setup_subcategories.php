@@ -40,6 +40,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
     }
     $pdo->close();
 }
+
+// Fetch all sales records
+$conn = $pdo->open();
+try {
+    $stmt = $conn->prepare("SELECT * FROM sales");
+    $stmt->execute();
+    $sales_records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $error_message = "Error fetching sales records: " . htmlspecialchars($e->getMessage());
+    error_log("Sales fetch failed: " . $e->getMessage());
+    $sales_records = [];
+}
+$pdo->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,9 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Kwik Jobs Table - Bailord</title>
+    <title>Database Tables - Bailord</title>
     <meta name="keywords" content="Bailord Database Setup">
-    <meta name="description" content="Create kwik_jobs table for Bailord eCommerce">
+    <meta name="description" content="Manage database tables for Bailord eCommerce">
     <meta name="author" content="Your Name">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
@@ -326,6 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: white;
+            margin-bottom: 20px;
         }
         .box-body {
             padding: 15px;
@@ -352,6 +366,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
         .btn-primary:hover {
             background-color: var(--complementary-blue);
         }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .table th {
+            background-color: var(--light-neutral);
+            color: var(--dominant-color);
+            font-weight: bold;
+        }
+        .table td {
+            color: var(--text-dark);
+        }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
             .header-middle .header-center .header-search-extended {
@@ -366,6 +403,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
             .logo img {
                 width: 80px;
             }
+            .table th, .table td {
+                font-size: 14px;
+                padding: 8px;
+            }
         }
         @media (max-width: 767px) {
             .header-middle .header-left {
@@ -378,6 +419,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
             .btn-primary {
                 font-size: 14px;
                 padding: 8px 15px;
+            }
+            .table th, .table td {
+                font-size: 12px;
+                padding: 6px;
             }
         }
         @media (min-width: 992px) {
@@ -633,6 +678,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_kwik_jobs'])) 
                                 <form method="POST" action="">
                                     <button type="submit" name="create_kwik_jobs" class="btn btn-primary">Create Kwik Jobs Table</button>
                                 </form>
+                            </div>
+                        </div>
+                        <div class="box box-solid">
+                            <div class="box-header with-border">
+                                <h4 class="box-title"><i class="fa fa-table"></i> <b>Sales Records</b></h4>
+                            </div>
+                            <div class="box-body">
+                                <p>Below is a list of all records in the <code>sales</code> table.</p>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>User ID</th>
+                                                <th>Pay ID</th>
+                                                <th>Sales Date</th>
+                                                <th>Status</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (empty($sales_records)): ?>
+                                                <tr>
+                                                    <td colspan="6">No sales records found.</td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <?php foreach ($sales_records as $record): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($record['id']); ?></td>
+                                                        <td><?php echo htmlspecialchars($record['user_id']); ?></td>
+                                                        <td><?php echo htmlspecialchars($record['pay_id'] ?? 'N/A'); ?></td>
+                                                        <td><?php echo htmlspecialchars($record['sales_date']); ?></td>
+                                                        <td><?php echo htmlspecialchars($record['status']); ?></td>
+                                                        <td><?php echo htmlspecialchars($record['location']); ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
