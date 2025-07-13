@@ -54,8 +54,6 @@ if ($user_id) {
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
     <link rel="preload" href="assets/css/style.css" as="style">
-    <link rel="preload" href="assets/js/jquery.min.js" as="script">
-    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//unpkg.com">
     <style>
@@ -760,6 +758,7 @@ if ($user_id) {
     var deliveryCost = 0;
 
     function loginKwik() {
+        console.log('Attempting to refresh token via login_kwik.php');
         return $.ajax({
             type: 'POST',
             url: 'login_kwik.php',
@@ -768,7 +767,25 @@ if ($user_id) {
         });
     }
 
+    function proceedToPaystack(amount, sales_id) {
+        var handler = PaystackPop.setup({
+            key: 'pk_test_79848b3271a3d80eef6a4c34d9d84f00d7a46dcb',
+            email: '<?php echo $user_email; ?>',
+            amount: amount * 100,
+            currency: 'NGN',
+            metadata: { sales_id: sales_id },
+            callback: function(response) {
+                window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+            },
+            onClose: function() {
+                alert('Payment window closed.');
+            }
+        });
+        handler.openIframe();
+    }
+
     function callKwikApi(kwikPayload, sales_id, address, name, phone, latitude, longitude) {
+        console.log('Calling Kwik API with payload:', kwikPayload);
         $.ajax({
             type: 'POST',
             url: 'https://staging-api-test.kwik.delivery/send_payment_for_task',
@@ -887,27 +904,6 @@ if ($user_id) {
                             alert('Failed to create delivery task: ' + error);
                         }
                     });
-                } else if (response.status === 101) {
-                    loginKwik().done(function(loginResponse) {
-                        if (loginResponse.success && loginResponse.access_token) {
-                            console.log('New access token:', loginResponse.access_token);
-                            kwikPayload.access_token = loginResponse.access_token;
-                            kwikPayload.vendor_id = loginResponse.vendor_id || kwikPayload.vendor_id;
-                            callKwikApi(kwikPayload, sales_id, address, name, phone, latitude, longitude);
-                        } else {
-                            console.error('Login failed:', loginResponse.message);
-                            deliveryCost = 1000;
-                            var totalWithDelivery = total + deliveryCost;
-                            alert('Unable to calculate delivery cost: ' + (loginResponse.message || 'Unknown error') + '. Using default delivery cost of ₦' + deliveryCost);
-                            proceedToPaystack(totalWithDelivery, sales_id);
-                        }
-                    }).fail(function(xhr, status, error) {
-                        console.error('Login error:', xhr.responseText);
-                        deliveryCost = 1000;
-                        var totalWithDelivery = total + deliveryCost;
-                        alert('Unable to calculate delivery cost: ' + error + '. Using default delivery cost of ₦' + deliveryCost);
-                        proceedToPaystack(totalWithDelivery, sales_id);
-                    });
                 } else {
                     var errorMsg = response.message || 'Unknown error';
                     if (response.errors) {
@@ -931,6 +927,23 @@ if ($user_id) {
     }
 
     $(function(){
+        // Initialize Kwik token on page load
+        if (<?php echo json_encode($user_id); ?>) {
+            console.log('Initializing Kwik token for user_id:', <?php echo json_encode($user_id); ?>);
+            loginKwik().done(function(loginResponse) {
+                console.log('Initial login_kwik.php response:', loginResponse);
+                if (!loginResponse.success || !loginResponse.access_token) {
+                    console.error('Initial token refresh failed:', loginResponse.message);
+                    alert('Failed to initialize delivery service: ' + (loginResponse.message || 'Unknown error'));
+                }
+            }).fail(function(xhr, status, error) {
+                console.error('Initial login_kwik.php error:', xhr.responseText);
+                alert('Failed to initialize delivery service: ' + error);
+            });
+        } else {
+            console.warn('No user_id found, skipping initial Kwik login');
+        }
+
         $(document).on('click', '.cart_delete', function(e){
             e.preventDefault();
             var id = $(this).data('id');
@@ -1095,6 +1108,7 @@ if ($user_id) {
                                     data: { user_id: <?php echo json_encode($user_id); ?> },
                                     dataType: 'json',
                                     success: function(tokenResponse) {
+                                        console.log('get_kwik_token.php response:', tokenResponse);
                                         if (!tokenResponse.success || !tokenResponse.access_token) {
                                             alert('Error retrieving access token: ' + (tokenResponse.message || 'Unknown error'));
                                             return;
@@ -1137,7 +1151,7 @@ if ($user_id) {
                                         callKwikApi(kwikPayload, response.sales_id, address, name, phone, latitude, longitude);
                                     },
                                     error: function(xhr, status, error) {
-                                        console.error('Error retrieving access token:', xhr.responseText);
+                                        console.error('get_kwik_token.php error:', xhr.responseText);
                                         alert('Failed to retrieve access token: ' + error);
                                     }
                                 });
@@ -1158,23 +1172,6 @@ if ($user_id) {
                 }
             });
         });
-
-        function proceedToPaystack(amount, sales_id) {
-            var handler = PaystackPop.setup({
-                key: 'pk_test_79848b3271a3d80eef6a4c34d9d84f00d7a46dcb',
-                email: '<?php echo $user_email; ?>',
-                amount: amount * 100,
-                currency: 'NGN',
-                metadata: { sales_id: sales_id },
-                callback: function(response) {
-                    window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
-                },
-                onClose: function() {
-                    alert('Payment window closed.');
-                }
-            });
-            handler.openIframe();
-        }
 
         function getDetails() {
             $.ajax({
