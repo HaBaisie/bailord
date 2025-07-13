@@ -677,6 +677,45 @@ if(isset($_SESSION['user'])){
                                         $pdo->close();
                                     ?>
                                 </div>
+                                <div class="table-responsive">
+                                    <h4>Kwik Tokens Table Data</h4>
+                                    <?php
+                                        $conn = $pdo->open();
+                                        try {
+                                            $stmt = $conn->prepare("SELECT * FROM kwik_tokens");
+                                            $stmt->execute();
+                                            $kwik_tokens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if (empty($kwik_tokens)) {
+                                                echo "<p>No data found in the kwik_tokens table.</p>";
+                                            } else {
+                                                echo "<table class='table table-bordered'>";
+                                                echo "<thead>";
+                                                echo "<tr>";
+                                                // Dynamically generate headers based on column names
+                                                $columns = array_keys($kwik_tokens[0]);
+                                                foreach ($columns as $column) {
+                                                    echo "<th>" . htmlspecialchars($column) . "</th>";
+                                                }
+                                                echo "</tr>";
+                                                echo "</thead>";
+                                                echo "<tbody>";
+                                                foreach ($kwik_tokens as $token) {
+                                                    echo "<tr>";
+                                                    foreach ($token as $value) {
+                                                        echo "<td>" . (is_null($value) ? '-' : htmlspecialchars($value)) . "</td>";
+                                                    }
+                                                    echo "</tr>";
+                                                }
+                                                echo "</tbody>";
+                                                echo "</table>";
+                                            }
+                                        } catch(PDOException $e) {
+                                            echo "<div class='callout callout-danger'>Error fetching kwik_tokens data: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                            error_log("Kwik tokens data fetch failed: " . $e->getMessage());
+                                        }
+                                        $pdo->close();
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
