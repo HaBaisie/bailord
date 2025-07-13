@@ -12,9 +12,9 @@ try {
         exit;
     }
 
-    // Vendor credentials (replace with actual values from Kwik)
-    $vendor_email = 'lawalhabeeb3191@gmail.com'; // Provided by Kwik
-    $vendor_password = 'Kwik2025$'; // Provided by Kwik
+    // Kwik credentials from email
+    $vendor_email = 'lawalhabeeb3191@gmail.com';
+    $vendor_password = 'Kwik2025$';
     $domain_name = 'staging-client-panel.kwik.delivery';
 
     // Call Kwik login API
@@ -43,16 +43,16 @@ try {
     $data = json_decode($curl_response, true);
     if ($http_code === 200 && isset($data['data']['access_token'])) {
         // Update token in database
-        $stmt = $conn->prepare("INSERT INTO kwik_tokens (user_id, vendor_id, access_token) VALUES (:user_id, :vendor_id, :access_token)");
+        $stmt = $conn->prepare("INSERT INTO kwik_tokens (user_id, vendor_id, access_token, created_at) VALUES (:user_id, :vendor_id, :access_token, NOW()) ON DUPLICATE KEY UPDATE access_token = :access_token, created_at = NOW()");
         $stmt->execute([
             'user_id' => $user_id,
-            'vendor_id' => 3552, // Replace if different
+            'vendor_id' => $data['data']['vendor_id'] ?? 3552,
             'access_token' => $data['data']['access_token']
         ]);
 
         $response['success'] = true;
         $response['access_token'] = $data['data']['access_token'];
-        $response['vendor_id'] = isset($data['data']['vendor_id']) ? $data['data']['vendor_id'] : 3552;
+        $response['vendor_id'] = $data['data']['vendor_id'] ?? 3552;
         echo json_encode($response);
     } else {
         $response['message'] = isset($data['message']) ? $data['message'] : 'Failed to login';
