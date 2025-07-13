@@ -1,5 +1,6 @@
 <?php
 include 'includes/session.php';
+include 'config.php';
 $conn = $pdo->open();
 $user_email = 'customer@example.com';
 $user_id = isset($_SESSION['user']) ? $_SESSION['user'] : null;
@@ -381,6 +382,11 @@ if ($user_id) {
         .delivery-form textarea {
             resize: vertical;
         }
+        .delivery-cost {
+            margin-top: 10px;
+            font-size: 16px;
+            color: var(--dominant-color);
+        }
         #map {
             height: 400px;
             width: 100%;
@@ -731,6 +737,7 @@ if ($user_id) {
                                         <label for="delivery-address">Delivery Address</label>
                                         <textarea id="delivery-address" name="address" class="form-control" rows="4" placeholder="Enter your delivery address" required></textarea>
                                     </div>
+                                    <div class="delivery-cost" id="delivery-cost">Delivery Cost: Calculating...</div>
                                     <button type="submit" class="btn btn-primary">Proceed to Delivery Checkout</button>
                                 </form>
                                 <div id="map"></div>
@@ -758,7 +765,6 @@ if ($user_id) {
     var deliveryCost = 0;
 
     function loginKwik() {
-        console.log('Attempting to refresh token via login_kwik.php');
         return $.ajax({
             type: 'POST',
             url: 'login_kwik.php',
@@ -767,15 +773,44 @@ if ($user_id) {
         });
     }
 
-    function proceedToPaystack(amount, sales_id) {
+    function proceedToPaystack(amount, sales_id, isDelivery, deliveryData) {
         var handler = PaystackPop.setup({
-            key: 'pk_test_79848b3271a3d80eef6a4c34d9d84f00d7a46dcb',
+            key: '<?php echo PAYSTACK_PUBLIC_KEY; ?>',
             email: '<?php echo $user_email; ?>',
             amount: amount * 100,
             currency: 'NGN',
             metadata: { sales_id: sales_id },
             callback: function(response) {
-                window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+                if (isDelivery && deliveryData) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'create_kwik_task.php',
+                        data: {
+                            user_id: <?php echo json_encode($user_id); ?>,
+                            sales_id: sales_id,
+                            name: deliveryData.name,
+                            phone: deliveryData.phone,
+                            address: deliveryData.address,
+                            latitude: deliveryData.latitude,
+                            longitude: deliveryData.longitude,
+                            cart_total: total,
+                            delivery_cost: deliveryCost
+                        },
+                        dataType: 'json',
+                        success: function(taskResponse) {
+                            if (taskResponse.success) {
+                                window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+                            } else {
+                                alert('Error creating delivery task: ' + (taskResponse.message || 'Unknown error'));
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Failed to create delivery task: ' + error);
+                        }
+                    });
+                } else {
+                    window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+                }
             },
             onClose: function() {
                 alert('Payment window closed.');
@@ -784,164 +819,16 @@ if ($user_id) {
         handler.openIframe();
     }
 
-    function callKwikApi(kwikPayload, sales_id, address, name, phone, latitude, longitude) {
-        console.log('Calling Kwik API with payload:', kwikPayload);
-        $.ajax({
-            type: 'POST',
-            url: 'https://staging-api-test.kwik.delivery/send_payment_for_task',
-            data: JSON.stringify(kwikPayload),
-            contentType: 'application/json',
-            success: function(response) {
-                console.log('Kwik API response:', response);
-                if (response.status === 200 && response.data && response.data.amount) {
-                    deliveryCost = response.data.amount;
-                    var totalWithDelivery = total + deliveryCost;
-                    var taskPayload = {
-                        domain_name: 'staging-client-panel.kwik.delivery',
-                        access_token: kwikPayload.access_token,
-                        vendor_id: kwikPayload.vendor_id,
-                        is_multiple_tasks: true,
-                        timezone: '-60',
-                        has_pickup: true,
-                        has_delivery: true,
-                        layout_type: 0,
-                        auto_assignment: 0,
-                        pickups: [{
-                            address: '2 Ijegun Rd, Ikotun 100265, Lagos, Nigeria',
-                            name: 'Habeebullahi Lawal',
-                            latitude: '6.4320951',
-                            longitude: '3.274',
-                            time: '2025-07-13 12:00:00',
-                            phone: '+2348161589373',
-                            email: '<?php echo $user_email; ?>',
-                            template_data: [
-                                { label: 'baseFare', data: 300 },
-                                { label: 'distanceFare', data: 25 },
-                                { label: 'timeFare', data: 30 },
-                                { label: 'totalTimeTaken', data: 0 },
-                                { label: 'job_distance', data: 0 },
-                                { label: 'pricingType', data: 'variable' },
-                                { label: 'insuranceAmount', data: 0 }
-                            ],
-                            template_name: 'pricing-template',
-                            ref_images: []
-                        }],
-                        deliveries: [{
-                            address: address,
-                            name: name,
-                            latitude: latitude.toString(),
-                            longitude: longitude.toString(),
-                            time: '2025-07-13 13:00:00',
-                            phone: phone,
-                            email: '<?php echo $user_email; ?>',
-                            template_data: [
-                                { label: 'baseFare', data: 300 },
-                                { label: 'distanceFare', data: 25 },
-                                { label: 'timeFare', data: 30 },
-                                { label: 'totalTimeTaken', data: 0 },
-                                { label: 'job_distance', data: 0 },
-                                { label: 'pricingType', data: 'variable' },
-                                { label: 'insuranceAmount', data: 0 }
-                            ],
-                            template_name: 'pricing-template',
-                            ref_images: [],
-                            is_package_insured: 0
-                        }],
-                        insurance_amount: response.data.insurance_amount || 0,
-                        total_no_of_tasks: response.data.total_no_of_tasks || 1,
-                        total_service_charge: response.data.total_service_charge || 0,
-                        payment_method: 262144,
-                        amount: deliveryCost,
-                        is_loader_required: response.data.is_loader_required || 0,
-                        loaders_amount: response.data.loaders_amount || 0,
-                        loaders_count: response.data.loaders_count || 0,
-                        delivery_instruction: response.data.delivery_instruction || 'Leave package at front desk',
-                        vehicle_id: response.data.vehicle_id || 1,
-                        delivery_images: response.data.delivery_images || '',
-                        is_cod_job: 1,
-                        surge_cost: 0,
-                        surge_type: 0,
-                        is_task_otp_required: 0
-                    };
-                    console.log('Creating Kwik task with payload:', taskPayload);
-                    $.ajax({
-                        type: 'POST',
-                        url: 'https://staging-api-test.kwik.delivery/createTask',
-                        data: JSON.stringify(taskPayload),
-                        contentType: 'application/json',
-                        success: function(taskResponse) {
-                            console.log('Kwik task creation response:', taskResponse);
-                            if (taskResponse.status === 200 && taskResponse.data && taskResponse.data.job_id) {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'save_kwik_job.php',
-                                    data: {
-                                        sales_id: sales_id,
-                                        job_id: taskResponse.data.job_id,
-                                        pickup_tracking_link: taskResponse.data.pickup_tracking_link || '',
-                                        delivery_tracking_link: 'https://www.openstreetmap.org/?mlat=' + latitude + '&mlon=' + longitude + '#map=15/' + latitude + '/' + longitude
-                                    },
-                                    dataType: 'json',
-                                    success: function(saveResponse) {
-                                        if (saveResponse.success) {
-                                            proceedToPaystack(totalWithDelivery, sales_id);
-                                        } else {
-                                            alert('Error saving Kwik job: ' + (saveResponse.message || 'Unknown error'));
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error('Error saving Kwik job:', xhr.responseText);
-                                        alert('Failed to save delivery job: ' + error);
-                                    }
-                                });
-                            } else {
-                                alert('Error creating delivery task: ' + (taskResponse.message || 'Unknown error'));
-                                console.error('Task creation failed:', taskResponse);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Kwik createTask error:', xhr.responseText);
-                            alert('Failed to create delivery task: ' + error);
-                        }
-                    });
-                } else {
-                    var errorMsg = response.message || 'Unknown error';
-                    if (response.errors) {
-                        errorMsg += ' - ' + JSON.stringify(response.errors);
-                    }
-                    console.error('Kwik API error response:', response);
-                    deliveryCost = 1000;
-                    var totalWithDelivery = total + deliveryCost;
-                    alert('Unable to calculate delivery cost: ' + errorMsg + '. Using default delivery cost of ₦' + deliveryCost);
-                    proceedToPaystack(totalWithDelivery, sales_id);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Kwik send_payment_for_task error:', xhr.responseText);
-                deliveryCost = 1000;
-                var totalWithDelivery = total + deliveryCost;
-                alert('Unable to calculate delivery cost: ' + error + '. Using default delivery cost of ₦' + deliveryCost);
-                proceedToPaystack(totalWithDelivery, sales_id);
-            }
-        });
-    }
-
     $(function(){
         // Initialize Kwik token on page load
         if (<?php echo json_encode($user_id); ?>) {
-            console.log('Initializing Kwik token for user_id:', <?php echo json_encode($user_id); ?>);
-            loginKwik().done(function(loginResponse) {
-                console.log('Initial login_kwik.php response:', loginResponse);
-                if (!loginResponse.success || !loginResponse.access_token) {
-                    console.error('Initial token refresh failed:', loginResponse.message);
-                    alert('Failed to initialize delivery service: ' + (loginResponse.message || 'Unknown error'));
+            loginKwik().done(function(response) {
+                if (!response.success) {
+                    alert('Failed to initialize delivery service: ' + (response.message || 'Unknown error'));
                 }
             }).fail(function(xhr, status, error) {
-                console.error('Initial login_kwik.php error:', xhr.responseText);
                 alert('Failed to initialize delivery service: ' + error);
             });
-        } else {
-            console.warn('No user_id found, skipping initial Kwik login');
         }
 
         $(document).on('click', '.cart_delete', function(e){
@@ -962,7 +849,6 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Cart delete error:', error);
                     alert('Failed to delete item.');
                 }
             });
@@ -1004,7 +890,6 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Cart update error:', error);
                     alert('Failed to update quantity.');
                 }
             });
@@ -1032,13 +917,12 @@ if ($user_id) {
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        proceedToPaystack(total, response.sales_id);
+                        proceedToPaystack(total, response.sales_id, false, null);
                     } else {
                         alert('Error saving pickup location: ' + (response.message || 'Unknown error'));
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error saving pickup location:', error);
                     alert('Failed to save pickup location.');
                 }
             });
@@ -1053,6 +937,69 @@ if ($user_id) {
             $('#delivery-form').toggleClass('visible');
         });
 
+        $('#delivery-address').on('input', function() {
+            var address = $(this).val().trim();
+            if (address.length > 5) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(address + ', Nigeria') + '.json',
+                    data: {
+                        access_token: '<?php echo MAPBOX_ACCESS_TOKEN; ?>'
+                    },
+                    success: function(geocodeResponse) {
+                        if (geocodeResponse.features && geocodeResponse.features.length > 0) {
+                            var location = geocodeResponse.features[0].center;
+                            var longitude = location[0];
+                            var latitude = location[1];
+                            map.eachLayer(function(layer) {
+                                if (layer instanceof L.Marker) {
+                                    map.removeLayer(layer);
+                                }
+                            });
+                            L.marker([latitude, longitude]).addTo(map);
+                            map.setView([latitude, longitude], 15);
+                            $('#delivery-cost').text('Delivery Cost: Calculating...');
+                            $.ajax({
+                                type: 'POST',
+                                url: 'get_delivery_price.php',
+                                data: {
+                                    user_id: <?php echo json_encode($user_id); ?>,
+                                    address: address,
+                                    latitude: latitude,
+                                    longitude: longitude
+                                },
+                                dataType: 'json',
+                                success: function(priceResponse) {
+                                    if (priceResponse.success) {
+                                        deliveryCost = priceResponse.delivery_cost;
+                                        $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2));
+                                    } else {
+                                        deliveryCost = 1000; // Fallback cost
+                                        $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
+                                        alert('Unable to calculate delivery cost: ' + (priceResponse.message || 'Unknown error'));
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    deliveryCost = 1000; // Fallback cost
+                                    $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
+                                    alert('Failed to calculate delivery cost: ' + error);
+                                }
+                            });
+                        } else {
+                            $('#delivery-cost').text('Delivery Cost: Unable to geocode address');
+                            alert('Please enter a valid address in Nigeria.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#delivery-cost').text('Delivery Cost: Unable to geocode address');
+                        alert('Failed to geocode address: ' + error);
+                    }
+                });
+            } else {
+                $('#delivery-cost').text('Delivery Cost: Enter a valid address');
+            }
+        });
+
         $('#delivery-address-form').on('submit', function(e){
             e.preventDefault();
             var name = $('#delivery-name').val().trim();
@@ -1062,32 +1009,21 @@ if ($user_id) {
                 alert('Please fill in all delivery details.');
                 return;
             }
-            // Validate phone number format
             if (!/^\+234\d{10}$/.test(phone)) {
                 alert('Please enter a valid phone number in the format +234xxxxxxxxxx');
                 return;
             }
-            // Geocode the delivery address using Mapbox
             $.ajax({
                 type: 'GET',
                 url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(address + ', Nigeria') + '.json',
                 data: {
-                    access_token: 'pk.eyJ1IjoiaGFiYWlzaWUiLCJhIjoiY21kMWpjcHp2MTVtajJtcW5kcmo2ZTJ2OCJ9.pS4iUcgLoJITbyg-1CXl5w'
+                    access_token: '<?php echo MAPBOX_ACCESS_TOKEN; ?>'
                 },
                 success: function(geocodeResponse) {
                     if (geocodeResponse.features && geocodeResponse.features.length > 0) {
                         var location = geocodeResponse.features[0].center;
                         var longitude = location[0];
                         var latitude = location[1];
-                        // Update map with marker
-                        map.eachLayer(function(layer) {
-                            if (layer instanceof L.Marker) {
-                                map.removeLayer(layer);
-                            }
-                        });
-                        L.marker([latitude, longitude]).addTo(map);
-                        map.setView([latitude, longitude], 15);
-                        // Save delivery address to sales table
                         $.ajax({
                             type: 'POST',
                             url: 'save_location.php',
@@ -1101,73 +1037,24 @@ if ($user_id) {
                                     alert('Error saving delivery address: ' + (response.message || 'Unknown error'));
                                     return;
                                 }
-                                // Fetch access token from database
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'get_kwik_token.php',
-                                    data: { user_id: <?php echo json_encode($user_id); ?> },
-                                    dataType: 'json',
-                                    success: function(tokenResponse) {
-                                        console.log('get_kwik_token.php response:', tokenResponse);
-                                        if (!tokenResponse.success || !tokenResponse.access_token) {
-                                            alert('Error retrieving access token: ' + (tokenResponse.message || 'Unknown error'));
-                                            return;
-                                        }
-                                        // Simplified payload for Kwik API
-                                        var kwikPayload = {
-                                            custom_field_template: 'pricing-template',
-                                            access_token: tokenResponse.access_token,
-                                            domain_name: 'staging-client-panel.kwik.delivery',
-                                            vendor_id: 3552,
-                                            auto_assignment: 0,
-                                            layout_type: 0,
-                                            has_pickup: 1,
-                                            has_delivery: 1,
-                                            is_multiple_tasks: 1,
-                                            payment_method: 262144,
-                                            form_id: 2,
-                                            is_schedule_task: 0,
-                                            pickups: [{
-                                                address: '2 Ijegun Rd, Ikotun 100265, Lagos, Nigeria',
-                                                email: '<?php echo $user_email; ?>',
-                                                phone: '+2348161589373',
-                                                latitude: '6.4320951',
-                                                longitude: '3.274'
-                                            }],
-                                            deliveries: [{
-                                                address: address,
-                                                email: '<?php echo $user_email; ?>',
-                                                phone: phone,
-                                                latitude: latitude.toString(),
-                                                longitude: longitude.toString(),
-                                                is_package_insured: 0
-                                            }],
-                                            is_loader_required: 0,
-                                            delivery_instruction: 'Leave package at front desk',
-                                            is_cod_job: 1,
-                                            parcel_amount: total
-                                        };
-                                        console.log('Sending Kwik API payload:', kwikPayload);
-                                        callKwikApi(kwikPayload, response.sales_id, address, name, phone, latitude, longitude);
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error('get_kwik_token.php error:', xhr.responseText);
-                                        alert('Failed to retrieve access token: ' + error);
-                                    }
-                                });
+                                var deliveryData = {
+                                    name: name,
+                                    phone: phone,
+                                    address: address,
+                                    latitude: latitude,
+                                    longitude: longitude
+                                };
+                                proceedToPaystack(total + deliveryCost, response.sales_id, true, deliveryData);
                             },
                             error: function(xhr, status, error) {
-                                console.error('Error saving delivery address:', xhr.responseText);
                                 alert('Failed to save delivery address: ' + error);
                             }
                         });
                     } else {
                         alert('Unable to geocode address. Please ensure the address is valid and includes a city in Nigeria.');
-                        console.error('Geocoding response:', geocodeResponse);
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Geocoding error:', xhr.responseText);
                     alert('Failed to geocode address: ' + error);
                 }
             });
@@ -1183,7 +1070,6 @@ if ($user_id) {
                     getCart();
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error fetching cart details:', error);
                     $('#tbody').html('<tr><td colspan="6">Failed to load cart.</td></tr>');
                 }
             });
@@ -1198,7 +1084,6 @@ if ($user_id) {
                     total = response.total || 0;
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error fetching total:', error);
                     total = 0;
                 }
             });
