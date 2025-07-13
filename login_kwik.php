@@ -75,8 +75,12 @@ try {
     // Store token in database
     $stmt = $conn->prepare("INSERT INTO kwik_tokens (user_id, access_token, vendor_id, kwik_user_id, card_id, created_at) 
                             VALUES (:user_id, :access_token, :vendor_id, :kwik_user_id, :card_id, NOW())
-                            ON DUPLICATE KEY UPDATE access_token = :access_token, vendor_id = :vendor_id, 
-                            kwik_user_id = :kwik_user_id, card_id = :card_id, created_at = NOW()");
+                            ON DUPLICATE KEY UPDATE 
+                            access_token = VALUES(access_token),
+                            vendor_id = VALUES(vendor_id),
+                            kwik_user_id = VALUES(kwik_user_id),
+                            card_id = VALUES(card_id),
+                            created_at = NOW()");
     $stmt->execute([
         'user_id' => $user_id,
         'access_token' => $access_token,
