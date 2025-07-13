@@ -41,14 +41,20 @@ try {
     )");
 
     // Authenticate with Kwik API to get access token
-    $ch = curl_init(KWIK_BASE_URL . '/admin/login');
+    $ch = curl_init('https://staging-api-test.kwik.delivery/vendor_login');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        'email' => KWIK_EMAIL,
-        'password' => KWIK_PASSWORD
+        'domain_name' => 'staging-client-panel.kwik.delivery',
+        'email' => 'lawalhabeeb3191@gmail.com',
+        'password' => 'Kwik2025$',
+        'api_login' => 1
     ]));
+    
+    // Handle gzip response
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+    
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
@@ -58,20 +64,30 @@ try {
         exit;
     }
 
+    // The response is gzip compressed, but curl should automatically decompress it
     $data = json_decode($response, true);
-    if (!isset($data['body']['data']['access_token'])) {
-        echo json_encode(['success' => false, 'message' => 'No access token received from Kwik API']);
+    
+    // Adjust these based on the actual response structure from /vendor_login
+    // You'll need to inspect the decompressed response to know the exact structure
+    if (!isset($data['access_token'])) {
+        echo json_encode(['success' => false, 'message' => 'No access token received from Kwik API', 'response' => $data]);
         exit;
     }
 
-    $access_token = $data['body']['data']['access_token'];
-    $vendor_id = $data['body']['data']['vendor_details']['vendor_id'];
-    $kwik_user_id = $data['body']['data']['vendor_details']['user_id'];
-    $card_id = $data['body']['data']['vendor_details']['card_id'];
+    $access_token = $data['access_token'];
+    $vendor_id = $data['vendor_id'] ?? ''; // Adjust these based on actual response
+    $kwik_user_id = $data['user_id'] ?? '';
+    $card_id = $data['card_id'] ?? '';
 
     // Insert access token and details into kwik_tokens
     $stmt = $conn->prepare("INSERT INTO kwik_tokens (user_id, access_token, vendor_id, kwik_user_id, card_id, created_at) 
-                            VALUES (:user_id, :access_token, :vendor_id, :kwik_user_id, :card_id, NOW())");
+                            VALUES (:user_id, :access_token, :vendor_id, :kwik_user_id, :card_id, NOW())
+                            ON DUPLICATE KEY UPDATE 
+                            access_token = VALUES(access_token),
+                            vendor_id = VALUES(vendor_id),
+                            kwik_user_id = VALUES(kwik_user_id),
+                            card_id = VALUES(card_id),
+                            created_at = NOW()");
     $stmt->execute([
         'user_id' => $user_id,
         'access_token' => $access_token,
@@ -88,4 +104,3 @@ try {
 } finally {
     $pdo->close();
 }
-?>
