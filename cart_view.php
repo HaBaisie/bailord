@@ -939,6 +939,7 @@ if ($user_id) {
 
         $('#delivery-address').on('input', function() {
             var address = $(this).val().trim();
+            var name = $('#delivery-name').val() ? $('#delivery-name').val().trim() : 'Customer'; // Fallback name
             if (address.length > 5) {
                 $.ajax({
                     type: 'GET',
@@ -959,30 +960,37 @@ if ($user_id) {
                             L.marker([latitude, longitude]).addTo(map);
                             map.setView([latitude, longitude], 15);
                             $('#delivery-cost').text('Delivery Cost: Calculating...');
+                            var ajaxData = {
+                                user_id: <?php echo json_encode($user_id); ?>,
+                                address: address,
+                                latitude: latitude,
+                                longitude: longitude,
+                                cart_total: total,
+                                name: name
+                            };
+                            console.log('Sending AJAX data to get_delivery_price.php:', ajaxData); // Debug log
                             $.ajax({
                                 type: 'POST',
                                 url: 'get_delivery_price.php',
-                                data: {
-                                    user_id: <?php echo json_encode($user_id); ?>,
-                                    address: address,
-                                    latitude: latitude,
-                                    longitude: longitude
-                                },
+                                data: ajaxData,
                                 dataType: 'json',
                                 success: function(priceResponse) {
-                                    if (priceResponse.success) {
+                                    if (priceResponse.success && priceResponse.delivery_cost !== undefined) {
                                         deliveryCost = priceResponse.delivery_cost;
                                         $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2));
                                     } else {
                                         deliveryCost = 1000; // Fallback cost
                                         $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
-                                        alert('Unable to calculate delivery cost: ' + (priceResponse.message || 'Unknown error'));
+                                        alert('Unable to calculate delivery cost: ' + (priceResponse.message || 'No delivery cost returned'));
+                                        if (priceResponse.response) {
+                                            console.log('API Response:', priceResponse.response);
+                                        }
                                     }
                                 },
                                 error: function(xhr, status, error) {
                                     deliveryCost = 1000; // Fallback cost
                                     $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
-                                    alert('Failed to calculate delivery cost: ' + error);
+                                    alert('Failed to calculate delivery cost. Using default cost of ₦1000. Error: ' + error);
                                 }
                             });
                         } else {
