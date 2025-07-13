@@ -13,6 +13,16 @@ try {
         exit;
     }
 
+    // Create kwik_tokens table if it doesn't exist
+    $conn->exec("CREATE TABLE IF NOT EXISTS kwik_tokens (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        vendor_id INT NOT NULL,
+        access_token VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )");
+
     // Insert into sales table
     $stmt = $conn->prepare("INSERT INTO sales (user_id, location, pay_id, sales_date, status) VALUES (:user_id, :location, :pay_id, CURDATE(), 'pending')");
     $pay_id = 'TEMP_' . time(); // Temporary pay_id, updated after Paystack
