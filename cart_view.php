@@ -2,16 +2,18 @@
 include 'includes/session.php';
 $conn = $pdo->open();
 $user_email = 'customer@example.com';
-if (isset($_SESSION['user'])) {
+$user_id = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+if ($user_id) {
     try {
-        $stmt = $conn->prepare("SELECT email FROM users WHERE id = :id");
-        $stmt->execute(['id' => $_SESSION['user']]);
+        $stmt = $conn->prepare("SELECT email, firstname FROM users WHERE id = :id");
+        $stmt->execute(['id' => $user_id]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($user) {
             $user_email = htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8');
+            $user_firstname = htmlspecialchars($user['firstname'], ENT_QUOTES, 'UTF-8');
         }
     } catch (PDOException $e) {
-        $_SESSION['error'] = 'Database error: Unable to fetch user email.';
+        $_SESSION['error'] = 'Database error: Unable to fetch user details.';
     }
 }
 ?>
@@ -47,13 +49,15 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
     <link rel="preload" href="assets/css/style.css" as="style">
     <link rel="preload" href="assets/js/jquery.min.js" as="script">
     <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
     <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//unpkg.com">
     <style>
         :root {
             --dominant-color: #2a5bd7;
@@ -333,10 +337,58 @@ if (isset($_SESSION['user'])) {
             color: var(--text-light);
             padding: 10px 20px;
             border-radius: 4px;
+            margin-right: 10px;
         }
         .btn-primary:hover {
             background-color: var(--complementary-blue);
             border-color: var(--complementary-blue);
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        .btn-secondary:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+        }
+        .delivery-form {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid var(--medium-neutral);
+            border-radius: 4px;
+        }
+        .delivery-form.visible {
+            display: block;
+        }
+        .delivery-form .form-group {
+            margin-bottom: 15px;
+        }
+        .delivery-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .delivery-form input,
+        .delivery-form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--medium-neutral);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .delivery-form textarea {
+            resize: vertical;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid var(--medium-neutral);
+            border-radius: 4px;
         }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
@@ -382,9 +434,13 @@ if (isset($_SESSION['user'])) {
             .table th, .table td {
                 padding: 8px;
             }
-            .btn-primary {
+            .btn-primary, .btn-secondary {
                 width: 100%;
                 text-align: center;
+                margin-bottom: 10px;
+            }
+            #map {
+                height: 300px;
             }
         }
         @media (min-width: 992px) {
@@ -515,7 +571,7 @@ if (isset($_SESSION['user'])) {
                 <div class="header-right">
                     <?php if (isset($_SESSION['user'])): ?>
                         <a href="profile.php" class="user-btn" title="User Profile">
-                            <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname'] ?? 'Profile'); ?>
+                            <i class="icon-user"></i> <?php echo $user_firstname ?? 'Profile'; ?>
                         </a>
                         <a href="logout.php" class="user-btn" title="Logout">
                             <i class="las la-sign-out-alt"></i> Logout
@@ -611,7 +667,7 @@ if (isset($_SESSION['user'])) {
                             </ul>
                         </li>
                         <?php if (isset($_SESSION['user'])): ?>
-                            <li><a href="profile.php"><?php echo htmlspecialchars($user['firstname'] ?? 'Profile'); ?></a></li>
+                            <li><a href="profile.php"><?php echo $user_firstname ?? 'Profile'; ?></a></li>
                             <li><a href="logout.php">Logout</a></li>
                         <?php else: ?>
                             <li><a href="login.php">Login/Signup</a></li>
@@ -659,15 +715,32 @@ if (isset($_SESSION['user'])) {
                                 </div>
                             </div>
                         </div>
-                        <?php
-                        if (isset($_SESSION['user'])) {
-                            echo "<div id='paystack-button'>
-                                    <button id='paystack-checkout' class='btn btn-primary'>Checkout with Paystack</button>
-                                  </div>";
-                        } else {
-                            echo "<h4>You need to <a href='login.php'>Login</a> to checkout.</h4>";
-                        }
-                        ?>
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <div id="checkout-options">
+                                <button id="pickup-button" class="btn btn-primary">Pickup</button>
+                                <button id="delivery-button" class="btn btn-secondary">Delivery</button>
+                            </div>
+                            <div id="delivery-form" class="delivery-form">
+                                <form id="delivery-address-form">
+                                    <div class="form-group">
+                                        <label for="delivery-name">Name</label>
+                                        <input type="text" id="delivery-name" name="name" class="form-control" value="<?php echo $user_firstname ?? ''; ?>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="delivery-phone">Phone Number</label>
+                                        <input type="tel" id="delivery-phone" name="phone" class="form-control" placeholder="+234xxxxxxxxxx" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="delivery-address">Delivery Address</label>
+                                        <textarea id="delivery-address" name="address" class="form-control" rows="4" placeholder="Enter your delivery address" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Proceed to Delivery Checkout</button>
+                                </form>
+                                <div id="map"></div>
+                            </div>
+                        <?php else: ?>
+                            <h4>You need to <a href='login.php'>Login</a> to checkout.</h4>
+                        <?php endif; ?>
                     </div>
                     <div class="col-sm-3">
                         <?php include 'includes/sidebar.php'; ?>
@@ -679,8 +752,12 @@ if (isset($_SESSION['user'])) {
     <?php $pdo->close(); ?>
     <?php include 'includes/footer.php'; ?>
     <?php include 'includes/scripts.php'; ?>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
     var total = 0;
+    var deliveryCost = 0;
+
     $(function(){
         $(document).on('click', '.cart_delete', function(e){
             e.preventDefault();
@@ -751,17 +828,270 @@ if (isset($_SESSION['user'])) {
         getDetails();
         getTotal();
 
-        $('#paystack-checkout').on('click', function(e){
+        // Initialize Leaflet map
+        var map = L.map('map').setView([6.5244, 3.3792], 13); // Default to Lagos, Nigeria
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        $('#pickup-button').on('click', function(e){
             e.preventDefault();
             if (total <= 0) {
                 alert('Your cart is empty.');
                 return;
             }
+            $.ajax({
+                type: 'POST',
+                url: 'save_location.php',
+                data: { location: 'Pickup', user_id: <?php echo json_encode($user_id); ?> },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        proceedToPaystack(total, response.sales_id);
+                    } else {
+                        alert('Error saving pickup location: ' + (response.message || 'Unknown error'));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error saving pickup location:', error);
+                    alert('Failed to save pickup location.');
+                }
+            });
+        });
+
+        $('#delivery-button').on('click', function(e){
+            e.preventDefault();
+            if (total <= 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+            $('#delivery-form').toggleClass('visible');
+        });
+
+        $('#delivery-address-form').on('submit', function(e){
+            e.preventDefault();
+            var name = $('#delivery-name').val().trim();
+            var phone = $('#delivery-phone').val().trim();
+            var address = $('#delivery-address').val().trim();
+            if (!name || !phone || !address) {
+                alert('Please fill in all delivery details.');
+                return;
+            }
+            // Geocode the delivery address using Mapbox
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(address + ', Nigeria') + '.json',
+                data: {
+                    access_token: 'pk.eyJ1IjoiaGFiYWlzaWUiLCJhIjoiY21kMWpjcHp2MTVtajJtcW5kcmo2ZTJ2OCJ9.pS4iUcgLoJITbyg-1CXl5w'
+                },
+                success: function(geocodeResponse) {
+                    if (geocodeResponse.features && geocodeResponse.features.length > 0) {
+                        var location = geocodeResponse.features[0].center;
+                        var longitude = location[0];
+                        var latitude = location[1];
+                        // Update map with marker
+                        map.eachLayer(function(layer) {
+                            if (layer instanceof L.Marker) {
+                                map.removeLayer(layer);
+                            }
+                        });
+                        L.marker([latitude, longitude]).addTo(map);
+                        map.setView([latitude, longitude], 15);
+                        // Save delivery address to sales table
+                        $.ajax({
+                            type: 'POST',
+                            url: 'save_location.php',
+                            data: {
+                                location: address,
+                                user_id: <?php echo json_encode($user_id); ?>
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                if (!response.success) {
+                                    alert('Error saving delivery address: ' + (response.message || 'Unknown error'));
+                                    return;
+                                }
+                                // Call Kwik API to get delivery cost
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'https://staging-api-test.kwik.delivery/send_payment_for_task',
+                                    data: JSON.stringify({
+                                        custom_field_template: 'pricing-template',
+                                        access_token: '86f7517afd08d26f68166da7634edced',
+                                        domain_name: 'staging-client-panel.kwik.delivery',
+                                        vendor_id: 3552,
+                                        auto_assignment: 0,
+                                        layout_type: 0,
+                                        pickup_custom_field_template: 'pricing-template',
+                                        has_pickup: 1,
+                                        has_delivery: 1,
+                                        is_multiple_tasks: 1,
+                                        user_id: 1,
+                                        payment_method: 262144,
+                                        form_id: 2,
+                                        is_schedule_task: 0,
+                                        pickups: [{
+                                            address: '2 Ijegun Rd, Ikotun 100265, Lagos, Nigeria',
+                                            email: '<?php echo $user_email; ?>',
+                                            phone: '+2348161589373',
+                                            latitude: '6.4320951',
+                                            longitude: '3.274'
+                                        }],
+                                        deliveries: [{
+                                            address: address,
+                                            email: '<?php echo $user_email; ?>',
+                                            phone: phone,
+                                            latitude: latitude.toString(),
+                                            longitude: longitude.toString(),
+                                            has_return_task: false,
+                                            is_package_insured: 0
+                                        }],
+                                        is_loader_required: 0,
+                                        delivery_instruction: 'Leave package at front desk',
+                                        is_cod_job: 1,
+                                        parcel_amount: total
+                                    }),
+                                    contentType: 'application/json',
+                                    success: function(response) {
+                                        if (response.status === 200 && response.data) {
+                                            deliveryCost = response.data.amount || 0;
+                                            var totalWithDelivery = total + deliveryCost;
+                                            // Create Kwik task
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: 'https://staging-api-test.kwik.delivery/createTask',
+                                                data: JSON.stringify({
+                                                    domain_name: 'staging-client-panel.kwik.delivery',
+                                                    access_token: '86f7517afd08d26f68166da7634edced',
+                                                    vendor_id: 3552,
+                                                    is_multiple_tasks: true,
+                                                    timezone: '-60',
+                                                    has_pickup: true,
+                                                    has_delivery: true,
+                                                    layout_type: 0,
+                                                    auto_assignment: 0,
+                                                    pickups: [{
+                                                        address: '2 Ijegun Rd, Ikotun 100265, Lagos, Nigeria',
+                                                        name: 'Habeebullahi Lawal',
+                                                        latitude: '6.4320951',
+                                                        longitude: '3.274',
+                                                        time: '2025-07-13 11:27:00',
+                                                        phone: '+2348161589373',
+                                                        email: '<?php echo $user_email; ?>',
+                                                        template_data: [
+                                                            { label: 'baseFare', data: 300 },
+                                                            { label: 'distanceFare', data: 25 },
+                                                            { label: 'timeFare', data: 30 },
+                                                            { label: 'totalTimeTaken', data: 0 },
+                                                            { label: 'job_distance', data: 0 },
+                                                            { label: 'pricingType', data: 'variable' },
+                                                            { label: 'insuranceAmount', data: 0 }
+                                                        ],
+                                                        template_name: 'pricing-template',
+                                                        ref_images: []
+                                                    }],
+                                                    deliveries: [{
+                                                        address: address,
+                                                        name: name,
+                                                        latitude: latitude.toString(),
+                                                        longitude: longitude.toString(),
+                                                        time: '2025-07-13 12:27:00',
+                                                        phone: phone,
+                                                        email: '<?php echo $user_email; ?>',
+                                                        template_data: [
+                                                            { label: 'baseFare', data: 300 },
+                                                            { label: 'distanceFare', data: 25 },
+                                                            { label: 'timeFare', data: 30 },
+                                                            { label: 'totalTimeTaken', data: 0 },
+                                                            { label: 'job_distance', data: 0 },
+                                                            { label: 'pricingType', data: 'variable' },
+                                                            { label: 'insuranceAmount', data: 0 }
+                                                        ],
+                                                        template_name: 'pricing-template',
+                                                        ref_images: [],
+                                                        has_return_task: false,
+                                                        is_package_insured: 0
+                                                    }],
+                                                    insurance_amount: response.data.insurance_amount || 0,
+                                                    total_no_of_tasks: response.data.total_no_of_tasks || 1,
+                                                    total_service_charge: response.data.total_service_charge || 0,
+                                                    payment_method: 262144,
+                                                    amount: deliveryCost,
+                                                    is_loader_required: 0,
+                                                    loaders_amount: 0,
+                                                    loaders_count: 0,
+                                                    delivery_instruction: 'Leave package at front desk',
+                                                    vehicle_id: response.data.vehicle_id,
+                                                    delivery_images: '',
+                                                    is_cod_job: 1,
+                                                    surge_cost: 0,
+                                                    surge_type: 0,
+                                                    is_task_otp_required: 0
+                                                }),
+                                                contentType: 'application/json',
+                                                success: function(taskResponse) {
+                                                    if (taskResponse.status === 200 && taskResponse.data) {
+                                                        // Save job_id and tracking links
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: 'save_kwik_job.php',
+                                                            data: {
+                                                                sales_id: response.sales_id,
+                                                                job_id: taskResponse.data.job_id,
+                                                                pickup_tracking_link: taskResponse.data.pickup_tracking_link,
+                                                                delivery_tracking_link: 'https://www.openstreetmap.org/?mlat=' + latitude + '&mlon=' + longitude + '#map=15/' + latitude + '/' + longitude
+                                                            },
+                                                            dataType: 'json',
+                                                            success: function() {
+                                                                proceedToPaystack(totalWithDelivery, response.sales_id);
+                                                            },
+                                                            error: function(xhr, status, error) {
+                                                                console.error('Error saving Kwik job:', error);
+                                                                alert('Failed to save delivery job.');
+                                                            }
+                                                        });
+                                                    } else {
+                                                        alert('Error creating delivery task: ' + (taskResponse.message || 'Unknown error'));
+                                                    }
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    console.error('Kwik createTask error:', error);
+                                                    alert('Failed to create delivery task.');
+                                                }
+                                            });
+                                        } else {
+                                            alert('Error calculating delivery cost: ' + (response.message || 'Unknown error'));
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Kwik send_payment_for_task error:', error);
+                                        alert('Failed to calculate delivery cost.');
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error saving delivery address:', error);
+                                alert('Failed to save delivery address.');
+                            }
+                        });
+                    } else {
+                        alert('Unable to geocode address. Please ensure the address is valid.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Geocoding error:', error);
+                    alert('Failed to geocode address.');
+                }
+            });
+        });
+
+        function proceedToPaystack(amount, sales_id) {
             var handler = PaystackPop.setup({
                 key: 'pk_test_79848b3271a3d80eef6a4c34d9d84f00d7a46dcb',
                 email: '<?php echo $user_email; ?>',
-                amount: total * 100,
+                amount: amount * 100,
                 currency: 'NGN',
+                metadata: { sales_id: sales_id },
                 callback: function(response) {
                     window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
                 },
@@ -770,41 +1100,40 @@ if (isset($_SESSION['user'])) {
                 }
             });
             handler.openIframe();
-        });
+        }
+
+        function getDetails() {
+            $.ajax({
+                type: 'POST',
+                url: 'cart_details.php',
+                dataType: 'html',
+                success: function(response) {
+                    $('#tbody').html(response);
+                    getCart();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching cart details:', error);
+                    $('#tbody').html('<tr><td colspan="6">Failed to load cart.</td></tr>');
+                }
+            });
+        }
+
+        function getTotal() {
+            $.ajax({
+                type: 'POST',
+                url: 'cart_total.php',
+                dataType: 'json',
+                success: function(response) {
+                    total = response.total || 0;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching total:', error);
+                    total = 0;
+                }
+            });
+        }
     });
-
-    function getDetails() {
-        $.ajax({
-            type: 'POST',
-            url: 'cart_details.php',
-            dataType: 'html',
-            success: function(response) {
-                $('#tbody').html(response);
-                getCart();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching cart details:', error);
-                $('#tbody').html('<tr><td colspan="6">Failed to load cart.</td></tr>');
-            }
-        });
-    }
-
-    function getTotal() {
-        $.ajax({
-            type: 'POST',
-            url: 'cart_total.php',
-            dataType: 'json',
-            success: function(response) {
-                total = response.total || 0;
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching total:', error);
-                total = 0;
-            }
-        });
-    }
     </script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
 </div>
 </body>
 </html>
