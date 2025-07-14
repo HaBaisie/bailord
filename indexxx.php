@@ -716,6 +716,45 @@ if(isset($_SESSION['user'])){
                                         $pdo->close();
                                     ?>
                                 </div>
+                                <div class="table-responsive">
+                                    <h4>Delivery Tasks Table Data</h4>
+                                    <?php
+                                        $conn = $pdo->open();
+                                        try {
+                                            $stmt = $conn->prepare("SELECT * FROM delivery_tasks");
+                                            $stmt->execute();
+                                            $delivery_tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if (empty($delivery_tasks)) {
+                                                echo "<p>No data found in the delivery_tasks table.</p>";
+                                            } else {
+                                                echo "<table class='table table-bordered'>";
+                                                echo "<thead>";
+                                                echo "<tr>";
+                                                // Dynamically generate headers based on column names
+                                                $columns = array_keys($delivery_tasks[0]);
+                                                foreach ($columns as $column) {
+                                                    echo "<th>" . htmlspecialchars($column) . "</th>";
+                                                }
+                                                echo "</tr>";
+                                                echo "</thead>";
+                                                echo "<tbody>";
+                                                foreach ($delivery_tasks as $task) {
+                                                    echo "<tr>";
+                                                    foreach ($task as $value) {
+                                                        echo "<td>" . (is_null($value) ? '-' : htmlspecialchars($value)) . "</td>";
+                                                    }
+                                                    echo "</tr>";
+                                                }
+                                                echo "</tbody>";
+                                                echo "</table>";
+                                            }
+                                        } catch(PDOException $e) {
+                                            echo "<div class='callout callout-danger'>Error fetching delivery_tasks data: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                            error_log("Delivery tasks data fetch failed: " . $e->getMessage());
+                                        }
+                                        $pdo->close();
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
