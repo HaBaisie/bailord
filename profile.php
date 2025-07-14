@@ -37,10 +37,10 @@
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
     <!-- Preload critical resources -->
-    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="assets/css/style.css" as="style">
     <link rel="preload" href="assets/js/jquery.min.js" as="script">
     <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
@@ -54,7 +54,7 @@
             --medium-neutral: #e9ecef;
             --dark-neutral: #495057;
             --text-dark: #212529;
-            --text-light: #000000;
+            --text-light: #ffffff;
             --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
             --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
@@ -806,7 +806,7 @@
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="icon">
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count cart_count">0</span>
+                                <span class="cart-count cart_count"><?php echo $cart_count; ?></span>
                             </div>
                             <p>Cart</p>
                         </a>
@@ -1028,7 +1028,7 @@
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $total_entries = $stmt->fetch()['total'];
                                                 
-                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id, delivery_tasks.tracking_link FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id = :user_id ORDER BY sales.sales_date DESC");
+                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id = :user_id ORDER BY sales.sales_date DESC");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $current_entries = $stmt->rowCount();
                                                 foreach ($stmt as $row) {
@@ -1040,7 +1040,8 @@
                                                         $total += $subtotal;
                                                     }
                                                     $unique_order_id = !empty($row['unique_order_id']) ? htmlspecialchars($row['unique_order_id']) : '';
-                                                    $track_button = $unique_order_id ? "<button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='$unique_order_id'><i class='fa fa-map-marker'></i> Track</button>" : "<button class='btn btn-sm btn-flat btn-warning' disabled><i class='fa fa-map-marker'></i> No Tracking</button>";
+                                                    // Disable Track button for now
+                                                    $track_button = "<button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='$unique_order_id' disabled><i class='fa fa-map-marker'></i> Track</button>";
                                                     echo "
                                                         <tr>
                                                             <td class='hidden'></td>
@@ -1054,13 +1055,6 @@
                                                             <td colspan='6'>
                                                                 <div class='details-section' id='details-".htmlspecialchars($row['id'])."'>
                                                                     <p><strong>Loading transaction details...</strong></p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class='tracking-row tracking-row-".htmlspecialchars($row['id'])."' style='display: none;'>
-                                                            <td colspan='6'>
-                                                                <div class='tracking-section' id='tracking-".htmlspecialchars($row['id'])."'>
-                                                                    <p><strong>Loading tracking information...</strong></p>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1090,150 +1084,108 @@
         </div>
     </div>
     <?php include 'includes/footer.php'; ?>
-</div>
-<?php include 'includes/scripts.php'; ?>
-<script>
-$(function(){
-    // Disable CKEditor to prevent initialization errors
-    if (typeof CKEDITOR !== 'undefined') {
-        CKEDITOR = null;
-    }
-
-    $(document).on('click', '.transact', function(e){
-        e.preventDefault();
-        var id = $(this).data('id');
-        var detailsRow = $('.details-row-' + id);
-        var detailsSection = $('#details-' + id);
-        var trackingRow = $('.tracking-row-' + id);
-
-        // Toggle visibility of details row
-        if (detailsRow.is(':visible')) {
-            detailsRow.hide();
+    <!-- Include Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script>
+        // Ensure jQuery is loaded
+        if (typeof jQuery === 'undefined') {
+            console.error('jQuery is not loaded');
         } else {
-            // Hide all other details and tracking rows
-            $('.details-row').hide();
-            $('.tracking-row').hide();
-            detailsRow.show();
+            console.log('jQuery loaded successfully');
+            $(function(){
+                // Initialize DataTables
+                try {
+                    $('#example1').DataTable({
+                        "paging": true,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false
+                    });
+                } catch (e) {
+                    console.error('DataTables initialization failed:', e);
+                }
 
-            // Fetch transaction details
-            $.ajax({
-                type: 'POST',
-                url: 'transaction.php',
-                data: {id: id},
-                dataType: 'json',
-                beforeSend: function() {
-                    console.log('Fetching transaction for sales_id: ' + id);
-                    detailsSection.html('<p><strong>Loading transaction details...</strong></p>');
-                },
-                success: function(response){
-                    console.log('Transaction response:', response);
-                    if (response.error) {
-                        detailsSection.html('<p class="callout callout-danger">' + response.error + '</p>');
+                // Transaction Details AJAX
+                $(document).on('click', '.transact', function(e){
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    var detailsRow = $('.details-row-' + id);
+                    var detailsSection = $('#details-' + id);
+
+                    if (!detailsRow.length || !detailsSection.length) {
+                        console.error('Details row or section not found for sales_id: ' + id);
                         return;
                     }
-                    var html = `
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <p><strong>Date:</strong> ${response.date}</p>
-                            </div>
-                            <div class="col-sm-6 text-right">
-                                <p><strong>Transaction#:</strong> ${response.transaction}</p>
-                            </div>
-                        </div>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${response.list}
-                                <tr>
-                                    <td colspan="3" align="right"><b>Total</b></td>
-                                    <td>${response.total}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-                    detailsSection.html(html);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Transaction fetch error:', {
-                        status: status,
-                        error: error,
-                        responseText: xhr.responseText,
-                        statusCode: xhr.status
-                    });
-                    detailsSection.html('<p class="callout callout-danger">Failed to load transaction details: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
-                }
-            });
-        }
-    });
 
-    $(document).on('click', '.track-order', function(e){
-        e.preventDefault();
-        var id = $(this).data('id');
-        var uniqueOrderId = $(this).data('unique-order-id');
-        var trackingRow = $('.tracking-row-' + id);
-        var trackingSection = $('#tracking-' + id);
-        var detailsRow = $('.details-row-' + id);
-
-        if (!uniqueOrderId) {
-            trackingSection.html('<p class="callout callout-danger">No tracking information available</p>');
-            $('.details-row').hide();
-            $('.tracking-row').hide();
-            trackingRow.show();
-            return;
-        }
-
-        // Toggle visibility of tracking row
-        if (trackingRow.is(':visible')) {
-            trackingRow.hide();
-        } else {
-            // Hide all other details and tracking rows
-            $('.details-row').hide();
-            $('.tracking-row').hide();
-            trackingRow.show();
-
-            // Fetch tracking information
-            $.ajax({
-                type: 'POST',
-                url: 'track_order.php',
-                data: {id: id, unique_order_id: uniqueOrderId},
-                dataType: 'json',
-                beforeSend: function() {
-                    console.log('Fetching tracking for sales_id: ' + id + ', unique_order_id: ' + uniqueOrderId);
-                    trackingSection.html('<p><strong>Loading tracking information...</strong></p>');
-                },
-                success: function(response){
-                    console.log('Track order response:', response);
-                    if (response.success) {
-                        var html = `
-                            <p><strong>Order ID:</strong> ${response.unique_order_id}</p>
-                            <p><strong>Tracking Link:</strong> <a href="${response.tracking_link}" target="_blank">View Tracking</a></p>
-                            <p><strong>Created At:</strong> ${response.created_at ? new Date(response.created_at).toLocaleString() : 'N/A'}</p>
-                        `;
-                        trackingSection.html(html);
+                    if (detailsRow.is(':visible')) {
+                        detailsRow.hide();
                     } else {
-                        trackingSection.html('<p class="callout callout-danger">' + (response.error || 'Tracking information not available') + '</p>');
+                        $('.details-row').hide();
+                        detailsRow.show();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: 'transaction.php',
+                            data: {id: id},
+                            dataType: 'json',
+                            beforeSend: function() {
+                                console.log('Fetching transaction for sales_id: ' + id);
+                                detailsSection.html('<p><strong>Loading transaction details...</strong></p>');
+                            },
+                            success: function(response) {
+                                console.log('Transaction response:', response);
+                                if (response.error) {
+                                    detailsSection.html('<p class="callout callout-danger">' + response.error + '</p>');
+                                    return;
+                                }
+                                var html = `
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p><strong>Date:</strong> ${response.date}</p>
+                                        </div>
+                                        <div class="col-sm-6 text-right">
+                                            <p><strong>Transaction#:</strong> ${response.transaction}</p>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${response.list}
+                                            <tr>
+                                                <td colspan="3" align="right"><b>Total</b></td>
+                                                <td>${response.total}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                `;
+                                detailsSection.html(html).show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Transaction fetch error:', {
+                                    status: status,
+                                    error: error,
+                                    responseText: xhr.responseText,
+                                    statusCode: xhr.status
+                                });
+                                detailsSection.html('<p class="callout callout-danger">Failed to load transaction details: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
+                            }
+                        });
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Track order fetch error:', {
-                        status: status,
-                        error: error,
-                        responseText: xhr.responseText,
-                        statusCode: xhr.status
-                    });
-                    trackingSection.html('<p class="callout callout-danger">Failed to load tracking information: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
-                }
+                });
             });
         }
-    });
-});
-</script>
+    </script>
 </body>
 </html>
