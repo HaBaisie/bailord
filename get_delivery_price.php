@@ -10,7 +10,7 @@ $address = isset($_POST['address']) ? trim($_POST['address']) : '';
 $latitude = isset($_POST['latitude']) ? floatval($_POST['latitude']) : 0;
 $longitude = isset($_POST['longitude']) ? floatval($_POST['longitude']) : 0;
 $cart_total = isset($_POST['cart_total']) ? floatval($_POST['cart_total']) : 0;
-$name = isset($_POST['name']) ? trim($_POST['name']) : 'Customer'; // Fallback name
+$name = isset($_POST['name']) ? trim($_POST['name']) : 'Customer';
 
 if (!$user_id || !$address || !$latitude || !$longitude) {
     echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
@@ -39,28 +39,48 @@ try {
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Temporary for debugging
     $vehicle_response = curl_exec($ch);
     $vehicle_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
     curl_close($ch);
 
-    $vehicle_id = 4; // Default to small vehicle
+    $vehicle_id = 10; // Default to car 6 (lowest fares)
     if ($vehicle_response !== false) {
-        $vehicle_data = json_decode($vehicle_response, true);
-        if ($vehicle_http_code === 200 && isset($vehicle_data['data'][0]['vehicle_id'])) {
-            $vehicle_id = $vehicle_data['data'][0]['vehicle_id']; // Use first available vehicle
+        if (strpos($vehicle_content_type, 'application/json') === false) {
+            error_log("Kwik Vehicle Response: Non-JSON response: " . $vehicle_response . " | HTTP Code: " . $vehicle_http_code);
+            echo json_encode(['success' => false, 'message' => 'Invalid vehicle API response format']);
+            exit;
         }
-        error_log("Kwik Vehicle Response: " . $vehicle_response . " | HTTP Code: " . $vehicle_http_code);
+        $vehicle_data = json_decode($vehicle_response, true);
+        if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
+            $found_car_6 = false;
+            $found_taxi = false;
+            foreach ($vehicle_data['data'] as $vehicle) {
+                if ($vehicle['vehicle_id'] == 10) {
+                    $found_car_6 = true;
+                    break;
+                } elseif ($vehicle['vehicle_id'] == 3) {
+                    $found_taxi = true;
+                }
+            }
+            if (!$found_car_6) {
+                $vehicle_id = $found_taxi ? 3 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 10);
+            }
+        }
+        error_log("Kwik Vehicle Response: " . $vehicle_response . " | HTTP Code: " . $vehicle_http_code . " | Selected vehicle_id: " . $vehicle_id);
     } else {
         error_log("Kwik Vehicle cURL Error: " . curl_error($ch));
+        echo json_encode(['success' => false, 'message' => 'Failed to fetch vehicle data']);
+        exit;
     }
 
     // Get current time in Lagos (WAT, UTC+1)
-    $pickup_time = date('Y-m-d H:i:s', time() + 60 * 60); // Add 1 hour for WAT
+    $pickup_time = date('Y-m-d H:i:s', time() + 60 * 60);
 
     $payload = [
-        'custom_field_template' => 'pricing-template', // Confirm with Kwik support
+        'custom_field_template' => 'pricing-template',
         'pickup_custom_field_template' => 'pricing-template',
         'access_token' => $token_data['access_token'],
         'domain_name' => KWIK_DOMAIN,
-        'timezone' => 60, // WAT (UTC+1)
+        'timezone' => 60,
         'vendor_id' => $token_data['vendor_id'],
         'user_id' => $token_data['kwik_user_id'],
         'auto_assignment' => 0,
@@ -68,8 +88,8 @@ try {
         'has_pickup' => 1,
         'has_delivery' => 1,
         'is_multiple_tasks' => 1,
-        'payment_method' => 32, // Paystack
-        'form_id' => 2, // Confirm with Kwik support
+        'payment_method' => 32,
+        'form_id' => 2,
         'is_schedule_task' => 0,
         'pickups' => [
             [
@@ -97,7 +117,7 @@ try {
         ],
         'is_loader_required' => 0,
         'delivery_instruction' => 'Leave package at front desk',
-        'is_cod_job' => 0, // Disable COD
+        'is_cod_job' => 0,
         'parcel_amount' => $cart_total,
         'vehicle_id' => $vehicle_id
     ];
@@ -111,12 +131,12 @@ try {
     ]);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Temporary for debugging
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Temporary for debugging
-    curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     error_log("Kwik Delivery Price Request: " . json_encode($payload));
 
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
     if ($response === false) {
         $curl_error = curl_error($ch);
         curl_close($ch);
@@ -125,13 +145,18 @@ try {
         exit;
     }
 
-    error_log("Kwik Delivery Price Response: " . $response . " | HTTP Code: " . $http_code);
+    error_log("Kwik Delivery Price Response: " . $response . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
     curl_close($ch);
+
+    if (strpos($content_type, 'application/json') === false) {
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: Expected JSON, got ' . $content_type, 'response' => $response]);
+        exit;
+    }
 
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         error_log("JSON Decode Error: " . json_last_error_msg());
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format']);
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => $response]);
         exit;
     }
 
@@ -143,8 +168,8 @@ try {
 
     if (isset($data['data']['per_task_cost']) && is_numeric($data['data']['per_task_cost'])) {
         $delivery_cost = floatval($data['data']['per_task_cost']);
-        if ($delivery_cost > 100000) { // Arbitrary threshold for sanity check
-            error_log("Unreasonably high delivery cost: " . $delivery_cost);
+        if ($delivery_cost > 100000) {
+            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id);
             echo json_encode(['success' => false, 'message' => 'Delivery cost too high: ₦' . $delivery_cost, 'response' => $data]);
             exit;
         }
