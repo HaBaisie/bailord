@@ -755,6 +755,45 @@ if(isset($_SESSION['user'])){
                                         $pdo->close();
                                     ?>
                                 </div>
+                                <div class="table-responsive">
+                                    <h4>Details Table Data</h4>
+                                    <?php
+                                        $conn = $pdo->open();
+                                        try {
+                                            $stmt = $conn->prepare("SELECT * FROM details");
+                                            $stmt->execute();
+                                            $details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if (empty($details)) {
+                                                echo "<p>No data found in the details table.</p>";
+                                            } else {
+                                                echo "<table class='table table-bordered'>";
+                                                echo "<thead>";
+                                                echo "<tr>";
+                                                // Dynamically generate headers based on column names
+                                                $columns = array_keys($details[0]);
+                                                foreach ($columns as $column) {
+                                                    echo "<th>" . htmlspecialchars($column) . "</th>";
+                                                }
+                                                echo "</tr>";
+                                                echo "</thead>";
+                                                echo "<tbody>";
+                                                foreach ($details as $detail) {
+                                                    echo "<tr>";
+                                                    foreach ($detail as $value) {
+                                                        echo "<td>" . (is_null($value) ? '-' : htmlspecialchars($value)) . "</td>";
+                                                    }
+                                                    echo "</tr>";
+                                                }
+                                                echo "</tbody>";
+                                                echo "</table>";
+                                            }
+                                        } catch(PDOException $e) {
+                                            echo "<div class='callout callout-danger'>Error fetching details data: " . htmlspecialchars($e->getMessage()) . "</div>";
+                                            error_log("Details data fetch failed: " . $e->getMessage());
+                                        }
+                                        $pdo->close();
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
