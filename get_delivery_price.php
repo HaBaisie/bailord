@@ -39,38 +39,35 @@ try {
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Temporary for debugging
     $vehicle_response = curl_exec($ch);
     $vehicle_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+    $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
     curl_close($ch);
 
     $vehicle_id = 10; // Default to car 6 (lowest fares)
     if ($vehicle_response !== false) {
-        if (strpos($vehicle_content_type, 'application/json') === false) {
-            error_log("Kwik Vehicle Response: Non-JSON response: " . $vehicle_response . " | HTTP Code: " . $vehicle_http_code);
-            echo json_encode(['success' => false, 'message' => 'Invalid vehicle API response format']);
-            exit;
-        }
-        $vehicle_data = json_decode($vehicle_response, true);
-        if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
-            $found_car_6 = false;
-            $found_taxi = false;
-            foreach ($vehicle_data['data'] as $vehicle) {
-                if ($vehicle['vehicle_id'] == 10) {
-                    $found_car_6 = true;
-                    break;
-                } elseif ($vehicle['vehicle_id'] == 3) {
-                    $found_taxi = true;
+        if (strpos($vehicle_content_type, 'application/json') !== false) {
+            $vehicle_data = json_decode($vehicle_response, true);
+            if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
+                $found_car_6 = false;
+                $found_taxi = false;
+                foreach ($vehicle_data['data'] as $vehicle) {
+                    if ($vehicle['vehicle_id'] == 10) {
+                        $found_car_6 = true;
+                        break;
+                    } elseif ($vehicle['vehicle_id'] == 3) {
+                        $found_taxi = true;
+                    }
+                }
+                if (!$found_car_6) {
+                    $vehicle_id = $found_taxi ? 3 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 10);
                 }
             }
-            if (!$found_car_6) {
-                $vehicle_id = $found_taxi ? 3 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 10);
-            }
+        } else {
+            error_log("Kwik Vehicle Response: Non-JSON response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
         }
-        error_log("Kwik Vehicle Response: " . $vehicle_response . " | HTTP Code: " . $vehicle_http_code . " | Selected vehicle_id: " . $vehicle_id);
     } else {
         error_log("Kwik Vehicle cURL Error: " . curl_error($ch));
-        echo json_encode(['success' => false, 'message' => 'Failed to fetch vehicle data']);
-        exit;
     }
+    error_log("Selected vehicle_id: " . $vehicle_id);
 
     // Get current time in Lagos (WAT, UTC+1)
     $pickup_time = date('Y-m-d H:i:s', time() + 60 * 60);
@@ -136,7 +133,7 @@ try {
 
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+    $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
     if ($response === false) {
         $curl_error = curl_error($ch);
         curl_close($ch);
@@ -145,18 +142,18 @@ try {
         exit;
     }
 
-    error_log("Kwik Delivery Price Response: " . $response . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
+    error_log("Kwik Delivery Price Response: " . substr($response, 0, 500) . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
     curl_close($ch);
 
     if (strpos($content_type, 'application/json') === false) {
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format: Expected JSON, got ' . $content_type, 'response' => $response]);
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: Expected JSON, got ' . $content_type, 'response' => substr($response, 0, 500)]);
         exit;
     }
 
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         error_log("JSON Decode Error: " . json_last_error_msg());
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => $response]);
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500)]);
         exit;
     }
 
