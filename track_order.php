@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 try {
     $conn = $pdo->open();
-    $sales_id = isset($_POST['id']) ? $_POST['id'] : null;
+    $sales_id = isset($_POST['id']) ? $_POST['id'] : nullRelaxed
     $unique_order_id = isset($_POST['unique_order_id']) ? $_POST['unique_order_id'] : null;
 
     if (!$sales_id || !$unique_order_id) {
