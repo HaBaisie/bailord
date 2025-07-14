@@ -13,7 +13,7 @@ $cart_total = isset($_POST['cart_total']) ? floatval($_POST['cart_total']) : 0;
 $name = isset($_POST['name']) ? trim($_POST['name']) : 'Customer';
 
 if (!$user_id || !$address || !$latitude || !$longitude) {
-    echo json_encode(['success' => false, 'message' => 'Missing required parameters', 'delivery_cost' => 2000]);
+    echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
     exit;
 }
 
@@ -24,7 +24,7 @@ try {
     $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$token_data) {
-        echo json_encode(['success' => false, 'message' => 'No access token found', 'delivery_cost' => 2000]);
+        echo json_encode(['success' => false, 'message' => 'No access token found']);
         exit;
     }
 
@@ -54,7 +54,7 @@ try {
 
     $vehicle_id = 1; // Default to bike
     $vehicle_type = 'bike';
-    $estimated_cost = 2000; // Fallback
+    $estimated_cost = 0;
     if ($vehicle_response !== false) {
         $vehicle_data = json_decode($vehicle_response, true);
         if (json_last_error() === JSON_ERROR_NONE) {
@@ -71,7 +71,7 @@ try {
                     }
                 }
                 if (!empty($bike_vehicles)) {
-                    // Select bike with lowest estimated cost (base_fare + distance_fare * distance)
+                    // Select bike with lowest estimated cost
                     usort($bike_vehicles, function($a, $b) use ($distance) {
                         $cost_a = $a['base_fare'] + $a['distance_fare'] * $distance;
                         $cost_b = $b['base_fare'] + $b['distance_fare'] * $distance;
@@ -82,11 +82,6 @@ try {
                     error_log("Estimated cost for vehicle_id: " . $vehicle_id . " = ₦" . $estimated_cost . " (base_fare: " . $bike_vehicles[0]['base_fare'] . ", distance_fare: " . $bike_vehicles[0]['distance_fare'] . ", distance: " . $distance . " km)");
                 }
                 error_log("Vehicle selection: bike_vehicles=" . json_encode($bike_vehicles) . ", selected vehicle_id=" . $vehicle_id);
-                if ($estimated_cost > 2000) {
-                    error_log("Estimated cost too high: ₦" . $estimated_cost . " for vehicle_id: " . $vehicle_id);
-                    echo json_encode(['success' => false, 'message' => 'Estimated delivery cost too high: ₦' . $estimated_cost, 'delivery_cost' => 2000]);
-                    exit;
-                }
             } elseif (isset($vehicle_data['message']) && in_array($vehicle_data['message'], ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
                 error_log("Kwik Vehicle Response: Authentication error: " . $vehicle_data['message'] . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
                 // Attempt to refresh token
@@ -148,27 +143,30 @@ try {
                             error_log("Estimated cost for vehicle_id: " . $vehicle_id . " = ₦" . $estimated_cost . " (base_fare: " . $bike_vehicles[0]['base_fare'] . ", distance_fare: " . $bike_vehicles[0]['distance_fare'] . ", distance: " . $distance . " km)");
                         }
                         error_log("Kwik Vehicle Retry Response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
-                        if ($estimated_cost > 2000) {
-                            error_log("Estimated cost too high: ₦" . $estimated_cost . " for vehicle_id: " . $vehicle_id);
-                            echo json_encode(['success' => false, 'message' => 'Estimated delivery cost too high: ₦' . $estimated_cost, 'delivery_cost' => 2000]);
-                            exit;
-                        }
                     } else {
                         error_log("Kwik Vehicle Retry Failed: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                        echo json_encode(['success' => false, 'message' => 'Failed to fetch vehicle data after token refresh']);
+                        exit;
                     }
                 } else {
                     error_log("Failed to refresh token: " . $login_response);
-                    echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token', 'delivery_cost' => 2000]);
+                    echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
                     exit;
                 }
             } else {
                 error_log("Kwik Vehicle Response: Invalid JSON or unexpected response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                echo json_encode(['success' => false, 'message' => 'Invalid vehicle data response']);
+                exit;
             }
         } else {
             error_log("Kwik Vehicle Response: JSON decode error: " . json_last_error_msg() . " | Response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+            echo json_encode(['success' => false, 'message' => 'Vehicle data JSON decode error: ' . json_last_error_msg()]);
+            exit;
         }
     } else {
         error_log("Kwik Vehicle cURL Error: " . curl_error($ch));
+        echo json_encode(['success' => false, 'message' => 'Vehicle cURL error: ' . curl_error($ch)]);
+        exit;
     }
     error_log("Selected vehicle_id: " . $vehicle_id . ", vehicle_type: " . $vehicle_type);
 
@@ -241,7 +239,7 @@ try {
         $curl_error = curl_error($ch);
         curl_close($ch);
         error_log("cURL Error: " . $curl_error);
-        echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error, 'delivery_cost' => 2000]);
+        echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error]);
         exit;
     }
 
@@ -251,7 +249,7 @@ try {
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         error_log("JSON Decode Error: " . json_last_error_msg() . " | Response: " . substr($response, 0, 500));
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500), 'delivery_cost' => 2000]);
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error']);
         exit;
     }
 
@@ -282,7 +280,7 @@ try {
                 $token_data['vendor_id'] = $login_data['vendor_id'];
                 $token_data['kwik_user_id'] = $login_data['kwik_user_id'];
                 error_log("Refreshed access_token: " . $login_data['access_token']);
-                // Retry send_payment_for_task with new token
+                // Retry send_payment_for_task
                 $ch = curl_init(KWIK_BASE_URL . '/send_payment_for_task');
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_POST, true);
@@ -300,34 +298,30 @@ try {
                 error_log("Kwik Delivery Price Retry Response: " . substr($response, 0, 500) . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
                 $data = json_decode($response, true);
                 if (json_last_error() !== JSON_ERROR_NONE) {
-                    echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500), 'delivery_cost' => 2000]);
+                    echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error']);
                     exit;
                 }
             } else {
                 error_log("Failed to refresh token: " . $login_response);
-                echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token', 'delivery_cost' => 2000]);
+                echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
                 exit;
             }
         } else {
-            echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data, 'delivery_cost' => 2000]);
+            echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data]);
             exit;
         }
     }
 
     if (isset($data['data']['per_task_cost']) && is_numeric($data['data']['per_task_cost'])) {
         $delivery_cost = floatval($data['data']['per_task_cost']);
-        if ($delivery_cost > 2000) { // Threshold to catch high costs
-            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id . " | vehicle_type: " . $vehicle_type . " | hadVairablePayment: " . (isset($data['data']['hadVairablePayment']) ? $data['data']['hadVairablePayment'] : 'N/A'));
-            echo json_encode(['success' => false, 'message' => 'Delivery cost too high: ₦' . $delivery_cost, 'response' => $data, 'delivery_cost' => 2000]);
-            exit;
-        }
+        error_log("Delivery cost from API: ₦" . $delivery_cost . " for vehicle_id: " . $vehicle_id . " | vehicle_type: " . $vehicle_type . " | hadVairablePayment: " . (isset($data['data']['hadVairablePayment']) ? $data['data']['hadVairablePayment'] : 'N/A'));
         echo json_encode(['success' => true, 'delivery_cost' => $delivery_cost, 'vehicle_type' => $vehicle_type]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'No delivery cost returned or invalid format', 'response' => $data, 'delivery_cost' => 2000]);
+        echo json_encode(['success' => false, 'message' => 'No delivery cost returned or invalid format', 'response' => $data]);
     }
 } catch (Exception $e) {
     error_log("Exception in get_delivery_price.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage(), 'delivery_cost' => 2000]);
+    echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
 }
 $pdo->close();
 ?>
