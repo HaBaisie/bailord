@@ -1,4 +1,3 @@
-```php
 <?php
 include 'includes/session.php';
 
@@ -50,4 +49,3 @@ try {
 }
 ob_end_flush();
 ?>
-```
