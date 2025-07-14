@@ -191,7 +191,7 @@
             background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: #000000; /* Changed to black */
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -232,7 +232,7 @@
             color: var(--text-dark);
         }
         .mobile-menu li a {
-            color: var(--text-dark);
+            color: #000000; /* Changed to black */
             padding: 10px;
             display: block;
             font-size: 16px;
@@ -1040,8 +1040,9 @@
                                                         $total += $subtotal;
                                                     }
                                                     $unique_order_id = !empty($row['unique_order_id']) ? htmlspecialchars($row['unique_order_id']) : '';
-                                                    // Disable Track button for now
-                                                    $track_button = "<button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='$unique_order_id' disabled><i class='fa fa-map-marker'></i> Track</button>";
+                                                    $track_button = !empty($unique_order_id) 
+                                                        ? "<button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='$unique_order_id' data-sales-id='".htmlspecialchars($row['id'])."'><i class='fa fa-map-marker'></i> Track</button>"
+                                                        : "<button class='btn btn-sm btn-flat btn-warning' disabled><i class='fa fa-map-marker'></i> Track</button>";
                                                     echo "
                                                         <tr>
                                                             <td class='hidden'></td>
@@ -1055,6 +1056,13 @@
                                                             <td colspan='6'>
                                                                 <div class='details-section' id='details-".htmlspecialchars($row['id'])."'>
                                                                     <p><strong>Loading transaction details...</strong></p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='tracking-row tracking-row-".htmlspecialchars($row['id'])."' style='display: none;'>
+                                                            <td colspan='6'>
+                                                                <div class='tracking-section' id='tracking-".htmlspecialchars($row['id'])."'>
+                                                                    <p><strong>Loading tracking details...</strong></p>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1126,6 +1134,7 @@
                         detailsRow.hide();
                     } else {
                         $('.details-row').hide();
+                        $('.tracking-row').hide();
                         detailsRow.show();
 
                         $.ajax({
@@ -1180,6 +1189,66 @@
                                     statusCode: xhr.status
                                 });
                                 detailsSection.html('<p class="callout callout-danger">Failed to load transaction details: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
+                            }
+                        });
+                    }
+                });
+
+                // Tracking Order AJAX
+                $(document).on('click', '.track-order', function(e){
+                    e.preventDefault();
+                    var sales_id = $(this).data('sales-id');
+                    var unique_order_id = $(this).data('unique-order-id');
+                    var trackingRow = $('.tracking-row-' + sales_id);
+                    var trackingSection = $('#tracking-' + sales_id);
+
+                    if (!trackingRow.length || !trackingSection.length) {
+                        console.error('Tracking row or section not found for sales_id: ' + sales_id);
+                        return;
+                    }
+
+                    if (trackingRow.is(':visible')) {
+                        trackingRow.hide();
+                    } else {
+                        $('.details-row').hide();
+                        $('.tracking-row').hide();
+                        trackingRow.show();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: 'track_order.php',
+                            data: { sales_id: sales_id, unique_order_id: unique_order_id },
+                            dataType: 'json',
+                            beforeSend: function() {
+                                console.log('Fetching tracking for sales_id: ' + sales_id + ', unique_order_id: ' + unique_order_id);
+                                trackingSection.html('<p><strong>Loading tracking details...</strong></p>');
+                            },
+                            success: function(response) {
+                                console.log('Tracking response:', response);
+                                if (!response.success) {
+                                    var errorMsg = response.error === 'This task is no longer available.' 
+                                        ? 'Order tracking is no longer available. The delivery may have been completed or canceled.'
+                                        : response.error;
+                                    trackingSection.html('<p class="callout callout-danger">' + errorMsg + '</p>');
+                                    return;
+                                }
+                                var html = `
+                                    <p><strong>Status:</strong> ${response.status.charAt(0).toUpperCase() + response.status.slice(1)}</p>
+                                    <p><strong>Driver:</strong> ${response.driver_name} (${response.driver_phone})</p>
+                                    <p><strong>Estimated Delivery:</strong> ${response.estimated_delivery}</p>
+                                    <p><a href="${response.tracking_link}" target="_blank">Track on Map</a></p>
+                                    <p><strong>Created At:</strong> ${response.created_at}</p>
+                                `;
+                                trackingSection.html(html).show();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Tracking fetch error:', {
+                                    status: status,
+                                    error: error,
+                                    responseText: xhr.responseText,
+                                    statusCode: xhr.status
+                                });
+                                trackingSection.html('<p class="callout callout-danger">Failed to load tracking details: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
                             }
                         });
                     }
