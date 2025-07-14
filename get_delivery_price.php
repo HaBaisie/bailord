@@ -44,8 +44,8 @@ try {
 
     $vehicle_id = 10; // Default to car 6 (lowest fares)
     if ($vehicle_response !== false) {
-        if (strpos($vehicle_content_type, 'application/json') !== false) {
-            $vehicle_data = json_decode($vehicle_response, true);
+        $vehicle_data = json_decode($vehicle_response, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
             if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
                 $found_car_6 = false;
                 $found_taxi = false;
@@ -60,9 +60,40 @@ try {
                 if (!$found_car_6) {
                     $vehicle_id = $found_taxi ? 3 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 10);
                 }
+            } elseif (isset($vehicle_data['message']) && in_array($vehicle_data['message'], ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
+                error_log("Kwik Vehicle Response: Authentication error: " . $vehicle_data['message'] . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                // Attempt to refresh token
+                $ch = curl_init('https://bailord-0b4b2667ca4f.herokuapp.com/login_kwik.php');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, 'user_id=' . $user_id);
+                $login_response = curl_exec($ch);
+                curl_close($ch);
+                $login_data = json_decode($login_response, true);
+                if ($login_data && isset($login_data['success']) && $login_data['success'] && isset($login_data['access_token'])) {
+                    $stmt = $conn->prepare("UPDATE kwik_tokens SET access_token = :access_token, vendor_id = :vendor_id, kwik_user_id = :kwik_user_id, card_id = :card_id WHERE user_id = :user_id");
+                    $stmt->execute([
+                        'access_token' => $login_data['access_token'],
+                        'vendor_id' => $login_data['vendor_id'],
+                        'kwik_user_id' => $login_data['kwik_user_id'],
+                        'card_id' => $login_data['card_id'] ?? '',
+                        'user_id' => $user_id
+                    ]);
+                    $token_data['access_token'] = $login_data['access_token'];
+                    $token_data['vendor_id'] = $login_data['vendor_id'];
+                    $token_data['kwik_user_id'] = $login_data['kwik_user_id'];
+                    error_log("Refreshed access_token: " . $login_data['access_token']);
+                } else {
+                    error_log("Failed to refresh token: " . $login_response);
+                    echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
+                    exit;
+                }
+            } else {
+                error_log("Kwik Vehicle Response: Invalid JSON or unexpected response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
             }
         } else {
-            error_log("Kwik Vehicle Response: Non-JSON response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+            error_log("Kwik Vehicle Response: JSON decode error: " . json_last_error_msg() . " | Response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
         }
     } else {
         error_log("Kwik Vehicle cURL Error: " . curl_error($ch));
@@ -145,22 +176,69 @@ try {
     error_log("Kwik Delivery Price Response: " . substr($response, 0, 500) . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
     curl_close($ch);
 
-    if (strpos($content_type, 'application/json') === false) {
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format: Expected JSON, got ' . $content_type, 'response' => substr($response, 0, 500)]);
-        exit;
-    }
-
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        error_log("JSON Decode Error: " . json_last_error_msg());
+        error_log("JSON Decode Error: " . json_last_error_msg() . " | Response: " . substr($response, 0, 500));
         echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500)]);
         exit;
     }
 
-    if ($http_code !== 200) {
+    if ($http_code !== 200 || (isset($data['status']) && in_array($data['status'], [100, 101]))) {
         $error_message = isset($data['message']) ? $data['message'] : 'Unknown API error';
-        echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data]);
-        exit;
+        if (in_array($error_message, ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
+            // Attempt to refresh token
+            $ch = curl_init('https://bailord-0b4b2667ca4f.herokuapp.com/login_kwik.php');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, 'user_id=' . $user_id);
+            $login_response = curl_exec($ch);
+            curl_close($ch);
+            $login_data = json_decode($login_response, true);
+            if ($login_data && isset($login_data['success']) && $login_data['success'] && isset($login_data['access_token'])) {
+                $stmt = $conn->prepare("UPDATE kwik_tokens SET access_token = :access_token, vendor_id = :vendor_id, kwik_user_id = :kwik_user_id, card_id = :card_id WHERE user_id = :user_id");
+                $stmt->execute([
+                    'access_token' => $login_data['access_token'],
+                    'vendor_id' => $login_data['vendor_id'],
+                    'kwik_user_id' => $login_data['kwik_user_id'],
+                    'card_id' => $login_data['card_id'] ?? '',
+                    'user_id' => $user_id
+                ]);
+                $payload['access_token'] = $login_data['access_token'];
+                $token_data['access_token'] = $login_data['access_token'];
+                $token_data['vendor_id'] = $login_data['vendor_id'];
+                $token_data['kwik_user_id'] = $login_data['kwik_user_id'];
+                error_log("Refreshed access_token: " . $login_data['access_token']);
+                // Retry send_payment_for_task with new token
+                $ch = curl_init(KWIK_BASE_URL . '/send_payment_for_task');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer ' . $token_data['access_token']
+                ]);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+                $response = curl_exec($ch);
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
+                curl_close($ch);
+                error_log("Kwik Delivery Price Retry Response: " . substr($response, 0, 500) . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
+                $data = json_decode($response, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500)]);
+                    exit;
+                }
+            } else {
+                error_log("Failed to refresh token: " . $login_response);
+                echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
+                exit;
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data]);
+            exit;
+        }
     }
 
     if (isset($data['data']['per_task_cost']) && is_numeric($data['data']['per_task_cost'])) {
