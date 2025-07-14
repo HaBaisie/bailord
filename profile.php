@@ -1024,21 +1024,23 @@
                                             $conn = $pdo->open();
                                             $total_entries = 0;
                                             try {
-                                                $stmt = $conn->prepare("SELECT COUNT(*) as total FROM sales WHERE user_id=:user_id");
+                                                $stmt = $conn->prepare("SELECT COUNT(*) as total FROM sales WHERE user_id = :user_id");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $total_entries = $stmt->fetch()['total'];
                                                 
-                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id, delivery_tasks.tracking_link FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id=:user_id ORDER BY sales.sales_date DESC");
+                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id, delivery_tasks.tracking_link FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id = :user_id ORDER BY sales.sales_date DESC");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $current_entries = $stmt->rowCount();
                                                 foreach ($stmt as $row) {
-                                                    $stmt2 = $conn->prepare("SELECT * FROM details LEFT JOIN products ON products.id=details.product_id WHERE sales_id=:id");
+                                                    $stmt2 = $conn->prepare("SELECT d.*, p.name FROM details d LEFT JOIN products p ON p.id = d.product_id WHERE d.sales_id = :id");
                                                     $stmt2->execute(['id' => $row['id']]);
                                                     $total = 0;
                                                     foreach ($stmt2 as $row2) {
                                                         $subtotal = $row2['price'] * $row2['quantity'];
                                                         $total += $subtotal;
                                                     }
+                                                    $unique_order_id = !empty($row['unique_order_id']) ? htmlspecialchars($row['unique_order_id']) : '';
+                                                    $track_button = $unique_order_id ? "<button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='$unique_order_id'><i class='fa fa-map-marker'></i> Track</button>" : "<button class='btn btn-sm btn-flat btn-warning' disabled><i class='fa fa-map-marker'></i> No Tracking</button>";
                                                     echo "
                                                         <tr>
                                                             <td class='hidden'></td>
@@ -1046,7 +1048,7 @@
                                                             <td data-label='Transaction#'>".htmlspecialchars($row['pay_id'])."</td>
                                                             <td data-label='Amount'>$ ".number_format($total, 2)."</td>
                                                             <td data-label='Details'><button class='btn btn-sm btn-flat btn-info transact' data-id='".htmlspecialchars($row['id'])."'><i class='fa fa-search'></i> View</button></td>
-                                                            <td data-label='Track Order'><button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='".htmlspecialchars($row['unique_order_id'] ?? '')."' data-tracking-link='".htmlspecialchars($row['tracking_link'] ?? '')."'><i class='fa fa-map-marker'></i> Track</button></td>
+                                                            <td data-label='Track Order'>$track_button</td>
                                                         </tr>
                                                         <tr class='details-row details-row-".htmlspecialchars($row['id'])."' style='display: none;'>
                                                             <td colspan='6'>
@@ -1119,7 +1121,12 @@ $(function(){
                 url: 'transaction.php',
                 data: {id: id},
                 dataType: 'json',
+                beforeSend: function() {
+                    console.log('Fetching transaction for sales_id: ' + id);
+                    detailsSection.html('<p><strong>Loading transaction details...</strong></p>');
+                },
                 success: function(response){
+                    console.log('Transaction response:', response);
                     if (response.error) {
                         detailsSection.html('<p class="callout callout-danger">' + response.error + '</p>');
                         return;
@@ -1154,8 +1161,13 @@ $(function(){
                     detailsSection.html(html);
                 },
                 error: function(xhr, status, error) {
-                    console.error('Transaction fetch error:', xhr.responseText);
-                    detailsSection.html('<p class="callout callout-danger">Failed to load transaction details: ' + error + '</p>');
+                    console.error('Transaction fetch error:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText,
+                        statusCode: xhr.status
+                    });
+                    detailsSection.html('<p class="callout callout-danger">Failed to load transaction details: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
                 }
             });
         }
@@ -1168,6 +1180,14 @@ $(function(){
         var trackingRow = $('.tracking-row-' + id);
         var trackingSection = $('#tracking-' + id);
         var detailsRow = $('.details-row-' + id);
+
+        if (!uniqueOrderId) {
+            trackingSection.html('<p class="callout callout-danger">No tracking information available</p>');
+            $('.details-row').hide();
+            $('.tracking-row').hide();
+            trackingRow.show();
+            return;
+        }
 
         // Toggle visibility of tracking row
         if (trackingRow.is(':visible')) {
@@ -1184,7 +1204,12 @@ $(function(){
                 url: 'track_order.php',
                 data: {id: id, unique_order_id: uniqueOrderId},
                 dataType: 'json',
+                beforeSend: function() {
+                    console.log('Fetching tracking for sales_id: ' + id + ', unique_order_id: ' + uniqueOrderId);
+                    trackingSection.html('<p><strong>Loading tracking information...</strong></p>');
+                },
                 success: function(response){
+                    console.log('Track order response:', response);
                     if (response.success) {
                         var html = `
                             <p><strong>Order ID:</strong> ${response.unique_order_id}</p>
@@ -1193,12 +1218,17 @@ $(function(){
                         `;
                         trackingSection.html(html);
                     } else {
-                        trackingSection.html('<p class="callout callout-danger">Tracking information not available</p>');
+                        trackingSection.html('<p class="callout callout-danger">' + (response.error || 'Tracking information not available') + '</p>');
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Track order fetch error:', xhr.responseText);
-                    trackingSection.html('<p class="callout callout-danger">Failed to load tracking information: ' + error + '</p>');
+                    console.error('Track order fetch error:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText,
+                        statusCode: xhr.status
+                    });
+                    trackingSection.html('<p class="callout callout-danger">Failed to load tracking information: ' + (xhr.responseText || error) + ' (Status: ' + xhr.status + ')</p>');
                 }
             });
         }
