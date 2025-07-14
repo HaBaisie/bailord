@@ -13,7 +13,7 @@ $cart_total = isset($_POST['cart_total']) ? floatval($_POST['cart_total']) : 0;
 $name = isset($_POST['name']) ? trim($_POST['name']) : 'Customer';
 
 if (!$user_id || !$address || !$latitude || !$longitude) {
-    echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
+    echo json_encode(['success' => false, 'message' => 'Missing required parameters', 'delivery_cost' => 2000]);
     exit;
 }
 
@@ -24,7 +24,7 @@ try {
     $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$token_data) {
-        echo json_encode(['success' => false, 'message' => 'No access token found']);
+        echo json_encode(['success' => false, 'message' => 'No access token found', 'delivery_cost' => 2000]);
         exit;
     }
 
@@ -42,23 +42,23 @@ try {
     $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
     curl_close($ch);
 
-    $vehicle_id = 10; // Default to car 6 (lowest fares)
+    $vehicle_id = 3; // Default to taxi (lower cost)
     if ($vehicle_response !== false) {
         $vehicle_data = json_decode($vehicle_response, true);
         if (json_last_error() === JSON_ERROR_NONE) {
             if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
-                $found_car_6 = false;
                 $found_taxi = false;
+                $found_car_6 = false;
                 foreach ($vehicle_data['data'] as $vehicle) {
-                    if ($vehicle['vehicle_id'] == 10) {
-                        $found_car_6 = true;
-                        break;
-                    } elseif ($vehicle['vehicle_id'] == 3) {
+                    if ($vehicle['vehicle_id'] == 3) {
                         $found_taxi = true;
+                        break;
+                    } elseif ($vehicle['vehicle_id'] == 10) {
+                        $found_car_6 = true;
                     }
                 }
-                if (!$found_car_6) {
-                    $vehicle_id = $found_taxi ? 3 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 10);
+                if (!$found_taxi) {
+                    $vehicle_id = $found_car_6 ? 10 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 3);
                 }
             } elseif (isset($vehicle_data['message']) && in_array($vehicle_data['message'], ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
                 error_log("Kwik Vehicle Response: Authentication error: " . $vehicle_data['message'] . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
@@ -84,9 +84,41 @@ try {
                     $token_data['vendor_id'] = $login_data['vendor_id'];
                     $token_data['kwik_user_id'] = $login_data['kwik_user_id'];
                     error_log("Refreshed access_token: " . $login_data['access_token']);
+                    // Retry /getVehicle
+                    $ch = curl_init(KWIK_BASE_URL . '/getVehicle');
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                        'Content-Type: application/json',
+                        'Authorization: Bearer ' . $token_data['access_token']
+                    ]);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                    $vehicle_response = curl_exec($ch);
+                    $vehicle_http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
+                    curl_close($ch);
+                    $vehicle_data = json_decode($vehicle_response, true);
+                    if (json_last_error() === JSON_ERROR_NONE && $vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
+                        $found_taxi = false;
+                        $found_car_6 = false;
+                        foreach ($vehicle_data['data'] as $vehicle) {
+                            if ($vehicle['vehicle_id'] == 3) {
+                                $found_taxi = true;
+                                break;
+                            } elseif ($vehicle['vehicle_id'] == 10) {
+                                $found_car_6 = true;
+                            }
+                        }
+                        if (!$found_taxi) {
+                            $vehicle_id = $found_car_6 ? 10 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 3);
+                        }
+                        error_log("Kwik Vehicle Retry Response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                    } else {
+                        error_log("Kwik Vehicle Retry Failed: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                    }
                 } else {
                     error_log("Failed to refresh token: " . $login_response);
-                    echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
+                    echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token', 'delivery_cost' => 2000]);
                     exit;
                 }
             } else {
@@ -169,7 +201,7 @@ try {
         $curl_error = curl_error($ch);
         curl_close($ch);
         error_log("cURL Error: " . $curl_error);
-        echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error]);
+        echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error, 'delivery_cost' => 2000]);
         exit;
     }
 
@@ -179,13 +211,14 @@ try {
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         error_log("JSON Decode Error: " . json_last_error_msg() . " | Response: " . substr($response, 0, 500));
-        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500)]);
+        echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500), 'delivery_cost' => 2000]);
         exit;
     }
 
     if ($http_code !== 200 || (isset($data['status']) && in_array($data['status'], [100, 101]))) {
         $error_message = isset($data['message']) ? $data['message'] : 'Unknown API error';
         if (in_array($error_message, ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
+            error_log("Kwik Delivery Response: Authentication error: " . $error_message . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
             // Attempt to refresh token
             $ch = curl_init('https://bailord-0b4b2667ca4f.herokuapp.com/login_kwik.php');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -227,34 +260,34 @@ try {
                 error_log("Kwik Delivery Price Retry Response: " . substr($response, 0, 500) . " | HTTP Code: " . $http_code . " | Content-Type: " . $content_type);
                 $data = json_decode($response, true);
                 if (json_last_error() !== JSON_ERROR_NONE) {
-                    echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500)]);
+                    echo json_encode(['success' => false, 'message' => 'Invalid API response format: JSON decode error', 'response' => substr($response, 0, 500), 'delivery_cost' => 2000]);
                     exit;
                 }
             } else {
                 error_log("Failed to refresh token: " . $login_response);
-                echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token']);
+                echo json_encode(['success' => false, 'message' => 'Authentication error: Unable to refresh token', 'delivery_cost' => 2000]);
                 exit;
             }
         } else {
-            echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data]);
+            echo json_encode(['success' => false, 'message' => 'API error: ' . $error_message, 'response' => $data, 'delivery_cost' => 2000]);
             exit;
         }
     }
 
     if (isset($data['data']['per_task_cost']) && is_numeric($data['data']['per_task_cost'])) {
         $delivery_cost = floatval($data['data']['per_task_cost']);
-        if ($delivery_cost > 100000) {
-            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id);
-            echo json_encode(['success' => false, 'message' => 'Delivery cost too high: ₦' . $delivery_cost, 'response' => $data]);
+        if ($delivery_cost > 2000) { // Lowered threshold to catch high costs
+            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id . " | hadVairablePayment: " . (isset($data['data']['hadVairablePayment']) ? $data['data']['hadVairablePayment'] : 'N/A'));
+            echo json_encode(['success' => false, 'message' => 'Delivery cost too high: ₦' . $delivery_cost, 'response' => $data, 'delivery_cost' => 2000]);
             exit;
         }
         echo json_encode(['success' => true, 'delivery_cost' => $delivery_cost]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'No delivery cost returned or invalid format', 'response' => $data]);
+        echo json_encode(['success' => false, 'message' => 'No delivery cost returned or invalid format', 'response' => $data, 'delivery_cost' => 2000]);
     }
 } catch (Exception $e) {
     error_log("Exception in get_delivery_price.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage(), 'delivery_cost' => 2000]);
 }
 $pdo->close();
 ?>
