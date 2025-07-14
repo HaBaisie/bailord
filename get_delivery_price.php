@@ -28,8 +28,18 @@ try {
         exit;
     }
 
+    // Calculate approximate distance (Haversine formula)
+    $pickup_lat = 6.4320951;
+    $pickup_lon = 3.274;
+    $earth_radius = 6371; // km
+    $dLat = deg2rad($latitude - $pickup_lat);
+    $dLon = deg2rad($longitude - $pickup_lon);
+    $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($pickup_lat)) * cos(deg2rad($latitude)) * sin($dLon/2) * sin($dLon/2);
+    $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+    $distance = $earth_radius * $c;
+
     // Fetch vehicle ID from /getVehicle
-    $ch = curl_init(KWIK_BASE_URL . '/getVehicle');
+    $ch = curl_init(KWIK_BASE_URL . '/getVehicle?access_token=' . urlencode($token_data['access_token']) . '&is_vendor=1&size=0');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
@@ -42,23 +52,40 @@ try {
     $vehicle_content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE) ?: 'unknown';
     curl_close($ch);
 
-    $vehicle_id = 3; // Default to taxi (lower cost)
+    $vehicle_id = 1; // Default to bike
+    $vehicle_type = 'bike';
+    $estimated_cost = 2000; // Fallback
     if ($vehicle_response !== false) {
         $vehicle_data = json_decode($vehicle_response, true);
         if (json_last_error() === JSON_ERROR_NONE) {
             if ($vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
-                $found_taxi = false;
-                $found_car_6 = false;
+                $bike_vehicles = [];
                 foreach ($vehicle_data['data'] as $vehicle) {
-                    if ($vehicle['vehicle_id'] == 3) {
-                        $found_taxi = true;
-                        break;
-                    } elseif ($vehicle['vehicle_id'] == 10) {
-                        $found_car_6 = true;
+                    if (isset($vehicle['size']) && $vehicle['size'] == 0) {
+                        $bike_vehicles[] = [
+                            'vehicle_id' => $vehicle['vehicle_id'],
+                            'distance_fare' => isset($vehicle['distance_fare']) ? floatval($vehicle['distance_fare']) : PHP_INT_MAX,
+                            'base_fare' => isset($vehicle['base_fare']) ? floatval($vehicle['base_fare']) : 0,
+                            'time_fare' => isset($vehicle['time_fare']) ? floatval($vehicle['time_fare']) : 0
+                        ];
                     }
                 }
-                if (!$found_taxi) {
-                    $vehicle_id = $found_car_6 ? 10 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 3);
+                if (!empty($bike_vehicles)) {
+                    // Select bike with lowest estimated cost (base_fare + distance_fare * distance)
+                    usort($bike_vehicles, function($a, $b) use ($distance) {
+                        $cost_a = $a['base_fare'] + $a['distance_fare'] * $distance;
+                        $cost_b = $b['base_fare'] + $b['distance_fare'] * $distance;
+                        return $cost_a <=> $cost_b;
+                    });
+                    $vehicle_id = $bike_vehicles[0]['vehicle_id'];
+                    $estimated_cost = $bike_vehicles[0]['base_fare'] + $bike_vehicles[0]['distance_fare'] * $distance;
+                    error_log("Estimated cost for vehicle_id: " . $vehicle_id . " = ₦" . $estimated_cost . " (base_fare: " . $bike_vehicles[0]['base_fare'] . ", distance_fare: " . $bike_vehicles[0]['distance_fare'] . ", distance: " . $distance . " km)");
+                }
+                error_log("Vehicle selection: bike_vehicles=" . json_encode($bike_vehicles) . ", selected vehicle_id=" . $vehicle_id);
+                if ($estimated_cost > 2000) {
+                    error_log("Estimated cost too high: ₦" . $estimated_cost . " for vehicle_id: " . $vehicle_id);
+                    echo json_encode(['success' => false, 'message' => 'Estimated delivery cost too high: ₦' . $estimated_cost, 'delivery_cost' => 2000]);
+                    exit;
                 }
             } elseif (isset($vehicle_data['message']) && in_array($vehicle_data['message'], ['"access_token" is required', 'Session expired. Please logout and login again.'])) {
                 error_log("Kwik Vehicle Response: Authentication error: " . $vehicle_data['message'] . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
@@ -85,7 +112,7 @@ try {
                     $token_data['kwik_user_id'] = $login_data['kwik_user_id'];
                     error_log("Refreshed access_token: " . $login_data['access_token']);
                     // Retry /getVehicle
-                    $ch = curl_init(KWIK_BASE_URL . '/getVehicle');
+                    $ch = curl_init(KWIK_BASE_URL . '/getVehicle?access_token=' . urlencode($token_data['access_token']) . '&is_vendor=1&size=0');
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_HTTPHEADER, [
                         'Content-Type: application/json',
@@ -99,20 +126,33 @@ try {
                     curl_close($ch);
                     $vehicle_data = json_decode($vehicle_response, true);
                     if (json_last_error() === JSON_ERROR_NONE && $vehicle_http_code === 200 && isset($vehicle_data['data']) && is_array($vehicle_data['data'])) {
-                        $found_taxi = false;
-                        $found_car_6 = false;
+                        $bike_vehicles = [];
                         foreach ($vehicle_data['data'] as $vehicle) {
-                            if ($vehicle['vehicle_id'] == 3) {
-                                $found_taxi = true;
-                                break;
-                            } elseif ($vehicle['vehicle_id'] == 10) {
-                                $found_car_6 = true;
+                            if (isset($vehicle['size']) && $vehicle['size'] == 0) {
+                                $bike_vehicles[] = [
+                                    'vehicle_id' => $vehicle['vehicle_id'],
+                                    'distance_fare' => isset($vehicle['distance_fare']) ? floatval($vehicle['distance_fare']) : PHP_INT_MAX,
+                                    'base_fare' => isset($vehicle['base_fare']) ? floatval($vehicle['base_fare']) : 0,
+                                    'time_fare' => isset($vehicle['time_fare']) ? floatval($vehicle['time_fare']) : 0
+                                ];
                             }
                         }
-                        if (!$found_taxi) {
-                            $vehicle_id = $found_car_6 ? 10 : (isset($vehicle_data['data'][0]['vehicle_id']) ? $vehicle_data['data'][0]['vehicle_id'] : 3);
+                        if (!empty($bike_vehicles)) {
+                            usort($bike_vehicles, function($a, $b) use ($distance) {
+                                $cost_a = $a['base_fare'] + $a['distance_fare'] * $distance;
+                                $cost_b = $b['base_fare'] + $b['distance_fare'] * $distance;
+                                return $cost_a <=> $cost_b;
+                            });
+                            $vehicle_id = $bike_vehicles[0]['vehicle_id'];
+                            $estimated_cost = $bike_vehicles[0]['base_fare'] + $bike_vehicles[0]['distance_fare'] * $distance;
+                            error_log("Estimated cost for vehicle_id: " . $vehicle_id . " = ₦" . $estimated_cost . " (base_fare: " . $bike_vehicles[0]['base_fare'] . ", distance_fare: " . $bike_vehicles[0]['distance_fare'] . ", distance: " . $distance . " km)");
                         }
                         error_log("Kwik Vehicle Retry Response: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
+                        if ($estimated_cost > 2000) {
+                            error_log("Estimated cost too high: ₦" . $estimated_cost . " for vehicle_id: " . $vehicle_id);
+                            echo json_encode(['success' => false, 'message' => 'Estimated delivery cost too high: ₦' . $estimated_cost, 'delivery_cost' => 2000]);
+                            exit;
+                        }
                     } else {
                         error_log("Kwik Vehicle Retry Failed: " . substr($vehicle_response, 0, 500) . " | HTTP Code: " . $vehicle_http_code . " | Content-Type: " . $vehicle_content_type);
                     }
@@ -130,7 +170,7 @@ try {
     } else {
         error_log("Kwik Vehicle cURL Error: " . curl_error($ch));
     }
-    error_log("Selected vehicle_id: " . $vehicle_id);
+    error_log("Selected vehicle_id: " . $vehicle_id . ", vehicle_type: " . $vehicle_type);
 
     // Get current time in Lagos (WAT, UTC+1)
     $pickup_time = date('Y-m-d H:i:s', time() + 60 * 60);
@@ -276,12 +316,12 @@ try {
 
     if (isset($data['data']['per_task_cost']) && is_numeric($data['data']['per_task_cost'])) {
         $delivery_cost = floatval($data['data']['per_task_cost']);
-        if ($delivery_cost > 2000) { // Lowered threshold to catch high costs
-            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id . " | hadVairablePayment: " . (isset($data['data']['hadVairablePayment']) ? $data['data']['hadVairablePayment'] : 'N/A'));
+        if ($delivery_cost > 2000) { // Threshold to catch high costs
+            error_log("Unreasonably high delivery cost: " . $delivery_cost . " for vehicle_id: " . $vehicle_id . " | vehicle_type: " . $vehicle_type . " | hadVairablePayment: " . (isset($data['data']['hadVairablePayment']) ? $data['data']['hadVairablePayment'] : 'N/A'));
             echo json_encode(['success' => false, 'message' => 'Delivery cost too high: ₦' . $delivery_cost, 'response' => $data, 'delivery_cost' => 2000]);
             exit;
         }
-        echo json_encode(['success' => true, 'delivery_cost' => $delivery_cost]);
+        echo json_encode(['success' => true, 'delivery_cost' => $delivery_cost, 'vehicle_type' => $vehicle_type]);
     } else {
         echo json_encode(['success' => false, 'message' => 'No delivery cost returned or invalid format', 'response' => $data, 'delivery_cost' => 2000]);
     }
