@@ -134,7 +134,7 @@ try {
     $delivery_instruction = $price_data['data']['delivery_instruction'] ?? 'Leave package at front desk';
     $insurance_amount = $price_data['data']['insurance_amount'] ?? 0;
 
-    // Prepare task creation payload
+    // Ensure numeric fields are strings where required
     $task_payload = [
         'domain_name' => KWIK_DOMAIN,
         'access_token' => $token_data['access_token'],
@@ -164,8 +164,8 @@ try {
             [
                 'address' => $address,
                 'name' => $name,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
+                'latitude' => (string)$latitude,
+                'longitude' => (string)$longitude,
                 'time' => $delivery_time,
                 'phone' => $phone,
                 'email' => KWIK_EMAIL,
@@ -182,19 +182,19 @@ try {
                 'is_task_otp_required' => 0
             ]
         ],
-        'insurance_amount' => $insurance_amount,
-        'total_no_of_tasks' => $total_no_of_tasks,
-        'total_service_charge' => $total_service_charge,
+        'insurance_amount' => (string)$insurance_amount,
+        'total_no_of_tasks' => (string)$total_no_of_tasks,
+        'total_service_charge' => (string)$total_service_charge,
         'payment_method' => 524288, // EOMB
-        'amount' => $delivery_cost,
-        'surge_cost' => 0,
-        'surge_type' => 0,
+        'amount' => (string)$delivery_cost, // Convert to string
+        'surge_cost' => '0',
+        'surge_type' => '0',
         'delivery_instruction' => $delivery_instruction,
-        'loaders_amount' => $loaders_amount,
-        'loaders_count' => $loaders_count,
+        'loaders_amount' => (string)$loaders_amount,
+        'loaders_count' => (string)$loaders_count,
         'is_loader_required' => $is_loader_required,
         'delivery_images' => '',
-        'vehicle_id' => $vehicle_id,
+        'vehicle_id' => (string)$vehicle_id,
         'sareaId' => '6' // Default; adjust if needed
     ];
 
