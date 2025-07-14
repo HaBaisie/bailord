@@ -446,7 +446,7 @@ if ($user_id) {
                 height: 300px;
             }
         }
-        @media (min-width: 992px) {
+        @min-width: 992px) {
             .mobile-menu-container {
                 display: none;
             }
@@ -762,7 +762,7 @@ if ($user_id) {
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
     var total = 0;
-    var deliveryCost = 0;
+    var deliveryCost = null; // No default cost
 
     function loginKwik() {
         return $.ajax({
@@ -774,6 +774,10 @@ if ($user_id) {
     }
 
     function proceedToPaystack(amount, sales_id, isDelivery, deliveryData) {
+        if (isDelivery && deliveryCost === null) {
+            alert('Cannot proceed to checkout: No valid delivery cost available.');
+            return;
+        }
         var handler = PaystackPop.setup({
             key: '<?php echo PAYSTACK_PUBLIC_KEY; ?>',
             email: '<?php echo $user_email; ?>',
@@ -805,6 +809,7 @@ if ($user_id) {
                             }
                         },
                         error: function(xhr, status, error) {
+                            console.error('Create task error:', error, xhr.responseText);
                             alert('Failed to create delivery task: ' + error);
                         }
                     });
@@ -824,9 +829,11 @@ if ($user_id) {
         if (<?php echo json_encode($user_id); ?>) {
             loginKwik().done(function(response) {
                 if (!response.success) {
+                    console.error('Failed to initialize delivery service:', response);
                     alert('Failed to initialize delivery service: ' + (response.message || 'Unknown error'));
                 }
             }).fail(function(xhr, status, error) {
+                console.error('Kwik login error:', error, xhr.responseText);
                 alert('Failed to initialize delivery service: ' + error);
             });
         }
@@ -849,6 +856,7 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.error('Cart delete error:', error, xhr.responseText);
                     alert('Failed to delete item.');
                 }
             });
@@ -890,6 +898,7 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.error('Cart update error:', error, xhr.responseText);
                     alert('Failed to update quantity.');
                 }
             });
@@ -923,6 +932,7 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.error('Save location error:', error, xhr.responseText);
                     alert('Failed to save pickup location.');
                 }
             });
@@ -939,7 +949,7 @@ if ($user_id) {
 
         $('#delivery-address').on('input', function() {
             var address = $(this).val().trim();
-            var name = $('#delivery-name').val() ? $('#delivery-name').val().trim() : 'Customer'; // Fallback name
+            var name = $('#delivery-name').val() ? $('#delivery-name').val().trim() : 'Customer';
             if (address.length > 5) {
                 $.ajax({
                     type: 'GET',
@@ -968,19 +978,20 @@ if ($user_id) {
                                 cart_total: total,
                                 name: name
                             };
-                            console.log('Sending AJAX data to get_delivery_price.php:', ajaxData); // Debug log
+                            console.log('Sending AJAX data to get_delivery_price.php:', ajaxData);
                             $.ajax({
                                 type: 'POST',
                                 url: 'get_delivery_price.php',
                                 data: ajaxData,
                                 dataType: 'json',
                                 success: function(priceResponse) {
+                                    console.log('Delivery price response:', priceResponse);
                                     if (priceResponse.success && priceResponse.delivery_cost !== undefined) {
                                         deliveryCost = priceResponse.delivery_cost;
                                         $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2));
                                     } else {
-                                        deliveryCost = 1000; // Fallback cost
-                                        $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
+                                        deliveryCost = null;
+                                        $('#delivery-cost').text('Delivery Cost: Error - ' + (priceResponse.message || 'No delivery cost returned'));
                                         alert('Unable to calculate delivery cost: ' + (priceResponse.message || 'No delivery cost returned'));
                                         if (priceResponse.response) {
                                             console.log('API Response:', priceResponse.response);
@@ -988,22 +999,27 @@ if ($user_id) {
                                     }
                                 },
                                 error: function(xhr, status, error) {
-                                    deliveryCost = 1000; // Fallback cost
-                                    $('#delivery-cost').text('Delivery Cost: ₦' + deliveryCost.toFixed(2) + ' (default)');
-                                    alert('Failed to calculate delivery cost. Using default cost of ₦1000. Error: ' + error);
+                                    console.error('Delivery price error:', error, xhr.responseText);
+                                    deliveryCost = null;
+                                    $('#delivery-cost').text('Delivery Cost: Error - Failed to calculate delivery cost: ' + error);
+                                    alert('Failed to calculate delivery cost: ' + error);
                                 }
                             });
                         } else {
+                            deliveryCost = null;
                             $('#delivery-cost').text('Delivery Cost: Unable to geocode address');
                             alert('Please enter a valid address in Nigeria.');
                         }
                     },
                     error: function(xhr, status, error) {
-                        $('#delivery-cost').text('Delivery Cost: Unable to geocode address');
+                        console.error('Geocode error:', error, xhr.responseText);
+                        deliveryCost = null;
+                        $('#delivery-cost').text('Delivery Cost: Error - Failed to geocode address: ' + error);
                         alert('Failed to geocode address: ' + error);
                     }
                 });
             } else {
+                deliveryCost = null;
                 $('#delivery-cost').text('Delivery Cost: Enter a valid address');
             }
         });
@@ -1019,6 +1035,10 @@ if ($user_id) {
             }
             if (!/^\+234\d{10}$/.test(phone)) {
                 alert('Please enter a valid phone number in the format +234xxxxxxxxxx');
+                return;
+            }
+            if (deliveryCost === null) {
+                alert('Cannot proceed to checkout: No valid delivery cost available.');
                 return;
             }
             $.ajax({
@@ -1055,6 +1075,7 @@ if ($user_id) {
                                 proceedToPaystack(total + deliveryCost, response.sales_id, true, deliveryData);
                             },
                             error: function(xhr, status, error) {
+                                console.error('Save location error:', error, xhr.responseText);
                                 alert('Failed to save delivery address: ' + error);
                             }
                         });
@@ -1063,6 +1084,7 @@ if ($user_id) {
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.error('Geocode error:', error, xhr.responseText);
                     alert('Failed to geocode address: ' + error);
                 }
             });
@@ -1078,6 +1100,7 @@ if ($user_id) {
                     getCart();
                 },
                 error: function(xhr, status, error) {
+                    console.error('Cart details error:', error, xhr.responseText);
                     $('#tbody').html('<tr><td colspan="6">Failed to load cart.</td></tr>');
                 }
             });
@@ -1092,6 +1115,7 @@ if ($user_id) {
                     total = response.total || 0;
                 },
                 error: function(xhr, status, error) {
+                    console.error('Cart total error:', error, xhr.responseText);
                     total = 0;
                 }
             });
