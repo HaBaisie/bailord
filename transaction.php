@@ -1,33 +1,53 @@
+```php
 <?php
-	include 'includes/session.php';
+include 'includes/session.php';
 
-	$id = $_POST['id'];
+// Ensure no output before JSON
+ob_start();
+header('Content-Type: application/json');
 
-	$conn = $pdo->open();
+try {
+    $conn = $pdo->open();
+    $id = isset($_POST['id']) ? $_POST['id'] : null;
 
-	$output = array('list'=>'');
+    if (!$id) {
+        echo json_encode(['error' => 'Invalid request']);
+        exit;
+    }
 
-	$stmt = $conn->prepare("SELECT * FROM details LEFT JOIN products ON products.id=details.product_id LEFT JOIN sales ON sales.id=details.sales_id WHERE details.sales_id=:id");
-	$stmt->execute(['id'=>$id]);
+    $stmt = $conn->prepare("SELECT * FROM sales WHERE id = :id");
+    $stmt->execute(['id' => $id]);
+    $sale = $stmt->fetch();
 
-	$total = 0;
-	foreach($stmt as $row){
-		$output['transaction'] = $row['pay_id'];
-		$output['date'] = date('M d, Y', strtotime($row['sales_date']));
-		$subtotal = $row['price']*$row['quantity'];
-		$total += $subtotal;
-		$output['list'] .= "
-			<tr class='prepend_items'>
-				<td>".$row['name']."</td>
-				<td>&#36; ".number_format($row['price'], 2)."</td>
-				<td>".$row['quantity']."</td>
-				<td>&#36; ".number_format($subtotal, 2)."</td>
-			</tr>
-		";
-	}
-	
-	$output['total'] = '<b>&#36; '.number_format($total, 2).'<b>';
-	$pdo->close();
-	echo json_encode($output);
+    if (!$sale) {
+        echo json_encode(['error' => 'Sale not found']);
+        exit;
+    }
 
+    $stmt = $conn->prepare("SELECT d.*, p.name FROM details d LEFT JOIN products p ON p.id = d.product_id WHERE d.sales_id = :id");
+    $stmt->execute(['id' => $id]);
+    $details = $stmt->fetchAll();
+
+    $list = '';
+    $total = 0;
+    foreach ($details as $row) {
+        $subtotal = $row['price'] * $row['quantity'];
+        $total += $subtotal;
+        $list .= "<tr><td>".htmlspecialchars($row['name'])."</td><td>$".number_format($row['price'], 2)."</td><td>".$row['quantity']."</td><td>$".number_format($subtotal, 2)."</td></tr>";
+    }
+
+    echo json_encode([
+        'date' => date('M d, Y', strtotime($sale['sales_date'])),
+        'transaction' => $sale['pay_id'],
+        'list' => $list,
+        'total' => '$'.number_format($total, 2)
+    ]);
+
+    $pdo->close();
+} catch (PDOException $e) {
+    error_log('Transaction error: ' . $e->getMessage(), 0);
+    echo json_encode(['error' => 'Database error']);
+}
+ob_end_flush();
 ?>
+```
