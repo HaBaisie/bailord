@@ -339,6 +339,17 @@
             background-color: var(--complementary-blue);
             border-color: var(--complementary-blue);
         }
+        .btn-warning {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+        .btn-warning:hover {
+            background-color: var(--complementary-orange);
+            border-color: var(--complementary-orange);
+        }
         .pull-right {
             float: right;
         }
@@ -412,7 +423,7 @@
         .table tbody tr:hover {
             background-color: #e6f0fa;
         }
-        .table .btn-info {
+        .table .btn-info, .table .btn-warning {
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -421,12 +432,11 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
-        .table .btn-info:hover {
-            background-color: var(--complementary-blue);
+        .table .btn-info:hover, .table .btn-warning:hover {
             transform: translateY(-1px);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .table .btn-info i {
+        .table .btn-info i, .table .btn-warning i {
             font-size: 16px;
         }
         .table td:nth-child(2),
@@ -502,7 +512,7 @@
                 padding: 10px;
                 font-size: 13px;
             }
-            .table .btn-info {
+            .table .btn-info, .table .btn-warning {
                 padding: 6px 10px;
                 font-size: 12px;
             }
@@ -544,7 +554,7 @@
             .table th {
                 font-size: 12px;
             }
-            .table .btn-info {
+            .table .btn-info, .table .btn-warning {
                 padding: 5px 8px;
                 font-size: 11px;
             }
@@ -590,6 +600,9 @@
             }
             .table td:nth-child(5):before {
                 content: "Details";
+            }
+            .table td:nth-child(6):before {
+                content: "Track Order";
             }
             .table td:nth-child(1) {
                 display: none;
@@ -973,6 +986,7 @@
                                                 <th>Transaction#</th>
                                                 <th>Amount</th>
                                                 <th>Full Details</th>
+                                                <th>Track Order</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -984,7 +998,7 @@
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $total_entries = $stmt->fetch()['total'];
                                                 
-                                                $stmt = $conn->prepare("SELECT * FROM sales WHERE user_id=:user_id ORDER BY sales_date DESC");
+                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id, delivery_tasks.tracking_link FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id=:user_id ORDER BY sales.sales_date DESC");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $current_entries = $stmt->rowCount();
                                                 foreach ($stmt as $row) {
@@ -1002,11 +1016,12 @@
                                                             <td data-label='Transaction#'>".htmlspecialchars($row['pay_id'])."</td>
                                                             <td data-label='Amount'>$ ".number_format($total, 2)."</td>
                                                             <td data-label='Details'><button class='btn btn-sm btn-flat btn-info transact' data-id='".htmlspecialchars($row['id'])."'><i class='fa fa-search'></i> View</button></td>
+                                                            <td data-label='Track Order'><button class='btn btn-sm btn-flat btn-warning track-order' data-id='".htmlspecialchars($row['id'])."' data-unique-order-id='".htmlspecialchars($row['unique_order_id'] ?? '')."' data-tracking-link='".htmlspecialchars($row['tracking_link'] ?? '')."'><i class='fa fa-map-marker'></i> Track</button></td>
                                                         </tr>
                                                     ";
                                                 }
                                             } catch (PDOException $e) {
-                                                echo "<tr><td colspan='5'>There is some problem in connection: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                                                echo "<tr><td colspan='6'>There is some problem in connection: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
                                             }
                                             $pdo->close();
                                         ?>
@@ -1056,8 +1071,45 @@ $(function(){
         });
     });
 
+    $(document).on('click', '.track-order', function(e){
+        e.preventDefault();
+        $('#trackOrder').modal('show');
+        var id = $(this).data('id');
+        var uniqueOrderId = $(this).data('unique-order-id');
+        var trackingLink = $(this).data('tracking-link');
+        $.ajax({
+            type: 'POST',
+            url: 'track_order.php',
+            data: {id: id, unique_order_id: uniqueOrderId},
+            dataType: 'json',
+            success: function(response){
+                if (response.success) {
+                    $('#track_order_id').html(response.unique_order_id);
+                    $('#track_link').html('<a href="' + response.tracking_link + '" target="_blank">View Tracking</a>');
+                    $('#track_created').html(response.created_at ? new Date(response.created_at).toLocaleString() : 'N/A');
+                } else {
+                    $('#track_order_id').html(uniqueOrderId || 'N/A');
+                    $('#track_link').html('Tracking link not available');
+                    $('#track_created').html('N/A');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Track order fetch error:', error);
+                $('#track_order_id').html(uniqueOrderId || 'N/A');
+                $('#track_link').html(trackingLink ? '<a href="' + trackingLink + '" target="_blank">View Tracking</a>' : 'Tracking link not available');
+                $('#track_created').html('N/A');
+            }
+        });
+    });
+
     $("#transaction").on("hidden.bs.modal", function () {
         $('.prepend_items').remove();
+    });
+
+    $("#trackOrder").on("hidden.bs.modal", function () {
+        $('#track_order_id').html('');
+        $('#track_link').html('');
+        $('#track_created').html('');
     });
 });
 </script>
