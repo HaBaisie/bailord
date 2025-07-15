@@ -135,7 +135,7 @@ if ($product['date_view'] == $now) {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 15px;
+            gap: 25px;
         }
         .header-middle .header-center {
             flex-grow: 2;
