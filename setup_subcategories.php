@@ -9,6 +9,9 @@ $message = '';
 $alert_class = '';
 
 try {
+    // Start a transaction
+    $conn->beginTransaction();
+
     // SQL to create checkout_sessions table
     $sql_create = "
         CREATE TABLE IF NOT EXISTS checkout_sessions (
@@ -21,9 +24,9 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";
     $conn->exec($sql_create);
-    
+
     // SQL to remove temporary sales and associated delivery_tasks records
-    $sql_cleanup = "
+    $sql_cleanup_temp = "
         -- Delete delivery_tasks linked to temporary sales
         DELETE dt FROM delivery_tasks dt
         JOIN sales s ON dt.sales_id = s.id
@@ -32,11 +35,31 @@ try {
         -- Delete temporary sales records
         DELETE FROM sales WHERE pay_id LIKE 'TEMP_%';
     ";
-    $conn->exec($sql_cleanup);
+    $conn->exec($sql_cleanup_temp);
+
+    // SQL to delete all transaction-related records
+    $sql_cleanup_all = "
+        -- Delete all details records
+        DELETE FROM details;
+        -- Delete all delivery_tasks records
+        DELETE FROM delivery_tasks;
+        -- Delete all kwik_jobs records
+        DELETE FROM kwik_jobs;
+        -- Delete all sales records
+        DELETE FROM sales;
+    ";
+    $conn->exec($sql_cleanup_all);
+
+    // Commit the transaction
+    $conn->commit();
     
-    $message = 'Table `checkout_sessions` created and temporary sales and delivery_tasks records removed successfully.';
+    $message = 'Table `checkout_sessions` created, temporary sales and delivery_tasks records removed, and all transactions deleted successfully.';
     $alert_class = 'alert-success';
 } catch (PDOException $e) {
+    // Roll back the transaction on error
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
     $message = 'Error processing request: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     $alert_class = 'alert-danger';
     error_log("Table creation or cleanup error: " . $e->getMessage());
@@ -51,7 +74,7 @@ $pdo->close();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Checkout Sessions Table</title>
+    <title>Create Checkout Sessions Table and Delete Transactions</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <style>
         :root {
@@ -109,13 +132,13 @@ $pdo->close();
 </head>
 <body>
     <div class="container">
-        <h1 class="page-header">Create Checkout Sessions Table</h1>
+        <h1 class="page-header">Create Checkout Sessions Table and Delete Transactions</h1>
         <?php if ($message): ?>
             <div class="alert <?php echo $alert_class; ?>">
                 <?php echo $message; ?>
             </div>
         <?php endif; ?>
-        <p>This page creates the <code>checkout_sessions</code> table and removes temporary <code>sales</code> and <code>delivery_tasks</code> records from the database.</p>
+        <p>This page creates the <code>checkout_sessions</code> table, removes temporary <code>sales</code> and <code>delivery_tasks</code> records, and deletes all transactions from the database.</p>
         <a href="index.php" class="btn btn-primary">Back to Home</a>
     </div>
 </body>
