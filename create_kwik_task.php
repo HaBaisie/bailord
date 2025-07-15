@@ -1,35 +1,51 @@
 <?php
 include 'config.php';
-require_once 'includes/session.php';
-$conn = $pdo->open();
+include 'includes/session.php';
 
 header('Content-Type: application/json');
 
-$user_id = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
-$sales_id = isset($_POST['sales_id']) ? (int)$_POST['sales_id'] : 0;
-$name = isset($_POST['name']) ? trim($_POST['name']) : '';
-$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-$address = isset($_POST['address']) ? trim($_POST['address']) : '';
-$latitude = isset($_POST['latitude']) ? floatval($_POST['latitude']) : 0;
-$longitude = isset($_POST['longitude']) ? floatval($_POST['longitude']) : 0;
-$cart_total = isset($_POST['cart_total']) ? floatval($_POST['cart_total']) : 0;
-$delivery_cost = isset($_POST['delivery_cost']) ? floatval($_POST['delivery_cost']) : 0;
-
-if (!$user_id || !$sales_id || !$name || !$phone || !$address || !$latitude || !$longitude || !$delivery_cost) {
-    error_log("Missing parameters: user_id=$user_id, sales_id=$sales_id, name=$name, phone=$phone, address=$address, latitude=$latitude, longitude=$longitude, delivery_cost=$delivery_cost");
-    echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
-    $pdo->close();
-    exit;
-}
-
-if (!preg_match('/^\+234\d{10}$/', $phone)) {
-    error_log("Invalid phone number format: $phone");
-    echo json_encode(['success' => false, 'message' => 'Invalid phone number format']);
-    $pdo->close();
-    exit;
-}
+$conn = $pdo->open();
 
 try {
+    $user_id = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
+    $sales_id = isset($_POST['sales_id']) ? (int)$_POST['sales_id'] : 0;
+    $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    $address = isset($_POST['address']) ? trim($_POST['address']) : '';
+    $latitude = isset($_POST['latitude']) ? floatval($_POST['latitude']) : 0;
+    $longitude = isset($_POST['longitude']) ? floatval($_POST['longitude']) : 0;
+    $cart_total = isset($_POST['cart_total']) ? floatval($_POST['cart_total']) : 0;
+    $delivery_cost = isset($_POST['delivery_cost']) ? floatval($_POST['delivery_cost']) : 0;
+
+    if (!$user_id || !$sales_id || !$name || !$phone || !$address || !$latitude || !$longitude || !$delivery_cost) {
+        error_log("Missing parameters: user_id=$user_id, sales_id=$sales_id, name=$name, phone=$phone, address=$address, latitude=$latitude, longitude=$longitude, delivery_cost=$delivery_cost");
+        echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
+        exit;
+    }
+
+    if (!preg_match('/^\+234\d{10}$/', $phone)) {
+        error_log("Invalid phone number format: $phone");
+        echo json_encode(['success' => false, 'message' => 'Invalid phone number format']);
+        exit;
+    }
+
+    // Verify user and sales record
+    $stmt = $conn->prepare("SELECT id FROM users WHERE id = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    if (!$stmt->fetch()) {
+        error_log("User not found: user_id=$user_id");
+        echo json_encode(['success' => false, 'message' => 'User not found']);
+        exit;
+    }
+
+    $stmt = $conn->prepare("SELECT id FROM sales WHERE id = :sales_id AND user_id = :user_id AND pay_id NOT LIKE 'TEMP_%'");
+    $stmt->execute(['sales_id' => $sales_id, 'user_id' => $user_id]);
+    if (!$stmt->fetch()) {
+        error_log("Valid sales record not found: sales_id=$sales_id, user_id=$user_id");
+        echo json_encode(['success' => false, 'message' => 'Valid sales record not found']);
+        exit;
+    }
+
     // Fetch access token and vendor_id
     $stmt = $conn->prepare("SELECT access_token, vendor_id, kwik_user_id, card_id FROM kwik_tokens WHERE user_id = :user_id");
     $stmt->execute(['user_id' => $user_id]);
@@ -38,7 +54,6 @@ try {
     if (!$token_data || !$token_data['access_token'] || !$token_data['vendor_id']) {
         error_log("No access token or vendor_id found for user_id: $user_id");
         echo json_encode(['success' => false, 'message' => 'Delivery service not initialized']);
-        $pdo->close();
         exit;
     }
 
@@ -88,11 +103,9 @@ try {
         'is_loader_required' => 0,
         'delivery_instruction' => 'Leave package at front desk',
         'is_cod_job' => 0,
-        'parcel_amount' => $cart_total,
-        'vehicle_id' => 1 // Default; will be updated below
+        'parcel_amount' => $cart_total
     ];
 
-    // Fetch vehicle and price details
     $ch = curl_init(KWIK_BASE_URL . '/send_payment_for_task');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -106,13 +119,12 @@ try {
     error_log("Kwik send_payment_for_task Request: " . json_encode($payload));
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
     curl_close($ch);
 
     if ($response === false) {
-        $curl_error = curl_error($ch);
         error_log("send_payment_for_task cURL Error: $curl_error");
         echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error]);
-        $pdo->close();
         exit;
     }
 
@@ -121,7 +133,6 @@ try {
         $error_message = isset($price_data['message']) ? $price_data['message'] : 'Invalid response';
         error_log("send_payment_for_task Error: HTTP $http_code, Response: " . substr($response, 0, 500));
         echo json_encode(['success' => false, 'message' => 'Failed to fetch delivery price: ' . $error_message]);
-        $pdo->close();
         exit;
     }
 
@@ -134,7 +145,7 @@ try {
     $delivery_instruction = $price_data['data']['delivery_instruction'] ?? 'Leave package at front desk';
     $insurance_amount = $price_data['data']['insurance_amount'] ?? 0;
 
-    // Ensure numeric fields are strings where required
+    // Create task payload
     $task_payload = [
         'domain_name' => KWIK_DOMAIN,
         'access_token' => $token_data['access_token'],
@@ -186,7 +197,7 @@ try {
         'total_no_of_tasks' => (string)$total_no_of_tasks,
         'total_service_charge' => (string)$total_service_charge,
         'payment_method' => 524288, // EOMB
-        'amount' => (string)$delivery_cost, // Convert to string
+        'amount' => (string)$delivery_cost,
         'surge_cost' => '0',
         'surge_type' => '0',
         'delivery_instruction' => $delivery_instruction,
@@ -211,13 +222,12 @@ try {
     error_log("Kwik create_task_via_vendor Request: " . json_encode($task_payload));
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
     curl_close($ch);
 
     if ($response === false) {
-        $curl_error = curl_error($ch);
         error_log("create_task_via_vendor cURL Error: $curl_error");
         echo json_encode(['success' => false, 'message' => 'cURL error: ' . $curl_error]);
-        $pdo->close();
         exit;
     }
 
@@ -249,7 +259,7 @@ try {
 } catch (Exception $e) {
     error_log("Exception in create_kwik_task.php: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
+} finally {
+    $pdo->close();
 }
-
-$pdo->close();
 ?>
