@@ -446,7 +446,7 @@ if ($user_id) {
                 height: 300px;
             }
         }
-        @min-width: 992px) {
+        @media (min-width: 992px) {
             .mobile-menu-container {
                 display: none;
             }
@@ -773,7 +773,7 @@ if ($user_id) {
         });
     }
 
-    function proceedToPaystack(amount, sales_id, isDelivery, deliveryData) {
+    function proceedToPaystack(amount, checkout_token, isDelivery, deliveryData) {
         if (isDelivery && deliveryCost === null) {
             alert('Cannot proceed to checkout: No valid delivery cost available.');
             return;
@@ -783,38 +783,59 @@ if ($user_id) {
             email: '<?php echo $user_email; ?>',
             amount: amount * 100,
             currency: 'NGN',
-            metadata: { sales_id: sales_id },
+            metadata: { checkout_token: checkout_token },
             callback: function(response) {
                 if (isDelivery && deliveryData) {
                     $.ajax({
                         type: 'POST',
-                        url: 'create_kwik_task.php',
+                        url: 'sales.php',
                         data: {
+                            reference: response.reference,
+                            checkout_token: checkout_token,
                             user_id: <?php echo json_encode($user_id); ?>,
-                            sales_id: sales_id,
-                            name: deliveryData.name,
-                            phone: deliveryData.phone,
-                            address: deliveryData.address,
-                            latitude: deliveryData.latitude,
-                            longitude: deliveryData.longitude,
-                            cart_total: total,
-                            delivery_cost: deliveryCost
+                            total_amount: amount
                         },
                         dataType: 'json',
-                        success: function(taskResponse) {
-                            if (taskResponse.success) {
-                                window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+                        success: function(salesResponse) {
+                            if (salesResponse.success) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'create_kwik_task.php',
+                                    data: {
+                                        user_id: <?php echo json_encode($user_id); ?>,
+                                        sales_id: salesResponse.sales_id,
+                                        name: deliveryData.name,
+                                        phone: deliveryData.phone,
+                                        address: deliveryData.address,
+                                        latitude: deliveryData.latitude,
+                                        longitude: deliveryData.longitude,
+                                        cart_total: total,
+                                        delivery_cost: deliveryCost
+                                    },
+                                    dataType: 'json',
+                                    success: function(taskResponse) {
+                                        if (taskResponse.success) {
+                                            window.location.href = 'profile.php';
+                                        } else {
+                                            alert('Error creating delivery task: ' + (taskResponse.message || 'Unknown error'));
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Create task error:', error, xhr.responseText);
+                                        alert('Failed to create delivery task: ' + error);
+                                    }
+                                });
                             } else {
-                                alert('Error creating delivery task: ' + (taskResponse.message || 'Unknown error'));
+                                alert('Error processing order: ' + (salesResponse.message || 'Unknown error'));
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.error('Create task error:', error, xhr.responseText);
-                            alert('Failed to create delivery task: ' + error);
+                            console.error('Sales error:', error, xhr.responseText);
+                            alert('Failed to process order: ' + error);
                         }
                     });
                 } else {
-                    window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference);
+                    window.location.href = 'sales.php?reference=' + encodeURIComponent(response.reference) + '&checkout_token=' + encodeURIComponent(checkout_token);
                 }
             },
             onClose: function() {
@@ -926,7 +947,7 @@ if ($user_id) {
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        proceedToPaystack(total, response.sales_id, false, null);
+                        proceedToPaystack(total, response.checkout_token, false, null);
                     } else {
                         alert('Error saving pickup location: ' + (response.message || 'Unknown error'));
                     }
@@ -1072,7 +1093,7 @@ if ($user_id) {
                                     latitude: latitude,
                                     longitude: longitude
                                 };
-                                proceedToPaystack(total + deliveryCost, response.sales_id, true, deliveryData);
+                                proceedToPaystack(total + deliveryCost, response.checkout_token, true, deliveryData);
                             },
                             error: function(xhr, status, error) {
                                 console.error('Save location error:', error, xhr.responseText);
