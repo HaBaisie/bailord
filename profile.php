@@ -191,7 +191,7 @@
             background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: #000000; /* Changed to black */
+            color: #000000;
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -232,7 +232,7 @@
             color: var(--text-dark);
         }
         .mobile-menu li a {
-            color: #000000; /* Changed to black */
+            color: #000000;
             padding: 10px;
             display: block;
             font-size: 16px;
@@ -1024,11 +1024,11 @@
                                             $conn = $pdo->open();
                                             $total_entries = 0;
                                             try {
-                                                $stmt = $conn->prepare("SELECT COUNT(*) as total FROM sales WHERE user_id = :user_id");
+                                                $stmt = $conn->prepare("SELECT COUNT(*) as total FROM sales WHERE user_id = :user_id AND pay_id NOT LIKE 'TEMP_%'");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $total_entries = $stmt->fetch()['total'];
                                                 
-                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id = :user_id ORDER BY sales.sales_date DESC");
+                                                $stmt = $conn->prepare("SELECT sales.*, delivery_tasks.unique_order_id FROM sales LEFT JOIN delivery_tasks ON sales.id = delivery_tasks.sales_id WHERE sales.user_id = :user_id AND sales.pay_id NOT LIKE 'TEMP_%' ORDER BY sales.sales_date DESC");
                                                 $stmt->execute(['user_id' => $user['id']]);
                                                 $current_entries = $stmt->rowCount();
                                                 foreach ($stmt as $row) {
