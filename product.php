@@ -68,19 +68,19 @@ if ($product['date_view'] == $now) {
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
-        :root {
-            --dominant-color: #2a5bd7;
-            --secondary-color: #28a745;
-            --accent-color: #fd7e14;
-            --complementary-blue: #1e429f;
-            --complementary-orange: #e67700;
-            --light-neutral: #f8f9fa;
-            --medium-neutral: #e9ecef;
-            --dark-neutral: #495057;
-            --text-dark: #212529;
-            --text-light: #f8f9fa;
-            --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
-            --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
+    :root {
+        --dominant-color: #2a5bd7;
+        --secondary-color: #28a745;
+        --accent-color: #fd7e14;
+        --complementary-blue: #1e429f;
+        --complementary-orange: #e67700;
+        --light-neutral: #f8f9fa;
+        --medium-neutral: #e9ecef;
+        --dark-neutral: #495057;
+        --text-dark: #212529;
+        --text-light: #000000; /* Black for nav text as per category.php */
+        --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
+        --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
         body {
             background-color: var(--light-neutral);
@@ -131,11 +131,11 @@ if ($product['date_view'] == $now) {
             display: flex;
             align-items: center;
         }
-        .header-middle .header .header-right {
+        .header-middle .header-right {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 25px;
+            gap: 15px; /* Adjusted to match category.php */
         }
         .header-middle .header-center {
             flex-grow: 2;
@@ -160,14 +160,14 @@ if ($product['date_view'] == $now) {
         .header-search-wrapper .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for search button contrast */
             border: none;
         }
         .header-search-wrapper .btn:hover {
             background-color: var(--complementary-blue);
         }
         .search-toggle {
-            color: var(--text-light);
+            color: var(--text-light); /* Black for search toggle */
             font-size: 20px;
         }
         .user-btn, .login-btn {
@@ -175,7 +175,7 @@ if ($product['date_view'] == $now) {
             align-items: center;
             padding: 8px 15px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: var(--text-light); /* Black for buttons */
             border-radius: 4px;
             text-decoration: none;
             font-size: 14px;
@@ -186,11 +186,12 @@ if ($product['date_view'] == $now) {
         }
         .user-btn:hover, .login-btn:hover {
             background-color: var(--complementary-blue);
+            color: #ffffff; /* White on hover for contrast */
         }
         .cart-dropdown .dropdown-toggle {
             display: flex;
             align-items: center;
-            color: var(--text-light);
+            color: var(--text-light); /* Black for cart text */
             text-decoration: none;
         }
         .cart-dropdown .icon {
@@ -202,7 +203,7 @@ if ($product['date_view'] == $now) {
             top: -5px;
             right: -5px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for cart count contrast */
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
@@ -212,10 +213,10 @@ if ($product['date_view'] == $now) {
             padding: 15px;
         }
         .header-bottom {
-            background-color: var(--light-neutral);
+            background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for nav links */
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -253,10 +254,10 @@ if ($product['date_view'] == $now) {
             right: 10px;
             cursor: pointer;
             font-size: 20px;
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for close icon */
         }
         .mobile-menu li a {
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for mobile menu links */
             padding: 10px;
             display: block;
             font-size: 16px;
@@ -279,14 +280,21 @@ if ($product['date_view'] == $now) {
         .mobile-search .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for mobile search button */
+        }
+        .page-header {
+            color: var(--dominant-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin: 0 0 20px;
+            font-size: 24px;
         }
         .row {
             display: flex;
             flex-wrap: wrap;
             margin: 0 -10px;
         }
-        .col-sm-9, .col-sm-6, .col-sm-3 {
+        .col-sm-9, .col-sm-6, .col-sm-3, .col-sm-4 {
             padding: 10px;
             box-sizing: border-box;
         }
@@ -322,7 +330,7 @@ if ($product['date_view'] == $now) {
         .input-group-btn .btn {
             border-radius: 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for button contrast */
         }
         .input-group-btn .btn:hover {
             background-color: var(--complementary-blue);
@@ -339,15 +347,51 @@ if ($product['date_view'] == $now) {
             background-color: var(--complementary-blue);
             border-color: var(--complementary-blue);
         }
-        .page-header {
-            color: var(--dominant-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin: 0 0 20px;
-            font-size: 24px;
-        }
         .fb-comments {
             margin-top: 20px;
+        }
+        .box {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+        }
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .prod-body {
+            padding: 15px;
+        }
+        .box-footer {
+            background-color: var(--light-neutral);
+            padding: 10px 15px;
+            border-top: 1px solid #eee;
+            font-weight: bold;
+            color: var(--dominant-color);
+        }
+        .thumbnail {
+            object-fit: cover;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            width: 100%;
+            height: 230px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
         }
         /* Responsive Adjustments */
         @media (max-width: 991px) {
@@ -363,7 +407,7 @@ if ($product['date_view'] == $now) {
             .logo img {
                 width: 80px;
             }
-            .col-sm-9, .col-sm-6, .col-sm-3 {
+            .col-sm-9, .col-sm-6, .col-sm-3, .col-sm-4 {
                 flex: 0 0 100%;
                 max-width: 100%;
             }
@@ -372,6 +416,9 @@ if ($product['date_view'] == $now) {
             }
             .page-header {
                 font-size: 20px;
+            }
+            .thumbnail {
+                height: 180px;
             }
         }
         @media (max-width: 767px) {
@@ -397,6 +444,12 @@ if ($product['date_view'] == $now) {
             .zoom {
                 max-height: 250px;
             }
+            .thumbnail {
+                height: 150px;
+            }
+            .mobile-search {
+                display: block;
+            }
         }
         @media (min-width: 992px) {
             .mobile-menu-container {
@@ -416,6 +469,10 @@ if ($product['date_view'] == $now) {
             .col-sm-3 {
                 flex: 0 0 25%;
                 max-width: 25%;
+            }
+            .col-sm-4 {
+                flex: 0 0 33.333%;
+                max-width: 33.333%;
             }
         }
     </style>
