@@ -45,6 +45,29 @@ try {
 
     $user_id = $session['user_id'];
     $location = $session['location'];
+    // Truncate location to 255 characters to match sales.location schema
+    $location = substr($location, 0, 255);
+
+    // Calculate expected total from cart for verification
+    $stmt = $conn->prepare("SELECT c.product_id, c.quantity, p.price FROM cart c LEFT JOIN products p ON p.id = c.product_id WHERE c.user_id = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($cart_items)) {
+        error_log("No cart items found for user_id: $user_id");
+        echo json_encode(['success' => false, 'message' => 'No items in cart']);
+        exit;
+    }
+
+    $calculated_total = 0;
+    foreach ($cart_items as $row) {
+        $price = isset($row['price']) && $row['price'] !== null ? floatval($row['price']) : 0.00;
+        $calculated_total += $price * $row['quantity'];
+    }
+    // For delivery orders, add delivery cost from total_amount
+    if ($is_delivery) {
+        $calculated_total += $total_amount - $calculated_total; // Assume total_amount includes delivery cost
+    }
 
     // Verify Paystack transaction
     $curl = curl_init();
@@ -77,8 +100,8 @@ try {
     }
 
     $paystack_amount = $response['data']['amount'] / 100; // Convert from kobo to NGN
-    if ($is_delivery && abs($paystack_amount - $total_amount) > 0.01) {
-        error_log("Amount mismatch: Paystack=$paystack_amount, Expected=$total_amount");
+    if (abs($paystack_amount - $calculated_total) > 0.01) {
+        error_log("Amount mismatch: Paystack=$paystack_amount, Expected=$calculated_total");
         echo json_encode(['success' => false, 'message' => 'Payment amount mismatch']);
         exit;
     }
@@ -94,37 +117,23 @@ try {
     }
 
     // Insert into sales table
-    $stmt = $conn->prepare("INSERT INTO sales (user_id, pay_id, sales_date, total_amount, delivery_address, status) VALUES (:user_id, :pay_id, CURDATE(), :total_amount, :delivery_address, 'pending')");
+    $stmt = $conn->prepare("INSERT INTO sales (user_id, pay_id, sales_date, status, location) VALUES (:user_id, :pay_id, CURDATE(), 'pending', :location)");
     $stmt->execute([
         'user_id' => $user_id,
         'pay_id' => $reference,
-        'total_amount' => $paystack_amount,
-        'delivery_address' => $location
+        'location' => $location ?: null // Handle empty location as NULL
     ]);
     $sales_id = $conn->lastInsertId();
 
     // Move cart items to details table
-    $stmt = $conn->prepare("SELECT c.product_id, c.quantity, p.price FROM cart c LEFT JOIN products p ON p.id = c.product_id WHERE c.user_id = :user_id");
-    $stmt->execute(['user_id' => $user_id]);
-    $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    if (empty($cart_items)) {
-        error_log("No cart items found for user_id: $user_id");
-        echo json_encode(['success' => false, 'message' => 'No items in cart']);
-        exit;
-    }
-
     foreach ($cart_items as $row) {
-        if (!isset($row['price']) || $row['price'] === null) {
-            error_log("Missing price for product_id: {$row['product_id']}");
-            $row['price'] = 0.00; // Fallback price
-        }
+        $price = isset($row['price']) && $row['price'] !== null ? floatval($row['price']) : 0.00;
         $stmt = $conn->prepare("INSERT INTO details (sales_id, product_id, quantity, price) VALUES (:sales_id, :product_id, :quantity, :price)");
         $stmt->execute([
             'sales_id' => $sales_id,
             'product_id' => $row['product_id'],
             'quantity' => $row['quantity'],
-            'price' => $row['price']
+            'price' => $price
         ]);
     }
 
