@@ -9,28 +9,37 @@ $message = '';
 $alert_class = '';
 
 try {
-    // SQL to create delivery_tasks table
-    $sql = "
-        CREATE TABLE IF NOT EXISTS delivery_tasks (
+    // SQL to create checkout_sessions table
+    $sql_create = "
+        CREATE TABLE IF NOT EXISTS checkout_sessions (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            sales_id INT,
-            user_id INT,
-            job_id INT,
-            job_hash VARCHAR(255),
-            job_token VARCHAR(255),
-            unique_order_id VARCHAR(255),
-            tracking_link VARCHAR(255),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            user_id INT NOT NULL,
+            location TEXT NOT NULL,
+            checkout_token VARCHAR(255) NOT NULL,
+            created_at DATETIME NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";
-
-    $conn->exec($sql);
-    $message = 'Table `delivery_tasks` created successfully.';
+    $conn->exec($sql_create);
+    
+    // SQL to remove temporary sales and associated delivery_tasks records
+    $sql_cleanup = "
+        -- Delete delivery_tasks linked to temporary sales
+        DELETE dt FROM delivery_tasks dt
+        JOIN sales s ON dt.sales_id = s.id
+        WHERE s.pay_id LIKE 'TEMP_%';
+        
+        -- Delete temporary sales records
+        DELETE FROM sales WHERE pay_id LIKE 'TEMP_%';
+    ";
+    $conn->exec($sql_cleanup);
+    
+    $message = 'Table `checkout_sessions` created and temporary sales and delivery_tasks records removed successfully.';
     $alert_class = 'alert-success';
 } catch (PDOException $e) {
-    $message = 'Error creating table: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+    $message = 'Error processing request: ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     $alert_class = 'alert-danger';
-    error_log("Table creation error: " . $e->getMessage());
+    error_log("Table creation or cleanup error: " . $e->getMessage());
 }
 
 $pdo->close();
@@ -42,7 +51,7 @@ $pdo->close();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Delivery Tasks Table</title>
+    <title>Create Checkout Sessions Table</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <style>
         :root {
@@ -100,13 +109,13 @@ $pdo->close();
 </head>
 <body>
     <div class="container">
-        <h1 class="page-header">Create Delivery Tasks Table</h1>
+        <h1 class="page-header">Create Checkout Sessions Table</h1>
         <?php if ($message): ?>
             <div class="alert <?php echo $alert_class; ?>">
                 <?php echo $message; ?>
             </div>
         <?php endif; ?>
-        <p>This page creates the <code>delivery_tasks</code> table in the database.</p>
+        <p>This page creates the <code>checkout_sessions</code> table and removes temporary <code>sales</code> and <code>delivery_tasks</code> records from the database.</p>
         <a href="index.php" class="btn btn-primary">Back to Home</a>
     </div>
 </body>
