@@ -1,27 +1,44 @@
 <?php
 include 'includes/session.php';
-$conn = $pdo->open();
+include 'config.php';
 
 header('Content-Type: application/json');
 
 try {
-    $location = isset($_POST['location']) ? $_POST['location'] : '';
-    $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : null;
+    $conn = $pdo->open();
+
+    $location = isset($_POST['location']) ? trim($_POST['location']) : '';
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
 
     if (!$user_id || !$location) {
         echo json_encode(['success' => false, 'message' => 'Invalid input']);
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO sales (user_id, location, pay_id, sales_date, status) VALUES (:user_id, :location, :pay_id, CURDATE(), 'pending')");
-    $pay_id = 'TEMP_' . time(); // Temporary pay_id, updated after Paystack
-    $stmt->execute(['user_id' => $user_id, 'location' => $location, 'pay_id' => $pay_id]);
-    $sales_id = $conn->lastInsertId();
+    // Verify user exists
+    $stmt = $conn->prepare("SELECT id FROM users WHERE id = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    if (!$stmt->fetch()) {
+        echo json_encode(['success' => false, 'message' => 'User not found']);
+        exit;
+    }
 
-    echo json_encode(['success' => true, 'sales_id' => $sales_id]);
+    // Generate a unique checkout token
+    $checkout_token = 'CHECKOUT_' . uniqid() . '_' . time();
+
+    // Save to checkout_sessions table
+    $stmt = $conn->prepare("INSERT INTO checkout_sessions (user_id, location, checkout_token, created_at) VALUES (:user_id, :location, :checkout_token, NOW())");
+    $stmt->execute([
+        'user_id' => $user_id,
+        'location' => $location,
+        'checkout_token' => $checkout_token
+    ]);
+
+    echo json_encode(['success' => true, 'checkout_token' => $checkout_token]);
 } catch (PDOException $e) {
+    error_log("Save location error: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+} finally {
+    $pdo->close();
 }
-
-$pdo->close();
 ?>
