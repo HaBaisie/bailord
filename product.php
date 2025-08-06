@@ -50,360 +50,37 @@ if ($product['date_view'] == $now) {
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    <!-- External CSS Files -->
+    <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
-    <!-- Embedded Dependencies -->
-    <!-- Bootstrap CSS (v4.5.2) -->
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="assets/css/style.css" as="style">
+    <link rel="preload" href="assets/js/jquery.min.js" as="script">
+    <link rel="preload" href="assets/js/bootstrap.bundle.min.js" as="script">
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <style>
-        /*! Bootstrap v4.5.2 (https://getbootstrap.com/) */
-        html {
-            font-family: sans-serif;
-            line-height: 1.15;
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
-        }
-        body {
-            margin: 0;
-            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212529;
-            text-align: left;
-            background-color: #fff;
-        }
-        .container {
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-        @media (min-width: 576px) { .container { max-width: 540px; } }
-        @media (min-width: 768px) { .container { max-width: 720px; } }
-        @media (min-width: 992px) { .container { max-width: 960px; } }
-        @media (min-width: 1200px) { .container { max-width: 1140px; } }
-        .row {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            margin-right: -15px;
-            margin-left: -15px;
-        }
-        .col-sm-3,.col-sm-4,.col-sm-6,.col-sm-9 {
-            position: relative;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-        @media (min-width: 576px) {
-            .col-sm-3 { -ms-flex: 0 0 25%; flex: 0 0 25%; max-width: 25%; }
-            .col-sm-4 { -ms-flex: 0 0 33.333333%; flex: 0 0 33.333333%; max-width: 33.333333%; }
-            .col-sm-6 { -ms-flex: 0 0 50%; flex: 0 0 50%; max-width: 50%; }
-            .col-sm-9 { -ms-flex: 0 0 75%; flex: 0 0 75%; max-width: 75%; }
-        }
-        .form-control {
-            display: block;
-            width: 100%;
-            height: calc(1.5em + .75rem + 2px);
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: .25rem;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-        .form-control:focus {
-            color: #495057;
-            background-color: #fff;
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
-        }
-        .input-lg {
-            height: calc(1.5em + 1rem + 2px);
-            padding: .5rem 1rem;
-            font-size: 1.25rem;
-            line-height: 1.5;
-            border-radius: .3rem;
-        }
-        .btn {
-            display: inline-block;
-            font-weight: 400;
-            color: #212529;
-            text-align: center;
-            vertical-align: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            background-color: transparent;
-            border: 1px solid transparent;
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: .25rem;
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-        .btn-primary {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .btn-primary:hover {
-            color: #fff;
-            background-color: #0069d9;
-            border-color: #0062cc;
-        }
-        .btn-default {
-            color: #333;
-            background-color: #fff;
-            border-color: #ccc;
-        }
-        .btn-default:hover {
-            color: #333;
-            background-color: #e6e6e6;
-            border-color: #adadad;
-        }
-        .btn-flat {
-            border-radius: 0;
-        }
-        .form-inline {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-flow: row wrap;
-            flex-flow: row wrap;
-            -ms-flex-align: center;
-            align-items: center;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .input-group {
-            position: relative;
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            -ms-flex-align: stretch;
-            align-items: stretch;
-            width: 100%;
-        }
-        .input-group>.form-control {
-            position: relative;
-            -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
-            width: 1%;
-            margin-bottom: 0;
-        }
-        .input-group-btn {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-align: center;
-            align-items: center;
-        }
-        .dropdown-toggle::after {
-            display: inline-block;
-            margin-left: .255em;
-            vertical-align: .255em;
-            content: "";
-            border-top: .3em solid;
-            border-right: .3em solid transparent;
-            border-bottom: 0;
-            border-left: .3em solid transparent;
-        }
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 1000;
-            display: none;
-            float: left;
-            min-width: 10rem;
-            padding: .5rem 0;
-            margin: .125rem 0 0;
-            font-size: 1rem;
-            color: #212529;
-            text-align: left;
-            list-style: none;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid rgba(0,0,0,.15);
-            border-radius: .25rem;
-        }
-        .dropdown-menu-right {
-            right: 0;
-            left: auto;
-        }
-    </style>
-    <!-- Font Awesome CSS (v4.7.0) -->
-    <style>
-        @font-face {
-            font-family: 'FontAwesome';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?v=4.7.0');
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-            font-weight: normal;
-            font-style: normal;
-        }
-        .fa {
-            display: inline-block;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: inherit;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        .fa-minus:before { content: "\f068"; }
-        .fa-plus:before { content: "\f067"; }
-        .fa-shopping-cart:before { content: "\f07a"; }
-    </style>
-    <!-- Line Awesome CSS (v1.3.0) -->
-    <style>
-        @font-face {
-            font-family: 'LineAwesome';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.eot');
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.eot?#iefix') format('embedded-opentype'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.woff2') format('woff2'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.woff') format('woff'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.ttf') format('truetype'),
-                 url('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/fonts/line-awesome.svg#LineAwesome') format('svg');
-            font-weight: normal;
-            font-style: normal;
-        }
-        .la {
-            display: inline-block;
-            font: normal normal normal 14px/1 LineAwesome;
-            font-size: inherit;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        .la-sign-out-alt:before { content: "\f2f5"; }
-        .la-user:before { content: "\f007"; }
-        .la-search:before { content: "\f002"; }
-        .la-bars:before { content: "\f0c9"; }
-        .la-close:before { content: "\f00d"; }
-    </style>
-    <!-- Owl Carousel CSS (v2.3.4) -->
-    <style>
-        .owl-carousel {
-            display: none;
-            width: 100%;
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
-            z-index: 1;
-        }
-        .owl-carousel .owl-stage {
-            position: relative;
-            -ms-touch-action: pan-Y;
-            touch-action: manipulation;
-            -moz-backface-visibility: hidden;
-        }
-        .owl-carousel .owl-stage:after {
-            content: ".";
-            display: block;
-            clear: both;
-            visibility: hidden;
-            line-height: 0;
-            height: 0;
-        }
-        .owl-carousel .owl-item {
-            position: relative;
-            min-height: 1px;
-            float: left;
-            -webkit-backface-visibility: hidden;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-        }
-    </style>
-    <!-- Magnific Popup CSS (v1.1.0) -->
-    <style>
-        .mfp-bg {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1042;
-            overflow: hidden;
-            position: fixed;
-            background: #0b0b0b;
-            opacity: .8;
-        }
-        .mfp-wrap {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1043;
-            position: fixed;
-            outline: none !important;
-            -webkit-backface-visibility: hidden;
-        }
-        .mfp-container {
-            text-align: center;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            padding: 0 8px;
-            box-sizing: border-box;
-        }
-        .mfp-img {
-            width: auto;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            line-height: 0;
-            box-sizing: border-box;
-            padding: 40px 0;
-            margin: 0 auto;
-        }
-    </style>
-    <!-- jQuery Countdown CSS -->
-    <style>
-        .countdown {
-            text-align: center;
-        }
-        .countdown-amount {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .countdown-section {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        .countdown-period {
-            display: block;
-            font-size: 14px;
-        }
-    </style>
-    <!-- Custom Page Styles -->
-    <style>
-        :root {
-            --dominant-color: #2a5bd7;
-            --secondary-color: #28a745;
-            --accent-color: #fd7e14;
-            --complementary-blue: #1e429f;
-            --complementary-orange: #e67700;
-            --light-neutral: #f8f9fa;
-            --medium-neutral: #e9ecef;
-            --dark-neutral: #495057;
-            --text-dark: #212529;
-            --text-light: #ffffff;
-            --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
-            --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
+    :root {
+        --dominant-color: #2a5bd7;
+        --secondary-color: #28a745;
+        --accent-color: #fd7e14;
+        --complementary-blue: #1e429f;
+        --complementary-orange: #e67700;
+        --light-neutral: #f8f9fa;
+        --medium-neutral: #e9ecef;
+        --dark-neutral: #495057;
+        --text-dark: #212529;
+        --text-light: #000000; /* Black for nav text as per category.php */
+        --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
+        --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
         }
         body {
             background-color: var(--light-neutral);
@@ -422,7 +99,7 @@ if ($product['date_view'] == $now) {
         }
         .content-wrapper {
             flex: 1;
-            background-color: #fff;
+            background-color: white;
             padding: 20px 0;
         }
         .container {
@@ -458,7 +135,7 @@ if ($product['date_view'] == $now) {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 15px;
+            gap: 15px; /* Adjusted to match category.php */
         }
         .header-middle .header-center {
             flex-grow: 2;
@@ -483,14 +160,14 @@ if ($product['date_view'] == $now) {
         .header-search-wrapper .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for search button contrast */
             border: none;
         }
         .header-search-wrapper .btn:hover {
             background-color: var(--complementary-blue);
         }
         .search-toggle {
-            color: var(--text-light);
+            color: var(--text-light); /* Black for search toggle */
             font-size: 20px;
         }
         .user-btn, .login-btn {
@@ -498,7 +175,7 @@ if ($product['date_view'] == $now) {
             align-items: center;
             padding: 8px 15px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: var(--text-light); /* Black for buttons */
             border-radius: 4px;
             text-decoration: none;
             font-size: 14px;
@@ -509,12 +186,12 @@ if ($product['date_view'] == $now) {
         }
         .user-btn:hover, .login-btn:hover {
             background-color: var(--complementary-blue);
-            color: var(--text-light);
+            color: #ffffff; /* White on hover for contrast */
         }
         .cart-dropdown .dropdown-toggle {
             display: flex;
             align-items: center;
-            color: var(--text-light);
+            color: var(--text-light); /* Black for cart text */
             text-decoration: none;
         }
         .cart-dropdown .icon {
@@ -526,7 +203,7 @@ if ($product['date_view'] == $now) {
             top: -5px;
             right: -5px;
             background-color: var(--secondary-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for cart count contrast */
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
@@ -539,7 +216,7 @@ if ($product['date_view'] == $now) {
             background-color: var(--complementary-blue);
         }
         .main-nav .menu > li > a {
-            color: var(--text-light);
+            color: var(--text-light); /* Black for nav links */
             padding: 10px 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -577,10 +254,10 @@ if ($product['date_view'] == $now) {
             right: 10px;
             cursor: pointer;
             font-size: 20px;
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for close icon */
         }
         .mobile-menu li a {
-            color: var(--text-dark);
+            color: var(--text-light); /* Black for mobile menu links */
             padding: 10px;
             display: block;
             font-size: 16px;
@@ -603,7 +280,7 @@ if ($product['date_view'] == $now) {
         .mobile-search .btn {
             border-radius: 0 4px 4px 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
+            color: #ffffff; /* White for mobile search button */
         }
         .page-header {
             color: var(--dominant-color);
@@ -651,51 +328,16 @@ if ($product['date_view'] == $now) {
             display: flex;
         }
         .input-group-btn .btn {
+            border-radius: 0;
             background-color: var(--dominant-color);
-            color: var(--text-light);
-            border: none;
-            padding: 0;
-            font-size: 14px;
-            line-height: 1;
-            transition: all 0.3s ease;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .input-group-btn:last-child .btn {
-            border-radius: 0 4px 4px 0;
-        }
-        .input-group-btn:first-child .btn {
-            border-radius: 4px 0 0 4px;
+            color: #ffffff; /* White for button contrast */
         }
         .input-group-btn .btn:hover {
             background-color: var(--complementary-blue);
-            transform: scale(1.1);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-        .input-group-btn .btn:active {
-            transform: scale(1);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-        .input-group-btn .btn:disabled {
-            background-color: var(--medium-neutral);
-            color: var(--dark-neutral);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        .input-group .form-control.input-lg {
-            border: 1px solid var(--medium-neutral);
-            border-left: none;
-            border-right: none;
-            background-color: #ffffff;
-            font-size: 14px;
+        .form-control.input-lg {
+            height: 46px;
             text-align: center;
-            width: 40px;
-            height: 30px;
         }
         .btn-primary {
             background-color: var(--dominant-color);
@@ -712,7 +354,7 @@ if ($product['date_view'] == $now) {
             border: 1px solid #ddd;
             border-radius: 4px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: #fff;
+            background-color: white;
         }
         .box:hover {
             transform: translateY(-5px);
@@ -751,6 +393,7 @@ if ($product['date_view'] == $now) {
             background-color: #f2dede;
             border-color: #ebccd1;
         }
+        /* Responsive Adjustments */
         @media (max-width: 991px) {
             .header-middle .header-center .header-search-extended {
                 display: none;
@@ -793,7 +436,6 @@ if ($product['date_view'] == $now) {
             .input-group {
                 width: 100%;
                 margin-bottom: 10px;
-                justify-content: center;
             }
             .btn-primary.btn-lg {
                 width: 100%;
@@ -808,17 +450,6 @@ if ($product['date_view'] == $now) {
             .mobile-search {
                 display: block;
             }
-            .input-group-btn .btn {
-                padding: 0;
-                font-size: 12px;
-                width: 24px;
-                height: 24px;
-            }
-            .input-group .form-control.input-lg {
-                height: 24px;
-                width: 36px;
-                font-size: 12px;
-            }
         }
         @media (min-width: 992px) {
             .mobile-menu-container {
@@ -827,22 +458,105 @@ if ($product['date_view'] == $now) {
             .main-nav {
                 display: block !important;
             }
+            .col-sm-9 {
+                flex: 0 0 75%;
+                max-width: 75%;
+            }
+            .col-sm-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            .col-sm-3 {
+                flex: 0 0 25%;
+                max-width: 25%;
+            }
+            .col-sm-4 {
+                flex: 0 0 33.333%;
+                max-width: 33.333%;
+            }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
+            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+            const mobileSearchForm = document.querySelector('.mobile-search');
+            if (mobileMenuToggle && mobileMenuContainer) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.toggle('visible');
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            if (mobileMenuClose && mobileMenuContainer) {
+                mobileMenuClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.remove('visible');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            if (mobileMenuContainer) {
+                mobileMenuContainer.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuContainer) {
+                        mobileMenuContainer.classList.remove('visible');
+                        document.body.classList.remove('menu-open');
+                    }
+                });
+            }
+            if (mobileSearchToggle && mobileSearchForm) {
+                mobileSearchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileSearchForm.classList.toggle('visible');
+                });
+            }
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
+            mobileMenuItems.forEach(item => {
+                if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const parentLi = this.parentElement;
+                        const subMenu = this.nextElementSibling;
+                        parentLi.classList.toggle('active');
+                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+                        mobileMenuItems.forEach(otherItem => {
+                            if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
+                                otherItem.parentElement.classList.remove('active');
+                                otherItem.nextElementSibling.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            });
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        if (menu && menu.classList.contains('dropdown-menu')) {
+                            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                                if (m !== menu) m.style.display = 'none';
+                            });
+                        }
+                    }
+                });
+            });
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
-<!-- JavaScript Dependencies -->
-<!-- jQuery (v3.5.1) -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<!-- Bootstrap Bundle JS (v4.5.2, includes Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
-<!-- Owl Carousel JS (v2.3.4) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
-<!-- Magnific Popup JS (v1.1.0) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha512-IsNH5cEY0F6WC4I2jYbltQeHW6Ncrx2Yo3A3GdqXEmvT0rSM70F6fIteVAGfVo59N0jQk7J4z4F1cPfxr4fJ3nQ==" crossorigin="anonymous"></script>
-<!-- jQuery Countdown JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js" integrity="sha512-iHE3vWhcVGLA2M1a5Y/1+9MiW9cL5n0HQQaRrG3V0s/mJZh7i/SGvhTl6v0fK5zT6Qzv9k7LDoA6P832yQ1oGYA==" crossorigin="anonymous"></script>
-<!-- Facebook SDK -->
 <script>
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -871,31 +585,31 @@ if ($product['date_view'] == $now) {
                             <div class="header-search-wrapper">
                                 <label for="q" class="sr-only">Search</label>
                                 <input type="search" class="form-control" name="keyword" id="q" placeholder="Search product..." required>
-                                <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                             </div>
                         </form>
                     </div>
                     <a href="#" class="search-toggle mobile-search-toggle d-lg-none" role="button">
-                        <i class="la la-search"></i>
+                        <i class="icon-search"></i>
                     </a>
                 </div>
                 <div class="header-right">
                     <?php if (isset($_SESSION['user'])): ?>
                         <a href="profile.php" class="user-btn" title="User Profile">
-                            <i class="la la-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
+                            <i class="icon-user"></i> <?php echo htmlspecialchars($user['firstname']); ?>
                         </a>
                         <a href="logout.php" class="user-btn" title="Logout">
-                            <i class="la la-sign-out-alt"></i> Logout
+                            <i class="las la-sign-out-alt"></i> Logout
                         </a>
                     <?php else: ?>
                         <a href="login.php" class="login-btn">
-                            <i class="la la-user"></i> Login/Signup
+                            <i class="icon-user"></i> Login/Signup
                         </a>
                     <?php endif; ?>
                     <div class="dropdown cart-dropdown">
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="icon">
-                                <i class="la la-shopping-cart"></i>
+                                <i class="icon-shopping-cart"></i>
                                 <span class="cart-count cart_count">0</span>
                             </div>
                             <p>Cart</p>
@@ -947,11 +661,11 @@ if ($product['date_view'] == $now) {
         </div>
         <div class="mobile-menu-container">
             <div class="mobile-menu-wrapper">
-                <span class="mobile-menu-close"><i class="la la-close"></i></span>
+                <span class="mobile-menu-close"><i class="icon-close"></i></span>
                 <form action="search.php" method="POST" class="mobile-search">
                     <label for="mobile-search" class="sr-only">Search</label>
                     <input type="search" class="form-control" name="keyword" id="mobile-search" placeholder="Search..." required>
-                    <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                 </form>
                 <nav class="mobile-nav">
                     <ul class="mobile-menu">
@@ -1015,11 +729,11 @@ if ($product['date_view'] == $now) {
                                     <div class="form-group">
                                         <div class="input-group col-sm-5">
                                             <span class="input-group-btn">
-                                                <button type="button" id="minus" class="btn btn-default btn-flat" aria-label="Decrease quantity"><i class="fa fa-minus"></i></button>
+                                                <button type="button" id="minus" class="btn btn-default btn-flat btn-lg"><i class="fa fa-minus"></i></button>
                                             </span>
                                             <input type="text" name="quantity" id="quantity" class="form-control input-lg" value="1">
                                             <span class="input-group-btn">
-                                                <button type="button" id="add" class="btn btn-default btn-flat" aria-label="Increase quantity"><i class="fa fa-plus"></i></button>
+                                                <button type="button" id="add" class="btn btn-default btn-flat btn-lg"><i class="fa fa-plus"></i></button>
                                             </span>
                                             <input type="hidden" value="<?php echo $product['prodid']; ?>" name="id">
                                         </div>
@@ -1050,116 +764,19 @@ if ($product['date_view'] == $now) {
     <?php include 'includes/scripts.php'; ?>
     <script>
     $(function(){
-        function updateMinusButtonState() {
-            var quantity = parseInt($('#quantity').val());
-            $('#minus').prop('disabled', quantity <= 1);
-        }
-
         $('#add').click(function(e){
             e.preventDefault();
-            var quantity = parseInt($('#quantity').val());
+            var quantity = $('#quantity').val();
             quantity++;
             $('#quantity').val(quantity);
-            updateMinusButtonState();
         });
-
         $('#minus').click(function(e){
             e.preventDefault();
-            var quantity = parseInt($('#quantity').val());
-            if (quantity > 1) {
+            var quantity = $('#quantity').val();
+            if(quantity > 1){
                 quantity--;
-                $('#quantity').val(quantity);
             }
-            updateMinusButtonState();
-        });
-
-        // Initial state check
-        updateMinusButtonState();
-
-        // Update state on manual input
-        $('#quantity').on('input', function() {
-            var quantity = parseInt($(this).val());
-            if (isNaN(quantity) || quantity < 1) {
-                $(this).val(1);
-            }
-            updateMinusButtonState();
-        });
-
-        // Mobile menu and dropdown handling
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
-        const mobileMenuContainer = document.querySelector('.mobile-menu-container');
-        const mobileMenuClose = document.querySelector('.mobile-menu-close');
-        const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
-        const mobileSearchForm = document.querySelector('.mobile-search');
-        if (mobileMenuToggle && mobileMenuContainer) {
-            mobileMenuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileMenuContainer.classList.toggle('visible');
-                document.body.classList.toggle('menu-open');
-            });
-        }
-        if (mobileMenuClose && mobileMenuContainer) {
-            mobileMenuClose.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileMenuContainer.classList.remove('visible');
-                document.body.classList.remove('menu-open');
-            });
-        }
-        if (mobileMenuContainer) {
-            mobileMenuContainer.addEventListener('click', function(e) {
-                if (e.target === mobileMenuContainer) {
-                    mobileMenuContainer.classList.remove('visible');
-                    document.body.classList.remove('menu-open');
-                }
-            });
-        }
-        if (mobileSearchToggle && mobileSearchForm) {
-            mobileSearchToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileSearchForm.classList.toggle('visible');
-            });
-        }
-        const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
-        mobileMenuItems.forEach(item => {
-            if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const parentLi = this.parentElement;
-                    const subMenu = this.nextElementSibling;
-                    parentLi.classList.toggle('active');
-                    subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
-                    mobileMenuItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
-                            otherItem.parentElement.classList.remove('active');
-                            otherItem.nextElementSibling.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) {
-                    e.preventDefault();
-                    const menu = this.nextElementSibling;
-                    if (menu && menu.classList.contains('dropdown-menu')) {
-                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-                        document.querySelectorAll('.dropdown-menu').forEach(m => {
-                            if (m !== menu) m.style.display = 'none';
-                        });
-                    }
-                }
-            });
-        });
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth < 992) {
-                if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                        menu.style.display = 'none';
-                    });
-                }
-            }
+            $('#quantity').val(quantity);
         });
     });
     </script>
