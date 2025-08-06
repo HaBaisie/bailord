@@ -81,7 +81,6 @@ if ($product['date_view'] == $now) {
         --text-light: #000000;
         --blue-gradient: linear-gradient(135deg, var(--dominant-color) 0%, var(--complementary-blue) 100%);
         --green-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #1e7e34 100%);
-        --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     body {
         background-color: var(--light-neutral);
@@ -323,80 +322,64 @@ if ($product['date_view'] == $now) {
     .form-inline .form-group {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
     }
     .input-group {
         display: flex;
-        align-items: center;
-        border: 1px solid var(--medium-neutral);
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: #ffffff;
-        box-shadow: var(--shadow);
     }
     .input-group-btn .btn {
         background-color: var(--dominant-color);
         color: #ffffff;
-        padding: 12px 16px;
         border: none;
-        font-size: 16px;
+        padding: 10px 15px;
+        font-size: 18px;
+        line-height: 1;
         transition: all 0.3s ease;
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .input-group-btn:last-child .btn {
+        border-radius: 0 4px 4px 0;
+    }
+    .input-group-btn:first-child .btn {
+        border-radius: 4px 0 0 4px;
     }
     .input-group-btn .btn:hover {
         background-color: var(--complementary-blue);
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .input-group-btn .btn:active {
-        transform: scale(0.95);
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
-    .input-group-btn .btn i {
-        font-size: 14px;
+    .input-group-btn .btn:disabled {
+        background-color: var(--medium-neutral);
+        color: var(--dark-neutral);
+        cursor: not-allowed;
+        box-shadow: none;
     }
-    .form-control.input-lg {
-        height: 48px;
-        width: 60px;
-        text-align: center;
-        border: none;
+    .input-group .form-control.input-lg {
+        border: 1px solid var(--medium-neutral);
+        border-left: none;
+        border-right: none;
+        background-color: #ffffff;
         font-size: 16px;
-        font-weight: 500;
+        text-align: center;
+        width: 60px;
+        height: 46px;
     }
     .btn-primary {
         background-color: var(--dominant-color);
         border-color: var(--dominant-color);
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
     }
     .btn-primary:hover {
         background-color: var(--complementary-blue);
         border-color: var(--complementary-blue);
-        transform: translateY(-2px);
-    }
-    .btn-primary:active {
-        transform: translateY(0);
-    }
-    .btn-subscribe {
-        display: block;
-        width: 100%;
-        padding: 12px 20px;
-        background: var(--green-gradient);
-        color: #ffffff;
-        text-align: center;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        margin-top: 20px;
-    }
-    .btn-subscribe:hover {
-        background: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: var(--shadow);
-    }
-    .btn-subscribe:active {
-        transform: translateY(0);
     }
     .fb-comments {
         margin-top: 20px;
@@ -444,7 +427,6 @@ if ($product['date_view'] == $now) {
         background-color: #f2dede;
         border-color: #ebccd1;
     }
-    /* Responsive Adjustments */
     @media (max-width: 991px) {
         .header-middle .header-center .header-search-extended {
             display: none;
@@ -482,12 +464,12 @@ if ($product['date_view'] == $now) {
         }
         .form-inline .form-group {
             flex-direction: column;
-            align-items: stretch;
-            gap: 10px;
+            align-items: flex-start;
         }
         .input-group {
             width: 100%;
             margin-bottom: 10px;
+            justify-content: center;
         }
         .btn-primary.btn-lg {
             width: 100%;
@@ -501,6 +483,17 @@ if ($product['date_view'] == $now) {
         }
         .mobile-search {
             display: block;
+        }
+        .input-group-btn .btn {
+            padding: 8px 12px;
+            font-size: 16px;
+            width: 40px;
+            height: 40px;
+        }
+        .input-group .form-control.input-lg {
+            height: 40px;
+            width: 50px;
+            font-size: 14px;
         }
     }
     @media (min-width: 992px) {
@@ -528,6 +521,85 @@ if ($product['date_view'] == $now) {
         }
     }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggler');
+            const mobileMenuContainer = document.querySelector('.mobile-menu-container');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const mobileSearchToggle = document.querySelector('.mobile-search-toggle');
+            const mobileSearchForm = document.querySelector('.mobile-search');
+            if (mobileMenuToggle && mobileMenuContainer) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.toggle('visible');
+                    document.body.classList.toggle('menu-open');
+                });
+            }
+            if (mobileMenuClose && mobileMenuContainer) {
+                mobileMenuClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuContainer.classList.remove('visible');
+                    document.body.classList.remove('menu-open');
+                });
+            }
+            if (mobileMenuContainer) {
+                mobileMenuContainer.addEventListener('click', function(e) {
+                    if (e.target === mobileMenuContainer) {
+                        mobileMenuContainer.classList.remove('visible');
+                        document.body.classList.remove('menu-open');
+                    }
+                });
+            }
+            if (mobileSearchToggle && mobileSearchForm) {
+                mobileSearchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileSearchForm.classList.toggle('visible');
+                });
+            }
+            const mobileMenuItems = document.querySelectorAll('.mobile-nav .mobile-menu > li > a');
+            mobileMenuItems.forEach(item => {
+                if (item.nextElementSibling && item.nextElementSibling.tagName === 'UL') {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const parentLi = this.parentElement;
+                        const subMenu = this.nextElementSibling;
+                        parentLi.classList.toggle('active');
+                        subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
+                        mobileMenuItems.forEach(otherItem => {
+                            if (otherItem !== item && otherItem.nextElementSibling && otherItem.nextElementSibling.tagName === 'UL') {
+                                otherItem.parentElement.classList.remove('active');
+                                otherItem.nextElementSibling.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            });
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth < 992) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        if (menu && menu.classList.contains('dropdown-menu')) {
+                            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                                if (m !== menu) m.style.display = 'none';
+                            });
+                        }
+                    }
+                });
+            });
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    if (!e.target.matches('.dropdown-toggle') && !e.target.closest('.dropdown-menu')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
 <script>
@@ -704,7 +776,7 @@ if ($product['date_view'] == $now) {
                                             <span class="input-group-btn">
                                                 <button type="button" id="minus" class="btn btn-default btn-flat btn-lg" aria-label="Decrease quantity"><i class="fa fa-minus"></i></button>
                                             </span>
-                                            <input type="text" name="quantity" id="quantity" class="form-control input-lg" value="1" aria-label="Quantity">
+                                            <input type="text" name="quantity" id="quantity" class="form-control input-lg" value="1">
                                             <span class="input-group-btn">
                                                 <button type="button" id="add" class="btn btn-default btn-flat btn-lg" aria-label="Increase quantity"><i class="fa fa-plus"></i></button>
                                             </span>
@@ -727,7 +799,6 @@ if ($product['date_view'] == $now) {
                     </div>
                     <div class="col-sm-3">
                         <?php include 'includes/sidebar.php'; ?>
-                        <a href="subscribe.php" class="btn-subscribe">Become a Subscriber</a>
                     </div>
                 </div>
             </section>
@@ -738,19 +809,39 @@ if ($product['date_view'] == $now) {
     <?php include 'includes/scripts.php'; ?>
     <script>
     $(function(){
+        function updateMinusButtonState() {
+            var quantity = parseInt($('#quantity').val());
+            $('#minus').prop('disabled', quantity <= 1);
+        }
+
         $('#add').click(function(e){
             e.preventDefault();
             var quantity = parseInt($('#quantity').val());
             quantity++;
             $('#quantity').val(quantity);
+            updateMinusButtonState();
         });
+
         $('#minus').click(function(e){
             e.preventDefault();
             var quantity = parseInt($('#quantity').val());
-            if(quantity > 1){
+            if (quantity > 1) {
                 quantity--;
                 $('#quantity').val(quantity);
             }
+            updateMinusButtonState();
+        });
+
+        // Initial state check
+        updateMinusButtonState();
+
+        // Update state on manual input
+        $('#quantity').on('input', function() {
+            var quantity = parseInt($(this).val());
+            if (isNaN(quantity) || quantity < 1) {
+                $(this).val(1);
+            }
+            updateMinusButtonState();
         });
     });
     </script>
