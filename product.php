@@ -331,16 +331,16 @@ if ($product['date_view'] == $now) {
         background-color: var(--dominant-color);
         color: #ffffff;
         border: none;
-        padding: 10px 15px;
-        font-size: 18px;
+        padding: 0;
+        font-size: 14px;
         line-height: 1;
         transition: all 0.3s ease;
-        width: 46px;
-        height: 46px;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     .input-group-btn:last-child .btn {
         border-radius: 0 4px 4px 0;
@@ -350,11 +350,11 @@ if ($product['date_view'] == $now) {
     }
     .input-group-btn .btn:hover {
         background-color: var(--complementary-blue);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: scale(1.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
     .input-group-btn .btn:active {
-        transform: translateY(0);
+        transform: scale(1);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     .input-group-btn .btn:disabled {
@@ -362,16 +362,17 @@ if ($product['date_view'] == $now) {
         color: var(--dark-neutral);
         cursor: not-allowed;
         box-shadow: none;
+        transform: none;
     }
     .input-group .form-control.input-lg {
         border: 1px solid var(--medium-neutral);
         border-left: none;
         border-right: none;
         background-color: #ffffff;
-        font-size: 16px;
+        font-size: 14px;
         text-align: center;
-        width: 60px;
-        height: 46px;
+        width: 40px;
+        height: 30px;
     }
     .btn-primary {
         background-color: var(--dominant-color);
@@ -485,15 +486,15 @@ if ($product['date_view'] == $now) {
             display: block;
         }
         .input-group-btn .btn {
-            padding: 8px 12px;
-            font-size: 16px;
-            width: 40px;
-            height: 40px;
+            padding: 0;
+            font-size: 12px;
+            width: 24px;
+            height: 24px;
         }
         .input-group .form-control.input-lg {
-            height: 40px;
-            width: 50px;
-            font-size: 14px;
+            height: 24px;
+            width: 36px;
+            font-size: 12px;
         }
     }
     @media (min-width: 992px) {
@@ -774,11 +775,11 @@ if ($product['date_view'] == $now) {
                                     <div class="form-group">
                                         <div class="input-group col-sm-5">
                                             <span class="input-group-btn">
-                                                <button type="button" id="minus" class="btn btn-default btn-flat btn-lg" aria-label="Decrease quantity"><i class="fa fa-minus"></i></button>
+                                                <button type="button" id="minus" class="btn btn-default btn-flat" aria-label="Decrease quantity"><i class="fa fa-minus"></i></button>
                                             </span>
                                             <input type="text" name="quantity" id="quantity" class="form-control input-lg" value="1">
                                             <span class="input-group-btn">
-                                                <button type="button" id="add" class="btn btn-default btn-flat btn-lg" aria-label="Increase quantity"><i class="fa fa-plus"></i></button>
+                                                <button type="button" id="add" class="btn btn-default btn-flat" aria-label="Increase quantity"><i class="fa fa-plus"></i></button>
                                             </span>
                                             <input type="hidden" value="<?php echo $product['prodid']; ?>" name="id">
                                         </div>
