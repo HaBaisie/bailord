@@ -50,15 +50,19 @@ if ($product['date_view'] == $now) {
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    <!-- Font Awesome for button icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Line Awesome for navigation icons -->
     <link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
-    <!-- Plugins CSS File -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <!-- Magnific Popup for image zoom -->
     <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
-    <!-- Main CSS File -->
+    <!-- Main Template CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Demo Skin CSS -->
     <link rel="stylesheet" href="assets/css/skins/skin-demo-4.css">
+    <!-- Demo-specific CSS -->
     <link rel="stylesheet" href="assets/css/demos/demo-4.css">
     <!-- Preload critical resources -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style">
@@ -742,18 +746,18 @@ if ($product['date_view'] == $now) {
                                         <div class="input-group col-sm-5">
                                             <span class="input-group-btn">
                                                 <button type="button" id="minus" class="btn btn-default btn-flat btn-lg" style="background-color: #2a5bd7; color: #ffffff; padding: 10px 15px; border: none; font-size: 16px; line-height: 1; display: flex; align-items: center; justify-content: center; min-width: 40px; transition: background-color 0.3s;">
-                                                    <i class="fa fa-minus"></i>
+                                                    <i class="fas fa-minus"></i>
                                                 </button>
                                             </span>
                                             <input type="text" name="quantity" id="quantity" class="form-control input-lg" value="1">
                                             <span class="input-group-btn">
                                                 <button type="button" id="add" class="btn btn-default btn-flat btn-lg" style="background-color: #2a5bd7; color: #ffffff; padding: 10px 15px; border: none; font-size: 16px; line-height: 1; display: flex; align-items: center; justify-content: center; min-width: 40px; transition: background-color 0.3s;">
-                                                    <i class="fa fa-plus"></i>
+                                                    <i class="fas fa-plus"></i>
                                                 </button>
                                             </span>
                                             <input type="hidden" value="<?php echo $product['prodid']; ?>" name="id">
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-lg btn-flat"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                        <button type="submit" class="btn btn-primary btn-lg btn-flat"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
                                     </div>
                                 </form>
                             </div>
