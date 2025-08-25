@@ -3,7 +3,7 @@
   "description": "E-commerce application with Cloudinary image storage",
   "license": "proprietary",
   "require": {
-    "php": "^8.1",
+    "php": "^8.1 || ^8.2 || ^8.3",
     "phpmailer/phpmailer": "^6.0",
     "cloudinary/cloudinary_php": "^2"
   },
@@ -14,4 +14,5 @@
   }
 
 }
+
 
